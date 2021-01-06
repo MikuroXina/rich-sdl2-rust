@@ -4,7 +4,7 @@ use crate::bind;
 
 use super::{Point, Size};
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, PartialEq)]
 pub struct Rect {
     pub up_left: Point,
     pub size: Size,
