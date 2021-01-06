@@ -26,7 +26,10 @@ pub struct Sdl {}
 
 impl Sdl {
     pub fn new() -> Self {
-        let ret = unsafe { bind::SDL_Init(0) };
+        let ret = unsafe {
+            bind::SDL_SetMainReady();
+            bind::SDL_Init(0)
+        };
         if ret != 0 {
             panic!("Sdl initialization failed");
         }
