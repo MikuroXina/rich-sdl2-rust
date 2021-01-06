@@ -20,6 +20,16 @@ impl From<Point> for bind::SDL_Point {
     }
 }
 
+impl Point {
+    pub fn is_in(&self, rect: &Rect) -> bool {
+        let bottom_right = rect.bottom_right();
+        rect.up_left.x <= self.x
+            && self.x <= bottom_right.x
+            && rect.up_left.y <= self.y
+            && self.y <= bottom_right.y
+    }
+}
+
 #[derive(Debug, Clone)]
 pub struct Size {
     pub width: u32,
