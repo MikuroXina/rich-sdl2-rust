@@ -2,6 +2,7 @@ use std::marker::PhantomData;
 
 use crate::{bind, Sdl};
 
+pub mod geo;
 pub mod renderer;
 pub mod window;
 
