@@ -16,13 +16,43 @@ impl<'video> Drop for Window<'video> {
     }
 }
 
-#[derive(Default, Debug)]
+#[derive(Debug)]
+pub enum WindowPos {
+    Coord(u32),
+    Undefined,
+    Centered,
+}
+
+impl WindowPos {
+    fn into_arg(self) -> std::os::raw::c_int {
+        use WindowPos::*;
+        (match self {
+            Coord(coord) => coord,
+            Undefined => 0x1FFF0000, // SDL_WINDOWPOS_UNDEFINED
+            Centered => 0x2FFF0000,  // SDL_WINDOWPOS_CENTERED
+        }) as std::os::raw::c_int
+    }
+}
+
+#[derive(Debug)]
 pub struct WindowBuilder {
     title: String,
-    x: u32,
-    y: u32,
+    x: WindowPos,
+    y: WindowPos,
     width: u32,
     height: u32,
+}
+
+impl Default for WindowBuilder {
+    fn default() -> Self {
+        Self {
+            title: "Untitled".into(),
+            x: WindowPos::Centered,
+            y: WindowPos::Centered,
+            width: 640,
+            height: 480,
+        }
+    }
 }
 
 impl WindowBuilder {
@@ -31,12 +61,12 @@ impl WindowBuilder {
         self
     }
 
-    pub fn x(&mut self, x: u32) -> &mut Self {
+    pub fn x(&mut self, x: WindowPos) -> &mut Self {
         self.x = x;
         self
     }
 
-    pub fn y(&mut self, y: u32) -> &mut Self {
+    pub fn y(&mut self, y: WindowPos) -> &mut Self {
         self.y = y;
         self
     }
@@ -56,8 +86,8 @@ impl WindowBuilder {
         let raw = unsafe {
             bind::SDL_CreateWindow(
                 self.title.as_ptr() as *const c_char,
-                self.x as c_int,
-                self.y as c_int,
+                self.x.into_arg(),
+                self.y.into_arg(),
                 self.width as c_int,
                 self.height as c_int,
                 0,
