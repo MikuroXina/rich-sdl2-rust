@@ -91,4 +91,16 @@ impl Rect {
     pub fn empty(&self) -> bool {
         self.size.width != 0 || self.size.height != 0
     }
+
+    pub fn union(&self, other: &Self) -> Self {
+        let mut raw = MaybeUninit::uninit();
+        unsafe {
+            bind::SDL_UnionRect(
+                &self.clone().into() as *const _,
+                &other.clone().into() as *const _,
+                raw.as_mut_ptr(),
+            )
+        }
+        unsafe { raw.assume_init() }.into()
+    }
 }
