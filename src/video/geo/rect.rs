@@ -54,4 +54,13 @@ impl Rect {
         }
         Some(unsafe { raw.assume_init() }.into())
     }
+
+    pub fn has_intersection(&self, other: &Self) -> bool {
+        unsafe {
+            bind::SDL_HasIntersection(
+                &self.clone().into() as *const _,
+                &other.clone().into() as *const _,
+            ) != 0
+        }
+    }
 }
