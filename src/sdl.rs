@@ -44,9 +44,7 @@ impl Sdl {
             minor: 0,
             patch: 0,
         };
-        unsafe {
-            bind::SDL_GetVersion(&mut ver as *mut _);
-        }
+        unsafe { bind::SDL_GetVersion(&mut ver as *mut _) }
         ver.into()
     }
 
@@ -74,8 +72,6 @@ impl Sdl {
 
 impl Drop for Sdl {
     fn drop(&mut self) {
-        unsafe {
-            bind::SDL_Quit();
-        }
+        unsafe { bind::SDL_Quit() }
     }
 }
