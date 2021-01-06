@@ -31,6 +31,7 @@ impl Sdl {
             bind::SDL_Init(0)
         };
         if ret != 0 {
+            eprintln!("Sdl error: {}", Self::poll_error());
             panic!("Sdl initialization failed");
         }
         Self {}
@@ -58,6 +59,16 @@ impl Sdl {
 
     pub fn revision_num() -> u32 {
         (unsafe { bind::SDL_GetRevisionNumber() }) as u32
+    }
+
+    pub fn poll_error() -> String {
+        let raw_str = unsafe { bind::SDL_GetError() };
+        let error = unsafe { std::ffi::CStr::from_ptr(raw_str) }
+            .to_str()
+            .expect("Getting error failed")
+            .into();
+        unsafe { bind::SDL_ClearError() }
+        error
     }
 }
 
