@@ -31,3 +31,9 @@ impl<'renderer> Pen<'renderer> {
         }
     }
 }
+
+impl<'renderer> Drop for Pen<'renderer> {
+    fn drop(&mut self) {
+        unsafe { bind::SDL_RenderPresent(self.renderer.as_ptr()) }
+    }
+}
