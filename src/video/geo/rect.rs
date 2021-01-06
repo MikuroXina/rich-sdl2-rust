@@ -33,3 +33,25 @@ impl From<Rect> for bind::SDL_Rect {
         }
     }
 }
+
+impl Rect {
+    pub fn enclosed(points: impl IntoIterator<Item = Point>, clip: Option<Rect>) -> Option<Self> {
+        use std::os::raw::c_int;
+        let points: Vec<_> = points.into_iter().map(From::from).collect();
+
+        let mut raw = MaybeUninit::uninit();
+        let ret = unsafe {
+            bind::SDL_EnclosePoints(
+                points.as_ptr(),
+                points.len() as c_int,
+                clip.map(From::from)
+                    .map_or(std::ptr::null(), |r| &r as *const _),
+                raw.as_mut_ptr(),
+            )
+        };
+        if ret == 0 {
+            return None;
+        }
+        Some(unsafe { raw.assume_init() }.into())
+    }
+}
