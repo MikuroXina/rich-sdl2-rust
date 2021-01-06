@@ -46,27 +46,27 @@ impl Default for WindowBuilder {
 }
 
 impl WindowBuilder {
-    pub fn title(&mut self, title: impl ToOwned<Owned = String>) -> &mut Self {
+    pub fn title(mut self, title: impl ToOwned<Owned = String>) -> Self {
         self.title = title.to_owned();
         self
     }
 
-    pub fn x(&mut self, x: WindowPos) -> &mut Self {
+    pub fn x(mut self, x: WindowPos) -> Self {
         self.x = x;
         self
     }
 
-    pub fn y(&mut self, y: WindowPos) -> &mut Self {
+    pub fn y(mut self, y: WindowPos) -> Self {
         self.y = y;
         self
     }
 
-    pub fn width(&mut self, width: u32) -> &mut Self {
+    pub fn width(mut self, width: u32) -> Self {
         self.width = width;
         self
     }
 
-    pub fn height(&mut self, height: u32) -> &mut Self {
+    pub fn height(mut self, height: u32) -> Self {
         self.height = height;
         self
     }
