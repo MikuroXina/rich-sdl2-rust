@@ -8,8 +8,8 @@ pub mod app;
 pub mod window;
 
 pub struct EventBox<'video> {
-    quit_event_handlers: Vec<Box<dyn Fn(QuitEvent)>>,
-    window_event_handlers: Vec<Box<dyn Fn(WindowEvent)>>,
+    quit_event_handlers: Vec<Box<dyn Fn(QuitEvent) + 'video>>,
+    window_event_handlers: Vec<Box<dyn Fn(WindowEvent) + 'video>>,
     _phantom: PhantomData<&'video ()>,
 }
 
@@ -26,11 +26,11 @@ impl<'video> EventBox<'video> {
         }
     }
 
-    pub fn handle_quit(&mut self, handler: Box<dyn Fn(QuitEvent)>) {
+    pub fn handle_quit(&mut self, handler: Box<dyn Fn(QuitEvent) + 'video>) {
         self.quit_event_handlers.push(handler);
     }
 
-    pub fn handle_window(&mut self, handler: Box<dyn Fn(WindowEvent)>) {
+    pub fn handle_window(&mut self, handler: Box<dyn Fn(WindowEvent) + 'video>) {
         self.window_event_handlers.push(handler);
     }
 
