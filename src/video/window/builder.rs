@@ -7,7 +7,7 @@ use crate::{bind, Sdl, Video};
 
 #[derive(Debug)]
 pub enum WindowPos {
-    Coord(u32), // TODO(MikuroXina): validating coordinate
+    Coord(i32), // TODO(MikuroXina): validating coordinate
     Undefined,
     Centered,
 }
@@ -15,11 +15,11 @@ pub enum WindowPos {
 impl WindowPos {
     fn into_arg(self) -> std::os::raw::c_int {
         use WindowPos::*;
-        (match self {
+        match self {
             Coord(coord) => coord,
             Undefined => 0x1FFF0000, // SDL_WINDOWPOS_UNDEFINED
             Centered => 0x2FFF0000,  // SDL_WINDOWPOS_CENTERED
-        }) as std::os::raw::c_int
+        }
     }
 }
 
