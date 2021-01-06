@@ -51,6 +51,17 @@ impl<'video> EventBox<'video> {
         }
         self.handle_event(event);
     }
+
+    pub fn wait_next_event_with(&self, timeout_ms: u32) {
+        use std::mem::MaybeUninit;
+        let mut event = MaybeUninit::uninit();
+        let ret = unsafe { bind::SDL_WaitEventTimeout(event.as_mut_ptr(), timeout_ms as i32) };
+        let event = unsafe { event.assume_init() };
+        if ret == 0 {
+            return;
+        }
+        self.handle_event(event);
+    }
 }
 
 impl<'video> Drop for EventBox<'video> {
