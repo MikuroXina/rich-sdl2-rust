@@ -31,8 +31,7 @@ impl Sdl {
             bind::SDL_Init(0)
         };
         if ret != 0 {
-            eprintln!("Sdl error: {}", Self::poll_error());
-            panic!("Sdl initialization failed");
+            Self::error_then_panic("Sdl")
         }
         Self {}
     }
@@ -59,14 +58,15 @@ impl Sdl {
         (unsafe { bind::SDL_GetRevisionNumber() }) as u32
     }
 
-    pub fn poll_error() -> String {
+    pub fn error_then_panic(context: &'static str) -> ! {
         let raw_str = unsafe { bind::SDL_GetError() };
         let error = unsafe { std::ffi::CStr::from_ptr(raw_str) }
             .to_str()
             .expect("Getting error failed")
-            .into();
+            .to_owned();
         unsafe { bind::SDL_ClearError() }
-        error
+        eprintln!("{} error: {}", context, error);
+        panic!("Unrecoverable Sdl error occurred");
     }
 }
 

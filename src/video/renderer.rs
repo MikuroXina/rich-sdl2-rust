@@ -14,10 +14,7 @@ impl<'window> Renderer<'window> {
     pub fn new(window: &'window Window) -> Self {
         let raw = unsafe { bind::SDL_CreateRenderer(window.as_ptr(), -1, 0) };
         NonNull::new(raw).map_or_else(
-            || {
-                eprintln!("Sdl renderer error: {}", Sdl::poll_error());
-                panic!("Sdl renderer initialization failed");
-            },
+            || Sdl::error_then_panic("Sdl renderer"),
             |renderer| Self {
                 renderer,
                 _phantom: PhantomData,

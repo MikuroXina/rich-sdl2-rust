@@ -13,8 +13,7 @@ impl<'sdl> Video<'sdl> {
     pub fn new(_: &'sdl Sdl) -> Self {
         let ret = unsafe { bind::SDL_InitSubSystem(bind::SDL_INIT_VIDEO) };
         if ret != 0 {
-            eprintln!("Sdl video error: {}", Sdl::poll_error());
-            panic!("Sdl video initialization failed");
+            Sdl::error_then_panic("Sdl video")
         }
         Self {
             _phantom: PhantomData,

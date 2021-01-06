@@ -83,10 +83,7 @@ impl WindowBuilder {
             )
         };
         NonNull::new(raw).map_or_else(
-            || {
-                eprintln!("Sdl window error: {}", Sdl::poll_error());
-                panic!("Sdl window initialization failed");
-            },
+            || Sdl::error_then_panic("Sdl window"),
             |window| Window {
                 window,
                 _phantom: PhantomData,
