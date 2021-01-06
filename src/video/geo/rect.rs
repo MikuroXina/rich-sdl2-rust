@@ -50,9 +50,10 @@ impl Rect {
             )
         };
         if ret == 0 {
-            return None;
+            None
+        } else {
+            Some(unsafe { raw.assume_init() }.into())
         }
-        Some(unsafe { raw.assume_init() }.into())
     }
 
     pub fn has_intersection(&self, other: &Self) -> bool {
