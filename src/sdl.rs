@@ -59,14 +59,18 @@ impl Sdl {
     }
 
     pub fn error_then_panic(context: &'static str) -> ! {
+        eprintln!("{} error: {}", context, Self::error());
+        panic!("Unrecoverable Sdl error occurred");
+    }
+
+    pub fn error() -> String {
         let raw_str = unsafe { bind::SDL_GetError() };
         let error = unsafe { std::ffi::CStr::from_ptr(raw_str) }
             .to_str()
             .expect("Getting error failed")
             .to_owned();
         unsafe { bind::SDL_ClearError() }
-        eprintln!("{} error: {}", context, error);
-        panic!("Unrecoverable Sdl error occurred");
+        error
     }
 }
 
