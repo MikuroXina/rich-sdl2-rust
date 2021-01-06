@@ -31,3 +31,17 @@ pub struct Line {
     pub start: Point,
     pub end: Point,
 }
+
+impl Line {
+    pub fn clip_with(&mut self, rect: &Rect) {
+        unsafe {
+            bind::SDL_IntersectRectAndLine(
+                &rect.clone().into() as *const _,
+                &mut self.start.x as *mut _,
+                &mut self.start.y as *mut _,
+                &mut self.end.x as *mut _,
+                &mut self.end.y as *mut _,
+            );
+        }
+    }
+}
