@@ -5,6 +5,8 @@ use super::window::Window;
 
 use crate::{bind, Sdl};
 
+pub mod pen;
+
 pub struct Renderer<'window> {
     renderer: NonNull<bind::SDL_Renderer>,
     _phantom: PhantomData<&'window ()>,
@@ -20,6 +22,10 @@ impl<'window> Renderer<'window> {
                 _phantom: PhantomData,
             },
         )
+    }
+
+    pub fn as_ptr(&self) -> *mut bind::SDL_Renderer {
+        self.renderer.as_ptr()
     }
 }
 
