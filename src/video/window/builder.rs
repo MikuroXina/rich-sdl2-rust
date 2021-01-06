@@ -6,7 +6,7 @@ use crate::{bind, Sdl, Video};
 
 #[derive(Debug)]
 pub enum WindowPos {
-    Coord(u32),
+    Coord(u32), // TODO(MikuroXina): validating coordinate
     Undefined,
     Centered,
 }
@@ -29,6 +29,7 @@ pub struct WindowBuilder {
     y: WindowPos,
     width: u32,
     height: u32,
+    // TODO(MikuroXina): Support flags
 }
 
 impl Default for WindowBuilder {
