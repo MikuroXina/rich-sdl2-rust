@@ -87,4 +87,8 @@ impl Rect {
             Some(unsafe { raw.assume_init() }.into())
         }
     }
+
+    pub fn empty(&self) -> bool {
+        self.size.width != 0 || self.size.height != 0
+    }
 }
