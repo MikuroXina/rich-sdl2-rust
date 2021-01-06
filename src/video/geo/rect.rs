@@ -63,4 +63,20 @@ impl Rect {
             ) != 0
         }
     }
+
+    pub fn intersect(&self, other: &Self) -> Option<Self> {
+        let mut raw = MaybeUninit::uninit();
+        let ret = unsafe {
+            bind::SDL_IntersectRect(
+                &self.clone().into() as *const _,
+                &other.clone().into() as *const _,
+                raw.as_mut_ptr(),
+            )
+        };
+        if ret == 0 {
+            None
+        } else {
+            Some(unsafe { raw.assume_init() }.into())
+        }
+    }
 }
