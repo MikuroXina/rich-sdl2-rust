@@ -3,4 +3,4 @@ mod sdl;
 mod video;
 
 pub use sdl::Sdl;
-pub use video::Video;
+pub use video::{window, Video};

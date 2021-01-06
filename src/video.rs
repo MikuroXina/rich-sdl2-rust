@@ -2,6 +2,8 @@ use std::marker::PhantomData;
 
 use crate::{bind, Sdl};
 
+pub mod window;
+
 pub struct Video<'sdl> {
     _phantom: PhantomData<&'sdl ()>,
 }
