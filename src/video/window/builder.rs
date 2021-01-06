@@ -1,3 +1,4 @@
+use std::ffi::CString;
 use std::marker::PhantomData;
 use std::ptr::NonNull;
 
@@ -71,10 +72,11 @@ impl WindowBuilder {
     }
 
     pub fn build<'video>(self, _: &'video Video) -> Window<'video> {
-        use std::os::raw::{c_char, c_int};
+        use std::os::raw::c_int;
+        let cstr = CString::new(self.title).unwrap_or_default();
         let raw = unsafe {
             bind::SDL_CreateWindow(
-                self.title.as_ptr() as *const c_char,
+                cstr.as_ptr(),
                 self.x.into_arg(),
                 self.y.into_arg(),
                 self.width as c_int,
@@ -84,7 +86,7 @@ impl WindowBuilder {
         };
         NonNull::new(raw).map_or_else(
             || Sdl::error_then_panic("Sdl window"),
-            |window| Window {
+            move |window| Window {
                 window,
                 _phantom: PhantomData,
             },
