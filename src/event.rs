@@ -1,13 +1,15 @@
 use std::marker::PhantomData;
 
-use app::QuitEvent;
+use self::{app::QuitEvent, window::WindowEvent};
 
 use crate::{bind, Sdl, Video};
 
 pub mod app;
+pub mod window;
 
 pub struct EventBox<'video> {
-    quit_event_handlers: Vec<Box<dyn Fn(app::QuitEvent)>>,
+    quit_event_handlers: Vec<Box<dyn Fn(QuitEvent)>>,
+    window_event_handlers: Vec<Box<dyn Fn(WindowEvent)>>,
     _phantom: PhantomData<&'video ()>,
 }
 
@@ -19,12 +21,17 @@ impl<'video> EventBox<'video> {
         }
         Self {
             quit_event_handlers: vec![],
+            window_event_handlers: vec![],
             _phantom: PhantomData,
         }
     }
 
-    pub fn handle_quit(&mut self, handler: Box<dyn Fn(app::QuitEvent)>) {
+    pub fn handle_quit(&mut self, handler: Box<dyn Fn(QuitEvent)>) {
         self.quit_event_handlers.push(handler);
+    }
+
+    pub fn handle_window(&mut self, handler: Box<dyn Fn(WindowEvent)>) {
+        self.window_event_handlers.push(handler);
     }
 
     fn handle_event(&self, event: bind::SDL_Event) {
@@ -36,6 +43,12 @@ impl<'video> EventBox<'video> {
                 self.quit_event_handlers
                     .iter()
                     .for_each(|handler| handler(quit.clone()))
+            }
+            bind::SDL_EventType_SDL_WINDOWEVENT => {
+                let window: WindowEvent = unsafe { event.window }.into();
+                self.window_event_handlers
+                    .iter()
+                    .for_each(|handler| handler(window.clone()))
             }
             _ => {}
         }
