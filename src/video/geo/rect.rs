@@ -35,6 +35,13 @@ impl From<Rect> for bind::SDL_Rect {
 }
 
 impl Rect {
+    pub fn bottom_right(&self) -> Point {
+        Point {
+            x: self.up_left.x + self.size.width as i32,
+            y: self.up_left.y + self.size.height as i32,
+        }
+    }
+
     pub fn enclosed(points: impl IntoIterator<Item = Point>, clip: Option<Rect>) -> Option<Self> {
         use std::os::raw::c_int;
         let points: Vec<_> = points.into_iter().map(From::from).collect();
