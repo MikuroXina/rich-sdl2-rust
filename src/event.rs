@@ -2,7 +2,7 @@ use std::marker::PhantomData;
 
 use app::QuitEvent;
 
-use crate::{bind, Video};
+use crate::{bind, Sdl, Video};
 
 pub mod app;
 
@@ -13,6 +13,10 @@ pub struct EventBox<'video> {
 
 impl<'video> EventBox<'video> {
     pub fn new(_: &'video Video) -> Self {
+        let ret = unsafe { bind::SDL_InitSubSystem(bind::SDL_INIT_EVENTS) };
+        if ret != 0 {
+            Sdl::error_then_panic("Sdl event")
+        }
         Self {
             quit_event_handlers: vec![],
             _phantom: PhantomData,
@@ -46,5 +50,11 @@ impl<'video> EventBox<'video> {
             return;
         }
         self.handle_event(event);
+    }
+}
+
+impl<'video> Drop for EventBox<'video> {
+    fn drop(&mut self) {
+        unsafe { bind::SDL_QuitSubSystem(bind::SDL_INIT_EVENTS) }
     }
 }
