@@ -36,7 +36,6 @@ impl<'video> EventBox<'video> {
 
     fn handle_event(&self, event: bind::SDL_Event) {
         let ty = unsafe { event.type_ };
-        eprintln!("event type: {}", ty);
         match ty {
             bind::SDL_EventType_SDL_QUIT => {
                 let quit: QuitEvent = unsafe { event.quit }.into();
