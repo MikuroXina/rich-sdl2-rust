@@ -23,14 +23,7 @@ impl<'video> EventBox<'video> {
         self.quit_event_handlers.push(handler);
     }
 
-    pub fn poll(&self) {
-        use std::mem::MaybeUninit;
-        let mut event = MaybeUninit::uninit();
-        let remaining_events = unsafe { bind::SDL_PollEvent(event.as_mut_ptr()) };
-        let event = unsafe { event.assume_init() };
-        if remaining_events == 0 {
-            return;
-        }
+    fn handle_event(&self, event: bind::SDL_Event) {
         let ty = unsafe { event.type_ };
         eprintln!("event type: {}", ty);
         match ty {
@@ -42,5 +35,16 @@ impl<'video> EventBox<'video> {
             }
             _ => {}
         }
+    }
+
+    pub fn poll(&self) {
+        use std::mem::MaybeUninit;
+        let mut event = MaybeUninit::uninit();
+        let remaining_events = unsafe { bind::SDL_PollEvent(event.as_mut_ptr()) };
+        let event = unsafe { event.assume_init() };
+        if remaining_events == 0 {
+            return;
+        }
+        self.handle_event(event);
     }
 }
