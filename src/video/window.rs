@@ -12,7 +12,11 @@ pub struct Window<'video> {
     _phantom: PhantomData<&'video ()>,
 }
 
-impl<'video> Window<'video> {}
+impl<'video> Window<'video> {
+    pub fn as_ptr(&self) -> *mut bind::SDL_Window {
+        self.window.as_ptr()
+    }
+}
 
 impl<'video> Drop for Window<'video> {
     fn drop(&mut self) {
