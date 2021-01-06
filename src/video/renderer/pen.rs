@@ -57,6 +57,23 @@ impl<'renderer> Pen<'renderer> {
             Sdl::error_then_panic("Sdl pen lines")
         }
     }
+
+    pub fn point(&self, point: Point) {
+        let ret = unsafe { bind::SDL_RenderDrawPoint(self.renderer.as_ptr(), point.x, point.y) };
+        if ret != 0 {
+            Sdl::error_then_panic("Sdl pen point")
+        }
+    }
+
+    pub fn points(&self, points: impl IntoIterator<Item = Point>) {
+        let points: Vec<_> = points.into_iter().map(|p| p.into()).collect();
+        let ret = unsafe {
+            bind::SDL_RenderDrawPoints(self.renderer.as_ptr(), points.as_ptr(), points.len() as i32)
+        };
+        if ret != 0 {
+            Sdl::error_then_panic("Sdl pen points")
+        }
+    }
 }
 
 impl<'renderer> Drop for Pen<'renderer> {
