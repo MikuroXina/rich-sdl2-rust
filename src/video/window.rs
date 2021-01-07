@@ -125,6 +125,19 @@ impl<'video> Window<'video> {
         let flag_bits = unsafe { bind::SDL_GetWindowFlags(self.as_ptr()) };
         WindowFlags::from_bits_truncate(flag_bits).into()
     }
+
+    // TODO(MikuroXina): display index and display mode
+    // TODO(MikuroXina): display brightness and gamma
+    // TODO(MikuroXina): window from id
+    // TODO(MikuroXina): grab
+    // TODO(MikuroXina): get id and pixel format
+    // TODO(MikuroXina): get/set max size, min size, opacity, position, size and title
+    // TODO(MikuroXina): set icon, input focus and hit test
+    // TODO(MikuroXina): border widths
+    // TODO(MikuroXina): add frame/frameless
+    // TODO(MikuroXina): modal and message box
+    // TODO(MikuroXina): show, hide, raise and restore
+    // TODO(MikuroXina): full screen, maximize and minimize
 }
 
 impl<'video> Drop for Window<'video> {

@@ -20,6 +20,11 @@ impl<'sdl> Video<'sdl> {
             _phantom: PhantomData,
         }
     }
+
+    // TODO(MikuroXina): screen saver
+    // TODO(MikuroXina): display mode
+    // TODO(MikuroXina): display stats
+    // TODO(MikuroXina): screen saver
 }
 
 impl<'sdl> Drop for Video<'sdl> {
