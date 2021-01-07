@@ -245,6 +245,7 @@ name = "sdl2-rust"
 version = "0.1.0"
 dependencies = [
  "bindgen",
+ "bitflags",
 ]
 
 [[package]]
