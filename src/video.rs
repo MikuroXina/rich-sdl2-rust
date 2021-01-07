@@ -2,6 +2,9 @@ use std::marker::PhantomData;
 
 use crate::{bind, Sdl};
 
+use self::display::Display;
+
+pub mod display;
 pub mod geo;
 pub mod renderer;
 pub mod screen_saver;
@@ -22,9 +25,13 @@ impl<'sdl> Video<'sdl> {
         }
     }
 
-    // TODO(MikuroXina): display mode
-    // TODO(MikuroXina): display stats
-    // TODO(MikuroXina): screen saver
+    pub fn displays(&self) -> Vec<Display> {
+        let ret = unsafe { bind::SDL_GetNumVideoDisplays() };
+        if ret <= 0 {
+            return vec![];
+        }
+        (0..ret).map(|idx| Display::new(idx, &self)).collect()
+    }
 }
 
 impl<'sdl> Drop for Video<'sdl> {

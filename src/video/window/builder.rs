@@ -1,5 +1,4 @@
 use std::ffi::CString;
-use std::marker::PhantomData;
 use std::ptr::NonNull;
 
 use super::{Window, WindowContextKind, WindowFlags, WindowFormat};
@@ -112,7 +111,7 @@ impl WindowBuilder {
         self
     }
 
-    pub fn build<'video>(self, _: &'video Video) -> Window<'video> {
+    pub fn build<'video>(self, video: &'video Video) -> Window<'video> {
         let flags = self.calc_flags();
 
         use std::os::raw::c_int;
@@ -129,10 +128,7 @@ impl WindowBuilder {
         };
         NonNull::new(raw).map_or_else(
             || Sdl::error_then_panic("Sdl window"),
-            move |window| Window {
-                window,
-                _phantom: PhantomData,
-            },
+            move |window| Window { window, video },
         )
     }
 

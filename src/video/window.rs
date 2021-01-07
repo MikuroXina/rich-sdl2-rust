@@ -1,12 +1,13 @@
 use bitflags::bitflags;
-use std::marker::PhantomData;
 use std::ptr::NonNull;
 
-use crate::bind;
+use crate::{bind, Video};
 
 mod builder;
 
 pub use builder::{WindowBuilder, WindowPos};
+
+use super::display::Display;
 
 bitflags! {
     struct WindowFlags: u32 {
@@ -113,7 +114,7 @@ impl From<WindowFlags> for WindowState {
 
 pub struct Window<'video> {
     window: NonNull<bind::SDL_Window>,
-    _phantom: PhantomData<&'video ()>,
+    video: &'video Video<'video>,
 }
 
 impl<'video> Window<'video> {
@@ -126,8 +127,16 @@ impl<'video> Window<'video> {
         WindowFlags::from_bits_truncate(flag_bits).into()
     }
 
-    // TODO(MikuroXina): display index and display mode
-    // TODO(MikuroXina): display brightness and gamma
+    pub fn display(&self) -> Option<Display> {
+        let ret = unsafe { bind::SDL_GetWindowDisplayIndex(self.as_ptr()) };
+        if ret < 0 {
+            None
+        } else {
+            Some(Display::new(ret, &self.video))
+        }
+    }
+
+    // TODO(MikuroXina): window brightness and gamma
     // TODO(MikuroXina): window from id
     // TODO(MikuroXina): grab
     // TODO(MikuroXina): get id and pixel format
