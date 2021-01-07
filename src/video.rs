@@ -4,6 +4,7 @@ use crate::{bind, Sdl};
 
 pub mod geo;
 pub mod renderer;
+pub mod screen_saver;
 pub mod window;
 
 pub struct Video<'sdl> {
@@ -21,7 +22,6 @@ impl<'sdl> Video<'sdl> {
         }
     }
 
-    // TODO(MikuroXina): screen saver
     // TODO(MikuroXina): display mode
     // TODO(MikuroXina): display stats
     // TODO(MikuroXina): screen saver
