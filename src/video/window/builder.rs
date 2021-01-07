@@ -1,3 +1,4 @@
+use bitflags::bitflags;
 use std::ffi::CString;
 use std::marker::PhantomData;
 use std::ptr::NonNull;
@@ -24,13 +25,52 @@ impl WindowPos {
 }
 
 #[derive(Debug)]
+pub enum WindowFormat {
+    Normal,
+    Maximized,
+    Minimized,
+    FullScreen,
+    FullScreenWithCurrentDesktop,
+}
+
+#[derive(Debug)]
+pub enum WindowContextKind {
+    Software,
+    OpenGl,
+    Vulkan,
+    Metal,
+}
+
+bitflags! {
+    struct WindowFlags: u32 {
+        const FULLSCREEN = bind::SDL_WindowFlags_SDL_WINDOW_FULLSCREEN;
+        const OPENGL = bind::SDL_WindowFlags_SDL_WINDOW_OPENGL;
+        const HIDDEN = bind::SDL_WindowFlags_SDL_WINDOW_HIDDEN;
+        const BORDERLESS = bind::SDL_WindowFlags_SDL_WINDOW_BORDERLESS;
+        const RESIZABLE = bind::SDL_WindowFlags_SDL_WINDOW_RESIZABLE;
+        const MINIMIZED = bind::SDL_WindowFlags_SDL_WINDOW_MINIMIZED;
+        const MAXIMIZED = bind::SDL_WindowFlags_SDL_WINDOW_MAXIMIZED;
+        const FULLSCREEN_DESKTOP = bind::SDL_WindowFlags_SDL_WINDOW_FULLSCREEN_DESKTOP;
+        const FOREIGN = bind::SDL_WindowFlags_SDL_WINDOW_FOREIGN;
+        const ALLOW_HIGHDPI = bind::SDL_WindowFlags_SDL_WINDOW_ALLOW_HIGHDPI;
+        const VULKAN = bind::SDL_WindowFlags_SDL_WINDOW_VULKAN;
+        const METAL = bind::SDL_WindowFlags_SDL_WINDOW_METAL;
+    }
+}
+
+#[derive(Debug)]
 pub struct WindowBuilder {
     title: String,
     x: WindowPos,
     y: WindowPos,
     width: u32,
     height: u32,
-    // TODO(MikuroXina): Support flags
+    format: WindowFormat,
+    context_kind: WindowContextKind,
+    hidden: bool,
+    allow_high_dpi: bool,
+    borderless: bool,
+    resizable: bool,
 }
 
 impl Default for WindowBuilder {
@@ -41,6 +81,12 @@ impl Default for WindowBuilder {
             y: WindowPos::Centered,
             width: 640,
             height: 480,
+            format: WindowFormat::Normal,
+            context_kind: WindowContextKind::Software,
+            hidden: false,
+            allow_high_dpi: false,
+            borderless: false,
+            resizable: false,
         }
     }
 }
@@ -71,7 +117,39 @@ impl WindowBuilder {
         self
     }
 
+    pub fn format(mut self, format: WindowFormat) -> Self {
+        self.format = format;
+        self
+    }
+
+    pub fn context_kind(mut self, context_kind: WindowContextKind) -> Self {
+        self.context_kind = context_kind;
+        self
+    }
+
+    pub fn hidden(mut self, hidden: bool) -> Self {
+        self.hidden = hidden;
+        self
+    }
+
+    pub fn allow_high_dpi(mut self, allow_high_dpi: bool) -> Self {
+        self.allow_high_dpi = allow_high_dpi;
+        self
+    }
+
+    pub fn borderless(mut self, borderless: bool) -> Self {
+        self.borderless = borderless;
+        self
+    }
+
+    pub fn resizable(mut self, resizable: bool) -> Self {
+        self.resizable = resizable;
+        self
+    }
+
     pub fn build<'video>(self, _: &'video Video) -> Window<'video> {
+        let flags = self.calc_flags();
+
         use std::os::raw::c_int;
         let cstr = CString::new(self.title).unwrap_or_default();
         let raw = unsafe {
@@ -81,7 +159,7 @@ impl WindowBuilder {
                 self.y.into_arg(),
                 self.width as c_int,
                 self.height as c_int,
-                0,
+                flags,
             )
         };
         NonNull::new(raw).map_or_else(
@@ -91,5 +169,32 @@ impl WindowBuilder {
                 _phantom: PhantomData,
             },
         )
+    }
+
+    fn calc_flags(&self) -> u32 {
+        let mut flags = WindowFlags::empty();
+        flags |= match self.format {
+            WindowFormat::Normal => WindowFlags::empty(),
+            WindowFormat::Maximized => WindowFlags::MAXIMIZED,
+            WindowFormat::Minimized => WindowFlags::MINIMIZED,
+            WindowFormat::FullScreen => WindowFlags::FULLSCREEN,
+            WindowFormat::FullScreenWithCurrentDesktop => WindowFlags::FULLSCREEN_DESKTOP,
+        };
+        flags |= match self.context_kind {
+            WindowContextKind::Software => WindowFlags::empty(),
+            WindowContextKind::OpenGl => WindowFlags::OPENGL,
+            WindowContextKind::Vulkan => WindowFlags::VULKAN,
+            WindowContextKind::Metal => WindowFlags::METAL,
+        };
+        if self.hidden {
+            flags |= WindowFlags::HIDDEN;
+        }
+        if self.allow_high_dpi {
+            flags |= WindowFlags::ALLOW_HIGHDPI;
+        }
+        if self.borderless {
+            flags |= WindowFlags::BORDERLESS
+        }
+        flags.bits()
     }
 }
