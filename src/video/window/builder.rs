@@ -1,9 +1,8 @@
-use bitflags::bitflags;
 use std::ffi::CString;
 use std::marker::PhantomData;
 use std::ptr::NonNull;
 
-use super::Window;
+use super::{Window, WindowContextKind, WindowFlags, WindowFormat};
 use crate::{bind, Sdl, Video};
 
 #[derive(Debug)]
@@ -21,40 +20,6 @@ impl WindowPos {
             Undefined => 0x1FFF0000, // SDL_WINDOWPOS_UNDEFINED
             Centered => 0x2FFF0000,  // SDL_WINDOWPOS_CENTERED
         }
-    }
-}
-
-#[derive(Debug)]
-pub enum WindowFormat {
-    Normal,
-    Maximized,
-    Minimized,
-    FullScreen,
-    FullScreenWithCurrentDesktop,
-}
-
-#[derive(Debug)]
-pub enum WindowContextKind {
-    Software,
-    OpenGl,
-    Vulkan,
-    Metal,
-}
-
-bitflags! {
-    struct WindowFlags: u32 {
-        const FULLSCREEN = bind::SDL_WindowFlags_SDL_WINDOW_FULLSCREEN;
-        const OPENGL = bind::SDL_WindowFlags_SDL_WINDOW_OPENGL;
-        const HIDDEN = bind::SDL_WindowFlags_SDL_WINDOW_HIDDEN;
-        const BORDERLESS = bind::SDL_WindowFlags_SDL_WINDOW_BORDERLESS;
-        const RESIZABLE = bind::SDL_WindowFlags_SDL_WINDOW_RESIZABLE;
-        const MINIMIZED = bind::SDL_WindowFlags_SDL_WINDOW_MINIMIZED;
-        const MAXIMIZED = bind::SDL_WindowFlags_SDL_WINDOW_MAXIMIZED;
-        const FULLSCREEN_DESKTOP = bind::SDL_WindowFlags_SDL_WINDOW_FULLSCREEN_DESKTOP;
-        const FOREIGN = bind::SDL_WindowFlags_SDL_WINDOW_FOREIGN;
-        const ALLOW_HIGHDPI = bind::SDL_WindowFlags_SDL_WINDOW_ALLOW_HIGHDPI;
-        const VULKAN = bind::SDL_WindowFlags_SDL_WINDOW_VULKAN;
-        const METAL = bind::SDL_WindowFlags_SDL_WINDOW_METAL;
     }
 }
 
