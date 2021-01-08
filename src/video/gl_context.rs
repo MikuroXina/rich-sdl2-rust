@@ -4,6 +4,10 @@ use std::ptr::NonNull;
 use crate::window::WindowContextKind;
 use crate::{bind, window::Window};
 
+mod buffer;
+
+pub use buffer::*;
+
 pub struct GlContext<'window> {
     ctx: NonNull<c_void>,
     window: &'window Window<'window>,
