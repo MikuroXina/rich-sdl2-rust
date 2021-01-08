@@ -1,14 +1,8 @@
+use crate::color::Color;
 use crate::video::geo::{Line, Point};
 use crate::{bind, Sdl};
 
 use super::Renderer;
-
-#[derive(Debug, Clone)]
-pub struct Color {
-    pub r: u8,
-    pub g: u8,
-    pub b: u8,
-}
 
 pub struct Pen<'renderer> {
     renderer: &'renderer Renderer<'renderer>,

@@ -4,6 +4,7 @@ use crate::{bind, Sdl};
 
 use self::display::Display;
 
+pub mod color;
 pub mod display;
 pub mod geo;
 pub mod gl_context;
