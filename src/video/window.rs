@@ -1,7 +1,7 @@
 use bitflags::bitflags;
 use std::ptr::NonNull;
 
-use super::{display::Display, pixel_format::PixelFormatKind};
+use super::{display::Display, pixel_format::kind::PixelFormatKind};
 use crate::{bind, Result, Sdl, Video};
 
 mod border;

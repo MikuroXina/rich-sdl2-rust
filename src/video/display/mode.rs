@@ -1,7 +1,7 @@
 use std::mem::MaybeUninit;
 
 use crate::bind;
-use crate::pixel_format::PixelFormatKind;
+use crate::pixel_format::kind::PixelFormatKind;
 
 use super::Display;
 
