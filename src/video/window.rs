@@ -10,7 +10,7 @@ mod builder;
 mod config;
 mod grab;
 mod hit_test;
-mod message_box;
+pub mod message_box;
 mod state;
 
 pub use border::*;
