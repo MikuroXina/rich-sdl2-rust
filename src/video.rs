@@ -6,6 +6,7 @@ use self::display::Display;
 
 pub mod display;
 pub mod geo;
+pub mod gl_context;
 pub mod renderer;
 pub mod screen_saver;
 pub mod window;
