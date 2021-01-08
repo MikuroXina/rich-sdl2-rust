@@ -5,7 +5,10 @@ use std::mem::MaybeUninit;
 use crate::geo::Rect;
 use crate::{bind, Video};
 
+use self::mode::Mode;
+
 pub mod mode;
+pub mod pixel_format;
 
 pub struct Dpi {
     pub ddpi: f32,
@@ -74,5 +77,11 @@ impl<'video> Display<'video> {
             .expect("Getting display name failed")
     }
 
-    // TODO(MikuroXina): display mode
+    pub fn modes(&self) -> Vec<Mode> {
+        let ret = unsafe { bind::SDL_GetNumDisplayModes(self.index) };
+        if ret < 0 {
+            return vec![];
+        }
+        (0..ret).map(|idx| Mode::new(idx, &self)).collect()
+    }
 }
