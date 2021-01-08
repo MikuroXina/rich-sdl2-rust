@@ -6,10 +6,12 @@ use crate::{bind, Video};
 
 mod brightness;
 mod builder;
+mod grab;
 mod state;
 
 pub use brightness::*;
 pub use builder::{WindowBuilder, WindowPos};
+pub use grab::*;
 pub use state::*;
 
 bitflags! {
@@ -45,6 +47,11 @@ impl<'video> Window<'video> {
         NonNull::new(raw).map(|window| Self { window, video })
     }
 
+    pub fn grabbed(video: &'video Video) -> Option<Self> {
+        let raw = unsafe { bind::SDL_GetGrabbedWindow() };
+        NonNull::new(raw).map(|window| Self { window, video })
+    }
+
     pub fn as_ptr(&self) -> *mut bind::SDL_Window {
         self.window.as_ptr()
     }
@@ -63,7 +70,6 @@ impl<'video> Window<'video> {
         }
     }
 
-    // TODO(MikuroXina): grab
     // TODO(MikuroXina): get id and pixel format
     // TODO(MikuroXina): get/set max size, min size, opacity, position, size and title
     // TODO(MikuroXina): set icon, input focus and hit test
