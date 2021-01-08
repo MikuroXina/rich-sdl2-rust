@@ -143,11 +143,16 @@ pub enum PixelFormat {
         ty: ArrayPixelType,
         order: ArrayPixelOrder,
     },
+    FourCode(String),
 }
 
 impl From<bind::SDL_PixelFormatEnum> for PixelFormat {
     fn from(raw: bind::SDL_PixelFormatEnum) -> Self {
         use PixelFormat::*;
+        if (raw >> 28) & 0x0F != 1 {
+            let bytes = ((raw >> 24) & 0xf).to_le_bytes();
+            return FourCode(bytes.iter().map(|&c| c as char).collect());
+        }
         match (raw >> 24) & 0xf {
             bind::SDL_PixelType_SDL_PIXELTYPE_INDEX1 => Bitmap {
                 ty: BitmapPixelType::Index1,
