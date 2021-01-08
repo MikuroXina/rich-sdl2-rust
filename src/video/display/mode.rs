@@ -1,8 +1,8 @@
 use std::mem::MaybeUninit;
 
 use crate::bind;
+use crate::pixel_format::PixelFormat;
 
-use super::pixel_format::PixelFormat;
 use super::Display;
 
 pub struct Mode {

@@ -8,7 +8,6 @@ use crate::{bind, Video};
 use self::mode::Mode;
 
 pub mod mode;
-pub mod pixel_format;
 
 pub struct Dpi {
     pub ddpi: f32,
