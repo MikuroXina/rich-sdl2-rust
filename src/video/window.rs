@@ -118,6 +118,11 @@ pub struct Window<'video> {
 }
 
 impl<'video> Window<'video> {
+    pub fn from_id(id: u32, video: &'video Video) -> Option<Self> {
+        let raw = unsafe { bind::SDL_GetWindowFromID(id) };
+        NonNull::new(raw).map(|window| Self { window, video })
+    }
+
     pub fn as_ptr(&self) -> *mut bind::SDL_Window {
         self.window.as_ptr()
     }
@@ -137,7 +142,6 @@ impl<'video> Window<'video> {
     }
 
     // TODO(MikuroXina): window brightness and gamma
-    // TODO(MikuroXina): window from id
     // TODO(MikuroXina): grab
     // TODO(MikuroXina): get id and pixel format
     // TODO(MikuroXina): get/set max size, min size, opacity, position, size and title
