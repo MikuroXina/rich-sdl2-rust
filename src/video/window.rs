@@ -2,7 +2,7 @@ use bitflags::bitflags;
 use std::ptr::NonNull;
 
 use super::display::{pixel_format::PixelFormat, Display};
-use crate::{bind, Video};
+use crate::{bind, Result, Sdl, Video};
 
 mod border;
 mod brightness;
@@ -97,7 +97,31 @@ impl<'video> Window<'video> {
         unsafe { bind::SDL_RaiseWindow(self.as_ptr()) }
     }
 
-    // TODO(MikuroXina): full screen, maximize, minimize and restore
+    pub fn full_screen(&self) -> Result<()> {
+        let ret = unsafe {
+            bind::SDL_SetWindowFullscreen(
+                self.as_ptr(),
+                bind::SDL_WindowFlags_SDL_WINDOW_FULLSCREEN,
+            )
+        };
+        if ret != 0 {
+            return Err(crate::SdlError::Others { msg: Sdl::error() });
+        }
+        Ok(())
+    }
+
+    pub fn maximize(&self) {
+        unsafe { bind::SDL_MaximizeWindow(self.as_ptr()) }
+    }
+
+    pub fn minimize(&self) {
+        unsafe { bind::SDL_MinimizeWindow(self.as_ptr()) }
+    }
+
+    pub fn restore(&self) {
+        unsafe { bind::SDL_RestoreWindow(self.as_ptr()) }
+    }
+
     // TODO(MikuroXina): surface
     // TODO(MikuroXina): set icon
     // TODO(MikuroXina): open gl context
