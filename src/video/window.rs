@@ -4,6 +4,7 @@ use std::ptr::NonNull;
 use super::display::{pixel_format::PixelFormat, Display};
 use crate::{bind, Video};
 
+mod border;
 mod brightness;
 mod builder;
 mod config;
@@ -11,6 +12,7 @@ mod grab;
 mod hit_test;
 mod state;
 
+pub use border::*;
 pub use brightness::*;
 pub use builder::{WindowBuilder, WindowPos};
 pub use config::*;
@@ -83,7 +85,6 @@ impl<'video> Window<'video> {
     }
 
     // TODO(MikuroXina): set icon
-    // TODO(MikuroXina): border widths
     // TODO(MikuroXina): add frame/frameless
     // TODO(MikuroXina): modal and message box
     // TODO(MikuroXina): show, hide, raise and restore
