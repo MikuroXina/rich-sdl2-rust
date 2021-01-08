@@ -45,6 +45,11 @@ impl<'window> GlContext<'window> {
             height: unsafe { height.assume_init() } as u32,
         }
     }
+
+    // TODO(MikuroXina): library
+    // TODO(MikuroXina): proc
+    // TODO(MikuroXina): attribute
+    // TODO(MikuroXina): extension
 }
 
 impl<'window> Drop for GlContext<'window> {

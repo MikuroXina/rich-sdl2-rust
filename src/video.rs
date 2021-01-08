@@ -33,6 +33,8 @@ impl<'sdl> Video<'sdl> {
         }
         (0..ret).map(|idx| Display::new(idx, &self)).collect()
     }
+
+    // TODO(MikuroXina): video driver
 }
 
 impl<'sdl> Drop for Video<'sdl> {
