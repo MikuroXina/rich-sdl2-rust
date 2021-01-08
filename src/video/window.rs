@@ -8,12 +8,14 @@ mod brightness;
 mod builder;
 mod config;
 mod grab;
+mod hit_test;
 mod state;
 
 pub use brightness::*;
 pub use builder::{WindowBuilder, WindowPos};
 pub use config::*;
 pub use grab::*;
+pub use hit_test::*;
 pub use state::*;
 
 bitflags! {
@@ -80,7 +82,7 @@ impl<'video> Window<'video> {
         unsafe { bind::SDL_GetWindowPixelFormat(self.as_ptr()) }.into()
     }
 
-    // TODO(MikuroXina): set icon, input focus and hit test
+    // TODO(MikuroXina): set icon
     // TODO(MikuroXina): border widths
     // TODO(MikuroXina): add frame/frameless
     // TODO(MikuroXina): modal and message box
