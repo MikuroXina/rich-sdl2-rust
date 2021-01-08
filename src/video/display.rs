@@ -84,4 +84,6 @@ impl<'video> Display<'video> {
         }
         (0..ret).map(|idx| Mode::new(idx, &self)).collect()
     }
+
+    // TODO(MikuroXina): get current and original display mode
 }

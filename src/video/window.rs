@@ -84,11 +84,13 @@ impl<'video> Window<'video> {
         unsafe { bind::SDL_GetWindowPixelFormat(self.as_ptr()) }.into()
     }
 
-    // TODO(MikuroXina): set icon
     // TODO(MikuroXina): add frame/frameless
     // TODO(MikuroXina): modal and message box
     // TODO(MikuroXina): show, hide, raise and restore
     // TODO(MikuroXina): full screen, maximize and minimize
+    // TODO(MikuroXina): surface
+    // TODO(MikuroXina): set icon
+    // TODO(MikuroXina): open gl context
 }
 
 impl<'video> Drop for Window<'video> {
