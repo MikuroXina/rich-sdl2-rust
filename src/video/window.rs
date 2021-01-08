@@ -1,7 +1,7 @@
 use bitflags::bitflags;
 use std::ptr::NonNull;
 
-use super::display::Display;
+use super::display::{pixel_format::PixelFormat, Display};
 use crate::{bind, Video};
 
 mod brightness;
@@ -70,7 +70,14 @@ impl<'video> Window<'video> {
         }
     }
 
-    // TODO(MikuroXina): get id and pixel format
+    pub fn id(&self) -> u32 {
+        unsafe { bind::SDL_GetWindowID(self.as_ptr()) }
+    }
+
+    pub fn pixel_format(&self) -> PixelFormat {
+        unsafe { bind::SDL_GetWindowPixelFormat(self.as_ptr()) }.into()
+    }
+
     // TODO(MikuroXina): get/set max size, min size, opacity, position, size and title
     // TODO(MikuroXina): set icon, input focus and hit test
     // TODO(MikuroXina): border widths
