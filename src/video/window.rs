@@ -84,7 +84,6 @@ impl<'video> Window<'video> {
         unsafe { bind::SDL_GetWindowPixelFormat(self.as_ptr()) }.into()
     }
 
-    // TODO(MikuroXina): add frame/frameless
     // TODO(MikuroXina): modal and message box
     // TODO(MikuroXina): show, hide, raise and restore
     // TODO(MikuroXina): full screen, maximize and minimize
