@@ -12,7 +12,7 @@ pub enum WindowPos {
 }
 
 impl WindowPos {
-    fn into_arg(self) -> std::os::raw::c_int {
+    pub(crate) fn into_arg(self) -> std::os::raw::c_int {
         use WindowPos::*;
         match self {
             Coord(coord) => coord,

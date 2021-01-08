@@ -4,7 +4,7 @@ mod rect;
 
 pub use rect::*;
 
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Default, Clone, PartialEq)]
 pub struct Point {
     pub x: i32,
     pub y: i32,

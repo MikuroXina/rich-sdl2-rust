@@ -6,11 +6,13 @@ use crate::{bind, Video};
 
 mod brightness;
 mod builder;
+mod config;
 mod grab;
 mod state;
 
 pub use brightness::*;
 pub use builder::{WindowBuilder, WindowPos};
+pub use config::*;
 pub use grab::*;
 pub use state::*;
 
@@ -78,7 +80,6 @@ impl<'video> Window<'video> {
         unsafe { bind::SDL_GetWindowPixelFormat(self.as_ptr()) }.into()
     }
 
-    // TODO(MikuroXina): get/set max size, min size, opacity, position, size and title
     // TODO(MikuroXina): set icon, input focus and hit test
     // TODO(MikuroXina): border widths
     // TODO(MikuroXina): add frame/frameless
