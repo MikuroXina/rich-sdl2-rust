@@ -10,6 +10,7 @@ mod builder;
 mod config;
 mod grab;
 mod hit_test;
+mod message_box;
 mod state;
 
 pub use border::*;
@@ -84,7 +85,6 @@ impl<'video> Window<'video> {
         unsafe { bind::SDL_GetWindowPixelFormat(self.as_ptr()) }.into()
     }
 
-    // TODO(MikuroXina): modal and message box
     // TODO(MikuroXina): show, hide, raise and restore
     // TODO(MikuroXina): full screen, maximize and minimize
     // TODO(MikuroXina): surface
