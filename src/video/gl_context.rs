@@ -5,8 +5,10 @@ use crate::window::WindowContextKind;
 use crate::{bind, window::Window};
 
 mod buffer;
+mod context_switch;
 
 pub use buffer::*;
+pub use context_switch::*;
 
 pub struct GlContext<'window> {
     ctx: NonNull<c_void>,
