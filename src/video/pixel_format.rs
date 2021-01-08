@@ -3,6 +3,7 @@ use std::ptr::NonNull;
 use kind::PixelFormatKind;
 
 use crate::bind;
+use crate::surface::Surface;
 
 pub mod kind;
 
@@ -24,19 +25,19 @@ pub enum PixelComponents {
     },
 }
 
-pub struct PixelFormat<'r> {
-    pub(crate) raw: &'r bind::SDL_PixelFormat,
+pub struct PixelFormat {
+    pub(crate) raw: bind::SDL_PixelFormat,
     pub kind: PixelFormatKind,
     pub bits_per_pixel: u8,
     pub bytes_per_pixel: u8,
     pub components: PixelComponents,
 }
 
-impl<'r> PixelFormat<'r> {
-    pub(crate) fn from_raw(
-        flags: bind::SDL_PixelFormatEnum,
-        raw: &'r bind::SDL_PixelFormat,
-    ) -> Self {
+impl PixelFormat {
+    pub(crate) fn from_surface(surface: &dyn Surface) -> Self {
+        let ptr = surface.as_ptr();
+        let flags = unsafe { *ptr }.flags;
+        let raw = unsafe { *(*ptr).format };
         NonNull::new(raw.palette).map_or_else(
             || Self {
                 raw,
