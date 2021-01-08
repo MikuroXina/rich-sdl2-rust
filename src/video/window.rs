@@ -85,8 +85,19 @@ impl<'video> Window<'video> {
         unsafe { bind::SDL_GetWindowPixelFormat(self.as_ptr()) }.into()
     }
 
-    // TODO(MikuroXina): show, hide, raise and restore
-    // TODO(MikuroXina): full screen, maximize and minimize
+    pub fn show(&self) {
+        unsafe { bind::SDL_ShowWindow(self.as_ptr()) }
+    }
+
+    pub fn hide(&self) {
+        unsafe { bind::SDL_HideWindow(self.as_ptr()) }
+    }
+
+    pub fn raise(&self) {
+        unsafe { bind::SDL_RaiseWindow(self.as_ptr()) }
+    }
+
+    // TODO(MikuroXina): full screen, maximize, minimize and restore
     // TODO(MikuroXina): surface
     // TODO(MikuroXina): set icon
     // TODO(MikuroXina): open gl context
