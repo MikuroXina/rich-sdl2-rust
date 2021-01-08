@@ -10,6 +10,15 @@ pub struct Point {
     pub y: i32,
 }
 
+impl From<bind::SDL_Point> for Point {
+    fn from(bind::SDL_Point { x, y }: bind::SDL_Point) -> Self {
+        Self {
+            x: x as i32,
+            y: y as i32,
+        }
+    }
+}
+
 impl From<Point> for bind::SDL_Point {
     fn from(Point { x, y }: Point) -> Self {
         use std::os::raw::c_int;
