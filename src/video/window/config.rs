@@ -42,6 +42,7 @@ pub trait ConfigExt {
     fn set_opacity(&self, opacity: Opacity) -> Result<()>;
     fn set_pos(&self, pos: Position);
     fn set_title(&self, title: &str);
+    fn set_resizable(&self, resizable: bool);
 
     fn add_frame(&self);
     fn remove_frame(&self);
@@ -136,6 +137,10 @@ impl ConfigExt for Window<'_> {
     fn set_title(&self, title: &str) {
         let cstr = CString::new(title).unwrap_or_default();
         unsafe { bind::SDL_SetWindowTitle(self.as_ptr(), cstr.as_ptr()) }
+    }
+
+    fn set_resizable(&self, resizable: bool) {
+        unsafe { bind::SDL_SetWindowResizable(self.as_ptr(), if resizable { 1 } else { 0 }) }
     }
 
     fn add_frame(&self) {
