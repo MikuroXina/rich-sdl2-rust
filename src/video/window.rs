@@ -4,9 +4,11 @@ use std::ptr::NonNull;
 use super::display::Display;
 use crate::{bind, Video};
 
+mod brightness;
 mod builder;
 mod state;
 
+pub use brightness::*;
 pub use builder::{WindowBuilder, WindowPos};
 pub use state::*;
 
@@ -61,7 +63,6 @@ impl<'video> Window<'video> {
         }
     }
 
-    // TODO(MikuroXina): window brightness and gamma
     // TODO(MikuroXina): grab
     // TODO(MikuroXina): get id and pixel format
     // TODO(MikuroXina): get/set max size, min size, opacity, position, size and title
