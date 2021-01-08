@@ -1,13 +1,13 @@
 use std::mem::MaybeUninit;
 
 use crate::bind;
-use crate::pixel_format::PixelFormat;
+use crate::pixel_format::PixelFormatKind;
 
 use super::Display;
 
 pub struct Mode {
     pub index: i32,
-    pub pixel_format: PixelFormat,
+    pub pixel_format: PixelFormatKind,
     pub width: u32,
     pub height: u32,
     pub refresh_rate: u32,

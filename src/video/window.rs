@@ -1,7 +1,7 @@
 use bitflags::bitflags;
 use std::ptr::NonNull;
 
-use super::{display::Display, pixel_format::PixelFormat};
+use super::{display::Display, pixel_format::PixelFormatKind};
 use crate::{bind, Result, Sdl, Video};
 
 mod border;
@@ -81,7 +81,7 @@ impl<'video> Window<'video> {
         unsafe { bind::SDL_GetWindowID(self.as_ptr()) }
     }
 
-    pub fn pixel_format(&self) -> PixelFormat {
+    pub fn pixel_format(&self) -> PixelFormatKind {
         unsafe { bind::SDL_GetWindowPixelFormat(self.as_ptr()) }.into()
     }
 

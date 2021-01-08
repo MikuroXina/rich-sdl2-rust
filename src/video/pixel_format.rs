@@ -128,7 +128,7 @@ impl From<bind::SDL_PixelFormatEnum> for PackedPixelLayout {
 }
 
 #[derive(Debug)]
-pub enum PixelFormat {
+pub enum PixelFormatKind {
     Unknown,
     Bitmap {
         ty: BitmapPixelType,
@@ -146,9 +146,9 @@ pub enum PixelFormat {
     FourCode(String),
 }
 
-impl From<bind::SDL_PixelFormatEnum> for PixelFormat {
+impl From<bind::SDL_PixelFormatEnum> for PixelFormatKind {
     fn from(raw: bind::SDL_PixelFormatEnum) -> Self {
-        use PixelFormat::*;
+        use PixelFormatKind::*;
         if (raw >> 28) & 0x0F != 1 {
             let bytes = ((raw >> 24) & 0xf).to_le_bytes();
             return FourCode(bytes.iter().map(|&c| c as char).collect());
@@ -203,5 +203,11 @@ impl From<bind::SDL_PixelFormatEnum> for PixelFormat {
             },
             _ => Unknown,
         }
+    }
+}
+
+impl From<PixelFormatKind> for bind::SDL_PixelFormat {
+    fn from(fmt: PixelFormatKind) -> Self {
+        todo!()
     }
 }
