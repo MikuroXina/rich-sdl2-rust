@@ -3,6 +3,7 @@ use std::ptr::NonNull;
 
 use super::window::Window;
 
+use crate::geo::Size;
 use crate::{bind, Sdl};
 
 pub mod pen;
@@ -26,6 +27,20 @@ impl<'window> Renderer<'window> {
 
     pub fn as_ptr(&self) -> *mut bind::SDL_Renderer {
         self.renderer.as_ptr()
+    }
+
+    pub fn output_size(&self) -> Size {
+        let (mut w, mut h) = (0i32, 0i32);
+        let ret = unsafe {
+            bind::SDL_GetRendererOutputSize(self.as_ptr(), &mut w as *mut _, &mut h as *mut _)
+        };
+        if ret != 0 {
+            panic!("Getting output size failed");
+        }
+        Size {
+            width: w as u32,
+            height: h as u32,
+        }
     }
 }
 
