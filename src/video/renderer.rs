@@ -8,6 +8,25 @@ use crate::{bind, Sdl};
 
 pub mod pen;
 
+pub enum BlendMode {
+    None,
+    AlphaBlend,
+    Add,
+    Mul,
+}
+
+impl From<bind::SDL_BlendMode> for BlendMode {
+    fn from(raw: bind::SDL_BlendMode) -> Self {
+        use BlendMode::*;
+        match raw {
+            bind::SDL_BlendMode_SDL_BLENDMODE_BLEND => AlphaBlend,
+            bind::SDL_BlendMode_SDL_BLENDMODE_ADD => Add,
+            bind::SDL_BlendMode_SDL_BLENDMODE_MOD => Mul,
+            _ => None,
+        }
+    }
+}
+
 pub struct Renderer<'window> {
     renderer: NonNull<bind::SDL_Renderer>,
     _phantom: PhantomData<&'window ()>,
@@ -43,7 +62,15 @@ impl<'window> Renderer<'window> {
         }
     }
 
-    // TODO(MikuroXina): blend mode
+    pub fn blend_mode(&self) -> BlendMode {
+        let mut raw = 0;
+        let ret = unsafe { bind::SDL_GetRenderDrawBlendMode(self.as_ptr(), &mut raw as *mut _) };
+        if ret != 0 {
+            Sdl::error_then_panic("Getting renderer blend mode");
+        }
+        raw.into()
+    }
+
     // TODO(MikuroXina): render target texture
     // TODO(MikuroXina): renderer info
     // TODO(MikuroXina): copy from texture
