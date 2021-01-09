@@ -42,6 +42,18 @@ impl<'window> Renderer<'window> {
             height: h as u32,
         }
     }
+
+    // TODO(MikuroXina): blend mode
+    // TODO(MikuroXina): render target texture
+    // TODO(MikuroXina): renderer info
+    // TODO(MikuroXina): copy from texture
+    // TODO(MikuroXina): clipping
+    // TODO(MikuroXina): force-scaled by integer
+    // TODO(MikuroXina): logical size
+    // TODO(MikuroXina): scaling
+    // TODO(MikuroXina): viewport
+
+    // TODO(MikuroXina): texture mod
 }
 
 impl<'window> Drop for Renderer<'window> {

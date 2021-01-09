@@ -68,6 +68,9 @@ impl<'renderer> Pen<'renderer> {
             Sdl::error_then_panic("Sdl pen points")
         }
     }
+
+    // TODO(MikuroXina): draw rects
+    // TODO(MikuroXina): fill rect
 }
 
 impl<'renderer> Drop for Pen<'renderer> {
