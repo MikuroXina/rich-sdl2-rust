@@ -1,3 +1,4 @@
+use std::ffi::CStr;
 use std::marker::PhantomData;
 
 use crate::{bind, Sdl};
@@ -38,7 +39,27 @@ impl<'sdl> Video<'sdl> {
         (0..ret).map(|idx| Display::new(idx, &self)).collect()
     }
 
-    // TODO(MikuroXina): video driver
+    pub fn video_drivers(&self) -> Vec<&str> {
+        let num_drivers = unsafe { bind::SDL_GetNumVideoDrivers() };
+        if num_drivers <= 0 {
+            Sdl::error_then_panic("Getting number of drivers");
+        }
+        (0..num_drivers)
+            .map(|idx| {
+                let raw_str = unsafe { bind::SDL_GetVideoDriver(idx) };
+                unsafe { CStr::from_ptr(raw_str) }
+                    .to_str()
+                    .unwrap_or_default()
+            })
+            .collect()
+    }
+
+    pub fn current_driver(&self) -> &str {
+        let raw_str = unsafe { bind::SDL_GetCurrentVideoDriver() };
+        unsafe { CStr::from_ptr(raw_str) }
+            .to_str()
+            .unwrap_or_default()
+    }
 }
 
 impl<'sdl> Drop for Video<'sdl> {
