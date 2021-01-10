@@ -1,7 +1,7 @@
 use std::marker::PhantomData;
 use std::ptr::NonNull;
 
-use crate::color::Color;
+use crate::color::Rgb;
 use crate::geo::Size;
 use crate::renderer::Renderer;
 use crate::{bind, Result, Sdl, SdlError};
@@ -91,7 +91,7 @@ impl<'renderer> Texture<'renderer> {
         Ok(())
     }
 
-    pub fn color_mod(&self) -> Color {
+    pub fn color_mod(&self) -> Rgb {
         let (mut r, mut g, mut b) = (0, 0, 0);
         let ret = unsafe {
             bind::SDL_GetTextureColorMod(
@@ -104,10 +104,10 @@ impl<'renderer> Texture<'renderer> {
         if ret != 0 {
             Sdl::error_then_panic("Getting texture color mod");
         }
-        Color { r, g, b }
+        Rgb { r, g, b }
     }
 
-    pub fn set_color_mod(&self, Color { r, g, b }: Color) {
+    pub fn set_color_mod(&self, Rgb { r, g, b }: Rgb) {
         let ret = unsafe { bind::SDL_SetTextureColorMod(self.as_ptr(), r, g, b) };
         if ret != 0 {
             Sdl::error_then_panic("Getting texture color mod");

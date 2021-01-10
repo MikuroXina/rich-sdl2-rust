@@ -1,4 +1,4 @@
-use crate::color::Color;
+use crate::color::Rgb;
 use crate::geo::Rect;
 use crate::video::geo::{Line, Point};
 use crate::{bind, Sdl};
@@ -45,7 +45,7 @@ impl<'renderer> Pen<'renderer> {
         Self { renderer }
     }
 
-    pub fn set_color(&self, Color { r, g, b }: Color) {
+    pub fn set_color(&self, Rgb { r, g, b }: Rgb) {
         let ret = unsafe { bind::SDL_SetRenderDrawColor(self.renderer.as_ptr(), r, g, b, 255) };
         if ret != 0 {
             Sdl::error_then_panic("Sdl pen color")
