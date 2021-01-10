@@ -5,20 +5,28 @@ use super::{Window, WindowContextKind, WindowFlags, WindowFormat};
 use crate::{bind, Sdl, Video};
 
 #[derive(Debug)]
-pub enum WindowPos {
-    Coord(i32), // TODO(MikuroXina): validating coordinate
-    Undefined,
-    Centered,
+pub struct WindowPos {
+    coord: i32,
 }
 
 impl WindowPos {
-    pub(crate) fn into_arg(self) -> std::os::raw::c_int {
-        use WindowPos::*;
-        match self {
-            Coord(coord) => coord,
-            Undefined => 0x1FFF0000, // SDL_WINDOWPOS_UNDEFINED
-            Centered => 0x2FFF0000,  // SDL_WINDOWPOS_CENTERED
+    pub fn coord(coord: i32) -> Self {
+        const MAX: i32 = 16384;
+        assert!(-MAX <= coord && coord <= MAX);
+        Self { coord }
+    }
+    pub const fn undefined() -> Self {
+        Self {
+            coord: 0x1FFF0000, // SDL_WINDOWPOS_UNDEFINED
         }
+    }
+    pub const fn centered() -> Self {
+        Self {
+            coord: 0x2FFF0000, // SDL_WINDOWPOS_CENTERED
+        }
+    }
+    pub fn into_arg(self) -> std::os::raw::c_int {
+        self.coord
     }
 }
 
@@ -41,8 +49,8 @@ impl Default for WindowBuilder {
     fn default() -> Self {
         Self {
             title: "Untitled".into(),
-            x: WindowPos::Centered,
-            y: WindowPos::Centered,
+            x: WindowPos::centered(),
+            y: WindowPos::centered(),
             width: 640,
             height: 480,
             format: WindowFormat::Normal,
