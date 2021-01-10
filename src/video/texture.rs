@@ -1,6 +1,7 @@
 use std::marker::PhantomData;
 use std::ptr::NonNull;
 
+use crate::color::Color;
 use crate::geo::Size;
 use crate::renderer::Renderer;
 use crate::{bind, Result, Sdl, SdlError};
@@ -75,5 +76,28 @@ impl<'renderer> Texture<'renderer> {
             panic!("Unrecoverable Sdl error occurred")
         }
         Ok(())
+    }
+
+    pub fn color_mod(&self) -> Color {
+        let (mut r, mut g, mut b) = (0, 0, 0);
+        let ret = unsafe {
+            bind::SDL_GetTextureColorMod(
+                self.as_ptr(),
+                &mut r as *mut _,
+                &mut g as *mut _,
+                &mut b as *mut _,
+            )
+        };
+        if ret != 0 {
+            Sdl::error_then_panic("Getting texture color mod");
+        }
+        Color { r, g, b }
+    }
+
+    pub fn set_color_mod(&self, Color { r, g, b }: Color) {
+        let ret = unsafe { bind::SDL_SetTextureColorMod(self.as_ptr(), r, g, b) };
+        if ret != 0 {
+            Sdl::error_then_panic("Getting texture color mod");
+        }
     }
 }
