@@ -6,6 +6,7 @@ use super::window::Window;
 use crate::geo::Size;
 use crate::{bind, Sdl};
 
+pub mod info;
 pub mod pen;
 
 pub enum BlendMode {
@@ -72,7 +73,6 @@ impl<'window> Renderer<'window> {
     }
 
     // TODO(MikuroXina): render target texture
-    // TODO(MikuroXina): renderer info
     // TODO(MikuroXina): copy from texture
     // TODO(MikuroXina): clipping
     // TODO(MikuroXina): force-scaled by integer
