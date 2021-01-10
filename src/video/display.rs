@@ -81,7 +81,15 @@ impl<'video> Display<'video> {
         if ret < 0 {
             return vec![];
         }
-        (0..ret).map(|idx| Mode::new(idx, &self)).collect()
+        (0..ret)
+            .map(|idx| {
+                let mut raw = MaybeUninit::uninit();
+                let ret = unsafe { bind::SDL_GetDisplayMode(self.index, idx, raw.as_mut_ptr()) };
+                debug_assert!(ret != 0);
+                let mode = unsafe { raw.assume_init() };
+                Mode::new(mode)
+            })
+            .collect()
     }
 
     // TODO(MikuroXina): get current and original display mode
