@@ -1,11 +1,14 @@
 use std::marker::PhantomData;
 use std::ptr::NonNull;
 
+use clip::ClippedRenderer;
+
 use super::window::Window;
 
-use crate::geo::Size;
+use crate::geo::{Rect, Size};
 use crate::{bind, Sdl};
 
+pub mod clip;
 pub mod info;
 pub mod pen;
 
@@ -72,9 +75,12 @@ impl<'window> Renderer<'window> {
         raw.into()
     }
 
+    pub fn clip(&'window mut self, area: Rect) -> ClippedRenderer<'window> {
+        ClippedRenderer::new(self, area)
+    }
+
     // TODO(MikuroXina): render target texture
     // TODO(MikuroXina): copy from texture
-    // TODO(MikuroXina): clipping
     // TODO(MikuroXina): force-scaled by integer
     // TODO(MikuroXina): logical size
     // TODO(MikuroXina): scaling
