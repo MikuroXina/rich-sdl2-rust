@@ -1,4 +1,4 @@
-use std::ffi::c_void;
+use std::ffi::{c_void, CStr, CString};
 use std::mem::MaybeUninit;
 use std::ptr::NonNull;
 
@@ -47,9 +47,13 @@ impl<'window> GlContext<'window> {
         }
     }
 
+    pub fn supported_extension(&self, name: &'static str) -> bool {
+        let cstr = CString::new(name).unwrap();
+        unsafe { bind::SDL_GL_ExtensionSupported(cstr.as_ptr()) != 0 }
+    }
+
     // TODO(MikuroXina): library
     // TODO(MikuroXina): proc
-    // TODO(MikuroXina): extension
 }
 
 impl<'window> Drop for GlContext<'window> {
