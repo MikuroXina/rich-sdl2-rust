@@ -1,3 +1,4 @@
+use crate::gamma_ramp::GammaRamp;
 use crate::{bind, Result, Sdl, SdlError};
 
 use super::Window;
@@ -38,15 +39,6 @@ impl BrightnessExt for Window<'_> {
             return Err(SdlError::UnsupportedFeature);
         }
         Ok(())
-    }
-}
-
-#[derive(Debug)]
-pub struct GammaRamp(Box<[u16; 256]>);
-
-impl Default for GammaRamp {
-    fn default() -> Self {
-        Self(Box::new([0; 256]))
     }
 }
 

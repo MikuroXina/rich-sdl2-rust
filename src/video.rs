@@ -6,6 +6,7 @@ use self::display::Display;
 
 pub mod color;
 pub mod display;
+pub mod gamma_ramp;
 pub mod geo;
 pub mod gl_context;
 pub mod pixel_format;
