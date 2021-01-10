@@ -2,6 +2,7 @@ use std::ptr::NonNull;
 
 use kind::PixelFormatKind;
 
+use crate::color::{Rgb, Rgba};
 use crate::{bind, Result, Sdl, SdlError};
 
 pub mod kind;
@@ -82,6 +83,14 @@ impl PixelFormat {
             },
             |palette| PixelComponents::PaletteIndex { palette },
         )
+    }
+
+    pub fn pixel_by_rgb(&self, Rgb { r, g, b }: Rgb) -> u32 {
+        unsafe { bind::SDL_MapRGB(self.format.as_ptr(), r, g, b) }
+    }
+
+    pub fn pixel_by_rgba(&self, Rgba { r, g, b, a }: Rgba) -> u32 {
+        unsafe { bind::SDL_MapRGBA(self.format.as_ptr(), r, g, b, a) }
     }
 }
 
