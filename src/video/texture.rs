@@ -2,12 +2,14 @@ use std::marker::PhantomData;
 use std::ptr::NonNull;
 
 use crate::color::Rgb;
-use crate::geo::Size;
+use crate::geo::{Rect, Size};
 use crate::renderer::Renderer;
 use crate::{bind, Result, Sdl, SdlError};
 
+pub mod lock;
 mod query;
 
+use lock::Lock;
 pub use query::*;
 
 pub enum TextureAccess {
@@ -112,6 +114,10 @@ impl<'renderer> Texture<'renderer> {
         if ret != 0 {
             Sdl::error_then_panic("Getting texture color mod");
         }
+    }
+
+    pub fn lock(&'renderer mut self, area: Option<Rect>) -> Lock<'renderer> {
+        Lock::new(self, area)
     }
 }
 
