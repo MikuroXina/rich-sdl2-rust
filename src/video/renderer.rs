@@ -107,9 +107,20 @@ impl<'window> Renderer<'window> {
         }
     }
 
+    pub fn is_forced_integer_scale(&self) -> bool {
+        unsafe { bind::SDL_RenderGetIntegerScale(self.as_ptr()) != 0 }
+    }
+
+    pub fn force_integer_scale(&self, enabled: bool) {
+        let ret =
+            unsafe { bind::SDL_RenderSetIntegerScale(self.as_ptr(), if enabled { 1 } else { 0 }) };
+        if ret != 0 {
+            Sdl::error_then_panic("Setting renderer integer scale");
+        }
+    }
+
     // TODO(MikuroXina): render target texture
     // TODO(MikuroXina): copy from texture
-    // TODO(MikuroXina): force-scaled by integer
     // TODO(MikuroXina): scaling
     // TODO(MikuroXina): viewport
 
