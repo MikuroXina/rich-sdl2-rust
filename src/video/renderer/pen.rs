@@ -5,6 +5,37 @@ use crate::{bind, Sdl};
 
 use super::Renderer;
 
+pub enum BlendMode {
+    None,
+    AlphaBlend,
+    Add,
+    Mul,
+}
+
+impl From<bind::SDL_BlendMode> for BlendMode {
+    fn from(raw: bind::SDL_BlendMode) -> Self {
+        use BlendMode::*;
+        match raw {
+            bind::SDL_BlendMode_SDL_BLENDMODE_BLEND => AlphaBlend,
+            bind::SDL_BlendMode_SDL_BLENDMODE_ADD => Add,
+            bind::SDL_BlendMode_SDL_BLENDMODE_MOD => Mul,
+            _ => None,
+        }
+    }
+}
+
+impl From<BlendMode> for bind::SDL_BlendMode {
+    fn from(raw: BlendMode) -> Self {
+        use BlendMode::*;
+        match raw {
+            AlphaBlend => bind::SDL_BlendMode_SDL_BLENDMODE_BLEND,
+            Add => bind::SDL_BlendMode_SDL_BLENDMODE_ADD,
+            Mul => bind::SDL_BlendMode_SDL_BLENDMODE_MOD,
+            None => bind::SDL_BlendMode_SDL_BLENDMODE_NONE,
+        }
+    }
+}
+
 pub struct Pen<'renderer> {
     renderer: &'renderer Renderer<'renderer>,
 }
@@ -25,6 +56,23 @@ impl<'renderer> Pen<'renderer> {
         let ret = unsafe { bind::SDL_RenderClear(self.renderer.as_ptr()) };
         if ret != 0 {
             Sdl::error_then_panic("Sdl pen clear")
+        }
+    }
+
+    pub fn blend_mode(&self) -> BlendMode {
+        let mut raw = 0;
+        let ret =
+            unsafe { bind::SDL_GetRenderDrawBlendMode(self.renderer.as_ptr(), &mut raw as *mut _) };
+        if ret != 0 {
+            Sdl::error_then_panic("Getting renderer blend mode")
+        }
+        raw.into()
+    }
+
+    pub fn set_blend_mode(&self, mode: BlendMode) {
+        let ret = unsafe { bind::SDL_SetRenderDrawBlendMode(self.renderer.as_ptr(), mode.into()) };
+        if ret != 0 {
+            Sdl::error_then_panic("Getting renderer blend mode")
         }
     }
 
