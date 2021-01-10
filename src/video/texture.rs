@@ -6,6 +6,10 @@ use crate::geo::Size;
 use crate::renderer::Renderer;
 use crate::{bind, Result, Sdl, SdlError};
 
+mod query;
+
+pub use query::*;
+
 pub enum TextureAccess {
     Static,
     Streaming,
@@ -13,6 +17,15 @@ pub enum TextureAccess {
 }
 
 impl TextureAccess {
+    fn from_raw(raw: u32) -> Self {
+        match raw {
+            bind::SDL_TextureAccess_SDL_TEXTUREACCESS_STATIC => TextureAccess::Static,
+            bind::SDL_TextureAccess_SDL_TEXTUREACCESS_STREAMING => TextureAccess::Streaming,
+            bind::SDL_TextureAccess_SDL_TEXTUREACCESS_TARGET => TextureAccess::Target,
+            _ => unreachable!(),
+        }
+    }
+
     fn as_raw(&self) -> u32 {
         match self {
             TextureAccess::Static => bind::SDL_TextureAccess_SDL_TEXTUREACCESS_STATIC,
