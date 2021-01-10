@@ -2,7 +2,7 @@ use std::ffi::{CStr, CString};
 use std::mem::MaybeUninit;
 
 use crate::geo::{Point, Size};
-use crate::{bind, Result, Sdl, SdlError};
+use crate::{bind, Result, SdlError};
 
 use super::{Window, WindowPos};
 
@@ -125,7 +125,7 @@ impl ConfigExt for Window<'_> {
     fn set_opacity(&self, opacity: Opacity) -> Result<()> {
         let ret = unsafe { bind::SDL_SetWindowOpacity(self.as_ptr(), opacity.opacity) };
         if ret != 0 {
-            return Err(SdlError::UnsupportedFeature { msg: Sdl::error() });
+            return Err(SdlError::UnsupportedFeature);
         }
         Ok(())
     }

@@ -1,7 +1,6 @@
 use std::cell::{Cell, RefCell};
 use std::collections::HashMap;
 
-use crate::Sdl;
 use crate::{bind, geo::Point, Result};
 
 use super::Window;
@@ -58,7 +57,7 @@ impl<'window> HitTest<'window> {
             bind::SDL_SetWindowHitTest(self.window.as_ptr(), Some(handler), std::ptr::null_mut())
         };
         if ret != 0 {
-            return Err(crate::SdlError::UnsupportedFeature { msg: Sdl::error() });
+            return Err(crate::SdlError::UnsupportedFeature);
         }
         Ok(())
     }

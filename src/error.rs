@@ -1,6 +1,6 @@
 #[derive(Debug)]
 pub enum SdlError {
-    UnsupportedFeature { msg: String },
+    UnsupportedFeature,
     OutOfMemory,
     Others { msg: String },
 }

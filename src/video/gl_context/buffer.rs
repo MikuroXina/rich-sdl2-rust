@@ -1,4 +1,4 @@
-use crate::{bind, Result, Sdl, SdlError};
+use crate::{bind, Result, SdlError};
 
 use super::GlContext;
 
@@ -23,7 +23,7 @@ impl BufferExt for GlContext<'_> {
             })
         };
         if ret != 0 {
-            return Err(SdlError::UnsupportedFeature { msg: Sdl::error() });
+            return Err(SdlError::UnsupportedFeature);
         }
         Ok(())
     }

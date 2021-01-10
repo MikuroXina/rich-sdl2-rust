@@ -1,5 +1,5 @@
 use crate::window::{Window, WindowContextKind};
-use crate::{bind, Result, Sdl, SdlError};
+use crate::{bind, Result, SdlError};
 
 use super::GlContext;
 
@@ -16,7 +16,7 @@ impl<'window> ContextSwitchExt<'window> for Window<'window> {
         }
         let ret = unsafe { bind::SDL_GL_MakeCurrent(self.as_ptr(), context.as_ptr()) };
         if ret != 0 {
-            return Err(SdlError::UnsupportedFeature { msg: Sdl::error() });
+            return Err(SdlError::UnsupportedFeature);
         }
         Ok(())
     }

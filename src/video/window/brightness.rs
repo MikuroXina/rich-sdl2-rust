@@ -35,7 +35,7 @@ impl BrightnessExt for Window<'_> {
     fn set_brightness(&self, brightness: Brightness) -> Result<()> {
         let ret = unsafe { bind::SDL_SetWindowBrightness(self.as_ptr(), brightness.as_f32()) };
         if ret != 0 {
-            return Err(SdlError::UnsupportedFeature { msg: Sdl::error() });
+            return Err(SdlError::UnsupportedFeature);
         }
         Ok(())
     }
@@ -85,7 +85,7 @@ impl GammaExt for Window<'_> {
             return Err(if msg == "Out of memory" {
                 SdlError::OutOfMemory
             } else {
-                SdlError::UnsupportedFeature { msg }
+                SdlError::UnsupportedFeature
             });
         }
         Ok(gamma)
@@ -111,7 +111,7 @@ impl GammaExt for Window<'_> {
             return Err(if msg == "Out of memory" {
                 SdlError::OutOfMemory
             } else {
-                SdlError::UnsupportedFeature { msg }
+                SdlError::UnsupportedFeature
             });
         }
         Ok(())

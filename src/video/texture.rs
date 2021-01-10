@@ -41,7 +41,7 @@ impl<'renderer> Texture<'renderer> {
             )
         })
         .map_or_else(
-            || Err(SdlError::UnsupportedFeature { msg: Sdl::error() }),
+            || Err(SdlError::UnsupportedFeature),
             |texture| {
                 Ok(Self {
                     texture,

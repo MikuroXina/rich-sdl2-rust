@@ -1,4 +1,4 @@
-use crate::{bind, Result, Sdl};
+use crate::{bind, Result};
 
 use super::Window;
 
@@ -26,7 +26,7 @@ impl BorderExt for Window<'_> {
             )
         };
         if ret != 0 {
-            return Err(crate::SdlError::UnsupportedFeature { msg: Sdl::error() });
+            return Err(crate::SdlError::UnsupportedFeature);
         }
         Ok(BorderWidths {
             top: top as u32,
