@@ -6,6 +6,7 @@ use crate::color::{Rgb, Rgba};
 use crate::{bind, Result, Sdl, SdlError};
 
 pub mod kind;
+pub mod palette;
 
 pub struct PixelComponent {
     pub mask: u32,
