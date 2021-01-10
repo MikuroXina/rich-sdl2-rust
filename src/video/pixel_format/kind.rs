@@ -1,6 +1,6 @@
 use crate::bind;
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub enum BitmapPixelType {
     Index1,
     Index4,
@@ -33,7 +33,7 @@ impl BitmapPixelType {
     }
 }
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub enum PackedPixelType {
     _8,
     _16,
@@ -58,7 +58,7 @@ impl PackedPixelType {
     }
 }
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub enum ArrayPixelType {
     U8,
     U16,
@@ -79,7 +79,7 @@ impl ArrayPixelType {
     }
 }
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub enum BitmapPixelOrder {
     None,
     _4321,
@@ -107,7 +107,7 @@ impl From<bind::SDL_PixelFormatEnum> for BitmapPixelOrder {
     }
 }
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub enum PackedPixelOrder {
     None,
     Xrgb,
@@ -153,7 +153,7 @@ impl From<bind::SDL_PixelFormatEnum> for PackedPixelOrder {
     }
 }
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub enum ArrayPixelOrder {
     None,
     Rgb,
@@ -193,7 +193,7 @@ impl From<bind::SDL_PixelFormatEnum> for ArrayPixelOrder {
     }
 }
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub enum PackedPixelLayout {
     None,
     _332,
@@ -239,7 +239,7 @@ impl From<bind::SDL_PixelFormatEnum> for PackedPixelLayout {
     }
 }
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub enum PixelFormatKind {
     Unknown,
     Bitmap {
@@ -258,8 +258,9 @@ pub enum PixelFormatKind {
     FourCode(String),
 }
 
+#[derive(Debug, Default)]
 pub struct BppMask {
-    pub bpp: u32,
+    pub bpp: std::os::raw::c_int,
     pub r_mask: u32,
     pub g_mask: u32,
     pub b_mask: u32,
@@ -276,10 +277,7 @@ impl PixelFormatKind {
             a_mask,
         }: BppMask,
     ) -> Self {
-        use std::os::raw::c_int;
-        let raw = unsafe {
-            bind::SDL_MasksToPixelFormatEnum(bpp as c_int, r_mask, g_mask, b_mask, a_mask)
-        };
+        let raw = unsafe { bind::SDL_MasksToPixelFormatEnum(bpp, r_mask, g_mask, b_mask, a_mask) };
         raw.into()
     }
 }
