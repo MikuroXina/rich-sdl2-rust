@@ -1,3 +1,5 @@
+use std::ffi::CStr;
+
 use crate::bind;
 
 #[derive(Debug, Clone)]
@@ -305,6 +307,12 @@ impl PixelFormatKind {
         } else {
             None
         }
+    }
+
+    pub fn name(&self) -> &'static str {
+        unsafe { CStr::from_ptr(bind::SDL_GetPixelFormatName(self.clone().into())) }
+            .to_str()
+            .unwrap_or_default()
     }
 }
 
