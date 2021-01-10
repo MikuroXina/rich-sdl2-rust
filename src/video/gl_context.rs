@@ -1,10 +1,10 @@
-use std::ffi::{c_void, CStr, CString};
+use std::ffi::{c_void, CString};
 use std::mem::MaybeUninit;
 use std::ptr::NonNull;
 
 use crate::geo::Size;
-use crate::window::WindowContextKind;
-use crate::{bind, window::Window};
+use crate::window::{Window, WindowContextKind};
+use crate::{bind, Result, Sdl, SdlError};
 
 pub mod attribute;
 mod buffer;
@@ -52,12 +52,23 @@ impl<'window> GlContext<'window> {
         unsafe { bind::SDL_GL_ExtensionSupported(cstr.as_ptr()) != 0 }
     }
 
-    // TODO(MikuroXina): library
+    pub fn load_lib(&self, path: &str) -> Result<()> {
+        let cstr = CString::new(path).unwrap();
+        let ret = unsafe { bind::SDL_GL_LoadLibrary(cstr.as_ptr()) };
+        if ret != 0 {
+            return Err(SdlError::Others { msg: Sdl::error() });
+        }
+        Ok(())
+    }
+
     // TODO(MikuroXina): proc
 }
 
 impl<'window> Drop for GlContext<'window> {
     fn drop(&mut self) {
-        unsafe { bind::SDL_GL_DeleteContext(self.ctx.as_ptr()) }
+        unsafe {
+            bind::SDL_GL_UnloadLibrary();
+            bind::SDL_GL_DeleteContext(self.ctx.as_ptr())
+        }
     }
 }
