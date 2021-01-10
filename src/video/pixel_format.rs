@@ -92,6 +92,40 @@ impl PixelFormat {
     pub fn pixel_by_rgba(&self, Rgba { r, g, b, a }: Rgba) -> u32 {
         unsafe { bind::SDL_MapRGBA(self.format.as_ptr(), r, g, b, a) }
     }
+
+    pub fn rgb_from_pixel(&self, pixel: u32) -> Rgb {
+        let mut rgb = Rgb { r: 0, g: 0, b: 0 };
+        unsafe {
+            bind::SDL_GetRGB(
+                pixel,
+                self.format.as_ptr(),
+                &mut rgb.r as *mut _,
+                &mut rgb.g as *mut _,
+                &mut rgb.b as *mut _,
+            )
+        }
+        rgb
+    }
+
+    pub fn rgba_from_pixel(&self, pixel: u32) -> Rgba {
+        let mut rgba = Rgba {
+            r: 0,
+            g: 0,
+            b: 0,
+            a: 0,
+        };
+        unsafe {
+            bind::SDL_GetRGBA(
+                pixel,
+                self.format.as_ptr(),
+                &mut rgba.r as *mut _,
+                &mut rgba.g as *mut _,
+                &mut rgba.b as *mut _,
+                &mut rgba.a as *mut _,
+            )
+        }
+        rgba
+    }
 }
 
 impl Drop for PixelFormat {
