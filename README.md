@@ -13,7 +13,7 @@ There's no plans to support SDL_image, SDL_mixer and so on right now.
 - [ ] Video
   - [ ] Display and Video
   - [ ] 2D Rendering
-  - [ ] Pixel Format and Conversion
+  - [x] Pixel Format and Conversion
   - [x] Geometry
   - [ ] Surface
   - [ ] Clipboard
