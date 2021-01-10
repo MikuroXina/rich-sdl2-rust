@@ -39,6 +39,7 @@ impl TextureAccess {
 
 pub struct Texture<'renderer> {
     texture: NonNull<bind::SDL_Texture>,
+    clip: Option<Rect>,
     _phantom: PhantomData<&'renderer ()>,
 }
 
@@ -61,6 +62,7 @@ impl<'renderer> Texture<'renderer> {
             |texture| {
                 Ok(Self {
                     texture,
+                    clip: None,
                     _phantom: PhantomData,
                 })
             },
@@ -118,6 +120,14 @@ impl<'renderer> Texture<'renderer> {
 
     pub fn lock(&'renderer mut self, area: Option<Rect>) -> Lock<'renderer> {
         Lock::new(self, area)
+    }
+
+    pub fn clip(&self) -> &Option<Rect> {
+        &self.clip
+    }
+
+    pub fn set_clip(&mut self, clip: Option<Rect>) {
+        self.clip = clip;
     }
 }
 
