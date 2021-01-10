@@ -79,10 +79,37 @@ impl<'window> Renderer<'window> {
         ClippedRenderer::new(self, area)
     }
 
+    pub fn logical_size(&self) -> Option<Size> {
+        let (mut width, mut height) = (0, 0);
+        unsafe {
+            bind::SDL_RenderGetLogicalSize(
+                self.as_ptr(),
+                &mut width as *mut _,
+                &mut height as *mut _,
+            )
+        }
+        if width == 0 && height == 0 {
+            return None;
+        }
+        Some(Size {
+            width: width as u32,
+            height: height as u32,
+        })
+    }
+
+    pub fn set_logical_size(&self, Size { width, height }: Size) {
+        use std::os::raw::c_int;
+        let ret = unsafe {
+            bind::SDL_RenderSetLogicalSize(self.as_ptr(), width as c_int, height as c_int)
+        };
+        if ret != 0 {
+            Sdl::error_then_panic("Setting renderer logical size");
+        }
+    }
+
     // TODO(MikuroXina): render target texture
     // TODO(MikuroXina): copy from texture
     // TODO(MikuroXina): force-scaled by integer
-    // TODO(MikuroXina): logical size
     // TODO(MikuroXina): scaling
     // TODO(MikuroXina): viewport
 
