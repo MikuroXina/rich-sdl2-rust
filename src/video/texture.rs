@@ -101,3 +101,9 @@ impl<'renderer> Texture<'renderer> {
         }
     }
 }
+
+impl Drop for Texture<'_> {
+    fn drop(&mut self) {
+        unsafe { bind::SDL_DestroyTexture(self.as_ptr()) }
+    }
+}
