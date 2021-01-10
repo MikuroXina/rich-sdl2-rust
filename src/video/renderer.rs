@@ -5,7 +5,7 @@ use clip::ClippedRenderer;
 
 use super::window::Window;
 
-use crate::geo::{Rect, Size};
+use crate::geo::{Rect, Scale, Size};
 use crate::{bind, Sdl};
 
 pub mod clip;
@@ -119,9 +119,36 @@ impl<'window> Renderer<'window> {
         }
     }
 
+    pub fn scale(&self) -> Scale {
+        let mut scale = Scale {
+            horizontal: 0.0,
+            vertical: 0.0,
+        };
+        unsafe {
+            bind::SDL_RenderGetScale(
+                self.as_ptr(),
+                &mut scale.horizontal as *mut _,
+                &mut scale.vertical as *mut _,
+            )
+        }
+        scale
+    }
+
+    pub fn set_scale(
+        &self,
+        Scale {
+            horizontal,
+            vertical,
+        }: Scale,
+    ) {
+        let ret = unsafe { bind::SDL_RenderSetScale(self.as_ptr(), horizontal, vertical) };
+        if ret != 0 {
+            Sdl::error_then_panic("Setting renderer scale");
+        }
+    }
+
     // TODO(MikuroXina): render target texture
     // TODO(MikuroXina): copy from texture
-    // TODO(MikuroXina): scaling
     // TODO(MikuroXina): viewport
 
     // TODO(MikuroXina): texture mod
