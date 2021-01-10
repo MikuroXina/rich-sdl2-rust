@@ -6,6 +6,7 @@ use crate::geo::Size;
 use crate::window::WindowContextKind;
 use crate::{bind, window::Window};
 
+pub mod attribute;
 mod buffer;
 mod context_switch;
 
@@ -48,7 +49,6 @@ impl<'window> GlContext<'window> {
 
     // TODO(MikuroXina): library
     // TODO(MikuroXina): proc
-    // TODO(MikuroXina): attribute
     // TODO(MikuroXina): extension
 }
 
