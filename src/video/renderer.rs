@@ -11,7 +11,10 @@ use crate::{bind, Sdl};
 
 pub mod clip;
 pub mod info;
+mod paste;
 pub mod pen;
+
+pub use paste::*;
 
 pub struct Renderer<'window> {
     renderer: NonNull<bind::SDL_Renderer>,
@@ -150,23 +153,6 @@ impl<'window> Renderer<'window> {
         let ret = unsafe { bind::SDL_SetRenderTarget(self.as_ptr(), std::ptr::null_mut()) };
         if ret != 0 {
             Sdl::error_then_panic("Setting renderer target default");
-        }
-    }
-
-    pub fn paste(&self, texture: Texture, target_area: Option<Rect>) {
-        let ret = unsafe {
-            bind::SDL_RenderCopy(
-                self.as_ptr(),
-                texture.as_ptr(),
-                texture
-                    .clip()
-                    .clone()
-                    .map_or(std::ptr::null(), |rect| &rect.into() as *const _),
-                target_area.map_or(std::ptr::null(), |rect| &rect.into() as *const _),
-            )
-        };
-        if ret != 0 {
-            Sdl::error_then_panic("Pasting texture to renderer");
         }
     }
 
