@@ -1,6 +1,7 @@
 use std::os::raw::c_int;
 use std::ptr::NonNull;
 
+use crate::color::Rgba;
 use crate::{bind, Result, Sdl, SdlError};
 
 pub struct Palette {
@@ -20,6 +21,16 @@ impl Palette {
             },
             |palette| Ok(Self { palette }),
         )
+    }
+
+    pub fn set_palette(&self, colors: impl IntoIterator<Item = Rgba>) {
+        let colors: Vec<_> = colors.into_iter().map(|c| c.into()).collect();
+        let ret = unsafe {
+            bind::SDL_SetPaletteColors(self.palette.as_ptr(), colors.as_ptr(), 0, colors.len() as _)
+        };
+        if ret != 0 {
+            Sdl::error_then_panic("Setting palette colors");
+        }
     }
 }
 
