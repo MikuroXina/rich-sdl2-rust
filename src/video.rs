@@ -11,6 +11,7 @@ pub mod gl_context;
 pub mod pixel_format;
 pub mod renderer;
 pub mod screen_saver;
+pub mod texture;
 pub mod window;
 
 pub struct Video<'sdl> {

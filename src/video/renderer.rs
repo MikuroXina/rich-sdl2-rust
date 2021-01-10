@@ -1,4 +1,3 @@
-use std::marker::PhantomData;
 use std::mem::MaybeUninit;
 use std::ptr::NonNull;
 
@@ -15,7 +14,7 @@ pub mod pen;
 
 pub struct Renderer<'window> {
     renderer: NonNull<bind::SDL_Renderer>,
-    _phantom: PhantomData<&'window ()>,
+    window: &'window Window<'window>,
 }
 
 impl<'window> Renderer<'window> {
@@ -23,15 +22,16 @@ impl<'window> Renderer<'window> {
         let raw = unsafe { bind::SDL_CreateRenderer(window.as_ptr(), -1, 0) };
         NonNull::new(raw).map_or_else(
             || Sdl::error_then_panic("Sdl renderer"),
-            |renderer| Self {
-                renderer,
-                _phantom: PhantomData,
-            },
+            |renderer| Self { renderer, window },
         )
     }
 
     pub fn as_ptr(&self) -> *mut bind::SDL_Renderer {
         self.renderer.as_ptr()
+    }
+
+    pub fn window(&self) -> &Window {
+        &self.window
     }
 
     pub fn output_size(&self) -> Size {
