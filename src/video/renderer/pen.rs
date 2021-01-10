@@ -1,4 +1,5 @@
 use crate::color::Color;
+use crate::geo::Rect;
 use crate::video::geo::{Line, Point};
 use crate::{bind, Sdl};
 
@@ -69,7 +70,24 @@ impl<'renderer> Pen<'renderer> {
         }
     }
 
-    // TODO(MikuroXina): draw rects
+    pub fn stroke_rect(&self, rect: Rect) {
+        let ret =
+            unsafe { bind::SDL_RenderDrawRect(self.renderer.as_ptr(), &rect.into() as *const _) };
+        if ret != 0 {
+            Sdl::error_then_panic("Sdl pen rect")
+        }
+    }
+
+    pub fn stroke_rects(&self, rects: impl IntoIterator<Item = Rect>) {
+        let rects: Vec<_> = rects.into_iter().map(|r| r.into()).collect();
+        let ret = unsafe {
+            bind::SDL_RenderDrawRects(self.renderer.as_ptr(), rects.as_ptr(), rects.len() as i32)
+        };
+        if ret != 0 {
+            Sdl::error_then_panic("Sdl pen rects")
+        }
+    }
+
     // TODO(MikuroXina): fill rect
 }
 
