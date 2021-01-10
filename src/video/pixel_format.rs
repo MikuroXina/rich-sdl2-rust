@@ -2,7 +2,7 @@ use std::ptr::NonNull;
 
 use kind::PixelFormatKind;
 
-use crate::bind;
+use crate::{bind, Result, Sdl, SdlError};
 
 pub mod kind;
 
@@ -25,48 +25,68 @@ pub enum PixelComponents {
 }
 
 pub struct PixelFormat {
-    pub kind: PixelFormatKind,
-    pub bits_per_pixel: u8,
-    pub bytes_per_pixel: u8,
-    pub components: PixelComponents,
+    format: NonNull<bind::SDL_PixelFormat>,
 }
 
 impl PixelFormat {
-    pub(crate) fn from_raw(flags: bind::SDL_PixelFormatEnum, raw: bind::SDL_PixelFormat) -> Self {
+    pub fn new(kind: PixelFormatKind) -> Result<Self> {
+        NonNull::new(unsafe { bind::SDL_AllocFormat(kind.into()) }).map_or_else(
+            || {
+                let msg = Sdl::error();
+                Err(if msg == "Out of memory" {
+                    SdlError::OutOfMemory
+                } else {
+                    SdlError::Others { msg }
+                })
+            },
+            |format| Ok(Self { format }),
+        )
+    }
+
+    pub fn kind(&self) -> PixelFormatKind {
+        unsafe { self.format.as_ref() }.format.into()
+    }
+
+    pub fn bits_per_pixel(&self) -> u8 {
+        unsafe { self.format.as_ref() }.BitsPerPixel
+    }
+
+    pub fn bytes_per_pixel(&self) -> u8 {
+        unsafe { self.format.as_ref() }.BytesPerPixel
+    }
+
+    pub fn components(&self) -> PixelComponents {
+        let raw = unsafe { self.format.as_ref() };
         NonNull::new(raw.palette).map_or_else(
-            || Self {
-                kind: flags.into(),
-                bits_per_pixel: raw.BitsPerPixel,
-                bytes_per_pixel: raw.BytesPerPixel,
-                components: PixelComponents::TrueColor {
-                    red: PixelComponent {
-                        mask: raw.Rmask,
-                        loss: raw.Rloss,
-                        shift: raw.Rshift,
-                    },
-                    green: PixelComponent {
-                        mask: raw.Gmask,
-                        loss: raw.Gloss,
-                        shift: raw.Gshift,
-                    },
-                    blue: PixelComponent {
-                        mask: raw.Bmask,
-                        loss: raw.Bloss,
-                        shift: raw.Bshift,
-                    },
-                    alpha: PixelComponent {
-                        mask: raw.Amask,
-                        loss: raw.Aloss,
-                        shift: raw.Ashift,
-                    },
+            || PixelComponents::TrueColor {
+                red: PixelComponent {
+                    mask: raw.Rmask,
+                    loss: raw.Rloss,
+                    shift: raw.Rshift,
+                },
+                green: PixelComponent {
+                    mask: raw.Gmask,
+                    loss: raw.Gloss,
+                    shift: raw.Gshift,
+                },
+                blue: PixelComponent {
+                    mask: raw.Bmask,
+                    loss: raw.Bloss,
+                    shift: raw.Bshift,
+                },
+                alpha: PixelComponent {
+                    mask: raw.Amask,
+                    loss: raw.Aloss,
+                    shift: raw.Ashift,
                 },
             },
-            |palette| Self {
-                kind: flags.into(),
-                bits_per_pixel: raw.BitsPerPixel,
-                bytes_per_pixel: raw.BytesPerPixel,
-                components: PixelComponents::PaletteIndex { palette },
-            },
+            |palette| PixelComponents::PaletteIndex { palette },
         )
+    }
+}
+
+impl Drop for PixelFormat {
+    fn drop(&mut self) {
+        unsafe { bind::SDL_FreeFormat(self.format.as_ptr()) }
     }
 }
