@@ -155,8 +155,6 @@ impl<'window> Renderer<'window> {
             Sdl::error_then_panic("Setting renderer target default");
         }
     }
-
-    // TODO(MikuroXina): copy from texture
 }
 
 impl<'window> Drop for Renderer<'window> {
