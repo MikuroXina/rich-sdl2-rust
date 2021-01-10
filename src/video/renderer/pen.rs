@@ -88,7 +88,23 @@ impl<'renderer> Pen<'renderer> {
         }
     }
 
-    // TODO(MikuroXina): fill rect
+    pub fn fill_rect(&self, rect: Rect) {
+        let ret =
+            unsafe { bind::SDL_RenderFillRect(self.renderer.as_ptr(), &rect.into() as *const _) };
+        if ret != 0 {
+            Sdl::error_then_panic("Sdl pen rect")
+        }
+    }
+
+    pub fn fill_rects(&self, rects: impl IntoIterator<Item = Rect>) {
+        let rects: Vec<_> = rects.into_iter().map(|r| r.into()).collect();
+        let ret = unsafe {
+            bind::SDL_RenderFillRects(self.renderer.as_ptr(), rects.as_ptr(), rects.len() as i32)
+        };
+        if ret != 0 {
+            Sdl::error_then_panic("Sdl pen rects")
+        }
+    }
 }
 
 impl<'renderer> Drop for Pen<'renderer> {
