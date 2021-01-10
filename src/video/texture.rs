@@ -67,7 +67,7 @@ impl<'renderer> Texture<'renderer> {
         )
     }
 
-    fn as_ptr(&self) -> *mut bind::SDL_Texture {
+    pub(crate) fn as_ptr(&self) -> *mut bind::SDL_Texture {
         self.texture.as_ptr()
     }
 

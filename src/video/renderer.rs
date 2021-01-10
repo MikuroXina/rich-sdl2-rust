@@ -6,6 +6,7 @@ use clip::ClippedRenderer;
 use super::window::Window;
 
 use crate::geo::{Rect, Scale, Size};
+use crate::texture::Texture;
 use crate::{bind, Sdl};
 
 pub mod clip;
@@ -138,7 +139,20 @@ impl<'window> Renderer<'window> {
         }
     }
 
-    // TODO(MikuroXina): render target texture
+    pub fn set_target<'texture: 'window>(&'window self, texture: &'texture Texture) {
+        let ret = unsafe { bind::SDL_SetRenderTarget(self.as_ptr(), texture.as_ptr()) };
+        if ret != 0 {
+            Sdl::error_then_panic("Setting renderer target texture");
+        }
+    }
+
+    pub fn set_target_default(&self) {
+        let ret = unsafe { bind::SDL_SetRenderTarget(self.as_ptr(), std::ptr::null_mut()) };
+        if ret != 0 {
+            Sdl::error_then_panic("Setting renderer target default");
+        }
+    }
+
     // TODO(MikuroXina): copy from texture
 
     // TODO(MikuroXina): texture mod
