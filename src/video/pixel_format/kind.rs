@@ -280,6 +280,32 @@ impl PixelFormatKind {
         let raw = unsafe { bind::SDL_MasksToPixelFormatEnum(bpp, r_mask, g_mask, b_mask, a_mask) };
         raw.into()
     }
+
+    pub fn to_bpp_mask(&self) -> Option<BppMask> {
+        let mut bpp_mask = BppMask::default();
+        let BppMask {
+            ref mut bpp,
+            ref mut r_mask,
+            ref mut g_mask,
+            ref mut b_mask,
+            ref mut a_mask,
+        } = bpp_mask;
+        let ret = unsafe {
+            bind::SDL_PixelFormatEnumToMasks(
+                self.clone().into(),
+                bpp as *mut _,
+                r_mask as *mut _,
+                g_mask as *mut _,
+                b_mask as *mut _,
+                a_mask as *mut _,
+            )
+        };
+        if ret != 0 {
+            Some(bpp_mask)
+        } else {
+            None
+        }
+    }
 }
 
 impl From<bind::SDL_PixelFormatEnum> for PixelFormatKind {
