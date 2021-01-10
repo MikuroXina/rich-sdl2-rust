@@ -23,6 +23,10 @@ impl Palette {
         )
     }
 
+    pub(super) fn as_ptr(&self) -> *mut bind::SDL_Palette {
+        self.palette.as_ptr()
+    }
+
     pub fn set_palette(&self, colors: impl IntoIterator<Item = Rgba>) {
         let colors: Vec<_> = colors.into_iter().map(|c| c.into()).collect();
         let ret = unsafe {

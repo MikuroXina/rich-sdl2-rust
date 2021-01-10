@@ -1,6 +1,7 @@
 use std::ptr::NonNull;
 
 use kind::PixelFormatKind;
+use palette::Palette;
 
 use crate::color::{Rgb, Rgba};
 use crate::{bind, Result, Sdl, SdlError};
@@ -126,6 +127,14 @@ impl PixelFormat {
             )
         }
         rgba
+    }
+
+    pub fn set_palette(&self, palette: Palette) {
+        let ret =
+            unsafe { bind::SDL_SetPixelFormatPalette(self.format.as_ptr(), palette.as_ptr()) };
+        if ret != 0 {
+            Sdl::error_then_panic("Setting pixel format palette");
+        }
     }
 }
 
