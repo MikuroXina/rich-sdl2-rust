@@ -258,6 +258,16 @@ pub enum PixelFormatKind {
     FourCode(String),
 }
 
+impl PixelFormatKind {
+    pub fn from_bpp_mask(bpp: u32, r_mask: u32, g_mask: u32, b_mask: u32, a_mask: u32) -> Self {
+        use std::os::raw::c_int;
+        let raw = unsafe {
+            bind::SDL_MasksToPixelFormatEnum(bpp as c_int, r_mask, g_mask, b_mask, a_mask)
+        };
+        raw.into()
+    }
+}
+
 impl From<bind::SDL_PixelFormatEnum> for PixelFormatKind {
     fn from(raw: bind::SDL_PixelFormatEnum) -> Self {
         use PixelFormatKind::*;
