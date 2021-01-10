@@ -92,5 +92,19 @@ impl<'video> Display<'video> {
             .collect()
     }
 
-    // TODO(MikuroXina): get current and original display mode
+    pub fn current_mode(&self) -> Mode {
+        let mut raw = MaybeUninit::uninit();
+        let ret = unsafe { bind::SDL_GetCurrentDisplayMode(self.index, raw.as_mut_ptr()) };
+        debug_assert!(ret != 0);
+        let mode = unsafe { raw.assume_init() };
+        Mode::new(mode)
+    }
+
+    pub fn original_mode(&self) -> Mode {
+        let mut raw = MaybeUninit::uninit();
+        let ret = unsafe { bind::SDL_GetDesktopDisplayMode(self.index, raw.as_mut_ptr()) };
+        debug_assert!(ret != 0);
+        let mode = unsafe { raw.assume_init() };
+        Mode::new(mode)
+    }
 }
