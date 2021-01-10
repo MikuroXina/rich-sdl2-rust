@@ -154,8 +154,6 @@ impl<'window> Renderer<'window> {
     }
 
     // TODO(MikuroXina): copy from texture
-
-    // TODO(MikuroXina): texture mod
 }
 
 impl<'window> Drop for Renderer<'window> {
