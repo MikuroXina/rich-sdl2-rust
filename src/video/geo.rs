@@ -46,6 +46,12 @@ pub struct Size {
 }
 
 #[derive(Debug, Clone, PartialEq)]
+pub struct Scale {
+    pub horizontal: f32,
+    pub vertical: f32,
+}
+
+#[derive(Debug, Clone, PartialEq)]
 pub struct Line {
     pub start: Point,
     pub end: Point,
