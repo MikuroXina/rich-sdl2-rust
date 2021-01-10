@@ -50,4 +50,30 @@ impl<'renderer> Texture<'renderer> {
             },
         )
     }
+
+    fn as_ptr(&self) -> *mut bind::SDL_Texture {
+        self.texture.as_ptr()
+    }
+
+    pub fn alpha_mod(&self) -> u8 {
+        let mut alpha = 0;
+        let ret = unsafe { bind::SDL_GetTextureAlphaMod(self.as_ptr(), &mut alpha as *mut _) };
+        if ret != 0 {
+            Sdl::error_then_panic("Getting texture alpha mod");
+        }
+        alpha
+    }
+
+    pub fn set_alpha_mod(&self, alpha: u8) -> Result<()> {
+        let ret = unsafe { bind::SDL_SetTextureAlphaMod(self.as_ptr(), alpha) };
+        if ret != 0 {
+            let error = Sdl::error();
+            if error == "That operation is not supported" {
+                return Err(SdlError::UnsupportedFeature);
+            }
+            eprintln!("Setting texture alpha mod error: {}", error);
+            panic!("Unrecoverable Sdl error occurred")
+        }
+        Ok(())
+    }
 }
