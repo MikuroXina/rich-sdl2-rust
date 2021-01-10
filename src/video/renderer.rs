@@ -1,4 +1,5 @@
 use std::marker::PhantomData;
+use std::mem::MaybeUninit;
 use std::ptr::NonNull;
 
 use clip::ClippedRenderer;
@@ -147,9 +148,26 @@ impl<'window> Renderer<'window> {
         }
     }
 
+    pub fn viewport(&self) -> Rect {
+        let mut raw_rect = MaybeUninit::uninit();
+        unsafe { bind::SDL_RenderGetViewport(self.as_ptr(), raw_rect.as_mut_ptr()) }
+        unsafe { raw_rect.assume_init() }.into()
+    }
+
+    pub fn set_viewport(&self, area: Option<Rect>) {
+        let ret = unsafe {
+            bind::SDL_RenderSetViewport(
+                self.as_ptr(),
+                area.map_or(std::ptr::null(), |rect| &rect.into() as *const _),
+            )
+        };
+        if ret != 0 {
+            Sdl::error_then_panic("Setting renderer viewport");
+        }
+    }
+
     // TODO(MikuroXina): render target texture
     // TODO(MikuroXina): copy from texture
-    // TODO(MikuroXina): viewport
 
     // TODO(MikuroXina): texture mod
 }
