@@ -61,6 +61,10 @@ impl<'window> GlContext<'window> {
         Ok(())
     }
 
+    pub fn unload_lib_all(&self) {
+        unsafe { bind::SDL_GL_UnloadLibrary() }
+    }
+
     // TODO(MikuroXina): proc
 }
 
