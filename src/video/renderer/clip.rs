@@ -20,6 +20,7 @@ impl<'renderer> ClippedRenderer<'renderer> {
 
 impl Drop for ClippedRenderer<'_> {
     fn drop(&mut self) {
-        let _ = unsafe { bind::SDL_RenderSetClipRect(self.renderer.as_ptr(), std::ptr::null()) };
+        let ret = unsafe { bind::SDL_RenderSetClipRect(self.renderer.as_ptr(), std::ptr::null()) };
+        debug_assert!(ret == 0);
     }
 }
