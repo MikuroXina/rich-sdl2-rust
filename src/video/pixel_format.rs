@@ -24,22 +24,17 @@ pub enum PixelComponents {
     },
 }
 
-pub struct PixelFormat<'r> {
-    pub(crate) raw: &'r bind::SDL_PixelFormat,
+pub struct PixelFormat {
     pub kind: PixelFormatKind,
     pub bits_per_pixel: u8,
     pub bytes_per_pixel: u8,
     pub components: PixelComponents,
 }
 
-impl<'r> PixelFormat<'r> {
-    pub(crate) fn from_raw(
-        flags: bind::SDL_PixelFormatEnum,
-        raw: &'r bind::SDL_PixelFormat,
-    ) -> Self {
+impl PixelFormat {
+    pub(crate) fn from_raw(flags: bind::SDL_PixelFormatEnum, raw: bind::SDL_PixelFormat) -> Self {
         NonNull::new(raw.palette).map_or_else(
             || Self {
-                raw,
                 kind: flags.into(),
                 bits_per_pixel: raw.BitsPerPixel,
                 bytes_per_pixel: raw.BytesPerPixel,
@@ -67,7 +62,6 @@ impl<'r> PixelFormat<'r> {
                 },
             },
             |palette| Self {
-                raw,
                 kind: flags.into(),
                 bits_per_pixel: raw.BitsPerPixel,
                 bytes_per_pixel: raw.BytesPerPixel,
