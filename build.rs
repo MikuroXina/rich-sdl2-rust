@@ -7,13 +7,18 @@ fn main() {
 
     let bindings = bindgen::Builder::default()
         .header("wrapper.h")
+        .whitelist_function("SDL_.*")
+        .whitelist_type("SDL_.*")
+        .whitelist_var("SDL_.*")
         .parse_callbacks(Box::new(bindgen::CargoCallbacks))
+        .raw_line("//! Rust FFI to `SDL2/SDL.h.h`")
+        .raw_line("")
+        .raw_line(r"#![allow(warnings)]")
         .generate()
         .expect("Generating bindings failed");
 
-    let out_path = PathBuf::from(env::var("OUT_DIR").unwrap());
+    let root = PathBuf::from(env::var("CARGO_MANIFEST_DIR").unwrap());
     bindings
-        .write_to_file(out_path.join("bindings.rs"))
+        .write_to_file(root.join("src/bind.rs"))
         .expect("Writing bindings failed");
 }
-
