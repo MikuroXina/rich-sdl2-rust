@@ -1,4 +1,4 @@
-# sdl2-rust
+# rich-sdl2-rust
 
 The sdl2 wrapper for Rust.
 
