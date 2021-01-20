@@ -1,7 +1,11 @@
-pub fn main() {
-    use sdl2_rust::window::WindowPos;
-    use sdl2_rust::*;
+use sdl2_rust::{
+    color::Rgb,
+    renderer::pen::Pen,
+    window::{self, WindowPos},
+    *,
+};
 
+pub fn main() {
     let sdl = Sdl::new();
     let video = Video::new(&sdl);
     let window = window::WindowBuilder::default().build(&video);
@@ -19,8 +23,8 @@ pub fn main() {
     }));
 
     while !exit.get() {
-        let pen = renderer::pen::Pen::new(&renderer);
-        pen.set_color(renderer::pen::Color {
+        let pen = Pen::new(&renderer);
+        pen.set_color(Rgb {
             r: 127,
             g: 127,
             b: 0,
