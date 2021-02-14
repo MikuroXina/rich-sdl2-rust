@@ -13,6 +13,7 @@ pub mod gl_context;
 pub mod pixel_format;
 pub mod renderer;
 pub mod screen_saver;
+pub mod surface;
 pub mod texture;
 pub mod window;
 
