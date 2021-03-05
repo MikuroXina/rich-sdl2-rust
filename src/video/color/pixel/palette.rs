@@ -23,7 +23,7 @@ impl Palette {
         )
     }
 
-    pub(super) fn as_ptr(&self) -> *mut bind::SDL_Palette {
+    pub(crate) fn as_ptr(&self) -> *mut bind::SDL_Palette {
         self.palette.as_ptr()
     }
 
