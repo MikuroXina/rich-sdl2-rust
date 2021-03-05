@@ -1,5 +1,7 @@
 use crate::bind;
 
+pub mod pixel;
+
 #[derive(Debug, Clone)]
 pub struct Rgb {
     pub r: u8,

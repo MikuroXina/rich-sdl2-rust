@@ -1,5 +1,5 @@
+use crate::color::pixel::kind::PixelFormatKind;
 use crate::geo::Size;
-use crate::pixel_format::kind::PixelFormatKind;
 use crate::{bind, Sdl};
 
 use super::{Texture, TextureAccess};

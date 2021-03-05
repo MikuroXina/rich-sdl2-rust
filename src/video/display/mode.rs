@@ -1,5 +1,5 @@
 use crate::bind;
-use crate::pixel_format::kind::PixelFormatKind;
+use crate::color::pixel::kind::PixelFormatKind;
 
 pub struct Mode {
     pub pixel_format: PixelFormatKind,
