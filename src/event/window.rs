@@ -29,7 +29,7 @@ impl From<bind::SDL_WindowEvent> for WindowEvent {
     fn from(
         bind::SDL_WindowEvent {
             timestamp,
-            windowID,
+            windowID: window_id,
             event,
             data1,
             data2,
@@ -39,7 +39,7 @@ impl From<bind::SDL_WindowEvent> for WindowEvent {
         use WindowEventDetails::*;
         Self {
             timestamp,
-            window_id: windowID,
+            window_id,
             details: match event as u32 {
                 bind::SDL_WindowEventID_SDL_WINDOWEVENT_SHOWN => Shown,
                 bind::SDL_WindowEventID_SDL_WINDOWEVENT_HIDDEN => Hidden,
