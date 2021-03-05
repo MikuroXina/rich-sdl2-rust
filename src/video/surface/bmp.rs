@@ -35,3 +35,27 @@ impl Drop for Bmp {
         unsafe { bind::SDL_FreeSurface(self.ptr.as_ptr()) }
     }
 }
+
+pub struct BmpSaveError(pub String);
+
+pub trait BmpSaveExt {
+    fn save_bmp(&self, file_name: &str) -> Result<(), BmpSaveError>;
+}
+
+impl<T: Surface> BmpSaveExt for T {
+    fn save_bmp(&self, file_name: &str) -> Result<(), BmpSaveError> {
+        let write_binary_mode = CStr::from_bytes_with_nul(b"wb\0").unwrap();
+        let c_str = CString::new(file_name).expect("must be a valid string");
+        let ret = unsafe {
+            bind::SDL_SaveBMP_RW(
+                self.as_ptr().as_ptr(),
+                bind::SDL_RWFromFile(c_str.as_ptr(), write_binary_mode.as_ptr()),
+                1,
+            )
+        };
+        if ret != 0 {
+            return Err(BmpSaveError(Sdl::error()));
+        }
+        Ok(())
+    }
+}
