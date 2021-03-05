@@ -2,6 +2,7 @@ use bitflags::bitflags;
 use std::ptr::NonNull;
 
 use super::{color::pixel::kind::PixelFormatKind, display::Display};
+use crate::surface::Surface;
 use crate::{bind, Result, Sdl, Video};
 
 mod border;
@@ -122,7 +123,10 @@ impl<'video> Window<'video> {
         unsafe { bind::SDL_RestoreWindow(self.as_ptr()) }
     }
 
-    // TODO(MikuroXina): set icon
+    pub fn set_icon(&self, icon: &impl Surface) {
+        unsafe { bind::SDL_SetWindowIcon(self.as_ptr(), icon.as_ptr().as_ptr()) }
+    }
+
     // TODO(MikuroXina): open gl context
 }
 
