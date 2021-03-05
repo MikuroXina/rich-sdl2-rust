@@ -20,3 +20,34 @@ impl From<Rgba> for bind::SDL_Color {
         Self { r, g, b, a }
     }
 }
+
+pub enum BlendMode {
+    None,
+    AlphaBlend,
+    Add,
+    Mul,
+}
+
+impl From<bind::SDL_BlendMode> for BlendMode {
+    fn from(raw: bind::SDL_BlendMode) -> Self {
+        use BlendMode::*;
+        match raw {
+            bind::SDL_BlendMode_SDL_BLENDMODE_BLEND => AlphaBlend,
+            bind::SDL_BlendMode_SDL_BLENDMODE_ADD => Add,
+            bind::SDL_BlendMode_SDL_BLENDMODE_MOD => Mul,
+            _ => None,
+        }
+    }
+}
+
+impl From<BlendMode> for bind::SDL_BlendMode {
+    fn from(raw: BlendMode) -> Self {
+        use BlendMode::*;
+        match raw {
+            AlphaBlend => bind::SDL_BlendMode_SDL_BLENDMODE_BLEND,
+            Add => bind::SDL_BlendMode_SDL_BLENDMODE_ADD,
+            Mul => bind::SDL_BlendMode_SDL_BLENDMODE_MOD,
+            None => bind::SDL_BlendMode_SDL_BLENDMODE_NONE,
+        }
+    }
+}
