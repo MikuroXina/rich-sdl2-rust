@@ -3,18 +3,18 @@ use crate::{bind, Sdl};
 
 use super::Surface;
 
-pub struct Color<S> {
+pub struct ColorMod<S> {
     surface: S,
     color: Rgb,
 }
 
-impl<S> Color<S> {
+impl<S> ColorMod<S> {
     pub fn color(&self) -> &Rgb {
         &self.color
     }
 }
 
-impl<S: Surface> Color<S> {
+impl<S: Surface> ColorMod<S> {
     pub(super) fn new(surface: S, color: Rgb) -> Self {
         unsafe {
             let ret =
@@ -27,7 +27,7 @@ impl<S: Surface> Color<S> {
     }
 }
 
-impl<S: Surface> Surface for Color<S> {
+impl<S: Surface> Surface for ColorMod<S> {
     fn as_ptr(&self) -> std::ptr::NonNull<bind::SDL_Surface> {
         self.surface.as_ptr()
     }

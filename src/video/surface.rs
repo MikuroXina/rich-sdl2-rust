@@ -10,11 +10,11 @@ pub mod clipped;
 pub mod cloned;
 pub mod color;
 
-use alpha::Alpha;
+use alpha::AlphaMod;
 use blend::Blended;
 use clipped::Clipped;
 use cloned::Cloned;
-use color::Color;
+use color::ColorMod;
 
 pub trait Surface {
     fn as_ptr(&self) -> NonNull<bind::SDL_Surface>;
@@ -37,17 +37,17 @@ pub trait Surface {
         Blended::new(self, mode)
     }
 
-    fn alpha_mod(self, alpha: u8) -> Alpha<Self>
+    fn alpha_mod(self, alpha: u8) -> AlphaMod<Self>
     where
         Self: Sized,
     {
-        Alpha::new(self, alpha)
+        AlphaMod::new(self, alpha)
     }
 
-    fn color_mod(self, color: Rgb) -> Color<Self>
+    fn color_mod(self, color: Rgb) -> ColorMod<Self>
     where
         Self: Sized,
     {
-        Color::new(self, color)
+        ColorMod::new(self, color)
     }
 }
