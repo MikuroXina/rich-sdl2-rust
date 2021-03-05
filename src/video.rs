@@ -5,6 +5,7 @@ use crate::{bind, Sdl};
 
 use self::display::Display;
 
+pub mod clipboard;
 pub mod color;
 pub mod display;
 pub mod gamma_ramp;
