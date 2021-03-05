@@ -15,7 +15,7 @@ There's no plans to support SDL_image, SDL_mixer and so on right now.
   - [ ] 2D Rendering
   - [x] Pixel Format and Conversion
   - [x] Geometry
-  - [ ] Surface
+  - [x] Surface
   - [ ] Clipboard
   - [ ] Vulkan
   - [ ] Metal
