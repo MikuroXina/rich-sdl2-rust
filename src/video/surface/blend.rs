@@ -3,18 +3,18 @@ use crate::color::BlendMode;
 
 use super::Surface;
 
-pub struct BlendedSurface<S> {
+pub struct Blended<S> {
     surface: S,
     mode: BlendMode,
 }
 
-impl<S> BlendedSurface<S> {
+impl<S> Blended<S> {
     pub fn blend_mode(&self) -> &BlendMode {
         &self.mode
     }
 }
 
-impl<S: Surface> BlendedSurface<S> {
+impl<S: Surface> Blended<S> {
     pub(super) fn new(surface: S, mode: BlendMode) -> Self {
         let raw_mode = mode.clone().into();
         unsafe {
@@ -24,7 +24,7 @@ impl<S: Surface> BlendedSurface<S> {
     }
 }
 
-impl<S: Surface> Surface for BlendedSurface<S> {
+impl<S: Surface> Surface for Blended<S> {
     fn as_ptr(&self) -> std::ptr::NonNull<bind::SDL_Surface> {
         self.surface.as_ptr()
     }

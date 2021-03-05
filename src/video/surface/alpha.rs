@@ -2,18 +2,18 @@ use crate::bind;
 
 use super::Surface;
 
-pub struct AlphaSurface<S> {
+pub struct Alpha<S> {
     surface: S,
     alpha: u8,
 }
 
-impl<S> AlphaSurface<S> {
+impl<S> Alpha<S> {
     pub fn alpha(&self) -> u8 {
         self.alpha
     }
 }
 
-impl<S: Surface> AlphaSurface<S> {
+impl<S: Surface> Alpha<S> {
     pub(super) fn new(surface: S, alpha: u8) -> Self {
         unsafe {
             let _ = bind::SDL_SetSurfaceAlphaMod(surface.as_ptr().as_ptr(), alpha);
@@ -22,7 +22,7 @@ impl<S: Surface> AlphaSurface<S> {
     }
 }
 
-impl<S: Surface> Surface for AlphaSurface<S> {
+impl<S: Surface> Surface for Alpha<S> {
     fn as_ptr(&self) -> std::ptr::NonNull<bind::SDL_Surface> {
         self.surface.as_ptr()
     }

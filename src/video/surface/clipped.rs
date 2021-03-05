@@ -3,18 +3,18 @@ use crate::geo::Rect;
 
 use super::Surface;
 
-pub struct ClippedSurface<S> {
+pub struct Clipped<S> {
     surface: S,
     area: Rect,
 }
 
-impl<S> ClippedSurface<S> {
+impl<S> Clipped<S> {
     pub fn area(&self) -> &Rect {
         &self.area
     }
 }
 
-impl<S: Surface> ClippedSurface<S> {
+impl<S: Surface> Clipped<S> {
     pub(super) fn new(surface: S, area: Rect) -> Self {
         let raw_rect = area.clone().into();
         unsafe {
@@ -24,7 +24,7 @@ impl<S: Surface> ClippedSurface<S> {
     }
 }
 
-impl<S: Surface> Surface for ClippedSurface<S> {
+impl<S: Surface> Surface for Clipped<S> {
     fn as_ptr(&self) -> std::ptr::NonNull<bind::SDL_Surface> {
         self.surface.as_ptr()
     }

@@ -4,11 +4,11 @@ use crate::bind;
 
 use super::Surface;
 
-pub struct ClonedSurface {
+pub struct Cloned {
     surface: NonNull<bind::SDL_Surface>,
 }
 
-impl ClonedSurface {
+impl Cloned {
     pub(super) fn new(src: NonNull<bind::SDL_Surface>) -> Self {
         let raw = unsafe {
             let src = src.as_ref();
@@ -29,13 +29,13 @@ impl ClonedSurface {
     }
 }
 
-impl Surface for ClonedSurface {
+impl Surface for Cloned {
     fn as_ptr(&self) -> NonNull<bind::SDL_Surface> {
         self.surface
     }
 }
 
-impl Drop for ClonedSurface {
+impl Drop for Cloned {
     fn drop(&mut self) {
         unsafe { bind::SDL_FreeSurface(self.as_ptr().as_ptr()) }
     }
