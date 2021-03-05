@@ -1,5 +1,5 @@
-use crate::bind;
 use crate::color::Rgb;
+use crate::{bind, Sdl};
 
 use super::Surface;
 
@@ -17,8 +17,11 @@ impl<S> Color<S> {
 impl<S: Surface> Color<S> {
     pub(super) fn new(surface: S, color: Rgb) -> Self {
         unsafe {
-            let _ =
+            let ret =
                 bind::SDL_SetSurfaceColorMod(surface.as_ptr().as_ptr(), color.r, color.g, color.b);
+            if ret != 0 {
+                Sdl::error_then_panic("Setting surface color mod");
+            }
         }
         Self { surface, color }
     }

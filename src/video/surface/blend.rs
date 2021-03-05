@@ -1,5 +1,5 @@
-use crate::bind;
 use crate::color::BlendMode;
+use crate::{bind, Sdl};
 
 use super::Surface;
 
@@ -18,7 +18,10 @@ impl<S: Surface> Blended<S> {
     pub(super) fn new(surface: S, mode: BlendMode) -> Self {
         let raw_mode = mode.clone().into();
         unsafe {
-            let _ = bind::SDL_SetSurfaceBlendMode(surface.as_ptr().as_ptr(), raw_mode);
+            let ret = bind::SDL_SetSurfaceBlendMode(surface.as_ptr().as_ptr(), raw_mode);
+            if ret != 0 {
+                Sdl::error_then_panic("Setting surface blend mode");
+            }
         }
         Self { surface, mode }
     }

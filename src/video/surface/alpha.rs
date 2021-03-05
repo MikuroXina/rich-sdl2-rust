@@ -1,4 +1,4 @@
-use crate::bind;
+use crate::{bind, Sdl};
 
 use super::Surface;
 
@@ -16,7 +16,10 @@ impl<S> Alpha<S> {
 impl<S: Surface> Alpha<S> {
     pub(super) fn new(surface: S, alpha: u8) -> Self {
         unsafe {
-            let _ = bind::SDL_SetSurfaceAlphaMod(surface.as_ptr().as_ptr(), alpha);
+            let ret = bind::SDL_SetSurfaceAlphaMod(surface.as_ptr().as_ptr(), alpha);
+            if ret != 0 {
+                Sdl::error_then_panic("Setting surface alpha mod");
+            }
         }
         Self { surface, alpha }
     }
