@@ -122,7 +122,6 @@ impl<'video> Window<'video> {
         unsafe { bind::SDL_RestoreWindow(self.as_ptr()) }
     }
 
-    // TODO(MikuroXina): surface
     // TODO(MikuroXina): set icon
     // TODO(MikuroXina): open gl context
 }
