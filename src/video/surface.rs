@@ -3,7 +3,7 @@ use std::ptr::NonNull;
 use crate::color::pixel::palette::Palette;
 use crate::color::pixel::Pixel;
 use crate::color::{BlendMode, Rgb};
-use crate::geo::Rect;
+use crate::geo::{Point, Rect};
 use crate::{bind, Sdl};
 
 pub mod alpha;
@@ -87,6 +87,27 @@ pub trait Surface {
         let ret = unsafe { bind::SDL_SetSurfacePalette(self.as_ptr().as_ptr(), palette.as_ptr()) };
         if ret != 0 {
             Sdl::error_then_panic("Surface setting palette");
+        }
+    }
+
+    fn copy_to(&self, src_area: Rect, dst: &Self, dst_pos: Point) {
+        let src_rect = src_area.into();
+        let mut dst_rect = bind::SDL_Rect {
+            x: dst_pos.x,
+            y: dst_pos.y,
+            w: 0,
+            h: 0,
+        };
+        let ret = unsafe {
+            bind::SDL_UpperBlit(
+                self.as_ptr().as_ptr(),
+                &src_rect as *const _,
+                dst.as_ptr().as_ptr(),
+                &mut dst_rect as *mut _,
+            )
+        };
+        if ret != 0 {
+            Sdl::error_then_panic("Surface copying to another");
         }
     }
 }
