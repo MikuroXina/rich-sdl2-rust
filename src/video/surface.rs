@@ -1,19 +1,20 @@
 use std::ptr::NonNull;
 
-use clipped::Clipped;
-use cloned::Cloned;
-
 use crate::bind;
-use crate::color::BlendMode;
+use crate::color::{BlendMode, Rgb};
 use crate::geo::Rect;
-
-use self::alpha::Alpha;
-use self::blend::Blended;
 
 pub mod alpha;
 pub mod blend;
 pub mod clipped;
 pub mod cloned;
+pub mod color;
+
+use alpha::Alpha;
+use blend::Blended;
+use clipped::Clipped;
+use cloned::Cloned;
+use color::Color;
 
 pub trait Surface {
     fn as_ptr(&self) -> NonNull<bind::SDL_Surface>;
@@ -41,5 +42,12 @@ pub trait Surface {
         Self: Sized,
     {
         Alpha::new(self, alpha)
+    }
+
+    fn color_mod(self, color: Rgb) -> Color<Self>
+    where
+        Self: Sized,
+    {
+        Color::new(self, color)
     }
 }
