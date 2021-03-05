@@ -5,6 +5,7 @@ use self::{app::QuitEvent, window::WindowEvent};
 use crate::{bind, Sdl, Video};
 
 pub mod app;
+pub mod keyboard;
 pub mod window;
 
 pub struct EventBox<'video> {
