@@ -1,8 +1,9 @@
 use std::ptr::NonNull;
 
-use crate::bind;
+use crate::color::pixel::Pixel;
 use crate::color::{BlendMode, Rgb};
 use crate::geo::Rect;
+use crate::{bind, Sdl};
 
 pub mod alpha;
 pub mod blend;
@@ -49,5 +50,19 @@ pub trait Surface {
         Self: Sized,
     {
         ColorMod::new(self, color)
+    }
+
+    fn fill_rect(&self, area: Option<Rect>, color: Pixel) {
+        let raw_rect = area.map(|rect| rect.into());
+        unsafe {
+            let ret = bind::SDL_FillRect(
+                self.as_ptr().as_ptr(),
+                raw_rect.map_or(std::ptr::null(), |raw| &raw as *const _),
+                color.as_u32(),
+            );
+            if ret != 0 {
+                Sdl::error_then_panic("Surface filling with rectangle")
+            }
+        }
     }
 }
