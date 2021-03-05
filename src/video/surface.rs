@@ -12,12 +12,14 @@ pub mod bmp;
 pub mod clipped;
 pub mod cloned;
 pub mod color;
+pub mod rle;
 
 use alpha::AlphaMod;
 use blend::Blended;
 use clipped::Clipped;
 use cloned::Cloned;
 use color::ColorMod;
+use rle::Rle;
 
 pub trait Surface {
     fn as_ptr(&self) -> NonNull<bind::SDL_Surface>;
@@ -109,5 +111,12 @@ pub trait Surface {
         if ret != 0 {
             Sdl::error_then_panic("Surface copying to another");
         }
+    }
+
+    fn into_rle(&'_ mut self) -> Rle<'_, Self>
+    where
+        Self: Sized,
+    {
+        Rle::new(self)
     }
 }
