@@ -21,6 +21,7 @@ impl From<Rgba> for bind::SDL_Color {
     }
 }
 
+#[derive(Debug, Clone)]
 pub enum BlendMode {
     None,
     AlphaBlend,
