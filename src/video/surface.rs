@@ -7,6 +7,7 @@ use crate::{bind, Sdl};
 
 pub mod alpha;
 pub mod blend;
+pub mod bmp;
 pub mod clipped;
 pub mod cloned;
 pub mod color;
