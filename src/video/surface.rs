@@ -1,5 +1,6 @@
 use std::ptr::NonNull;
 
+use crate::color::pixel::palette::Palette;
 use crate::color::pixel::Pixel;
 use crate::color::{BlendMode, Rgb};
 use crate::geo::Rect;
@@ -79,6 +80,13 @@ pub trait Surface {
             if ret != 0 {
                 Sdl::error_then_panic("Surface filling with rectangles")
             }
+        }
+    }
+
+    fn set_palette(&self, palette: &Palette) {
+        let ret = unsafe { bind::SDL_SetSurfacePalette(self.as_ptr().as_ptr(), palette.as_ptr()) };
+        if ret != 0 {
+            Sdl::error_then_panic("Surface setting palette");
         }
     }
 }
