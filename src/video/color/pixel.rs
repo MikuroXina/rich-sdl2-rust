@@ -9,6 +9,17 @@ use crate::{bind, Result, Sdl, SdlError};
 pub mod kind;
 pub mod palette;
 
+#[derive(Debug, Clone)]
+pub struct Pixel {
+    pixel: u32,
+}
+
+impl Pixel {
+    pub fn as_u32(&self) -> u32 {
+        self.pixel
+    }
+}
+
 pub struct PixelComponent {
     pub mask: u32,
     pub loss: u8,
@@ -87,15 +98,17 @@ impl PixelFormat {
         )
     }
 
-    pub fn pixel_by_rgb(&self, Rgb { r, g, b }: Rgb) -> u32 {
-        unsafe { bind::SDL_MapRGB(self.format.as_ptr(), r, g, b) }
+    pub fn pixel_by_rgb(&self, Rgb { r, g, b }: Rgb) -> Pixel {
+        let pixel = unsafe { bind::SDL_MapRGB(self.format.as_ptr(), r, g, b) };
+        Pixel { pixel }
     }
 
-    pub fn pixel_by_rgba(&self, Rgba { r, g, b, a }: Rgba) -> u32 {
-        unsafe { bind::SDL_MapRGBA(self.format.as_ptr(), r, g, b, a) }
+    pub fn pixel_by_rgba(&self, Rgba { r, g, b, a }: Rgba) -> Pixel {
+        let pixel = unsafe { bind::SDL_MapRGBA(self.format.as_ptr(), r, g, b, a) };
+        Pixel { pixel }
     }
 
-    pub fn rgb_from_pixel(&self, pixel: u32) -> Rgb {
+    pub fn rgb_from_pixel(&self, Pixel { pixel }: Pixel) -> Rgb {
         let mut rgb = Rgb { r: 0, g: 0, b: 0 };
         unsafe {
             bind::SDL_GetRGB(
@@ -109,7 +122,7 @@ impl PixelFormat {
         rgb
     }
 
-    pub fn rgba_from_pixel(&self, pixel: u32) -> Rgba {
+    pub fn rgba_from_pixel(&self, Pixel { pixel }: Pixel) -> Rgba {
         let mut rgba = Rgba {
             r: 0,
             g: 0,
