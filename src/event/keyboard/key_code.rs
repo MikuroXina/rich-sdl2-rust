@@ -2,6 +2,8 @@ use std::ffi::CString;
 
 use crate::bind;
 
+use super::scan_code::ScanCode;
+
 pub enum KeyCode {
     Unknown,
     Return,
@@ -249,6 +251,13 @@ impl KeyCode {
     pub fn from_name(name: &str) -> Self {
         let c_str = CString::new(name).expect("name must be a valid string");
         (unsafe { bind::SDL_GetKeyFromName(c_str.as_ptr()) }).into()
+    }
+}
+
+impl From<ScanCode> for KeyCode {
+    fn from(scan_code: ScanCode) -> Self {
+        let raw = scan_code.as_raw();
+        unsafe { bind::SDL_GetKeyFromScancode(raw) }.into()
     }
 }
 
