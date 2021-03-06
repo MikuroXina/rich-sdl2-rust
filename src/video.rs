@@ -61,6 +61,10 @@ impl<'sdl> Video<'sdl> {
             .to_str()
             .unwrap_or_default()
     }
+
+    pub fn has_screen_keyboard(&self) -> bool {
+        unsafe { bind::SDL_HasScreenKeyboardSupport() != 0 }
+    }
 }
 
 impl<'sdl> Drop for Video<'sdl> {
