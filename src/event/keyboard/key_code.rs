@@ -250,7 +250,7 @@ pub enum KeyCode {
 impl KeyCode {
     pub fn from_name(name: &str) -> Self {
         let c_str = CString::new(name).expect("name must be a valid string");
-        (unsafe { bind::SDL_GetKeyFromName(c_str.as_ptr()) }).into()
+        unsafe { bind::SDL_GetKeyFromName(c_str.as_ptr()) }.into()
     }
 }
 
