@@ -253,6 +253,14 @@ impl KeyCode {
         unsafe { bind::SDL_GetKeyFromName(c_str.as_ptr()) }.into()
     }
 
+    pub fn name(&self) -> Option<String> {
+        let name: String = unsafe { CStr::from_ptr(bind::SDL_GetKeyName(self.as_raw())) }
+            .to_str()
+            .unwrap()
+            .into();
+        (!name.is_empty()).then(|| name)
+    }
+
     pub(crate) fn as_raw(&self) -> bind::SDL_Keycode {
         use KeyCode::*;
         (match self {
