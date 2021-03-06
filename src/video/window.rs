@@ -127,6 +127,10 @@ impl<'video> Window<'video> {
         unsafe { bind::SDL_SetWindowIcon(self.as_ptr(), icon.as_ptr().as_ptr()) }
     }
 
+    pub fn is_screen_keyboard_shown(&self) -> bool {
+        unsafe { bind::SDL_IsScreenKeyboardShown(self.as_ptr()) != 0 }
+    }
+
     // TODO(MikuroXina): open gl context
 }
 
