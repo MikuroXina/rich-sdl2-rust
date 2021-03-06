@@ -1,5 +1,7 @@
 use crate::bind;
 
+use super::key_code::KeyCode;
+
 pub enum ScanCode {
     Unknown,
     A,
@@ -496,6 +498,12 @@ impl ScanCode {
             AudioRewind => bind::SDL_Scancode_SDL_SCANCODE_AUDIOREWIND,
             AudioFastForward => bind::SDL_Scancode_SDL_SCANCODE_AUDIOFASTFORWARD,
         }
+    }
+}
+
+impl From<KeyCode> for ScanCode {
+    fn from(key_code: KeyCode) -> Self {
+        unsafe { bind::SDL_GetScancodeFromKey(key_code.as_raw()) }.into()
     }
 }
 
