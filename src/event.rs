@@ -1,6 +1,6 @@
 use std::marker::PhantomData;
 
-use self::{app::QuitEvent, window::WindowEvent};
+use self::{app::QuitEvent, keyboard::KeyboardEvent, window::WindowEvent};
 
 use crate::{bind, Sdl, Video};
 
@@ -11,6 +11,7 @@ pub mod window;
 pub struct EventBox<'video> {
     quit_event_handlers: Vec<Box<dyn Fn(QuitEvent) + 'video>>,
     window_event_handlers: Vec<Box<dyn Fn(WindowEvent) + 'video>>,
+    keyboard_event_handlers: Vec<Box<dyn Fn(KeyboardEvent) + 'video>>,
     _phantom: PhantomData<&'video ()>,
 }
 
@@ -23,6 +24,7 @@ impl<'video> EventBox<'video> {
         Self {
             quit_event_handlers: vec![],
             window_event_handlers: vec![],
+            keyboard_event_handlers: vec![],
             _phantom: PhantomData,
         }
     }
@@ -33,6 +35,10 @@ impl<'video> EventBox<'video> {
 
     pub fn handle_window(&mut self, handler: Box<dyn Fn(WindowEvent) + 'video>) {
         self.window_event_handlers.push(handler);
+    }
+
+    pub fn handle_keyboard(&mut self, handler: Box<dyn Fn(KeyboardEvent) + 'video>) {
+        self.keyboard_event_handlers.push(handler);
     }
 
     fn handle_event(&self, event: bind::SDL_Event) {
@@ -49,6 +55,12 @@ impl<'video> EventBox<'video> {
                 self.window_event_handlers
                     .iter()
                     .for_each(|handler| handler(window.clone()))
+            }
+            bind::SDL_EventType_SDL_KEYDOWN | bind::SDL_EventType_SDL_KEYUP => {
+                let keyboard: KeyboardEvent = unsafe { event.key }.into();
+                self.keyboard_event_handlers
+                    .iter()
+                    .for_each(|handler| handler(keyboard.clone()))
             }
             _ => {}
         }

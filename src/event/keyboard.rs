@@ -24,3 +24,24 @@ impl From<bind::SDL_Keysym> for KeySymbol {
         }
     }
 }
+
+#[derive(Debug, Clone)]
+pub struct KeyboardEvent {
+    pub timestamp: u32,
+    pub window_id: u32,
+    pub is_pressed: bool,
+    pub is_repeated: bool,
+    pub symbol: KeySymbol,
+}
+
+impl From<bind::SDL_KeyboardEvent> for KeyboardEvent {
+    fn from(raw: bind::SDL_KeyboardEvent) -> Self {
+        Self {
+            timestamp: raw.timestamp,
+            window_id: raw.windowID,
+            is_pressed: raw.state as u32 == bind::SDL_PRESSED,
+            is_repeated: raw.repeat != 0,
+            symbol: raw.keysym.into(),
+        }
+    }
+}
