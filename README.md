@@ -21,7 +21,7 @@ There's no plans to support SDL_image, SDL_mixer and so on right now.
   - [ ] Metal
 - [ ] Input Event
   - [ ] Handling
-  - [ ] Keyboard
+  - [x] Keyboard
   - [ ] Mouse
   - [ ] Joystick
   - [ ] Game Controller
