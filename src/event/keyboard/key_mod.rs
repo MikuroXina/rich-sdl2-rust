@@ -3,7 +3,7 @@ use bitflags::bitflags;
 use crate::bind;
 
 bitflags! {
-  struct KeyMod : u32 {
+  pub struct KeyMod : u32 {
     const NONE = bind::SDL_Keymod_KMOD_NONE;
     const LSHIFT = bind::SDL_Keymod_KMOD_LSHIFT;
     const RSHIFT = bind::SDL_Keymod_KMOD_RSHIFT;
