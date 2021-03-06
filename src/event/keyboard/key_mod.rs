@@ -23,3 +23,9 @@ bitflags! {
     const GUI = bind::SDL_Keymod_KMOD_GUI as u16;
   }
 }
+
+impl KeyMod {
+    pub fn current() -> Self {
+        Self::from_bits(unsafe { bind::SDL_GetModState() } as u16).unwrap()
+    }
+}
