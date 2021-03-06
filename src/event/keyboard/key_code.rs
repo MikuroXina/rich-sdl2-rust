@@ -4,6 +4,7 @@ use crate::bind;
 
 use super::scan_code::ScanCode;
 
+#[derive(Debug, Clone)]
 pub enum KeyCode {
     Unknown,
     Return,
