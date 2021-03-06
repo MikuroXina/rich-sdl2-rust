@@ -1,17 +1,25 @@
 use std::marker::PhantomData;
 
-use self::{app::QuitEvent, keyboard::KeyboardEvent, window::WindowEvent};
+use self::{
+    app::QuitEvent,
+    keyboard::KeyboardEvent,
+    text::{TextEditingEvent, TextInputEvent},
+    window::WindowEvent,
+};
 
 use crate::{bind, Sdl, Video};
 
 pub mod app;
 pub mod keyboard;
+pub mod text;
 pub mod window;
 
 pub struct EventBox<'video> {
     quit_event_handlers: Vec<Box<dyn Fn(QuitEvent) + 'video>>,
     window_event_handlers: Vec<Box<dyn Fn(WindowEvent) + 'video>>,
     keyboard_event_handlers: Vec<Box<dyn Fn(KeyboardEvent) + 'video>>,
+    input_event_handlers: Vec<Box<dyn Fn(TextInputEvent) + 'video>>,
+    editing_event_handlers: Vec<Box<dyn Fn(TextEditingEvent) + 'video>>,
     _phantom: PhantomData<&'video ()>,
 }
 
@@ -25,6 +33,8 @@ impl<'video> EventBox<'video> {
             quit_event_handlers: vec![],
             window_event_handlers: vec![],
             keyboard_event_handlers: vec![],
+            input_event_handlers: vec![],
+            editing_event_handlers: vec![],
             _phantom: PhantomData,
         }
     }
@@ -39,6 +49,14 @@ impl<'video> EventBox<'video> {
 
     pub fn handle_keyboard(&mut self, handler: Box<dyn Fn(KeyboardEvent) + 'video>) {
         self.keyboard_event_handlers.push(handler);
+    }
+
+    pub fn handle_input(&mut self, handler: Box<dyn Fn(TextInputEvent) + 'video>) {
+        self.input_event_handlers.push(handler);
+    }
+
+    pub fn handle_editing(&mut self, handler: Box<dyn Fn(TextEditingEvent) + 'video>) {
+        self.editing_event_handlers.push(handler);
     }
 
     fn handle_event(&self, event: bind::SDL_Event) {
@@ -61,6 +79,18 @@ impl<'video> EventBox<'video> {
                 self.keyboard_event_handlers
                     .iter()
                     .for_each(|handler| handler(keyboard.clone()))
+            }
+            bind::SDL_EventType_SDL_TEXTINPUT => {
+                let input: TextInputEvent = unsafe { event.text }.into();
+                self.input_event_handlers
+                    .iter()
+                    .for_each(|handler| handler(input.clone()))
+            }
+            bind::SDL_EventType_SDL_TEXTEDITING => {
+                let editing: TextEditingEvent = unsafe { event.edit }.into();
+                self.editing_event_handlers
+                    .iter()
+                    .for_each(|handler| handler(editing.clone()))
             }
             _ => {}
         }
