@@ -4,7 +4,7 @@ use crate::geo::Point;
 pub mod relative;
 
 #[derive(Debug, Clone)]
-pub enum MouseState {
+pub enum MouseButton {
     Left,
     Middle,
     Right,
@@ -12,9 +12,9 @@ pub enum MouseState {
     X2,
 }
 
-impl MouseState {
+impl MouseButton {
     pub(crate) fn from_bits(bits: u8) -> Self {
-        use MouseState::*;
+        use MouseButton::*;
         match bits {
             1 => Left,
             2 => Middle,
@@ -31,7 +31,7 @@ pub struct MouseMotionEvent {
     pub timestamp: u32,
     pub window_id: u32,
     pub mouse_id: u32,
-    pub state: MouseState,
+    pub button: MouseButton,
     pub pos: Point,
     pub move_amount: Point,
 }
@@ -42,7 +42,7 @@ impl From<bind::SDL_MouseMotionEvent> for MouseMotionEvent {
             timestamp: raw.timestamp,
             window_id: raw.windowID,
             mouse_id: raw.which,
-            state: MouseState::from_bits(raw.state as u8),
+            button: MouseButton::from_bits(raw.state as u8),
             pos: Point { x: raw.x, y: raw.y },
             move_amount: Point {
                 x: raw.xrel,
