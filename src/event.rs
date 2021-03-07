@@ -11,6 +11,7 @@ use crate::{bind, Sdl, Video};
 
 pub mod app;
 pub mod keyboard;
+pub mod mouse;
 pub mod text;
 pub mod window;
 
