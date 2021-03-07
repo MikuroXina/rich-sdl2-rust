@@ -1,6 +1,7 @@
 use crate::bind;
 use crate::geo::Point;
 
+pub mod cursor;
 pub mod relative;
 
 #[derive(Debug, Clone)]
