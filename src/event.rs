@@ -16,13 +16,15 @@ pub mod mouse;
 pub mod text;
 pub mod window;
 
+pub type EventHandler<'video, T> = Box<dyn Fn(T) + 'video>;
+
 pub struct EventBox<'video> {
-    quit_event_handlers: Vec<Box<dyn Fn(QuitEvent) + 'video>>,
-    window_event_handlers: Vec<Box<dyn Fn(WindowEvent) + 'video>>,
-    keyboard_event_handlers: Vec<Box<dyn Fn(KeyboardEvent) + 'video>>,
-    input_event_handlers: Vec<Box<dyn Fn(TextInputEvent) + 'video>>,
-    editing_event_handlers: Vec<Box<dyn Fn(TextEditingEvent) + 'video>>,
-    mouse_event_handlers: Vec<Box<dyn Fn(MouseEvent) + 'video>>,
+    quit_event_handlers: Vec<EventHandler<'video, QuitEvent>>,
+    window_event_handlers: Vec<EventHandler<'video, WindowEvent>>,
+    keyboard_event_handlers: Vec<EventHandler<'video, KeyboardEvent>>,
+    input_event_handlers: Vec<EventHandler<'video, TextInputEvent>>,
+    editing_event_handlers: Vec<EventHandler<'video, TextEditingEvent>>,
+    mouse_event_handlers: Vec<EventHandler<'video, MouseEvent>>,
     _phantom: PhantomData<&'video ()>,
 }
 
@@ -43,27 +45,27 @@ impl<'video> EventBox<'video> {
         }
     }
 
-    pub fn handle_quit(&mut self, handler: Box<dyn Fn(QuitEvent) + 'video>) {
+    pub fn handle_quit(&mut self, handler: EventHandler<'video, QuitEvent>) {
         self.quit_event_handlers.push(handler);
     }
 
-    pub fn handle_window(&mut self, handler: Box<dyn Fn(WindowEvent) + 'video>) {
+    pub fn handle_window(&mut self, handler: EventHandler<'video, WindowEvent>) {
         self.window_event_handlers.push(handler);
     }
 
-    pub fn handle_keyboard(&mut self, handler: Box<dyn Fn(KeyboardEvent) + 'video>) {
+    pub fn handle_keyboard(&mut self, handler: EventHandler<'video, KeyboardEvent>) {
         self.keyboard_event_handlers.push(handler);
     }
 
-    pub fn handle_input(&mut self, handler: Box<dyn Fn(TextInputEvent) + 'video>) {
+    pub fn handle_input(&mut self, handler: EventHandler<'video, TextInputEvent>) {
         self.input_event_handlers.push(handler);
     }
 
-    pub fn handle_editing(&mut self, handler: Box<dyn Fn(TextEditingEvent) + 'video>) {
+    pub fn handle_editing(&mut self, handler: EventHandler<'video, TextEditingEvent>) {
         self.editing_event_handlers.push(handler);
     }
 
-    pub fn handle_mouse(&mut self, handler: Box<dyn Fn(MouseEvent) + 'video>) {
+    pub fn handle_mouse(&mut self, handler: EventHandler<'video, MouseEvent>) {
         self.mouse_event_handlers.push(handler);
     }
 
