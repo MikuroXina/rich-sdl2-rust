@@ -76,3 +76,24 @@ impl From<bind::SDL_MouseButtonEvent> for MouseButtonEvent {
         }
     }
 }
+
+#[derive(Debug, Clone)]
+pub struct MouseWheelEvent {
+    pub timestamp: u32,
+    pub window_id: u32,
+    pub mouse_id: u32,
+    pub scroll_amount: Point,
+    pub is_flipped: bool,
+}
+
+impl From<bind::SDL_MouseWheelEvent> for MouseWheelEvent {
+    fn from(raw: bind::SDL_MouseWheelEvent) -> Self {
+        Self {
+            timestamp: raw.timestamp,
+            window_id: raw.windowID,
+            mouse_id: raw.which,
+            scroll_amount: Point { x: raw.x, y: raw.y },
+            is_flipped: raw.direction == bind::SDL_MouseWheelDirection_SDL_MOUSEWHEEL_FLIPPED,
+        }
+    }
+}
