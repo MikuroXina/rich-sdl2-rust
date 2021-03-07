@@ -51,3 +51,28 @@ impl From<bind::SDL_MouseMotionEvent> for MouseMotionEvent {
         }
     }
 }
+
+#[derive(Debug, Clone)]
+pub struct MouseButtonEvent {
+    pub timestamp: u32,
+    pub window_id: u32,
+    pub mouse_id: u32,
+    pub button: MouseButton,
+    pub is_pressed: bool,
+    pub clicks: u8,
+    pub pos: Point,
+}
+
+impl From<bind::SDL_MouseButtonEvent> for MouseButtonEvent {
+    fn from(raw: bind::SDL_MouseButtonEvent) -> Self {
+        Self {
+            timestamp: raw.timestamp,
+            window_id: raw.windowID,
+            mouse_id: raw.which,
+            button: MouseButton::from_bits(raw.button),
+            is_pressed: raw.state as u32 == bind::SDL_PRESSED,
+            clicks: raw.clicks,
+            pos: Point { x: raw.x, y: raw.y },
+        }
+    }
+}
