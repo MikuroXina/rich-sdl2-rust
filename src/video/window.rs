@@ -9,6 +9,7 @@ mod border;
 mod brightness;
 mod builder;
 mod config;
+pub mod cursor;
 mod grab;
 mod hit_test;
 pub mod message_box;
