@@ -72,6 +72,31 @@ impl<'window> Cursor<'window> {
         })
     }
 
+    pub fn customized(
+        _: &'window Window,
+        data: &[u8],
+        mask: &[u8],
+        hot_spot: Point,
+    ) -> Result<Self, SdlError> {
+        debug_assert_eq!(data.len(), mask.len());
+        let width_height = (data.len() / 4) as i32;
+        let cursor = unsafe {
+            bind::SDL_CreateCursor(
+                data.as_ptr(),
+                mask.as_ptr(),
+                width_height,
+                width_height,
+                hot_spot.x,
+                hot_spot.y,
+            )
+        };
+        let cursor = NonNull::new(cursor).ok_or_else(|| SdlError::Others { msg: Sdl::error() })?;
+        Ok(Self {
+            cursor,
+            window: PhantomData,
+        })
+    }
+
     pub fn set(&self) {
         unsafe { bind::SDL_SetCursor(self.cursor.as_ptr()) }
     }
