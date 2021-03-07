@@ -1,6 +1,8 @@
 use crate::bind;
 use crate::geo::Point;
 
+pub mod relative;
+
 #[derive(Debug, Clone)]
 pub enum MouseState {
     Left,
