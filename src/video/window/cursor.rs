@@ -71,6 +71,14 @@ impl<'window> Cursor<'window> {
             window: PhantomData,
         })
     }
+
+    pub fn set(&self) {
+        unsafe { bind::SDL_SetCursor(self.cursor.as_ptr()) }
+    }
+
+    pub fn redraw(&self) {
+        unsafe { bind::SDL_SetCursor(std::ptr::null_mut()) }
+    }
 }
 
 impl Drop for Cursor<'_> {
