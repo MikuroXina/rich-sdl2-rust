@@ -60,6 +60,11 @@ impl<'video> Window<'video> {
         NonNull::new(raw).map(|window| Self { window, video })
     }
 
+    pub fn mouse_focused(video: &'video Video) -> Option<Self> {
+        let raw = unsafe { bind::SDL_GetMouseFocus() };
+        NonNull::new(raw).map(|window| Self { window, video })
+    }
+
     pub fn as_ptr(&self) -> *mut bind::SDL_Window {
         self.window.as_ptr()
     }
