@@ -11,6 +11,7 @@ use self::{
 use crate::{bind, Sdl, Video};
 
 pub mod app;
+pub mod joystick;
 pub mod keyboard;
 pub mod mouse;
 pub mod text;
