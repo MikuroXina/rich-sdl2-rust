@@ -97,6 +97,13 @@ impl<'window> Cursor<'window> {
         })
     }
 
+    pub fn default(_: &'window Window) -> Option<Self> {
+        NonNull::new(unsafe { bind::SDL_GetDefaultCursor() }).map(|cursor| Self {
+            cursor,
+            window: PhantomData,
+        })
+    }
+
     pub fn set(&self) {
         unsafe { bind::SDL_SetCursor(self.cursor.as_ptr()) }
     }
