@@ -1,7 +1,9 @@
 use std::marker::PhantomData;
 use std::ptr::NonNull;
 
-use crate::{bind, SdlError};
+use crate::geo::Point;
+use crate::surface::Surface;
+use crate::{bind, Sdl, SdlError};
 
 use super::Window;
 
@@ -49,6 +51,21 @@ impl<'window> Cursor<'window> {
     pub fn system(_: &'window Window, kind: SystemCursorKind) -> Result<Self, SdlError> {
         let cursor = unsafe { bind::SDL_CreateSystemCursor(kind.as_raw()) };
         let cursor = NonNull::new(cursor).ok_or_else(|| SdlError::UnsupportedFeature)?;
+        Ok(Self {
+            cursor,
+            window: PhantomData,
+        })
+    }
+
+    pub fn colored(
+        _: &'window Window,
+        surface: &impl Surface,
+        hot_spot: Point,
+    ) -> Result<Self, SdlError> {
+        let cursor = unsafe {
+            bind::SDL_CreateColorCursor(surface.as_ptr().as_ptr(), hot_spot.x, hot_spot.y)
+        };
+        let cursor = NonNull::new(cursor).ok_or_else(|| SdlError::Others { msg: Sdl::error() })?;
         Ok(Self {
             cursor,
             window: PhantomData,
