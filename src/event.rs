@@ -3,6 +3,7 @@ use std::marker::PhantomData;
 use self::{
     app::QuitEvent,
     keyboard::KeyboardEvent,
+    mouse::{MouseButtonEvent, MouseEvent, MouseMotionEvent, MouseWheelEvent},
     text::{TextEditingEvent, TextInputEvent},
     window::WindowEvent,
 };
@@ -21,6 +22,7 @@ pub struct EventBox<'video> {
     keyboard_event_handlers: Vec<Box<dyn Fn(KeyboardEvent) + 'video>>,
     input_event_handlers: Vec<Box<dyn Fn(TextInputEvent) + 'video>>,
     editing_event_handlers: Vec<Box<dyn Fn(TextEditingEvent) + 'video>>,
+    mouse_event_handlers: Vec<Box<dyn Fn(MouseEvent) + 'video>>,
     _phantom: PhantomData<&'video ()>,
 }
 
@@ -36,6 +38,7 @@ impl<'video> EventBox<'video> {
             keyboard_event_handlers: vec![],
             input_event_handlers: vec![],
             editing_event_handlers: vec![],
+            mouse_event_handlers: vec![],
             _phantom: PhantomData,
         }
     }
@@ -58,6 +61,10 @@ impl<'video> EventBox<'video> {
 
     pub fn handle_editing(&mut self, handler: Box<dyn Fn(TextEditingEvent) + 'video>) {
         self.editing_event_handlers.push(handler);
+    }
+
+    pub fn handle_mouse(&mut self, handler: Box<dyn Fn(MouseEvent) + 'video>) {
+        self.mouse_event_handlers.push(handler);
     }
 
     fn handle_event(&self, event: bind::SDL_Event) {
@@ -92,6 +99,27 @@ impl<'video> EventBox<'video> {
                 self.editing_event_handlers
                     .iter()
                     .for_each(|handler| handler(editing.clone()))
+            }
+            bind::SDL_EventType_SDL_MOUSEMOTION => {
+                let motion: MouseMotionEvent = unsafe { event.motion }.into();
+                let mouse = MouseEvent::Motion(motion);
+                self.mouse_event_handlers
+                    .iter()
+                    .for_each(|handler| handler(mouse.clone()))
+            }
+            bind::SDL_EventType_SDL_MOUSEBUTTONDOWN | bind::SDL_EventType_SDL_MOUSEBUTTONUP => {
+                let button: MouseButtonEvent = unsafe { event.button }.into();
+                let mouse = MouseEvent::Button(button);
+                self.mouse_event_handlers
+                    .iter()
+                    .for_each(|handler| handler(mouse.clone()))
+            }
+            bind::SDL_EventType_SDL_MOUSEWHEEL => {
+                let wheel: MouseWheelEvent = unsafe { event.wheel }.into();
+                let mouse = MouseEvent::Wheel(wheel);
+                self.mouse_event_handlers
+                    .iter()
+                    .for_each(|handler| handler(mouse.clone()))
             }
             _ => {}
         }

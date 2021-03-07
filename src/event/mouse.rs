@@ -27,6 +27,13 @@ impl MouseButton {
 }
 
 #[derive(Debug, Clone)]
+pub enum MouseEvent {
+    Motion(MouseMotionEvent),
+    Button(MouseButtonEvent),
+    Wheel(MouseWheelEvent),
+}
+
+#[derive(Debug, Clone)]
 pub struct MouseMotionEvent {
     pub timestamp: u32,
     pub window_id: u32,
