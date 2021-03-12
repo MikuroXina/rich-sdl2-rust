@@ -25,6 +25,18 @@ impl Joystick {
     pub fn power_level(&self) -> PowerLevel {
         unsafe { bind::SDL_JoystickCurrentPowerLevel(self.ptr.as_ptr()) }.into()
     }
+
+    pub fn enable(&self) {
+        unsafe { bind::SDL_JoystickEventState(bind::SDL_ENABLE as c_int) };
+    }
+
+    pub fn disable(&self) {
+        unsafe { bind::SDL_JoystickEventState(bind::SDL_IGNORE as c_int) };
+    }
+
+    pub fn is_enabled(&self) -> bool {
+        unsafe { bind::SDL_JoystickEventState(bind::SDL_QUERY) != 0 }
+    }
 }
 pub struct JoystickSet(Vec<Joystick>);
 
