@@ -5,11 +5,13 @@ use crate::bind;
 
 use self::axis::Axes;
 use self::button::Buttons;
+use self::guid::Guid;
 use self::power_level::PowerLevel;
 use self::trackball::Trackballs;
 
 pub mod axis;
 pub mod button;
+pub mod guid;
 pub mod power_level;
 pub mod trackball;
 
@@ -34,6 +36,10 @@ impl Joystick {
 
     pub fn power_level(&self) -> PowerLevel {
         unsafe { bind::SDL_JoystickCurrentPowerLevel(self.ptr.as_ptr()) }.into()
+    }
+
+    pub fn guid(&self) -> Guid {
+        unsafe { bind::SDL_JoystickGetGUID(self.ptr.as_ptr()) }.into()
     }
 
     pub fn enable(&self) {
