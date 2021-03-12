@@ -3,8 +3,10 @@ use std::ptr::NonNull;
 
 use crate::bind;
 
+use self::axis::Axes;
 use self::power_level::PowerLevel;
 
+pub mod axis;
 pub mod power_level;
 
 #[derive(Debug, Clone, PartialEq)]
@@ -40,6 +42,10 @@ impl Joystick {
 
     pub fn is_enabled(&self) -> bool {
         unsafe { bind::SDL_JoystickEventState(bind::SDL_QUERY) != 0 }
+    }
+
+    pub fn axes(&self) -> Axes {
+        Axes::new(self)
     }
 }
 pub struct JoystickSet(Vec<Joystick>);
