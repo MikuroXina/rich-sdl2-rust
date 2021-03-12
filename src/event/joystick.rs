@@ -3,6 +3,8 @@ use std::ptr::NonNull;
 
 use crate::bind;
 
+use self::power_level::PowerLevel;
+
 pub mod power_level;
 
 #[derive(Debug, PartialEq)]
@@ -18,6 +20,10 @@ impl Joystick {
         let raw = unsafe { bind::SDL_JoystickInstanceID(self.ptr.as_ptr()) };
         debug_assert_ne!(raw, -1);
         JoystickId(raw as u32)
+    }
+
+    pub fn power_level(&self) -> PowerLevel {
+        unsafe { bind::SDL_JoystickCurrentPowerLevel(self.ptr.as_ptr()) }.into()
     }
 }
 pub struct JoystickSet(Vec<Joystick>);
