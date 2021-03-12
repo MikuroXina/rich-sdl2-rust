@@ -15,6 +15,11 @@ pub struct Joystick {
 }
 
 impl Joystick {
+    pub fn from_id(id: JoystickId) -> Option<Self> {
+        let ptr = unsafe { bind::SDL_JoystickFromInstanceID(id.0 as bind::SDL_JoystickID) };
+        NonNull::new(ptr).map(|ptr| Self { ptr })
+    }
+
     pub fn instance_id(&self) -> JoystickId {
         let raw = unsafe { bind::SDL_JoystickInstanceID(self.ptr.as_ptr()) };
         debug_assert_ne!(raw, -1);
