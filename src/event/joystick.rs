@@ -11,7 +11,6 @@ pub mod power_level;
 pub struct JoystickId(u32);
 
 pub struct Joystick {
-    recognized_index: u32,
     ptr: NonNull<bind::SDL_Joystick>,
 }
 
@@ -50,7 +49,6 @@ impl JoystickSet {
             .map(|index| {
                 let ptr = unsafe { bind::SDL_JoystickOpen(index as c_int) };
                 Joystick {
-                    recognized_index: index,
                     ptr: NonNull::new(ptr).unwrap(),
                 }
             })
