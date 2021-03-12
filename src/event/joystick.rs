@@ -7,7 +7,7 @@ use self::power_level::PowerLevel;
 
 pub mod power_level;
 
-#[derive(Debug, PartialEq)]
+#[derive(Debug, Clone, PartialEq)]
 pub struct JoystickId(u32);
 
 pub struct Joystick {
