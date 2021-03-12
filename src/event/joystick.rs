@@ -4,10 +4,12 @@ use std::ptr::NonNull;
 use crate::bind;
 
 use self::axis::Axes;
+use self::button::Buttons;
 use self::power_level::PowerLevel;
 use self::trackball::Trackballs;
 
 pub mod axis;
+pub mod button;
 pub mod power_level;
 pub mod trackball;
 
@@ -52,6 +54,10 @@ impl Joystick {
 
     pub fn trackballs(&self) -> Trackballs {
         Trackballs::new(self)
+    }
+
+    pub fn buttons(&self) -> Buttons {
+        Buttons::new(self)
     }
 }
 pub struct JoystickSet(Vec<Joystick>);
