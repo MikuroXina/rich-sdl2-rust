@@ -5,9 +5,11 @@ use crate::bind;
 
 use self::axis::Axes;
 use self::power_level::PowerLevel;
+use self::trackball::Trackballs;
 
 pub mod axis;
 pub mod power_level;
+pub mod trackball;
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct JoystickId(u32);
@@ -46,6 +48,10 @@ impl Joystick {
 
     pub fn axes(&self) -> Axes {
         Axes::new(self)
+    }
+
+    pub fn trackballs(&self) -> Trackballs {
+        Trackballs::new(self)
     }
 }
 pub struct JoystickSet(Vec<Joystick>);
