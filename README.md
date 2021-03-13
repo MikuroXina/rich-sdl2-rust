@@ -23,7 +23,7 @@ There's no plans to support SDL_image, SDL_mixer and so on right now.
   - [ ] Handling
   - [x] Keyboard
   - [x] Mouse
-  - [ ] Joystick
+  - [x] Joystick
   - [ ] Game Controller
   - [ ] Sensor
 - [ ] Haptic
