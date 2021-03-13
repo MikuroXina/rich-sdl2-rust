@@ -1,4 +1,4 @@
-use std::convert::TryFrom;
+use std::ffi::CStr;
 
 use crate::bind;
 
@@ -24,5 +24,17 @@ impl Axis {
             _ => return None,
         };
         Some(val)
+    }
+
+    pub(super) fn as_raw(&self) -> bind::SDL_GameControllerAxis {
+        use Axis::*;
+        match self {
+            LeftX => bind::SDL_GameControllerAxis_SDL_CONTROLLER_AXIS_LEFTX,
+            LeftY => bind::SDL_GameControllerAxis_SDL_CONTROLLER_AXIS_LEFTY,
+            RightX => bind::SDL_GameControllerAxis_SDL_CONTROLLER_AXIS_RIGHTX,
+            RightY => bind::SDL_GameControllerAxis_SDL_CONTROLLER_AXIS_RIGHTY,
+            TriggerLeft => bind::SDL_GameControllerAxis_SDL_CONTROLLER_AXIS_TRIGGERLEFT,
+            TriggerRight => bind::SDL_GameControllerAxis_SDL_CONTROLLER_AXIS_TRIGGERRIGHT,
+        }
     }
 }
