@@ -3,12 +3,10 @@ use std::ptr::NonNull;
 
 use crate::bind;
 
-use self::axis::Axes;
-use self::button::Buttons;
-use self::guid::Guid;
-use self::hat::Hats;
-use self::power_level::PowerLevel;
-use self::trackball::Trackballs;
+use self::{
+    axis::Axes, button::Buttons, guid::Guid, hat::Hats, power_level::PowerLevel,
+    trackball::Trackballs,
+};
 
 pub mod axis;
 pub mod button;
