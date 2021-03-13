@@ -6,12 +6,14 @@ use crate::bind;
 use self::axis::Axes;
 use self::button::Buttons;
 use self::guid::Guid;
+use self::hat::Hats;
 use self::power_level::PowerLevel;
 use self::trackball::Trackballs;
 
 pub mod axis;
 pub mod button;
 pub mod guid;
+pub mod hat;
 pub mod power_level;
 pub mod trackball;
 
@@ -64,6 +66,10 @@ impl Joystick {
 
     pub fn buttons(&self) -> Buttons {
         Buttons::new(self)
+    }
+
+    pub fn hats(&self) -> Hats {
+        Hats::new(self)
     }
 }
 pub struct JoystickSet(Vec<Joystick>);
