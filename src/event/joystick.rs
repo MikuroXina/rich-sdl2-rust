@@ -101,5 +101,6 @@ impl Drop for JoystickSet {
         for joystick in &self.0 {
             unsafe { bind::SDL_JoystickClose(joystick.ptr.as_ptr()) }
         }
+        unsafe { bind::SDL_QuitSubSystem(bind::SDL_INIT_JOYSTICK) }
     }
 }
