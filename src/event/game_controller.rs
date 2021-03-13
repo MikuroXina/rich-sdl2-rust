@@ -7,10 +7,14 @@ pub mod button;
 pub mod map;
 
 pub struct GameController {
-    controls: Vec<NonNull<bind::SDL_GameController>>,
+    ptr: NonNull<bind::SDL_GameController>,
 }
 
-impl GameController {
+pub struct GameControllerSet {
+    controls: Vec<GameController>,
+}
+
+impl GameControllerSet {
     pub fn new() -> Self {
         let num_controls = unsafe {
             bind::SDL_InitSubSystem(bind::SDL_INIT_JOYSTICK);
@@ -22,15 +26,16 @@ impl GameController {
                 let raw = unsafe { bind::SDL_GameControllerOpen(index) };
                 NonNull::new(raw)
             })
+            .map(|ptr| GameController { ptr })
             .collect();
         Self { controls }
     }
 }
 
-impl Drop for GameController {
+impl Drop for GameControllerSet {
     fn drop(&mut self) {
         for control in &mut self.controls {
-            unsafe { bind::SDL_GameControllerClose(control.as_ptr()) }
+            unsafe { bind::SDL_GameControllerClose(control.ptr.as_ptr()) }
         }
         unsafe { bind::SDL_QuitSubSystem(bind::SDL_INIT_JOYSTICK) }
     }
