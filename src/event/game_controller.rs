@@ -2,6 +2,9 @@ use std::ptr::NonNull;
 
 use crate::bind;
 
+pub mod axis;
+pub mod button;
+
 pub struct GameController {
     controls: Vec<NonNull<bind::SDL_GameController>>,
 }
