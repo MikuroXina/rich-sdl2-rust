@@ -49,4 +49,35 @@ impl Button {
         };
         Some(val)
     }
+
+    pub(super) fn as_raw(&self) -> bind::SDL_GameControllerButton {
+        use FourButton::*;
+        match self {
+            Button::LeftFour(Up) => bind::SDL_GameControllerButton_SDL_CONTROLLER_BUTTON_Y,
+            Button::LeftFour(Right) => bind::SDL_GameControllerButton_SDL_CONTROLLER_BUTTON_B,
+            Button::LeftFour(Down) => bind::SDL_GameControllerButton_SDL_CONTROLLER_BUTTON_A,
+            Button::LeftFour(Left) => bind::SDL_GameControllerButton_SDL_CONTROLLER_BUTTON_X,
+            Button::RightFour(Up) => bind::SDL_GameControllerButton_SDL_CONTROLLER_BUTTON_DPAD_UP,
+            Button::RightFour(Right) => {
+                bind::SDL_GameControllerButton_SDL_CONTROLLER_BUTTON_DPAD_RIGHT
+            }
+            Button::RightFour(Down) => {
+                bind::SDL_GameControllerButton_SDL_CONTROLLER_BUTTON_DPAD_DOWN
+            }
+            Button::RightFour(Left) => {
+                bind::SDL_GameControllerButton_SDL_CONTROLLER_BUTTON_DPAD_LEFT
+            }
+            Button::Back => bind::SDL_GameControllerButton_SDL_CONTROLLER_BUTTON_BACK,
+            Button::Guide => bind::SDL_GameControllerButton_SDL_CONTROLLER_BUTTON_GUIDE,
+            Button::Start => bind::SDL_GameControllerButton_SDL_CONTROLLER_BUTTON_START,
+            Button::LeftStick => bind::SDL_GameControllerButton_SDL_CONTROLLER_BUTTON_LEFTSTICK,
+            Button::RightStick => bind::SDL_GameControllerButton_SDL_CONTROLLER_BUTTON_RIGHTSTICK,
+            Button::LeftShoulder => {
+                bind::SDL_GameControllerButton_SDL_CONTROLLER_BUTTON_LEFTSHOULDER
+            }
+            Button::RightShoulder => {
+                bind::SDL_GameControllerButton_SDL_CONTROLLER_BUTTON_RIGHTSHOULDER
+            }
+        }
+    }
 }
