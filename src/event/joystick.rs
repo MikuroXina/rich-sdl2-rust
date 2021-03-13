@@ -1,3 +1,4 @@
+use std::ffi::CStr;
 use std::os::raw::c_int;
 use std::ptr::NonNull;
 
@@ -40,6 +41,11 @@ impl Joystick {
 
     pub fn guid(&self) -> Guid {
         unsafe { bind::SDL_JoystickGetGUID(self.ptr.as_ptr()) }.into()
+    }
+
+    pub fn name(&self) -> std::borrow::Cow<str> {
+        let c_str = unsafe { CStr::from_ptr(bind::SDL_JoystickName(self.ptr.as_ptr())) };
+        c_str.to_string_lossy()
     }
 
     pub fn enable(&self) {
