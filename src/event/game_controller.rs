@@ -4,6 +4,7 @@ use crate::bind;
 
 pub mod axis;
 pub mod button;
+pub mod map;
 
 pub struct GameController {
     controls: Vec<NonNull<bind::SDL_GameController>>,
