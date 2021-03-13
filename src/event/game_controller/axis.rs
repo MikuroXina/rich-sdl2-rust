@@ -38,3 +38,11 @@ impl Axis {
         }
     }
 }
+
+impl std::fmt::Display for Axis {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        let c_str =
+            unsafe { CStr::from_ptr(bind::SDL_GameControllerGetStringForAxis(self.as_raw())) };
+        write!(f, "{}", c_str.to_str().unwrap())
+    }
+}
