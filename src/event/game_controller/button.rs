@@ -1,3 +1,5 @@
+use std::ffi::CStr;
+
 use crate::bind;
 
 pub enum FourButton {
@@ -79,5 +81,13 @@ impl Button {
                 bind::SDL_GameControllerButton_SDL_CONTROLLER_BUTTON_RIGHTSHOULDER
             }
         }
+    }
+}
+
+impl std::fmt::Display for Button {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        let c_str =
+            unsafe { CStr::from_ptr(bind::SDL_GameControllerGetStringForButton(self.as_raw())) };
+        write!(f, "{}", c_str.to_str().unwrap())
     }
 }
