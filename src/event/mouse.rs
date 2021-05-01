@@ -14,16 +14,16 @@ pub enum MouseButton {
 }
 
 impl MouseButton {
-    pub(crate) fn from_bits(bits: u8) -> Self {
+    pub(crate) fn from_bits(bits: u8) -> Option<Self> {
         use MouseButton::*;
-        match bits {
+        Some(match bits {
             1 => Left,
             2 => Middle,
             3 => Right,
             4 => X1,
             5 => X2,
-            _ => unreachable!(),
-        }
+            _ => return None,
+        })
     }
 }
 
@@ -39,7 +39,7 @@ pub struct MouseMotionEvent {
     pub timestamp: u32,
     pub window_id: u32,
     pub mouse_id: u32,
-    pub button: MouseButton,
+    pub button: Option<MouseButton>,
     pub pos: Point,
     pub move_amount: Point,
 }
@@ -65,7 +65,7 @@ pub struct MouseButtonEvent {
     pub timestamp: u32,
     pub window_id: u32,
     pub mouse_id: u32,
-    pub button: MouseButton,
+    pub button: Option<MouseButton>,
     pub is_pressed: bool,
     pub clicks: u8,
     pub pos: Point,
