@@ -1,9 +1,5 @@
-use sdl2_rust::{
-    color::Rgb,
-    renderer::pen::Pen,
-    window::{self, WindowPos},
-    *,
-};
+use rich_sdl2_rust::{color::Rgb, renderer::pen::Pen, window::WindowPos, *};
+use std::cell::Cell;
 
 pub fn main() {
     let sdl = Sdl::new();
@@ -11,7 +7,6 @@ pub fn main() {
     let window = window::WindowBuilder::default().build(&video);
     let renderer = renderer::Renderer::new(&window);
 
-    use std::cell::Cell;
     let exit = Cell::new(false);
     let mut event = EventBox::new(&video);
     event.handle_window(Box::new(|e| {
