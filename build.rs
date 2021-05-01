@@ -11,7 +11,7 @@ fn main() {
         .whitelist_type("SDL_.*")
         .whitelist_var("SDL_.*")
         .parse_callbacks(Box::new(bindgen::CargoCallbacks))
-        .raw_line("//! Rust FFI to `SDL2/SDL.h.h`")
+        .raw_line("//! Rust FFI to `SDL2/SDL.h`")
         .raw_line("")
         .raw_line(r"#![allow(warnings)]")
         .generate()
