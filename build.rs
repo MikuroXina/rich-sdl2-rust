@@ -15,10 +15,10 @@ fn main() {
         .raw_line("")
         .raw_line(r"#![allow(warnings)]")
         .generate()
-        .expect("Generating bindings failed");
+        .expect("bindgen builder was invalid");
 
-    let root = PathBuf::from(env::var("CARGO_MANIFEST_DIR").unwrap());
+    let root = PathBuf::from(env::var("CARGO_MANIFEST_DIR").expect("CARGO_MANIFEST_DIR not found"));
     bindings
         .write_to_file(root.join("src/bind.rs"))
-        .expect("Writing bindings failed");
+        .expect("`src` directory not found");
 }
