@@ -1,5 +1,5 @@
 [package]
-name = "sdl2-rust"
+name = "rich-sdl2-rust"
 version = "0.1.0"
 authors = ["MikuroXina <ryosukadnak@gmail.com>"]
 edition = "2018"
