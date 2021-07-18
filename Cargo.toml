@@ -3,6 +3,11 @@ name = "rich-sdl2-rust"
 version = "0.1.0"
 authors = ["MikuroXina <ryosukadnak@gmail.com>"]
 edition = "2018"
+description = "The sdl2 wrapper for Rust."
+repository = "https://github.com/MikuroXina/rich-sdl2-rust"
+license = "Apache-2.0"
+keywords = ["sdl2", "wrapper", "binding"]
+categories = ["graphics", "gui", "multimedia", "rendering"]
 
 [dependencies]
 bitflags = "1.2.1"
