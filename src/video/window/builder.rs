@@ -64,7 +64,7 @@ impl Default for WindowBuilder {
 }
 
 impl WindowBuilder {
-    pub fn title(mut self, title: impl ToOwned<Owned = String>) -> Self {
+    pub fn title(mut self, title: &str) -> Self {
         self.title = title.to_owned();
         self
     }
