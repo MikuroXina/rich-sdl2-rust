@@ -36,7 +36,7 @@ impl<'texture> Lock<'texture> {
         }
     }
 
-    pub fn to_bytes(&self) -> &mut [u8] {
+    pub fn as_bytes(&mut self) -> &mut [u8] {
         unsafe { std::slice::from_raw_parts_mut(self.pixels.as_ptr() as *mut _, self.len) }
     }
 }
