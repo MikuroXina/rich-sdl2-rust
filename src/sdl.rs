@@ -74,6 +74,12 @@ impl Sdl {
     }
 }
 
+impl Default for Sdl {
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
 impl Drop for Sdl {
     fn drop(&mut self) {
         unsafe { bind::SDL_Quit() }
