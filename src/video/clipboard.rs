@@ -9,7 +9,7 @@ pub struct ClipboardText {
 impl ClipboardText {
     pub fn new() -> Option<Self> {
         let ptr = unsafe { bind::SDL_GetClipboardText() };
-        if ptr == std::ptr::null_mut() {
+        if ptr.is_null() {
             return None;
         }
         let text = unsafe { CString::from_raw(ptr) }.into_string().ok()?;
