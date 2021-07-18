@@ -50,7 +50,7 @@ pub struct Cursor<'window> {
 impl<'window> Cursor<'window> {
     pub fn system(_: &'window Window, kind: SystemCursorKind) -> Result<Self, SdlError> {
         let cursor = unsafe { bind::SDL_CreateSystemCursor(kind.as_raw()) };
-        let cursor = NonNull::new(cursor).ok_or_else(|| SdlError::UnsupportedFeature)?;
+        let cursor = NonNull::new(cursor).ok_or(SdlError::UnsupportedFeature)?;
         Ok(Self {
             cursor,
             window: PhantomData,
