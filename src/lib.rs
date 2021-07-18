@@ -1,3 +1,5 @@
+#![allow(unused)]
+
 mod bind;
 mod error;
 mod event;
