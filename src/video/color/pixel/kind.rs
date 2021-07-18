@@ -429,7 +429,7 @@ fn bytes_per_array_pixel(ty: &ArrayPixelType, order: &ArrayPixelOrder) -> u32 {
 }
 
 fn calc_bits(ty: u32, order: u32, layout: u32, bits_per_pixel: u32, bytes_per_pixel: u32) -> u32 {
-    1 << 28 | ty << 24 | order << 20 | layout << 16 | bits_per_pixel << 8 | bytes_per_pixel << 0
+    1 << 28 | ty << 24 | order << 20 | layout << 16 | bits_per_pixel << 8 | bytes_per_pixel
 }
 
 impl From<PixelFormatKind> for bind::SDL_PixelFormatEnum {
