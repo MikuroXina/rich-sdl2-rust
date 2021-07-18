@@ -10,7 +10,7 @@ pub struct Brightness {
 
 impl Brightness {
     pub fn new(brightness: f32) -> Option<Self> {
-        if 0.0 <= brightness && brightness <= 1.0 {
+        if (0.0..=1.0).contains(&brightness) {
             Some(Self { brightness })
         } else {
             None
