@@ -17,7 +17,7 @@ pub struct Opacity {
 
 impl Opacity {
     pub fn new(opacity: f32) -> Option<Self> {
-        if 0.0 <= opacity && opacity <= 1.0 {
+        if (0.0..=1.0).contains(&opacity) {
             return None;
         }
         Some(Self { opacity })
