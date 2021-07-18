@@ -113,7 +113,7 @@ pub trait Surface {
         }
     }
 
-    fn into_rle(&'_ mut self) -> Rle<'_, Self>
+    fn rle(&'_ mut self) -> Rle<'_, Self>
     where
         Self: Sized,
     {
