@@ -1,4 +1,4 @@
-use rich_sdl2_rust::{color::Rgb, renderer::pen::Pen, window::WindowPos, *};
+use rich_sdl2_rust::{color::Rgb, renderer::pen::Pen, *};
 use std::cell::Cell;
 
 pub fn main() {
