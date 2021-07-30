@@ -34,21 +34,13 @@ impl<'video> Display<'video> {
     pub fn bounds(&self) -> Option<Rect> {
         let mut raw_rect = MaybeUninit::uninit();
         let ret = unsafe { bind::SDL_GetDisplayBounds(self.index, raw_rect.as_mut_ptr()) };
-        if ret != 0 {
-            None
-        } else {
-            Some(unsafe { raw_rect.assume_init() }.into())
-        }
+        (ret == 0).then(|| unsafe { raw_rect.assume_init() }.into())
     }
 
     pub fn usable_bounds(&self) -> Option<Rect> {
         let mut raw_rect = MaybeUninit::uninit();
         let ret = unsafe { bind::SDL_GetDisplayUsableBounds(self.index, raw_rect.as_mut_ptr()) };
-        if ret != 0 {
-            None
-        } else {
-            Some(unsafe { raw_rect.assume_init() }.into())
-        }
+        (ret == 0).then(|| unsafe { raw_rect.assume_init() }.into())
     }
 
     pub fn dpi(&self) -> Option<Dpi> {
@@ -65,11 +57,8 @@ impl<'video> Display<'video> {
                 &mut dpi.vdpi as *mut _,
             )
         };
-        if ret != 0 {
-            None
-        } else {
-            Some(dpi)
-        }
+
+        (ret == 0).then(|| dpi)
     }
 
     pub fn name(&self) -> &str {

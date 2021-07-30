@@ -80,11 +80,7 @@ impl<'video> Window<'video> {
 
     pub fn display(&self) -> Option<Display> {
         let ret = unsafe { bind::SDL_GetWindowDisplayIndex(self.as_ptr()) };
-        if ret < 0 {
-            None
-        } else {
-            Some(Display::new(ret, self.video))
-        }
+        (0 <= ret).then(|| Display::new(ret, self.video))
     }
 
     pub fn id(&self) -> u32 {

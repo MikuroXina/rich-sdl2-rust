@@ -56,11 +56,7 @@ impl Rect {
                 raw.as_mut_ptr(),
             )
         };
-        if ret == 0 {
-            None
-        } else {
-            Some(unsafe { raw.assume_init() }.into())
-        }
+        (ret != 0).then(|| unsafe { raw.assume_init() }.into())
     }
 
     pub fn has_intersection(self, other: Self) -> bool {
@@ -78,11 +74,7 @@ impl Rect {
                 raw.as_mut_ptr(),
             )
         };
-        if ret == 0 {
-            None
-        } else {
-            Some(unsafe { raw.assume_init() }.into())
-        }
+        (ret != 0).then(|| unsafe { raw.assume_init() }.into())
     }
 
     pub fn empty(&self) -> bool {
