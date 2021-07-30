@@ -12,7 +12,7 @@ impl<'renderer> ClippedRenderer<'renderer> {
         let ret =
             unsafe { bind::SDL_RenderSetClipRect(renderer.as_ptr(), &rect.into() as *const _) };
         if ret != 0 {
-            Sdl::error_then_panic("Setting rebderer clip rect");
+            Sdl::error_then_panic("Setting renderer clip rect");
         }
         Self { renderer }
     }
