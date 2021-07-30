@@ -11,7 +11,7 @@ mod button;
 pub enum MessageBoxKind {
     Error,
     Warning,
-    Infomation,
+    Information,
 }
 
 #[derive(Debug)]
