@@ -1,3 +1,4 @@
+use static_assertions::assert_not_impl_all;
 use std::ffi::CStr;
 use std::marker::PhantomData;
 use std::os::raw::c_char;
@@ -48,8 +49,10 @@ impl From<bind::SDL_TextEditingEvent> for TextEditingEvent {
 }
 
 pub struct TextInput<'video> {
-    video: PhantomData<&'video ()>,
+    video: PhantomData<&'video Video<'video>>,
 }
+
+assert_not_impl_all!(TextInput: Send, Sync);
 
 impl<'video> TextInput<'video> {
     pub fn new(_: &'video Video, input_rect: Rect) -> Self {

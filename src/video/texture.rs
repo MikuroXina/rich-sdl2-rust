@@ -1,3 +1,4 @@
+use static_assertions::assert_not_impl_all;
 use std::marker::PhantomData;
 use std::ptr::NonNull;
 
@@ -42,6 +43,8 @@ pub struct Texture<'renderer> {
     clip: Option<Rect>,
     _phantom: PhantomData<&'renderer ()>,
 }
+
+assert_not_impl_all!(Texture: Send, Sync);
 
 impl<'renderer> Texture<'renderer> {
     pub fn new(renderer: &'renderer Renderer<'renderer>, access: TextureAccess) -> Result<Self> {

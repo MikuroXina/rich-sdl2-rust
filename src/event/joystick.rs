@@ -1,3 +1,4 @@
+use static_assertions::assert_not_impl_all;
 use std::ffi::CStr;
 use std::os::raw::c_int;
 use std::ptr::NonNull;
@@ -22,6 +23,8 @@ pub struct JoystickId(u32);
 pub struct Joystick {
     ptr: NonNull<bind::SDL_Joystick>,
 }
+
+assert_not_impl_all!(Joystick: Send, Sync);
 
 impl Joystick {
     pub fn from_id(id: JoystickId) -> Option<Self> {

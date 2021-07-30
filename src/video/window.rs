@@ -1,4 +1,5 @@
 use bitflags::bitflags;
+use static_assertions::assert_not_impl_all;
 use std::ptr::NonNull;
 
 use super::{color::pixel::kind::PixelFormatKind, display::Display};
@@ -49,6 +50,8 @@ pub struct Window<'video> {
     window: NonNull<bind::SDL_Window>,
     video: &'video Video<'video>,
 }
+
+assert_not_impl_all!(Window: Send, Sync);
 
 impl<'video> Window<'video> {
     pub fn from_id(id: u32, video: &'video Video) -> Option<Self> {

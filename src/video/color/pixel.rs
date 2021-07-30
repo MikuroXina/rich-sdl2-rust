@@ -2,6 +2,7 @@ use std::ptr::NonNull;
 
 use kind::PixelFormatKind;
 use palette::Palette;
+use static_assertions::assert_not_impl_all;
 
 use crate::color::{Rgb, Rgba};
 use crate::{bind, Result, Sdl, SdlError};
@@ -41,6 +42,8 @@ pub enum PixelComponents {
 pub struct PixelFormat {
     format: NonNull<bind::SDL_PixelFormat>,
 }
+
+assert_not_impl_all!(PixelFormat: Send, Sync);
 
 impl PixelFormat {
     pub fn new(kind: PixelFormatKind) -> Result<Self> {

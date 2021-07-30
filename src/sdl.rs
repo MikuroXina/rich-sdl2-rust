@@ -1,3 +1,6 @@
+use static_assertions::assert_not_impl_all;
+use std::{cell::Cell, marker::PhantomData};
+
 use crate::bind;
 
 pub struct SdlVersion {
@@ -22,7 +25,11 @@ impl From<bind::SDL_version> for SdlVersion {
     }
 }
 
-pub struct Sdl {}
+pub struct Sdl {
+    _phantom: PhantomData<Cell<u8>>,
+}
+
+assert_not_impl_all!(Sdl: Send, Sync);
 
 impl Sdl {
     pub fn new() -> Self {
@@ -33,7 +40,9 @@ impl Sdl {
         if ret != 0 {
             Self::error_then_panic("Sdl")
         }
-        Self {}
+        Self {
+            _phantom: PhantomData,
+        }
     }
 
     pub fn version() -> SdlVersion {

@@ -1,3 +1,4 @@
+use static_assertions::assert_not_impl_all;
 use std::ffi::CStr;
 use std::marker::PhantomData;
 use std::mem::MaybeUninit;
@@ -17,8 +18,10 @@ pub struct Dpi {
 
 pub struct Display<'video> {
     index: i32,
-    _phantom: PhantomData<&'video ()>,
+    _phantom: PhantomData<&'video Video<'video>>,
 }
+
+assert_not_impl_all!(Display: Send, Sync);
 
 impl<'video> Display<'video> {
     pub(super) fn new(index: i32, _: &'video Video) -> Self {

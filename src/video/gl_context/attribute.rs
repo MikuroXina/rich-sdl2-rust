@@ -1,4 +1,5 @@
 use bitflags::bitflags;
+use static_assertions::assert_not_impl_all;
 use std::marker::PhantomData;
 
 use crate::{bind, Result, Sdl, SdlError};
@@ -39,8 +40,10 @@ bitflags! {
 
 pub struct GlAttribute<'gl> {
     attr: bind::SDL_GLattr,
-    _phantom: PhantomData<&'gl ()>,
+    _phantom: PhantomData<&'gl GlContext<'gl>>,
 }
+
+assert_not_impl_all!(GlAttribute: Send, Sync);
 
 impl<'gl> GlAttribute<'gl> {
     pub fn new(_: &'gl GlContext<'gl>, kind: AttributeKind) -> Self {

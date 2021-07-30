@@ -1,3 +1,4 @@
+use static_assertions::assert_not_impl_all;
 use std::ffi::{CStr, CString};
 use std::ptr::NonNull;
 
@@ -8,6 +9,8 @@ use super::Surface;
 pub struct Bmp {
     ptr: NonNull<bind::SDL_Surface>,
 }
+
+assert_not_impl_all!(Bmp: Send, Sync);
 
 impl Bmp {
     pub fn new(file_name: &str) -> Self {

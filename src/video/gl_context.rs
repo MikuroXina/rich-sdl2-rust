@@ -1,3 +1,4 @@
+use static_assertions::assert_not_impl_all;
 use std::ffi::{c_void, CString};
 use std::mem::MaybeUninit;
 use std::ptr::NonNull;
@@ -17,6 +18,8 @@ pub struct GlContext<'window> {
     ctx: NonNull<c_void>,
     window: &'window Window<'window>,
 }
+
+assert_not_impl_all!(GlContext: Send, Sync);
 
 impl<'window> GlContext<'window> {
     pub fn new(window: &'window Window) -> Option<Self> {

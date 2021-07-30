@@ -1,3 +1,4 @@
+use static_assertions::assert_not_impl_all;
 use std::cell::{Cell, RefCell};
 use std::collections::HashMap;
 
@@ -45,6 +46,8 @@ thread_local! {
 pub struct HitTest<'window> {
     window: &'window Window<'window>,
 }
+
+assert_not_impl_all!(HitTest: Send, Sync);
 
 impl<'window> HitTest<'window> {
     pub fn new(window: &'window Window<'window>) -> Self {

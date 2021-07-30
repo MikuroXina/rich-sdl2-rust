@@ -1,3 +1,4 @@
+use static_assertions::assert_not_impl_all;
 use std::marker::PhantomData;
 use std::ptr::NonNull;
 
@@ -46,6 +47,8 @@ pub struct Cursor<'window> {
     cursor: NonNull<bind::SDL_Cursor>,
     window: PhantomData<&'window ()>,
 }
+
+assert_not_impl_all!(Cursor: Send, Sync);
 
 impl<'window> Cursor<'window> {
     pub fn system(_: &'window Window, kind: SystemCursorKind) -> Result<Self, SdlError> {

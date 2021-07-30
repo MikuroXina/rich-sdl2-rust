@@ -1,3 +1,4 @@
+use static_assertions::assert_not_impl_all;
 use std::ptr::NonNull;
 
 use crate::bind;
@@ -7,6 +8,8 @@ use super::Surface;
 pub struct Cloned {
     surface: NonNull<bind::SDL_Surface>,
 }
+
+assert_not_impl_all!(Cloned: Send, Sync);
 
 impl Cloned {
     pub(super) fn new(src: NonNull<bind::SDL_Surface>) -> Self {

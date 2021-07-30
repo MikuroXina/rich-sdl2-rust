@@ -1,3 +1,4 @@
+use static_assertions::assert_not_impl_all;
 use std::marker::PhantomData;
 use std::os::raw::c_int;
 
@@ -5,8 +6,10 @@ use crate::window::Window;
 use crate::{bind, Sdl};
 
 pub struct Cursor<'window> {
-    window: PhantomData<&'window ()>,
+    window: PhantomData<&'window Window<'window>>,
 }
+
+assert_not_impl_all!(Cursor: Send, Sync);
 
 impl<'window> Cursor<'window> {
     pub fn new(_: &'window Window) -> Self {

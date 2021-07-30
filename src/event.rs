@@ -1,3 +1,4 @@
+use static_assertions::assert_not_impl_all;
 use std::marker::PhantomData;
 
 use self::{
@@ -29,6 +30,8 @@ pub struct EventBox<'video> {
     mouse_event_handlers: Vec<EventHandler<'video, MouseEvent>>,
     _phantom: PhantomData<&'video ()>,
 }
+
+assert_not_impl_all!(EventBox: Send, Sync);
 
 impl<'video> EventBox<'video> {
     pub fn new(_: &'video Video) -> Self {

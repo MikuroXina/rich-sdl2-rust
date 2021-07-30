@@ -1,12 +1,16 @@
 use std::os::raw::c_int;
 use std::ptr::NonNull;
 
+use static_assertions::assert_not_impl_all;
+
 use crate::color::Rgba;
 use crate::{bind, Result, Sdl, SdlError};
 
 pub struct Palette {
     palette: NonNull<bind::SDL_Palette>,
 }
+
+assert_not_impl_all!(Palette: Send, Sync);
 
 impl Palette {
     pub fn new(num_colors: u32) -> Result<Self> {

@@ -1,3 +1,4 @@
+use static_assertions::assert_not_impl_all;
 use std::ptr::NonNull;
 
 use crate::bind;
@@ -9,6 +10,8 @@ pub mod map;
 pub struct GameController {
     ptr: NonNull<bind::SDL_GameController>,
 }
+
+assert_not_impl_all!(GameController: Send, Sync);
 
 pub struct GameControllerSet {
     controls: Vec<GameController>,

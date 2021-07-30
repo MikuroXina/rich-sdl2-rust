@@ -1,3 +1,4 @@
+use static_assertions::assert_not_impl_all;
 use std::mem::MaybeUninit;
 use std::ptr::NonNull;
 
@@ -20,6 +21,8 @@ pub struct Renderer<'window> {
     renderer: NonNull<bind::SDL_Renderer>,
     window: &'window Window<'window>,
 }
+
+assert_not_impl_all!(Renderer: Send, Sync);
 
 impl<'window> Renderer<'window> {
     pub fn new(window: &'window Window) -> Self {

@@ -1,3 +1,4 @@
+use static_assertions::assert_not_impl_all;
 use std::ffi::CStr;
 use std::marker::PhantomData;
 
@@ -18,8 +19,10 @@ pub mod texture;
 pub mod window;
 
 pub struct Video<'sdl> {
-    _phantom: PhantomData<&'sdl ()>,
+    _phantom: PhantomData<&'sdl Sdl>,
 }
+
+assert_not_impl_all!(Video: Send, Sync);
 
 impl<'sdl> Video<'sdl> {
     pub fn new(_: &'sdl Sdl) -> Self {
