@@ -8,7 +8,10 @@ use crate::color::{Rgb, Rgba};
 use crate::{bind, Result, Sdl, SdlError};
 
 pub mod kind;
+pub mod layout;
+pub mod order;
 pub mod palette;
+pub mod ty;
 
 #[derive(Debug, Clone)]
 pub struct Pixel {
