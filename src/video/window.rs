@@ -80,7 +80,7 @@ impl<'video> Window<'video> {
         if ret < 0 {
             None
         } else {
-            Some(Display::new(ret, &self.video))
+            Some(Display::new(ret, self.video))
         }
     }
 

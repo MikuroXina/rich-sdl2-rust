@@ -35,7 +35,7 @@ impl<'window> Renderer<'window> {
     }
 
     pub fn window(&self) -> &Window {
-        &self.window
+        self.window
     }
 
     pub fn output_size(&self) -> Size {

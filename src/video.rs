@@ -37,7 +37,7 @@ impl<'sdl> Video<'sdl> {
         if ret <= 0 {
             return vec![];
         }
-        (0..ret).map(|idx| Display::new(idx, &self)).collect()
+        (0..ret).map(|idx| Display::new(idx, self)).collect()
     }
 
     pub fn video_drivers(&self) -> Vec<&str> {

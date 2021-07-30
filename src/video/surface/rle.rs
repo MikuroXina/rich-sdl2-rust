@@ -16,7 +16,7 @@ impl<'surface, S: Surface> Rle<'surface, S> {
     }
 
     pub fn lock(&'surface self) -> RleLock<'surface, S> {
-        RleLock::new(&self)
+        RleLock::new(self)
     }
 }
 
