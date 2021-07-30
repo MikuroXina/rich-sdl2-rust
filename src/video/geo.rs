@@ -4,7 +4,7 @@ mod rect;
 
 pub use rect::*;
 
-#[derive(Debug, Default, Clone, PartialEq)]
+#[derive(Debug, Default, Clone, Copy, PartialEq, Eq, PartialOrd, Ord)]
 pub struct Point {
     pub x: i32,
     pub y: i32,
@@ -30,7 +30,7 @@ impl From<Point> for bind::SDL_Point {
 }
 
 impl Point {
-    pub fn is_in(&self, rect: &Rect) -> bool {
+    pub fn is_in(&self, rect: Rect) -> bool {
         let bottom_right = rect.bottom_right();
         rect.up_left.x <= self.x
             && self.x <= bottom_right.x
@@ -39,29 +39,29 @@ impl Point {
     }
 }
 
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord)]
 pub struct Size {
     pub width: u32,
     pub height: u32,
 }
 
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, Copy, PartialEq, PartialOrd)]
 pub struct Scale {
     pub horizontal: f32,
     pub vertical: f32,
 }
 
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord)]
 pub struct Line {
     pub start: Point,
     pub end: Point,
 }
 
 impl Line {
-    pub fn clip_with(&mut self, rect: &Rect) {
+    pub fn clip_with(&mut self, rect: Rect) {
         unsafe {
             bind::SDL_IntersectRectAndLine(
-                &rect.clone().into() as *const _,
+                &(rect.into()) as *const _,
                 &mut self.start.x as *mut _,
                 &mut self.start.y as *mut _,
                 &mut self.end.x as *mut _,

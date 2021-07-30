@@ -41,7 +41,6 @@ impl PasteExt for Renderer<'_> {
                 texture.as_ptr(),
                 texture
                     .clip()
-                    .clone()
                     .map_or(std::ptr::null(), |rect| &rect.into() as *const _),
                 target_area.map_or(std::ptr::null(), |rect| &rect.into() as *const _),
             )
@@ -67,7 +66,6 @@ impl PasteExt for Renderer<'_> {
                 texture.as_ptr(),
                 texture
                     .clip()
-                    .clone()
                     .map_or(std::ptr::null(), |rect| &rect.into() as *const _),
                 target_area.map_or(std::ptr::null(), |rect| &rect.into() as *const _),
                 rotation_degrees,

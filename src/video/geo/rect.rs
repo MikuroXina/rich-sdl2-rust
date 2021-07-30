@@ -4,7 +4,7 @@ use crate::bind;
 
 use super::{Point, Size};
 
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord)]
 pub struct Rect {
     pub up_left: Point,
     pub size: Size,
@@ -63,21 +63,18 @@ impl Rect {
         }
     }
 
-    pub fn has_intersection(&self, other: &Self) -> bool {
+    pub fn has_intersection(self, other: Self) -> bool {
         unsafe {
-            bind::SDL_HasIntersection(
-                &self.clone().into() as *const _,
-                &other.clone().into() as *const _,
-            ) != 0
+            bind::SDL_HasIntersection(&self.into() as *const _, &other.into() as *const _) != 0
         }
     }
 
-    pub fn intersect(&self, other: &Self) -> Option<Self> {
+    pub fn intersect(self, other: Self) -> Option<Self> {
         let mut raw = MaybeUninit::uninit();
         let ret = unsafe {
             bind::SDL_IntersectRect(
-                &self.clone().into() as *const _,
-                &other.clone().into() as *const _,
+                &self.into() as *const _,
+                &other.into() as *const _,
                 raw.as_mut_ptr(),
             )
         };
@@ -92,12 +89,12 @@ impl Rect {
         self.size.width != 0 || self.size.height != 0
     }
 
-    pub fn union(&self, other: &Self) -> Self {
+    pub fn union(self, other: Self) -> Self {
         let mut raw = MaybeUninit::uninit();
         unsafe {
             bind::SDL_UnionRect(
-                &self.clone().into() as *const _,
-                &other.clone().into() as *const _,
+                &self.into() as *const _,
+                &other.into() as *const _,
                 raw.as_mut_ptr(),
             )
         }
