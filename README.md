@@ -25,7 +25,7 @@ There's no plans to support SDL_image, SDL_mixer and so on right now.
   - [x] Mouse
   - [x] Joystick
   - [x] Game Controller
-  - [ ] Sensor
+  - [x] Sensor
 - [ ] Haptic
 - [ ] Audio
 - [ ] Timer
