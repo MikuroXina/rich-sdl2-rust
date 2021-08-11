@@ -3,6 +3,7 @@
 mod bind;
 mod error;
 mod event;
+pub mod haptic;
 mod sdl;
 mod timer;
 mod video;
