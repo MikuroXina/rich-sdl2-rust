@@ -35,6 +35,10 @@ pub const SDL_PRIs64: &'static [u8; 4usize] = b"lld\0";
 pub const SDL_PRIu64: &'static [u8; 4usize] = b"llu\0";
 pub const SDL_PRIx64: &'static [u8; 4usize] = b"llx\0";
 pub const SDL_PRIX64: &'static [u8; 4usize] = b"llX\0";
+pub const SDL_PRIs32: &'static [u8; 2usize] = b"d\0";
+pub const SDL_PRIu32: &'static [u8; 2usize] = b"u\0";
+pub const SDL_PRIx32: &'static [u8; 2usize] = b"x\0";
+pub const SDL_PRIX32: &'static [u8; 2usize] = b"X\0";
 pub const SDL_ASSERT_LEVEL: u32 = 2;
 pub const SDL_NULL_WHILE_LOOP_CONDITION: u32 = 0;
 pub const SDL_LIL_ENDIAN: u32 = 1234;
@@ -115,168 +119,194 @@ pub const SDL_HAPTIC_CARTESIAN: u32 = 1;
 pub const SDL_HAPTIC_SPHERICAL: u32 = 2;
 pub const SDL_HAPTIC_STEERING_AXIS: u32 = 3;
 pub const SDL_HAPTIC_INFINITY: u32 = 4294967295;
-pub const SDL_HINT_FRAMEBUFFER_ACCELERATION: &'static [u8; 29usize] =
-    b"SDL_FRAMEBUFFER_ACCELERATION\0";
-pub const SDL_HINT_RENDER_DRIVER: &'static [u8; 18usize] = b"SDL_RENDER_DRIVER\0";
-pub const SDL_HINT_RENDER_OPENGL_SHADERS: &'static [u8; 26usize] = b"SDL_RENDER_OPENGL_SHADERS\0";
-pub const SDL_HINT_RENDER_DIRECT3D_THREADSAFE: &'static [u8; 31usize] =
-    b"SDL_RENDER_DIRECT3D_THREADSAFE\0";
-pub const SDL_HINT_RENDER_DIRECT3D11_DEBUG: &'static [u8; 28usize] =
-    b"SDL_RENDER_DIRECT3D11_DEBUG\0";
-pub const SDL_HINT_RENDER_LOGICAL_SIZE_MODE: &'static [u8; 29usize] =
-    b"SDL_RENDER_LOGICAL_SIZE_MODE\0";
-pub const SDL_HINT_RENDER_SCALE_QUALITY: &'static [u8; 25usize] = b"SDL_RENDER_SCALE_QUALITY\0";
-pub const SDL_HINT_RENDER_VSYNC: &'static [u8; 17usize] = b"SDL_RENDER_VSYNC\0";
-pub const SDL_HINT_VIDEO_ALLOW_SCREENSAVER: &'static [u8; 28usize] =
-    b"SDL_VIDEO_ALLOW_SCREENSAVER\0";
-pub const SDL_HINT_VIDEO_EXTERNAL_CONTEXT: &'static [u8; 27usize] = b"SDL_VIDEO_EXTERNAL_CONTEXT\0";
-pub const SDL_HINT_VIDEO_X11_XVIDMODE: &'static [u8; 23usize] = b"SDL_VIDEO_X11_XVIDMODE\0";
-pub const SDL_HINT_VIDEO_X11_XINERAMA: &'static [u8; 23usize] = b"SDL_VIDEO_X11_XINERAMA\0";
-pub const SDL_HINT_VIDEO_X11_XRANDR: &'static [u8; 21usize] = b"SDL_VIDEO_X11_XRANDR\0";
-pub const SDL_HINT_VIDEO_X11_WINDOW_VISUALID: &'static [u8; 30usize] =
-    b"SDL_VIDEO_X11_WINDOW_VISUALID\0";
-pub const SDL_HINT_VIDEO_X11_NET_WM_PING: &'static [u8; 26usize] = b"SDL_VIDEO_X11_NET_WM_PING\0";
-pub const SDL_HINT_VIDEO_X11_NET_WM_BYPASS_COMPOSITOR: &'static [u8; 39usize] =
-    b"SDL_VIDEO_X11_NET_WM_BYPASS_COMPOSITOR\0";
-pub const SDL_HINT_VIDEO_X11_FORCE_EGL: &'static [u8; 24usize] = b"SDL_VIDEO_X11_FORCE_EGL\0";
-pub const SDL_HINT_WINDOW_FRAME_USABLE_WHILE_CURSOR_HIDDEN: &'static [u8; 44usize] =
-    b"SDL_WINDOW_FRAME_USABLE_WHILE_CURSOR_HIDDEN\0";
-pub const SDL_HINT_WINDOWS_INTRESOURCE_ICON: &'static [u8; 29usize] =
-    b"SDL_WINDOWS_INTRESOURCE_ICON\0";
-pub const SDL_HINT_WINDOWS_INTRESOURCE_ICON_SMALL: &'static [u8; 35usize] =
-    b"SDL_WINDOWS_INTRESOURCE_ICON_SMALL\0";
-pub const SDL_HINT_WINDOWS_ENABLE_MESSAGELOOP: &'static [u8; 31usize] =
-    b"SDL_WINDOWS_ENABLE_MESSAGELOOP\0";
-pub const SDL_HINT_GRAB_KEYBOARD: &'static [u8; 18usize] = b"SDL_GRAB_KEYBOARD\0";
-pub const SDL_HINT_MOUSE_DOUBLE_CLICK_TIME: &'static [u8; 28usize] =
-    b"SDL_MOUSE_DOUBLE_CLICK_TIME\0";
-pub const SDL_HINT_MOUSE_DOUBLE_CLICK_RADIUS: &'static [u8; 30usize] =
-    b"SDL_MOUSE_DOUBLE_CLICK_RADIUS\0";
-pub const SDL_HINT_MOUSE_NORMAL_SPEED_SCALE: &'static [u8; 29usize] =
-    b"SDL_MOUSE_NORMAL_SPEED_SCALE\0";
-pub const SDL_HINT_MOUSE_RELATIVE_SPEED_SCALE: &'static [u8; 31usize] =
-    b"SDL_MOUSE_RELATIVE_SPEED_SCALE\0";
-pub const SDL_HINT_MOUSE_RELATIVE_SCALING: &'static [u8; 27usize] = b"SDL_MOUSE_RELATIVE_SCALING\0";
-pub const SDL_HINT_MOUSE_RELATIVE_MODE_WARP: &'static [u8; 29usize] =
-    b"SDL_MOUSE_RELATIVE_MODE_WARP\0";
-pub const SDL_HINT_MOUSE_FOCUS_CLICKTHROUGH: &'static [u8; 29usize] =
-    b"SDL_MOUSE_FOCUS_CLICKTHROUGH\0";
-pub const SDL_HINT_TOUCH_MOUSE_EVENTS: &'static [u8; 23usize] = b"SDL_TOUCH_MOUSE_EVENTS\0";
-pub const SDL_HINT_MOUSE_TOUCH_EVENTS: &'static [u8; 23usize] = b"SDL_MOUSE_TOUCH_EVENTS\0";
-pub const SDL_HINT_VIDEO_MINIMIZE_ON_FOCUS_LOSS: &'static [u8; 33usize] =
-    b"SDL_VIDEO_MINIMIZE_ON_FOCUS_LOSS\0";
-pub const SDL_HINT_IDLE_TIMER_DISABLED: &'static [u8; 28usize] = b"SDL_IOS_IDLE_TIMER_DISABLED\0";
-pub const SDL_HINT_ORIENTATIONS: &'static [u8; 21usize] = b"SDL_IOS_ORIENTATIONS\0";
+pub const SDL_HINT_ACCELEROMETER_AS_JOYSTICK: &'static [u8; 30usize] =
+    b"SDL_ACCELEROMETER_AS_JOYSTICK\0";
+pub const SDL_HINT_ALLOW_ALT_TAB_WHILE_GRABBED: &'static [u8; 32usize] =
+    b"SDL_ALLOW_ALT_TAB_WHILE_GRABBED\0";
+pub const SDL_HINT_ALLOW_TOPMOST: &'static [u8; 18usize] = b"SDL_ALLOW_TOPMOST\0";
+pub const SDL_HINT_ANDROID_APK_EXPANSION_MAIN_FILE_VERSION: &'static [u8; 44usize] =
+    b"SDL_ANDROID_APK_EXPANSION_MAIN_FILE_VERSION\0";
+pub const SDL_HINT_ANDROID_APK_EXPANSION_PATCH_FILE_VERSION: &'static [u8; 45usize] =
+    b"SDL_ANDROID_APK_EXPANSION_PATCH_FILE_VERSION\0";
+pub const SDL_HINT_ANDROID_BLOCK_ON_PAUSE: &'static [u8; 27usize] = b"SDL_ANDROID_BLOCK_ON_PAUSE\0";
+pub const SDL_HINT_ANDROID_BLOCK_ON_PAUSE_PAUSEAUDIO: &'static [u8; 38usize] =
+    b"SDL_ANDROID_BLOCK_ON_PAUSE_PAUSEAUDIO\0";
+pub const SDL_HINT_ANDROID_TRAP_BACK_BUTTON: &'static [u8; 29usize] =
+    b"SDL_ANDROID_TRAP_BACK_BUTTON\0";
 pub const SDL_HINT_APPLE_TV_CONTROLLER_UI_EVENTS: &'static [u8; 34usize] =
     b"SDL_APPLE_TV_CONTROLLER_UI_EVENTS\0";
 pub const SDL_HINT_APPLE_TV_REMOTE_ALLOW_ROTATION: &'static [u8; 35usize] =
     b"SDL_APPLE_TV_REMOTE_ALLOW_ROTATION\0";
-pub const SDL_HINT_IOS_HIDE_HOME_INDICATOR: &'static [u8; 28usize] =
-    b"SDL_IOS_HIDE_HOME_INDICATOR\0";
-pub const SDL_HINT_ACCELEROMETER_AS_JOYSTICK: &'static [u8; 30usize] =
-    b"SDL_ACCELEROMETER_AS_JOYSTICK\0";
-pub const SDL_HINT_TV_REMOTE_AS_JOYSTICK: &'static [u8; 26usize] = b"SDL_TV_REMOTE_AS_JOYSTICK\0";
-pub const SDL_HINT_XINPUT_ENABLED: &'static [u8; 19usize] = b"SDL_XINPUT_ENABLED\0";
-pub const SDL_HINT_XINPUT_USE_OLD_JOYSTICK_MAPPING: &'static [u8; 36usize] =
-    b"SDL_XINPUT_USE_OLD_JOYSTICK_MAPPING\0";
-pub const SDL_HINT_GAMECONTROLLERTYPE: &'static [u8; 23usize] = b"SDL_GAMECONTROLLERTYPE\0";
+pub const SDL_HINT_AUDIO_CATEGORY: &'static [u8; 19usize] = b"SDL_AUDIO_CATEGORY\0";
+pub const SDL_HINT_AUDIO_DEVICE_APP_NAME: &'static [u8; 26usize] = b"SDL_AUDIO_DEVICE_APP_NAME\0";
+pub const SDL_HINT_AUDIO_DEVICE_STREAM_NAME: &'static [u8; 29usize] =
+    b"SDL_AUDIO_DEVICE_STREAM_NAME\0";
+pub const SDL_HINT_AUDIO_DEVICE_STREAM_ROLE: &'static [u8; 29usize] =
+    b"SDL_AUDIO_DEVICE_STREAM_ROLE\0";
+pub const SDL_HINT_AUDIO_RESAMPLING_MODE: &'static [u8; 26usize] = b"SDL_AUDIO_RESAMPLING_MODE\0";
+pub const SDL_HINT_AUTO_UPDATE_JOYSTICKS: &'static [u8; 26usize] = b"SDL_AUTO_UPDATE_JOYSTICKS\0";
+pub const SDL_HINT_AUTO_UPDATE_SENSORS: &'static [u8; 24usize] = b"SDL_AUTO_UPDATE_SENSORS\0";
+pub const SDL_HINT_BMP_SAVE_LEGACY_FORMAT: &'static [u8; 27usize] = b"SDL_BMP_SAVE_LEGACY_FORMAT\0";
+pub const SDL_HINT_DISPLAY_USABLE_BOUNDS: &'static [u8; 26usize] = b"SDL_DISPLAY_USABLE_BOUNDS\0";
+pub const SDL_HINT_EMSCRIPTEN_ASYNCIFY: &'static [u8; 24usize] = b"SDL_EMSCRIPTEN_ASYNCIFY\0";
+pub const SDL_HINT_EMSCRIPTEN_KEYBOARD_ELEMENT: &'static [u8; 32usize] =
+    b"SDL_EMSCRIPTEN_KEYBOARD_ELEMENT\0";
+pub const SDL_HINT_ENABLE_STEAM_CONTROLLERS: &'static [u8; 29usize] =
+    b"SDL_ENABLE_STEAM_CONTROLLERS\0";
+pub const SDL_HINT_EVENT_LOGGING: &'static [u8; 18usize] = b"SDL_EVENT_LOGGING\0";
+pub const SDL_HINT_FRAMEBUFFER_ACCELERATION: &'static [u8; 29usize] =
+    b"SDL_FRAMEBUFFER_ACCELERATION\0";
 pub const SDL_HINT_GAMECONTROLLERCONFIG: &'static [u8; 25usize] = b"SDL_GAMECONTROLLERCONFIG\0";
 pub const SDL_HINT_GAMECONTROLLERCONFIG_FILE: &'static [u8; 30usize] =
     b"SDL_GAMECONTROLLERCONFIG_FILE\0";
+pub const SDL_HINT_GAMECONTROLLERTYPE: &'static [u8; 23usize] = b"SDL_GAMECONTROLLERTYPE\0";
 pub const SDL_HINT_GAMECONTROLLER_IGNORE_DEVICES: &'static [u8; 34usize] =
     b"SDL_GAMECONTROLLER_IGNORE_DEVICES\0";
 pub const SDL_HINT_GAMECONTROLLER_IGNORE_DEVICES_EXCEPT: &'static [u8; 41usize] =
     b"SDL_GAMECONTROLLER_IGNORE_DEVICES_EXCEPT\0";
 pub const SDL_HINT_GAMECONTROLLER_USE_BUTTON_LABELS: &'static [u8; 37usize] =
     b"SDL_GAMECONTROLLER_USE_BUTTON_LABELS\0";
+pub const SDL_HINT_GRAB_KEYBOARD: &'static [u8; 18usize] = b"SDL_GRAB_KEYBOARD\0";
+pub const SDL_HINT_IDLE_TIMER_DISABLED: &'static [u8; 28usize] = b"SDL_IOS_IDLE_TIMER_DISABLED\0";
+pub const SDL_HINT_IME_INTERNAL_EDITING: &'static [u8; 25usize] = b"SDL_IME_INTERNAL_EDITING\0";
+pub const SDL_HINT_IOS_HIDE_HOME_INDICATOR: &'static [u8; 28usize] =
+    b"SDL_IOS_HIDE_HOME_INDICATOR\0";
 pub const SDL_HINT_JOYSTICK_ALLOW_BACKGROUND_EVENTS: &'static [u8; 37usize] =
     b"SDL_JOYSTICK_ALLOW_BACKGROUND_EVENTS\0";
 pub const SDL_HINT_JOYSTICK_HIDAPI: &'static [u8; 20usize] = b"SDL_JOYSTICK_HIDAPI\0";
-pub const SDL_HINT_JOYSTICK_HIDAPI_PS4: &'static [u8; 24usize] = b"SDL_JOYSTICK_HIDAPI_PS4\0";
-pub const SDL_HINT_JOYSTICK_HIDAPI_PS5: &'static [u8; 24usize] = b"SDL_JOYSTICK_HIDAPI_PS5\0";
-pub const SDL_HINT_JOYSTICK_HIDAPI_PS4_RUMBLE: &'static [u8; 31usize] =
-    b"SDL_JOYSTICK_HIDAPI_PS4_RUMBLE\0";
-pub const SDL_HINT_JOYSTICK_HIDAPI_STEAM: &'static [u8; 26usize] = b"SDL_JOYSTICK_HIDAPI_STEAM\0";
-pub const SDL_HINT_JOYSTICK_HIDAPI_SWITCH: &'static [u8; 27usize] = b"SDL_JOYSTICK_HIDAPI_SWITCH\0";
-pub const SDL_HINT_JOYSTICK_HIDAPI_XBOX: &'static [u8; 25usize] = b"SDL_JOYSTICK_HIDAPI_XBOX\0";
-pub const SDL_HINT_JOYSTICK_HIDAPI_CORRELATE_XINPUT: &'static [u8; 37usize] =
-    b"SDL_JOYSTICK_HIDAPI_CORRELATE_XINPUT\0";
 pub const SDL_HINT_JOYSTICK_HIDAPI_GAMECUBE: &'static [u8; 29usize] =
     b"SDL_JOYSTICK_HIDAPI_GAMECUBE\0";
-pub const SDL_HINT_ENABLE_STEAM_CONTROLLERS: &'static [u8; 29usize] =
-    b"SDL_ENABLE_STEAM_CONTROLLERS\0";
+pub const SDL_HINT_JOYSTICK_HIDAPI_JOY_CONS: &'static [u8; 29usize] =
+    b"SDL_JOYSTICK_HIDAPI_JOY_CONS\0";
+pub const SDL_HINT_JOYSTICK_HIDAPI_LUNA: &'static [u8; 25usize] = b"SDL_JOYSTICK_HIDAPI_LUNA\0";
+pub const SDL_HINT_JOYSTICK_HIDAPI_PS4: &'static [u8; 24usize] = b"SDL_JOYSTICK_HIDAPI_PS4\0";
+pub const SDL_HINT_JOYSTICK_HIDAPI_PS4_RUMBLE: &'static [u8; 31usize] =
+    b"SDL_JOYSTICK_HIDAPI_PS4_RUMBLE\0";
+pub const SDL_HINT_JOYSTICK_HIDAPI_PS5: &'static [u8; 24usize] = b"SDL_JOYSTICK_HIDAPI_PS5\0";
+pub const SDL_HINT_JOYSTICK_HIDAPI_PS5_PLAYER_LED: &'static [u8; 35usize] =
+    b"SDL_JOYSTICK_HIDAPI_PS5_PLAYER_LED\0";
+pub const SDL_HINT_JOYSTICK_HIDAPI_PS5_RUMBLE: &'static [u8; 31usize] =
+    b"SDL_JOYSTICK_HIDAPI_PS5_RUMBLE\0";
+pub const SDL_HINT_JOYSTICK_HIDAPI_STADIA: &'static [u8; 27usize] = b"SDL_JOYSTICK_HIDAPI_STADIA\0";
+pub const SDL_HINT_JOYSTICK_HIDAPI_STEAM: &'static [u8; 26usize] = b"SDL_JOYSTICK_HIDAPI_STEAM\0";
+pub const SDL_HINT_JOYSTICK_HIDAPI_SWITCH: &'static [u8; 27usize] = b"SDL_JOYSTICK_HIDAPI_SWITCH\0";
+pub const SDL_HINT_JOYSTICK_HIDAPI_SWITCH_HOME_LED: &'static [u8; 36usize] =
+    b"SDL_JOYSTICK_HIDAPI_SWITCH_HOME_LED\0";
+pub const SDL_HINT_JOYSTICK_HIDAPI_XBOX: &'static [u8; 25usize] = b"SDL_JOYSTICK_HIDAPI_XBOX\0";
 pub const SDL_HINT_JOYSTICK_RAWINPUT: &'static [u8; 22usize] = b"SDL_JOYSTICK_RAWINPUT\0";
+pub const SDL_HINT_JOYSTICK_RAWINPUT_CORRELATE_XINPUT: &'static [u8; 39usize] =
+    b"SDL_JOYSTICK_RAWINPUT_CORRELATE_XINPUT\0";
 pub const SDL_HINT_JOYSTICK_THREAD: &'static [u8; 20usize] = b"SDL_JOYSTICK_THREAD\0";
+pub const SDL_HINT_KMSDRM_REQUIRE_DRM_MASTER: &'static [u8; 30usize] =
+    b"SDL_KMSDRM_REQUIRE_DRM_MASTER\0";
 pub const SDL_HINT_LINUX_JOYSTICK_DEADZONES: &'static [u8; 29usize] =
     b"SDL_LINUX_JOYSTICK_DEADZONES\0";
-pub const SDL_HINT_ALLOW_TOPMOST: &'static [u8; 18usize] = b"SDL_ALLOW_TOPMOST\0";
-pub const SDL_HINT_TIMER_RESOLUTION: &'static [u8; 21usize] = b"SDL_TIMER_RESOLUTION\0";
+pub const SDL_HINT_MAC_BACKGROUND_APP: &'static [u8; 23usize] = b"SDL_MAC_BACKGROUND_APP\0";
+pub const SDL_HINT_MAC_CTRL_CLICK_EMULATE_RIGHT_CLICK: &'static [u8; 39usize] =
+    b"SDL_MAC_CTRL_CLICK_EMULATE_RIGHT_CLICK\0";
+pub const SDL_HINT_MOUSE_DOUBLE_CLICK_RADIUS: &'static [u8; 30usize] =
+    b"SDL_MOUSE_DOUBLE_CLICK_RADIUS\0";
+pub const SDL_HINT_MOUSE_DOUBLE_CLICK_TIME: &'static [u8; 28usize] =
+    b"SDL_MOUSE_DOUBLE_CLICK_TIME\0";
+pub const SDL_HINT_MOUSE_FOCUS_CLICKTHROUGH: &'static [u8; 29usize] =
+    b"SDL_MOUSE_FOCUS_CLICKTHROUGH\0";
+pub const SDL_HINT_MOUSE_NORMAL_SPEED_SCALE: &'static [u8; 29usize] =
+    b"SDL_MOUSE_NORMAL_SPEED_SCALE\0";
+pub const SDL_HINT_MOUSE_RELATIVE_MODE_WARP: &'static [u8; 29usize] =
+    b"SDL_MOUSE_RELATIVE_MODE_WARP\0";
+pub const SDL_HINT_MOUSE_RELATIVE_SCALING: &'static [u8; 27usize] = b"SDL_MOUSE_RELATIVE_SCALING\0";
+pub const SDL_HINT_MOUSE_RELATIVE_SPEED_SCALE: &'static [u8; 31usize] =
+    b"SDL_MOUSE_RELATIVE_SPEED_SCALE\0";
+pub const SDL_HINT_MOUSE_TOUCH_EVENTS: &'static [u8; 23usize] = b"SDL_MOUSE_TOUCH_EVENTS\0";
+pub const SDL_HINT_NO_SIGNAL_HANDLERS: &'static [u8; 23usize] = b"SDL_NO_SIGNAL_HANDLERS\0";
+pub const SDL_HINT_OPENGL_ES_DRIVER: &'static [u8; 21usize] = b"SDL_OPENGL_ES_DRIVER\0";
+pub const SDL_HINT_ORIENTATIONS: &'static [u8; 21usize] = b"SDL_IOS_ORIENTATIONS\0";
+pub const SDL_HINT_PREFERRED_LOCALES: &'static [u8; 22usize] = b"SDL_PREFERRED_LOCALES\0";
 pub const SDL_HINT_QTWAYLAND_CONTENT_ORIENTATION: &'static [u8; 34usize] =
     b"SDL_QTWAYLAND_CONTENT_ORIENTATION\0";
 pub const SDL_HINT_QTWAYLAND_WINDOW_FLAGS: &'static [u8; 27usize] = b"SDL_QTWAYLAND_WINDOW_FLAGS\0";
-pub const SDL_HINT_THREAD_STACK_SIZE: &'static [u8; 22usize] = b"SDL_THREAD_STACK_SIZE\0";
-pub const SDL_HINT_THREAD_PRIORITY_POLICY: &'static [u8; 27usize] = b"SDL_THREAD_PRIORITY_POLICY\0";
+pub const SDL_HINT_RENDER_BATCHING: &'static [u8; 20usize] = b"SDL_RENDER_BATCHING\0";
+pub const SDL_HINT_RENDER_DIRECT3D11_DEBUG: &'static [u8; 28usize] =
+    b"SDL_RENDER_DIRECT3D11_DEBUG\0";
+pub const SDL_HINT_RENDER_DIRECT3D_THREADSAFE: &'static [u8; 31usize] =
+    b"SDL_RENDER_DIRECT3D_THREADSAFE\0";
+pub const SDL_HINT_RENDER_DRIVER: &'static [u8; 18usize] = b"SDL_RENDER_DRIVER\0";
+pub const SDL_HINT_RENDER_LOGICAL_SIZE_MODE: &'static [u8; 29usize] =
+    b"SDL_RENDER_LOGICAL_SIZE_MODE\0";
+pub const SDL_HINT_RENDER_OPENGL_SHADERS: &'static [u8; 26usize] = b"SDL_RENDER_OPENGL_SHADERS\0";
+pub const SDL_HINT_RENDER_SCALE_QUALITY: &'static [u8; 25usize] = b"SDL_RENDER_SCALE_QUALITY\0";
+pub const SDL_HINT_RENDER_VSYNC: &'static [u8; 17usize] = b"SDL_RENDER_VSYNC\0";
+pub const SDL_HINT_RETURN_KEY_HIDES_IME: &'static [u8; 25usize] = b"SDL_RETURN_KEY_HIDES_IME\0";
+pub const SDL_HINT_RPI_VIDEO_LAYER: &'static [u8; 20usize] = b"SDL_RPI_VIDEO_LAYER\0";
 pub const SDL_HINT_THREAD_FORCE_REALTIME_TIME_CRITICAL: &'static [u8; 40usize] =
     b"SDL_THREAD_FORCE_REALTIME_TIME_CRITICAL\0";
+pub const SDL_HINT_THREAD_PRIORITY_POLICY: &'static [u8; 27usize] = b"SDL_THREAD_PRIORITY_POLICY\0";
+pub const SDL_HINT_THREAD_STACK_SIZE: &'static [u8; 22usize] = b"SDL_THREAD_STACK_SIZE\0";
+pub const SDL_HINT_TIMER_RESOLUTION: &'static [u8; 21usize] = b"SDL_TIMER_RESOLUTION\0";
+pub const SDL_HINT_TOUCH_MOUSE_EVENTS: &'static [u8; 23usize] = b"SDL_TOUCH_MOUSE_EVENTS\0";
+pub const SDL_HINT_TV_REMOTE_AS_JOYSTICK: &'static [u8; 26usize] = b"SDL_TV_REMOTE_AS_JOYSTICK\0";
+pub const SDL_HINT_VIDEO_ALLOW_SCREENSAVER: &'static [u8; 28usize] =
+    b"SDL_VIDEO_ALLOW_SCREENSAVER\0";
+pub const SDL_HINT_VIDEO_DOUBLE_BUFFER: &'static [u8; 24usize] = b"SDL_VIDEO_DOUBLE_BUFFER\0";
+pub const SDL_HINT_VIDEO_EXTERNAL_CONTEXT: &'static [u8; 27usize] = b"SDL_VIDEO_EXTERNAL_CONTEXT\0";
 pub const SDL_HINT_VIDEO_HIGHDPI_DISABLED: &'static [u8; 27usize] = b"SDL_VIDEO_HIGHDPI_DISABLED\0";
-pub const SDL_HINT_MAC_CTRL_CLICK_EMULATE_RIGHT_CLICK: &'static [u8; 39usize] =
-    b"SDL_MAC_CTRL_CLICK_EMULATE_RIGHT_CLICK\0";
-pub const SDL_HINT_VIDEO_WIN_D3DCOMPILER: &'static [u8; 26usize] = b"SDL_VIDEO_WIN_D3DCOMPILER\0";
-pub const SDL_HINT_VIDEO_WINDOW_SHARE_PIXEL_FORMAT: &'static [u8; 36usize] =
-    b"SDL_VIDEO_WINDOW_SHARE_PIXEL_FORMAT\0";
-pub const SDL_HINT_WINRT_PRIVACY_POLICY_URL: &'static [u8; 29usize] =
-    b"SDL_WINRT_PRIVACY_POLICY_URL\0";
-pub const SDL_HINT_WINRT_PRIVACY_POLICY_LABEL: &'static [u8; 31usize] =
-    b"SDL_WINRT_PRIVACY_POLICY_LABEL\0";
-pub const SDL_HINT_WINRT_HANDLE_BACK_BUTTON: &'static [u8; 29usize] =
-    b"SDL_WINRT_HANDLE_BACK_BUTTON\0";
 pub const SDL_HINT_VIDEO_MAC_FULLSCREEN_SPACES: &'static [u8; 32usize] =
     b"SDL_VIDEO_MAC_FULLSCREEN_SPACES\0";
-pub const SDL_HINT_MAC_BACKGROUND_APP: &'static [u8; 23usize] = b"SDL_MAC_BACKGROUND_APP\0";
-pub const SDL_HINT_ANDROID_APK_EXPANSION_MAIN_FILE_VERSION: &'static [u8; 44usize] =
-    b"SDL_ANDROID_APK_EXPANSION_MAIN_FILE_VERSION\0";
-pub const SDL_HINT_ANDROID_APK_EXPANSION_PATCH_FILE_VERSION: &'static [u8; 45usize] =
-    b"SDL_ANDROID_APK_EXPANSION_PATCH_FILE_VERSION\0";
-pub const SDL_HINT_IME_INTERNAL_EDITING: &'static [u8; 25usize] = b"SDL_IME_INTERNAL_EDITING\0";
-pub const SDL_HINT_ANDROID_TRAP_BACK_BUTTON: &'static [u8; 29usize] =
-    b"SDL_ANDROID_TRAP_BACK_BUTTON\0";
-pub const SDL_HINT_ANDROID_BLOCK_ON_PAUSE: &'static [u8; 27usize] = b"SDL_ANDROID_BLOCK_ON_PAUSE\0";
-pub const SDL_HINT_ANDROID_BLOCK_ON_PAUSE_PAUSEAUDIO: &'static [u8; 38usize] =
-    b"SDL_ANDROID_BLOCK_ON_PAUSE_PAUSEAUDIO\0";
-pub const SDL_HINT_RETURN_KEY_HIDES_IME: &'static [u8; 25usize] = b"SDL_RETURN_KEY_HIDES_IME\0";
-pub const SDL_HINT_EMSCRIPTEN_KEYBOARD_ELEMENT: &'static [u8; 32usize] =
-    b"SDL_EMSCRIPTEN_KEYBOARD_ELEMENT\0";
-pub const SDL_HINT_EMSCRIPTEN_ASYNCIFY: &'static [u8; 24usize] = b"SDL_EMSCRIPTEN_ASYNCIFY\0";
-pub const SDL_HINT_NO_SIGNAL_HANDLERS: &'static [u8; 23usize] = b"SDL_NO_SIGNAL_HANDLERS\0";
-pub const SDL_HINT_WINDOWS_NO_CLOSE_ON_ALT_F4: &'static [u8; 31usize] =
-    b"SDL_WINDOWS_NO_CLOSE_ON_ALT_F4\0";
-pub const SDL_HINT_BMP_SAVE_LEGACY_FORMAT: &'static [u8; 27usize] = b"SDL_BMP_SAVE_LEGACY_FORMAT\0";
-pub const SDL_HINT_WINDOWS_DISABLE_THREAD_NAMING: &'static [u8; 34usize] =
-    b"SDL_WINDOWS_DISABLE_THREAD_NAMING\0";
-pub const SDL_HINT_RPI_VIDEO_LAYER: &'static [u8; 20usize] = b"SDL_RPI_VIDEO_LAYER\0";
-pub const SDL_HINT_VIDEO_DOUBLE_BUFFER: &'static [u8; 24usize] = b"SDL_VIDEO_DOUBLE_BUFFER\0";
-pub const SDL_HINT_OPENGL_ES_DRIVER: &'static [u8; 21usize] = b"SDL_OPENGL_ES_DRIVER\0";
-pub const SDL_HINT_AUDIO_RESAMPLING_MODE: &'static [u8; 26usize] = b"SDL_AUDIO_RESAMPLING_MODE\0";
-pub const SDL_HINT_AUDIO_CATEGORY: &'static [u8; 19usize] = b"SDL_AUDIO_CATEGORY\0";
-pub const SDL_HINT_RENDER_BATCHING: &'static [u8; 20usize] = b"SDL_RENDER_BATCHING\0";
-pub const SDL_HINT_AUTO_UPDATE_JOYSTICKS: &'static [u8; 26usize] = b"SDL_AUTO_UPDATE_JOYSTICKS\0";
-pub const SDL_HINT_AUTO_UPDATE_SENSORS: &'static [u8; 24usize] = b"SDL_AUTO_UPDATE_SENSORS\0";
-pub const SDL_HINT_EVENT_LOGGING: &'static [u8; 18usize] = b"SDL_EVENT_LOGGING\0";
+pub const SDL_HINT_VIDEO_MINIMIZE_ON_FOCUS_LOSS: &'static [u8; 33usize] =
+    b"SDL_VIDEO_MINIMIZE_ON_FOCUS_LOSS\0";
+pub const SDL_HINT_VIDEO_WAYLAND_ALLOW_LIBDECOR: &'static [u8; 33usize] =
+    b"SDL_VIDEO_WAYLAND_ALLOW_LIBDECOR\0";
+pub const SDL_HINT_VIDEO_WINDOW_SHARE_PIXEL_FORMAT: &'static [u8; 36usize] =
+    b"SDL_VIDEO_WINDOW_SHARE_PIXEL_FORMAT\0";
+pub const SDL_HINT_VIDEO_WIN_D3DCOMPILER: &'static [u8; 26usize] = b"SDL_VIDEO_WIN_D3DCOMPILER\0";
+pub const SDL_HINT_VIDEO_X11_FORCE_EGL: &'static [u8; 24usize] = b"SDL_VIDEO_X11_FORCE_EGL\0";
+pub const SDL_HINT_VIDEO_X11_NET_WM_BYPASS_COMPOSITOR: &'static [u8; 39usize] =
+    b"SDL_VIDEO_X11_NET_WM_BYPASS_COMPOSITOR\0";
+pub const SDL_HINT_VIDEO_X11_NET_WM_PING: &'static [u8; 26usize] = b"SDL_VIDEO_X11_NET_WM_PING\0";
+pub const SDL_HINT_VIDEO_X11_WINDOW_VISUALID: &'static [u8; 30usize] =
+    b"SDL_VIDEO_X11_WINDOW_VISUALID\0";
+pub const SDL_HINT_VIDEO_X11_XINERAMA: &'static [u8; 23usize] = b"SDL_VIDEO_X11_XINERAMA\0";
+pub const SDL_HINT_VIDEO_X11_XRANDR: &'static [u8; 21usize] = b"SDL_VIDEO_X11_XRANDR\0";
+pub const SDL_HINT_VIDEO_X11_XVIDMODE: &'static [u8; 23usize] = b"SDL_VIDEO_X11_XVIDMODE\0";
+pub const SDL_HINT_WAVE_FACT_CHUNK: &'static [u8; 20usize] = b"SDL_WAVE_FACT_CHUNK\0";
 pub const SDL_HINT_WAVE_RIFF_CHUNK_SIZE: &'static [u8; 25usize] = b"SDL_WAVE_RIFF_CHUNK_SIZE\0";
 pub const SDL_HINT_WAVE_TRUNCATION: &'static [u8; 20usize] = b"SDL_WAVE_TRUNCATION\0";
-pub const SDL_HINT_WAVE_FACT_CHUNK: &'static [u8; 20usize] = b"SDL_WAVE_FACT_CHUNK\0";
-pub const SDL_HINT_DISPLAY_USABLE_BOUNDS: &'static [u8; 26usize] = b"SDL_DISPLAY_USABLE_BOUNDS\0";
-pub const SDL_HINT_AUDIO_DEVICE_APP_NAME: &'static [u8; 26usize] = b"SDL_AUDIO_DEVICE_APP_NAME\0";
-pub const SDL_HINT_AUDIO_DEVICE_STREAM_NAME: &'static [u8; 29usize] =
-    b"SDL_AUDIO_DEVICE_STREAM_NAME\0";
-pub const SDL_HINT_PREFERRED_LOCALES: &'static [u8; 22usize] = b"SDL_PREFERRED_LOCALES\0";
+pub const SDL_HINT_WINDOWS_DISABLE_THREAD_NAMING: &'static [u8; 34usize] =
+    b"SDL_WINDOWS_DISABLE_THREAD_NAMING\0";
+pub const SDL_HINT_WINDOWS_ENABLE_MESSAGELOOP: &'static [u8; 31usize] =
+    b"SDL_WINDOWS_ENABLE_MESSAGELOOP\0";
+pub const SDL_HINT_WINDOWS_FORCE_MUTEX_CRITICAL_SECTIONS: &'static [u8; 42usize] =
+    b"SDL_WINDOWS_FORCE_MUTEX_CRITICAL_SECTIONS\0";
+pub const SDL_HINT_WINDOWS_FORCE_SEMAPHORE_KERNEL: &'static [u8; 35usize] =
+    b"SDL_WINDOWS_FORCE_SEMAPHORE_KERNEL\0";
+pub const SDL_HINT_WINDOWS_INTRESOURCE_ICON: &'static [u8; 29usize] =
+    b"SDL_WINDOWS_INTRESOURCE_ICON\0";
+pub const SDL_HINT_WINDOWS_INTRESOURCE_ICON_SMALL: &'static [u8; 35usize] =
+    b"SDL_WINDOWS_INTRESOURCE_ICON_SMALL\0";
+pub const SDL_HINT_WINDOWS_NO_CLOSE_ON_ALT_F4: &'static [u8; 31usize] =
+    b"SDL_WINDOWS_NO_CLOSE_ON_ALT_F4\0";
+pub const SDL_HINT_WINDOWS_USE_D3D9EX: &'static [u8; 23usize] = b"SDL_WINDOWS_USE_D3D9EX\0";
+pub const SDL_HINT_WINDOW_FRAME_USABLE_WHILE_CURSOR_HIDDEN: &'static [u8; 44usize] =
+    b"SDL_WINDOW_FRAME_USABLE_WHILE_CURSOR_HIDDEN\0";
+pub const SDL_HINT_WINRT_HANDLE_BACK_BUTTON: &'static [u8; 29usize] =
+    b"SDL_WINRT_HANDLE_BACK_BUTTON\0";
+pub const SDL_HINT_WINRT_PRIVACY_POLICY_LABEL: &'static [u8; 31usize] =
+    b"SDL_WINRT_PRIVACY_POLICY_LABEL\0";
+pub const SDL_HINT_WINRT_PRIVACY_POLICY_URL: &'static [u8; 29usize] =
+    b"SDL_WINRT_PRIVACY_POLICY_URL\0";
+pub const SDL_HINT_X11_FORCE_OVERRIDE_REDIRECT: &'static [u8; 32usize] =
+    b"SDL_X11_FORCE_OVERRIDE_REDIRECT\0";
+pub const SDL_HINT_XINPUT_ENABLED: &'static [u8; 19usize] = b"SDL_XINPUT_ENABLED\0";
+pub const SDL_HINT_XINPUT_USE_OLD_JOYSTICK_MAPPING: &'static [u8; 36usize] =
+    b"SDL_XINPUT_USE_OLD_JOYSTICK_MAPPING\0";
+pub const SDL_HINT_AUDIO_INCLUDE_MONITORS: &'static [u8; 27usize] = b"SDL_AUDIO_INCLUDE_MONITORS\0";
 pub const SDL_MAX_LOG_MESSAGE: u32 = 4096;
 pub const SDL_NONSHAPEABLE_WINDOW: i32 = -1;
 pub const SDL_INVALID_SHAPE_ARGUMENT: i32 = -2;
 pub const SDL_WINDOW_LACKS_SHAPE: i32 = -3;
 pub const SDL_MAJOR_VERSION: u32 = 2;
 pub const SDL_MINOR_VERSION: u32 = 0;
-pub const SDL_PATCHLEVEL: u32 = 14;
+pub const SDL_PATCHLEVEL: u32 = 16;
 pub const SDL_INIT_TIMER: u32 = 1;
 pub const SDL_INIT_AUDIO: u32 = 16;
 pub const SDL_INIT_VIDEO: u32 = 32;
@@ -696,7 +726,25 @@ extern "C" {
     pub fn SDL_abs(x: ::std::os::raw::c_int) -> ::std::os::raw::c_int;
 }
 extern "C" {
+    pub fn SDL_isalpha(x: ::std::os::raw::c_int) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    pub fn SDL_isalnum(x: ::std::os::raw::c_int) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    pub fn SDL_isblank(x: ::std::os::raw::c_int) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    pub fn SDL_iscntrl(x: ::std::os::raw::c_int) -> ::std::os::raw::c_int;
+}
+extern "C" {
     pub fn SDL_isdigit(x: ::std::os::raw::c_int) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    pub fn SDL_isxdigit(x: ::std::os::raw::c_int) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    pub fn SDL_ispunct(x: ::std::os::raw::c_int) -> ::std::os::raw::c_int;
 }
 extern "C" {
     pub fn SDL_isspace(x: ::std::os::raw::c_int) -> ::std::os::raw::c_int;
@@ -706,6 +754,12 @@ extern "C" {
 }
 extern "C" {
     pub fn SDL_islower(x: ::std::os::raw::c_int) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    pub fn SDL_isprint(x: ::std::os::raw::c_int) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    pub fn SDL_isgraph(x: ::std::os::raw::c_int) -> ::std::os::raw::c_int;
 }
 extern "C" {
     pub fn SDL_toupper(x: ::std::os::raw::c_int) -> ::std::os::raw::c_int;
@@ -1070,6 +1124,18 @@ extern "C" {
 }
 extern "C" {
     pub fn SDL_powf(x: f32, y: f32) -> f32;
+}
+extern "C" {
+    pub fn SDL_round(x: f64) -> f64;
+}
+extern "C" {
+    pub fn SDL_roundf(x: f32) -> f32;
+}
+extern "C" {
+    pub fn SDL_lround(x: f64) -> ::std::os::raw::c_long;
+}
+extern "C" {
+    pub fn SDL_lroundf(x: f32) -> ::std::os::raw::c_long;
 }
 extern "C" {
     pub fn SDL_scalbn(x: f64, n: ::std::os::raw::c_int) -> f64;
@@ -1511,6 +1577,9 @@ extern "C" {
         value: *const ::std::os::raw::c_void,
         destructor: ::std::option::Option<unsafe extern "C" fn(arg1: *mut ::std::os::raw::c_void)>,
     ) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    pub fn SDL_TLSCleanup();
 }
 #[repr(C)]
 #[derive(Copy, Clone)]
@@ -2254,6 +2323,13 @@ extern "C" {
         index: ::std::os::raw::c_int,
         iscapture: ::std::os::raw::c_int,
     ) -> *const ::std::os::raw::c_char;
+}
+extern "C" {
+    pub fn SDL_GetAudioDeviceSpec(
+        index: ::std::os::raw::c_int,
+        iscapture: ::std::os::raw::c_int,
+        spec: *mut SDL_AudioSpec,
+    ) -> ::std::os::raw::c_int;
 }
 extern "C" {
     pub fn SDL_OpenAudioDevice(
@@ -3634,6 +3710,14 @@ extern "C" {
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
+    pub fn SDL_SoftStretchLinear(
+        src: *mut SDL_Surface,
+        srcrect: *const SDL_Rect,
+        dst: *mut SDL_Surface,
+        dstrect: *const SDL_Rect,
+    ) -> ::std::os::raw::c_int;
+}
+extern "C" {
     pub fn SDL_UpperBlitScaled(
         src: *mut SDL_Surface,
         srcrect: *const SDL_Rect,
@@ -3746,7 +3830,7 @@ pub const SDL_WindowFlags_SDL_WINDOW_BORDERLESS: SDL_WindowFlags = 16;
 pub const SDL_WindowFlags_SDL_WINDOW_RESIZABLE: SDL_WindowFlags = 32;
 pub const SDL_WindowFlags_SDL_WINDOW_MINIMIZED: SDL_WindowFlags = 64;
 pub const SDL_WindowFlags_SDL_WINDOW_MAXIMIZED: SDL_WindowFlags = 128;
-pub const SDL_WindowFlags_SDL_WINDOW_INPUT_GRABBED: SDL_WindowFlags = 256;
+pub const SDL_WindowFlags_SDL_WINDOW_MOUSE_GRABBED: SDL_WindowFlags = 256;
 pub const SDL_WindowFlags_SDL_WINDOW_INPUT_FOCUS: SDL_WindowFlags = 512;
 pub const SDL_WindowFlags_SDL_WINDOW_MOUSE_FOCUS: SDL_WindowFlags = 1024;
 pub const SDL_WindowFlags_SDL_WINDOW_FULLSCREEN_DESKTOP: SDL_WindowFlags = 4097;
@@ -3758,8 +3842,10 @@ pub const SDL_WindowFlags_SDL_WINDOW_SKIP_TASKBAR: SDL_WindowFlags = 65536;
 pub const SDL_WindowFlags_SDL_WINDOW_UTILITY: SDL_WindowFlags = 131072;
 pub const SDL_WindowFlags_SDL_WINDOW_TOOLTIP: SDL_WindowFlags = 262144;
 pub const SDL_WindowFlags_SDL_WINDOW_POPUP_MENU: SDL_WindowFlags = 524288;
+pub const SDL_WindowFlags_SDL_WINDOW_KEYBOARD_GRABBED: SDL_WindowFlags = 1048576;
 pub const SDL_WindowFlags_SDL_WINDOW_VULKAN: SDL_WindowFlags = 268435456;
 pub const SDL_WindowFlags_SDL_WINDOW_METAL: SDL_WindowFlags = 536870912;
+pub const SDL_WindowFlags_SDL_WINDOW_INPUT_GRABBED: SDL_WindowFlags = 256;
 pub type SDL_WindowFlags = ::std::os::raw::c_uint;
 pub const SDL_WindowEventID_SDL_WINDOWEVENT_NONE: SDL_WindowEventID = 0;
 pub const SDL_WindowEventID_SDL_WINDOWEVENT_SHOWN: SDL_WindowEventID = 1;
@@ -3790,6 +3876,10 @@ pub const SDL_DisplayOrientation_SDL_ORIENTATION_LANDSCAPE_FLIPPED: SDL_DisplayO
 pub const SDL_DisplayOrientation_SDL_ORIENTATION_PORTRAIT: SDL_DisplayOrientation = 3;
 pub const SDL_DisplayOrientation_SDL_ORIENTATION_PORTRAIT_FLIPPED: SDL_DisplayOrientation = 4;
 pub type SDL_DisplayOrientation = ::std::os::raw::c_uint;
+pub const SDL_FlashOperation_SDL_FLASH_CANCEL: SDL_FlashOperation = 0;
+pub const SDL_FlashOperation_SDL_FLASH_BRIEFLY: SDL_FlashOperation = 1;
+pub const SDL_FlashOperation_SDL_FLASH_UNTIL_FOCUSED: SDL_FlashOperation = 2;
+pub type SDL_FlashOperation = ::std::os::raw::c_uint;
 pub type SDL_GLContext = *mut ::std::os::raw::c_void;
 pub const SDL_GLattr_SDL_GL_RED_SIZE: SDL_GLattr = 0;
 pub const SDL_GLattr_SDL_GL_GREEN_SIZE: SDL_GLattr = 1;
@@ -4047,6 +4137,9 @@ extern "C" {
     pub fn SDL_SetWindowResizable(window: *mut SDL_Window, resizable: SDL_bool);
 }
 extern "C" {
+    pub fn SDL_SetWindowAlwaysOnTop(window: *mut SDL_Window, on_top: SDL_bool);
+}
+extern "C" {
     pub fn SDL_ShowWindow(window: *mut SDL_Window);
 }
 extern "C" {
@@ -4085,7 +4178,19 @@ extern "C" {
     pub fn SDL_SetWindowGrab(window: *mut SDL_Window, grabbed: SDL_bool);
 }
 extern "C" {
+    pub fn SDL_SetWindowKeyboardGrab(window: *mut SDL_Window, grabbed: SDL_bool);
+}
+extern "C" {
+    pub fn SDL_SetWindowMouseGrab(window: *mut SDL_Window, grabbed: SDL_bool);
+}
+extern "C" {
     pub fn SDL_GetWindowGrab(window: *mut SDL_Window) -> SDL_bool;
+}
+extern "C" {
+    pub fn SDL_GetWindowKeyboardGrab(window: *mut SDL_Window) -> SDL_bool;
+}
+extern "C" {
+    pub fn SDL_GetWindowMouseGrab(window: *mut SDL_Window) -> SDL_bool;
 }
 extern "C" {
     pub fn SDL_GetGrabbedWindow() -> *mut SDL_Window;
@@ -4156,6 +4261,12 @@ extern "C" {
         window: *mut SDL_Window,
         callback: SDL_HitTest,
         callback_data: *mut ::std::os::raw::c_void,
+    ) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    pub fn SDL_FlashWindow(
+        window: *mut SDL_Window,
+        operation: SDL_FlashOperation,
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
@@ -5203,6 +5314,13 @@ extern "C" {
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
+    pub fn SDL_JoystickSendEffect(
+        joystick: *mut SDL_Joystick,
+        data: *const ::std::os::raw::c_void,
+        size: ::std::os::raw::c_int,
+    ) -> ::std::os::raw::c_int;
+}
+extern "C" {
     pub fn SDL_JoystickClose(joystick: *mut SDL_Joystick);
 }
 extern "C" {
@@ -5291,6 +5409,8 @@ pub const SDL_GameControllerType_SDL_CONTROLLER_TYPE_NINTENDO_SWITCH_PRO: SDL_Ga
     5;
 pub const SDL_GameControllerType_SDL_CONTROLLER_TYPE_VIRTUAL: SDL_GameControllerType = 6;
 pub const SDL_GameControllerType_SDL_CONTROLLER_TYPE_PS5: SDL_GameControllerType = 7;
+pub const SDL_GameControllerType_SDL_CONTROLLER_TYPE_AMAZON_LUNA: SDL_GameControllerType = 8;
+pub const SDL_GameControllerType_SDL_CONTROLLER_TYPE_GOOGLE_STADIA: SDL_GameControllerType = 9;
 pub type SDL_GameControllerType = ::std::os::raw::c_uint;
 pub const SDL_GameControllerBindType_SDL_CONTROLLER_BINDTYPE_NONE: SDL_GameControllerBindType = 0;
 pub const SDL_GameControllerBindType_SDL_CONTROLLER_BINDTYPE_BUTTON: SDL_GameControllerBindType = 1;
@@ -5574,7 +5694,7 @@ pub const SDL_GameControllerAxis_SDL_CONTROLLER_AXIS_MAX: SDL_GameControllerAxis
 pub type SDL_GameControllerAxis = ::std::os::raw::c_int;
 extern "C" {
     pub fn SDL_GameControllerGetAxisFromString(
-        pchString: *const ::std::os::raw::c_char,
+        str_: *const ::std::os::raw::c_char,
     ) -> SDL_GameControllerAxis;
 }
 extern "C" {
@@ -5627,7 +5747,7 @@ pub const SDL_GameControllerButton_SDL_CONTROLLER_BUTTON_MAX: SDL_GameController
 pub type SDL_GameControllerButton = ::std::os::raw::c_int;
 extern "C" {
     pub fn SDL_GameControllerGetButtonFromString(
-        pchString: *const ::std::os::raw::c_char,
+        str_: *const ::std::os::raw::c_char,
     ) -> SDL_GameControllerButton;
 }
 extern "C" {
@@ -5695,6 +5815,12 @@ extern "C" {
     ) -> SDL_bool;
 }
 extern "C" {
+    pub fn SDL_GameControllerGetSensorDataRate(
+        gamecontroller: *mut SDL_GameController,
+        type_: SDL_SensorType,
+    ) -> f32;
+}
+extern "C" {
     pub fn SDL_GameControllerGetSensorData(
         gamecontroller: *mut SDL_GameController,
         type_: SDL_SensorType,
@@ -5727,6 +5853,13 @@ extern "C" {
         red: Uint8,
         green: Uint8,
         blue: Uint8,
+    ) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    pub fn SDL_GameControllerSendEffect(
+        gamecontroller: *mut SDL_GameController,
+        data: *const ::std::os::raw::c_void,
+        size: ::std::os::raw::c_int,
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
@@ -10720,6 +10853,16 @@ extern "C" {
         Upitch: ::std::os::raw::c_int,
         Vplane: *const Uint8,
         Vpitch: ::std::os::raw::c_int,
+    ) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    pub fn SDL_UpdateNVTexture(
+        texture: *mut SDL_Texture,
+        rect: *const SDL_Rect,
+        Yplane: *const Uint8,
+        Ypitch: ::std::os::raw::c_int,
+        UVplane: *const Uint8,
+        UVpitch: ::std::os::raw::c_int,
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
