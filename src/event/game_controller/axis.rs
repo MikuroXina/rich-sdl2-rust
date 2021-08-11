@@ -1,6 +1,9 @@
-use std::ffi::CStr;
+use std::{
+    ffi::{CStr, CString},
+    str::FromStr,
+};
 
-use crate::bind;
+use crate::{bind, SdlError};
 
 #[derive(Debug, Clone, Copy, PartialEq, PartialOrd, Eq, Hash)]
 pub enum Axis {
@@ -38,6 +41,15 @@ impl Axis {
             TriggerRight => bind::SDL_GameControllerAxis_SDL_CONTROLLER_AXIS_TRIGGERRIGHT,
         }
     }
+
+    pub fn to_mapping_string(self) -> Option<String> {
+        let ptr = unsafe { bind::SDL_GameControllerGetStringForAxis(self.as_raw()) };
+        if ptr.is_null() {
+            return None;
+        }
+        let cstr = unsafe { CStr::from_ptr(ptr) };
+        Some(cstr.to_string_lossy().to_string())
+    }
 }
 
 impl std::fmt::Display for Axis {
@@ -45,5 +57,19 @@ impl std::fmt::Display for Axis {
         let c_str =
             unsafe { CStr::from_ptr(bind::SDL_GameControllerGetStringForAxis(self.as_raw())) };
         write!(f, "{}", c_str.to_str().unwrap())
+    }
+}
+
+impl FromStr for Axis {
+    type Err = SdlError;
+
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        let cstr = CString::new(s).map_err(|_| SdlError::Others {
+            msg: "string must not be empty".into(),
+        })?;
+        let axis = unsafe { bind::SDL_GameControllerGetAxisFromString(cstr.as_ptr()) };
+        Axis::from_raw(axis).ok_or_else(|| SdlError::Others {
+            msg: "the axis was not found".into(),
+        })
     }
 }
