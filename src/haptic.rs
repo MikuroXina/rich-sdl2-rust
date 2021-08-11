@@ -1,3 +1,4 @@
+use bitflags::bitflags;
 use std::{ffi::CStr, marker::PhantomData, ptr::NonNull};
 
 use crate::{bind, event::joystick::Joystick};
@@ -7,6 +8,27 @@ mod mouse;
 
 pub use joystick::*;
 pub use mouse::*;
+
+bitflags! {
+    pub struct HapticProperty: u32 {
+        const CONSTANT = 1 << 0;
+        const SINE = 1 << 1;
+        const LEFT_RIGHT = 1 << 2;
+        const TRIANGLE = 1 << 3;
+        const SAW_TOOTH_UP = 1 << 4;
+        const SAW_TOOTH_DOWN = 1 << 5;
+        const RAMP = 1 << 6;
+        const SPRING = 1 << 7;
+        const DAMPER = 1 << 8;
+        const INERTIA = 1 << 9;
+        const FRICTION = 1 << 10;
+        const CUSTOM = 1 << 11;
+        const GAIN = 1 << 12;
+        const AUTO_CENTER = 1 << 13;
+        const STATUS = 1 << 14;
+        const PAUSE = 1 << 15;
+    }
+}
 
 pub struct Haptic {
     ptr: NonNull<bind::SDL_Haptic>,
@@ -23,6 +45,11 @@ impl Haptic {
         unsafe {
             bind::SDL_HapticStopAll(self.ptr.as_ptr());
         }
+    }
+
+    pub fn property(&self) -> HapticProperty {
+        let bits = unsafe { bind::SDL_HapticQuery(self.ptr.as_ptr()) };
+        HapticProperty::from_bits(bits).unwrap()
     }
 
     pub fn pause(self) -> PausedHaptic {
