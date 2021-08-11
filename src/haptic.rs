@@ -11,6 +11,8 @@ mod mouse;
 pub use joystick::*;
 pub use mouse::*;
 
+use self::effect::HapticEffect;
+
 bitflags! {
     pub struct HapticProperty: u32 {
         const CONSTANT = 1 << 0;
@@ -45,6 +47,14 @@ impl Haptic {
 
     pub fn num_axes(&self) -> u32 {
         unsafe { bind::SDL_HapticNumAxes(self.ptr.as_ptr()) as u32 }
+    }
+
+    pub fn is_effect_supported(&self, effect: &HapticEffect) -> bool {
+        let mut raw = effect.clone().into_raw();
+        unsafe {
+            bind::SDL_HapticEffectSupported(self.ptr.as_ptr(), &mut raw as *mut _) as bind::SDL_bool
+                == bind::SDL_bool_SDL_TRUE
+        }
     }
 
     pub fn stop_all_effect(&self) {
