@@ -57,6 +57,18 @@ impl Haptic {
         }
     }
 
+    pub fn set_auto_center(&self, auto_center: u32) {
+        if !self.property().contains(HapticProperty::AUTO_CENTER) {
+            return;
+        }
+        let ret = unsafe {
+            bind::SDL_HapticSetAutocenter(self.ptr.as_ptr(), auto_center.min(100) as c_int)
+        };
+        if ret < 0 {
+            eprintln!("{}", Sdl::error());
+        }
+    }
+
     pub fn property(&self) -> HapticProperty {
         let bits = unsafe { bind::SDL_HapticQuery(self.ptr.as_ptr()) };
         HapticProperty::from_bits(bits).unwrap()
