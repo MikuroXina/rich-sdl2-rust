@@ -1,7 +1,7 @@
 use static_assertions::assert_not_impl_all;
-use std::ffi::CStr;
 use std::os::raw::c_int;
 use std::ptr::NonNull;
+use std::{ffi::CStr, marker::PhantomData};
 
 use crate::bind;
 
@@ -20,7 +20,10 @@ pub mod power_level;
 pub mod trackball;
 
 #[derive(Debug, Clone, PartialEq)]
-pub struct JoystickId(pub(super) u32);
+pub struct JoystickId<'joystick> {
+    pub(super) id: u32,
+    pub(super) _phantom: PhantomData<&'joystick Joystick>,
+}
 
 pub struct Joystick {
     ptr: NonNull<bind::SDL_Joystick>,
@@ -37,14 +40,17 @@ impl Joystick {
     }
 
     pub fn from_id(id: JoystickId) -> Option<Self> {
-        let ptr = unsafe { bind::SDL_JoystickFromInstanceID(id.0 as bind::SDL_JoystickID) };
+        let ptr = unsafe { bind::SDL_JoystickFromInstanceID(id.id as bind::SDL_JoystickID) };
         NonNull::new(ptr).map(|ptr| Self { ptr })
     }
 
     pub fn instance_id(&self) -> JoystickId {
         let raw = unsafe { bind::SDL_JoystickInstanceID(self.ptr.as_ptr()) };
         debug_assert_ne!(raw, -1);
-        JoystickId(raw as u32)
+        JoystickId {
+            id: raw as u32,
+            _phantom: PhantomData,
+        }
     }
 
     pub fn power_level(&self) -> PowerLevel {
