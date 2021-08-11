@@ -3,6 +3,7 @@ use std::ffi::CStr;
 use crate::bind;
 
 pub mod format;
+pub mod spec;
 
 pub struct AudioDevice {
     name: String,
