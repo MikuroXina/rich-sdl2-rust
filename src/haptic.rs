@@ -42,6 +42,10 @@ impl Haptic {
         cstr.to_string_lossy().to_string()
     }
 
+    pub fn num_axes(&self) -> u32 {
+        unsafe { bind::SDL_HapticNumAxes(self.ptr.as_ptr()) as u32 }
+    }
+
     pub fn stop_all_effect(&self) {
         unsafe {
             bind::SDL_HapticStopAll(self.ptr.as_ptr());
