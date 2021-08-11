@@ -1,4 +1,4 @@
-use std::{os::raw::c_int, ptr::NonNull};
+use std::{ffi::CStr, os::raw::c_int, ptr::NonNull};
 
 use crate::bind;
 
@@ -13,6 +13,11 @@ impl Sensor {
             bind::SDL_SensorGetData(self.ptr.as_ptr(), data.as_mut_ptr(), read_count as c_int);
         }
         data
+    }
+
+    pub fn name(&self) -> &str {
+        let cstr = unsafe { CStr::from_ptr(bind::SDL_SensorGetName(self.ptr.as_ptr())) };
+        cstr.to_str().unwrap()
     }
 }
 
