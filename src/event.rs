@@ -4,6 +4,7 @@ use std::marker::PhantomData;
 use self::{
     app::QuitEvent,
     game_controller::event::ControllerEvent,
+    joystick::event::JoystickEvent,
     keyboard::KeyboardEvent,
     mouse::{MouseButtonEvent, MouseEvent, MouseMotionEvent, MouseWheelEvent},
     text::{TextEditingEvent, TextInputEvent},
@@ -31,6 +32,7 @@ pub struct EventBox<'video> {
     editing_event_handlers: Vec<EventHandler<'video, TextEditingEvent>>,
     mouse_event_handlers: Vec<EventHandler<'video, MouseEvent>>,
     controller_event_handlers: Vec<EventHandler<'video, ControllerEvent<'video>>>,
+    joystick_event_handlers: Vec<EventHandler<'video, JoystickEvent<'video>>>,
     _phantom: PhantomData<&'video ()>,
 }
 
@@ -50,6 +52,7 @@ impl<'video> EventBox<'video> {
             editing_event_handlers: vec![],
             mouse_event_handlers: vec![],
             controller_event_handlers: vec![],
+            joystick_event_handlers: vec![],
             _phantom: PhantomData,
         }
     }
@@ -80,6 +83,10 @@ impl<'video> EventBox<'video> {
 
     pub fn handle_controller(&mut self, handler: EventHandler<'video, ControllerEvent<'video>>) {
         self.controller_event_handlers.push(handler);
+    }
+
+    pub fn handle_joystick(&mut self, handler: EventHandler<'video, JoystickEvent<'video>>) {
+        self.joystick_event_handlers.push(handler);
     }
 
     fn handle_event(&self, event: bind::SDL_Event) {
