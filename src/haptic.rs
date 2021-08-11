@@ -24,6 +24,26 @@ impl Haptic {
             bind::SDL_HapticStopAll(self.ptr.as_ptr());
         }
     }
+
+    pub fn pause(self) -> PausedHaptic {
+        unsafe {
+            bind::SDL_HapticPause(self.ptr.as_ptr());
+        }
+        PausedHaptic { haptic: self }
+    }
+}
+
+pub struct PausedHaptic {
+    haptic: Haptic,
+}
+
+impl PausedHaptic {
+    pub fn unpause(self) -> Haptic {
+        unsafe {
+            bind::SDL_HapticUnpause(self.haptic.ptr.as_ptr());
+        }
+        self.haptic
+    }
 }
 
 #[derive(Default)]
