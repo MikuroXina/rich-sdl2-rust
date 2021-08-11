@@ -1,6 +1,10 @@
-use std::ptr::NonNull;
+use std::{marker::PhantomData, ptr::NonNull};
 
-use crate::bind;
+use crate::{bind, event::joystick::Joystick};
+
+mod joystick;
+
+pub use joystick::*;
 
 pub struct Haptic {
     ptr: NonNull<bind::SDL_Haptic>,

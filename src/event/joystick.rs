@@ -40,6 +40,10 @@ impl Joystick {
         }
     }
 
+    pub(crate) fn ptr(&self) -> &NonNull<bind::SDL_Joystick> {
+        &self.ptr
+    }
+
     pub fn from_id(id: JoystickId) -> Option<Self> {
         let ptr = unsafe { bind::SDL_JoystickFromInstanceID(id.id as bind::SDL_JoystickID) };
         NonNull::new(ptr).map(|ptr| Self { ptr })
