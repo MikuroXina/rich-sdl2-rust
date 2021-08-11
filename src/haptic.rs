@@ -1,4 +1,4 @@
-use std::{marker::PhantomData, ptr::NonNull};
+use std::{ffi::CStr, marker::PhantomData, ptr::NonNull};
 
 use crate::{bind, event::joystick::Joystick};
 
@@ -10,6 +10,14 @@ pub use mouse::*;
 
 pub struct Haptic {
     ptr: NonNull<bind::SDL_Haptic>,
+}
+
+impl Haptic {
+    pub fn name(&self) -> String {
+        let index = unsafe { bind::SDL_HapticIndex(self.ptr.as_ptr()) };
+        let cstr = unsafe { CStr::from_ptr(bind::SDL_HapticName(index)) };
+        cstr.to_string_lossy().to_string()
+    }
 }
 
 #[derive(Default)]
