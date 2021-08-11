@@ -1,3 +1,5 @@
+use std::sync::{Arc, Mutex};
+
 use super::format::AudioFormat;
 
 #[derive(Debug)]
@@ -44,7 +46,7 @@ impl AudioSpecBuilder {
         self
     }
 
-    pub fn build<T>(self, callback: AudioCallback<T>, user_data: &mut T) -> AudioSpec<T> {
+    pub fn build<T>(self, callback: AudioCallback<T>, user_data: Arc<Mutex<T>>) -> AudioSpec<T> {
         AudioSpec {
             sample_freq: self.sample_freq,
             format: self.format,
@@ -58,9 +60,9 @@ impl AudioSpecBuilder {
     }
 }
 
-type AudioCallback<T> = fn(&mut T, &mut [u8]);
+type AudioCallback<T> = fn(Arc<Mutex<T>>, &mut [u8]);
 
-pub struct AudioSpec<'a, T> {
+pub struct AudioSpec<T> {
     pub sample_freq: u32,
     pub format: AudioFormat,
     pub channels: u8,
@@ -68,5 +70,5 @@ pub struct AudioSpec<'a, T> {
     pub samples: u16,
     pub size: u32,
     pub callback: AudioCallback<T>,
-    pub user_data: &'a mut T,
+    pub user_data: Arc<Mutex<T>>,
 }
