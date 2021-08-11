@@ -10,6 +10,8 @@ use self::{
     trackball::Trackballs,
 };
 
+use super::game_controller::GameController;
+
 pub mod axis;
 pub mod button;
 pub mod guid;
@@ -79,6 +81,16 @@ impl Joystick {
         Hats::new(self)
     }
 }
+
+impl From<GameController> for Joystick {
+    fn from(gc: GameController) -> Self {
+        let ptr = unsafe { bind::SDL_GameControllerGetJoystick(gc.ptr.as_ptr()) };
+        Self {
+            ptr: NonNull::new(ptr).unwrap(),
+        }
+    }
+}
+
 pub struct JoystickSet(Vec<Joystick>);
 
 impl JoystickSet {

@@ -8,7 +8,7 @@ pub mod button;
 pub mod map;
 
 pub struct GameController {
-    ptr: NonNull<bind::SDL_GameController>,
+    pub(in crate::event) ptr: NonNull<bind::SDL_GameController>,
 }
 
 assert_not_impl_all!(GameController: Send, Sync);
