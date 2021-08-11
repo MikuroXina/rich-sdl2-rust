@@ -6,17 +6,17 @@ use crate::bind;
 use super::Joystick;
 
 bitflags! {
-  pub struct PovHat : u8 {
-    const CENTERED = 0;
-    const UP = 1 << 0;
-    const RIGHT = 1 << 1;
-    const DOWN = 1 << 2;
-    const LEFT = 1 << 3;
-    const RIGHT_UP = Self::RIGHT.bits | Self::UP.bits;
-    const RIGHT_DOWN = Self::RIGHT.bits | Self::DOWN.bits;
-    const LEFT_UP = Self::LEFT.bits | Self::UP.bits;
-    const LEFT_DOWN = Self::LEFT.bits | Self::DOWN.bits;
-  }
+    pub struct PovHat : u8 {
+        const CENTERED = 0;
+        const UP = 1 << 0;
+        const RIGHT = 1 << 1;
+        const DOWN = 1 << 2;
+        const LEFT = 1 << 3;
+        const RIGHT_UP = Self::RIGHT.bits | Self::UP.bits;
+        const RIGHT_DOWN = Self::RIGHT.bits | Self::DOWN.bits;
+        const LEFT_UP = Self::LEFT.bits | Self::UP.bits;
+        const LEFT_DOWN = Self::LEFT.bits | Self::DOWN.bits;
+    }
 }
 
 pub struct Hat<'joystick> {
