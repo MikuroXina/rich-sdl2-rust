@@ -1,7 +1,7 @@
 use bitflags::bitflags;
-use std::{ffi::CStr, marker::PhantomData, ptr::NonNull};
+use std::{ffi::CStr, marker::PhantomData, os::raw::c_int, ptr::NonNull};
 
-use crate::{bind, event::joystick::Joystick};
+use crate::{bind, event::joystick::Joystick, Sdl};
 
 mod joystick;
 mod mouse;
@@ -44,6 +44,16 @@ impl Haptic {
     pub fn stop_all_effect(&self) {
         unsafe {
             bind::SDL_HapticStopAll(self.ptr.as_ptr());
+        }
+    }
+
+    pub fn set_gain(&self, gain: u32) {
+        if !self.property().contains(HapticProperty::GAIN) {
+            return;
+        }
+        let ret = unsafe { bind::SDL_HapticSetGain(self.ptr.as_ptr(), gain.min(100) as c_int) };
+        if ret < 0 {
+            eprintln!("{}", Sdl::error());
         }
     }
 
