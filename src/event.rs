@@ -22,7 +22,7 @@ pub mod sensor;
 pub mod text;
 pub mod window;
 
-pub type EventHandler<'video, T> = Box<dyn Fn(T) + 'video>;
+pub type EventHandler<'video, T> = Box<dyn Fn(&T) + 'video>;
 
 pub struct EventBox<'video> {
     quit_event_handlers: Vec<EventHandler<'video, QuitEvent>>,
@@ -96,52 +96,52 @@ impl<'video> EventBox<'video> {
                 let quit: QuitEvent = unsafe { event.quit }.into();
                 self.quit_event_handlers
                     .iter()
-                    .for_each(|handler| handler(quit.clone()))
+                    .for_each(|handler| handler(&quit))
             }
             bind::SDL_EventType_SDL_WINDOWEVENT => {
                 let window: WindowEvent = unsafe { event.window }.into();
                 self.window_event_handlers
                     .iter()
-                    .for_each(|handler| handler(window.clone()))
+                    .for_each(|handler| handler(&window))
             }
             bind::SDL_EventType_SDL_KEYDOWN | bind::SDL_EventType_SDL_KEYUP => {
                 let keyboard: KeyboardEvent = unsafe { event.key }.into();
                 self.keyboard_event_handlers
                     .iter()
-                    .for_each(|handler| handler(keyboard.clone()))
+                    .for_each(|handler| handler(&keyboard))
             }
             bind::SDL_EventType_SDL_TEXTINPUT => {
                 let input: TextInputEvent = unsafe { event.text }.into();
                 self.input_event_handlers
                     .iter()
-                    .for_each(|handler| handler(input.clone()))
+                    .for_each(|handler| handler(&input))
             }
             bind::SDL_EventType_SDL_TEXTEDITING => {
                 let editing: TextEditingEvent = unsafe { event.edit }.into();
                 self.editing_event_handlers
                     .iter()
-                    .for_each(|handler| handler(editing.clone()))
+                    .for_each(|handler| handler(&editing))
             }
             bind::SDL_EventType_SDL_MOUSEMOTION => {
                 let motion: MouseMotionEvent = unsafe { event.motion }.into();
                 let mouse = MouseEvent::Motion(motion);
                 self.mouse_event_handlers
                     .iter()
-                    .for_each(|handler| handler(mouse.clone()))
+                    .for_each(|handler| handler(&mouse))
             }
             bind::SDL_EventType_SDL_MOUSEBUTTONDOWN | bind::SDL_EventType_SDL_MOUSEBUTTONUP => {
                 let button: MouseButtonEvent = unsafe { event.button }.into();
                 let mouse = MouseEvent::Button(button);
                 self.mouse_event_handlers
                     .iter()
-                    .for_each(|handler| handler(mouse.clone()))
+                    .for_each(|handler| handler(&mouse))
             }
             bind::SDL_EventType_SDL_MOUSEWHEEL => {
                 let wheel: MouseWheelEvent = unsafe { event.wheel }.into();
                 let mouse = MouseEvent::Wheel(wheel);
                 self.mouse_event_handlers
                     .iter()
-                    .for_each(|handler| handler(mouse.clone()))
+                    .for_each(|handler| handler(&mouse))
             }
             _ => {}
         }
