@@ -33,6 +33,10 @@ impl GameControllerSet {
             .collect();
         Self { controls }
     }
+
+    pub fn controllers(&self) -> &[GameController] {
+        &self.controls
+    }
 }
 
 impl Drop for GameControllerSet {
