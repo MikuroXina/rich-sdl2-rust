@@ -8,6 +8,7 @@ pub mod effect;
 mod joystick;
 mod mouse;
 mod playing;
+pub mod rumble;
 
 pub use joystick::*;
 pub use mouse::*;
