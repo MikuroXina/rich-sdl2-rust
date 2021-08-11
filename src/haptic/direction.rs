@@ -1,5 +1,6 @@
 use crate::bind;
 
+#[derive(Debug, Clone)]
 pub enum Direction {
     Polar {
         degree_100: i32,

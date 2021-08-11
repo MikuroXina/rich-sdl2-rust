@@ -2,6 +2,7 @@ use crate::bind;
 
 use super::direction::Direction;
 
+#[derive(Debug, Clone)]
 pub enum HapticEffect {
     Constant(Direction, Play, Trigger, Level, Envelope),
     Periodic(Direction, Play, Trigger, Wave, Envelope),
@@ -312,18 +313,22 @@ impl From<bind::SDL_HapticEffect> for HapticEffect {
     }
 }
 
+#[derive(Debug, Clone)]
 pub struct Play {
     pub length: u32,
     pub delay: u16,
 }
 
+#[derive(Debug, Clone)]
 pub struct Trigger {
     pub button: u16,
     pub interval: u16,
 }
 
+#[derive(Debug, Clone)]
 pub struct Level(pub i16);
 
+#[derive(Debug, Clone)]
 pub struct Envelope {
     pub attack_length: u16,
     pub attack_level: u16,
@@ -331,6 +336,7 @@ pub struct Envelope {
     pub fade_level: u16,
 }
 
+#[derive(Debug, Clone)]
 pub struct Wave {
     pub kind: WaveKind,
     pub period: u16,
@@ -339,6 +345,7 @@ pub struct Wave {
     pub phase: u16,
 }
 
+#[derive(Debug, Clone)]
 pub enum WaveKind {
     Sine,
     Triangle,
@@ -369,8 +376,10 @@ impl From<u16> for WaveKind {
     }
 }
 
+#[derive(Debug, Clone)]
 pub struct Vector3<T>(pub [T; 3]);
 
+#[derive(Debug, Clone)]
 pub struct Condition {
     pub kind: ConditionKind,
     pub right_level: Vector3<u16>,
@@ -381,6 +390,7 @@ pub struct Condition {
     pub center: Vector3<i16>,
 }
 
+#[derive(Debug, Clone)]
 pub enum ConditionKind {
     Spring,
     Damper,
@@ -411,11 +421,13 @@ impl From<u16> for ConditionKind {
     }
 }
 
+#[derive(Debug, Clone)]
 pub struct Ramp {
     pub start: Level,
     pub end: Level,
 }
 
+#[derive(Debug, Clone)]
 pub struct Custom {
     channels: u8,
     period: u16,
