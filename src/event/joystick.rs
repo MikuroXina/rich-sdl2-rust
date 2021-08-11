@@ -14,6 +14,7 @@ use super::game_controller::GameController;
 
 pub mod axis;
 pub mod button;
+pub mod event;
 pub mod guid;
 pub mod hat;
 pub mod power_level;
