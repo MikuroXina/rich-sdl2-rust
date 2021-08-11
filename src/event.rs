@@ -145,6 +145,41 @@ impl<'video> EventBox<'video> {
                 let mouse = MouseEvent::Wheel(wheel);
                 self.mouse_event_handlers.call_handlers(mouse);
             }
+            bind::SDL_EventType_SDL_CONTROLLERAXISMOTION => {
+                let con: ControllerEvent = unsafe { event.caxis }.into();
+                self.controller_event_handlers.call_handlers(con);
+            }
+            bind::SDL_EventType_SDL_CONTROLLERBUTTONDOWN
+            | bind::SDL_EventType_SDL_CONTROLLERBUTTONUP => {
+                let con: ControllerEvent = unsafe { event.cbutton }.into();
+                self.controller_event_handlers.call_handlers(con);
+            }
+            bind::SDL_EventType_SDL_CONTROLLERDEVICEADDED
+            | bind::SDL_EventType_SDL_CONTROLLERDEVICEREMOVED
+            | bind::SDL_EventType_SDL_CONTROLLERDEVICEREMAPPED => {
+                let con: ControllerEvent = unsafe { event.cdevice }.into();
+                self.controller_event_handlers.call_handlers(con);
+            }
+            bind::SDL_EventType_SDL_JOYAXISMOTION => {
+                let joy: JoystickEvent = unsafe { event.jaxis }.into();
+                self.joystick_event_handlers.call_handlers(joy);
+            }
+            bind::SDL_EventType_SDL_JOYBALLMOTION => {
+                let joy: JoystickEvent = unsafe { event.jball }.into();
+                self.joystick_event_handlers.call_handlers(joy);
+            }
+            bind::SDL_EventType_SDL_JOYBUTTONDOWN | bind::SDL_EventType_SDL_JOYBUTTONUP => {
+                let joy: JoystickEvent = unsafe { event.jbutton }.into();
+                self.joystick_event_handlers.call_handlers(joy);
+            }
+            bind::SDL_EventType_SDL_JOYDEVICEADDED | bind::SDL_EventType_SDL_JOYDEVICEREMOVED => {
+                let joy: JoystickEvent = unsafe { event.jdevice }.into();
+                self.joystick_event_handlers.call_handlers(joy);
+            }
+            bind::SDL_EventType_SDL_JOYHATMOTION => {
+                let joy: JoystickEvent = unsafe { event.jhat }.into();
+                self.joystick_event_handlers.call_handlers(joy);
+            }
             _ => {}
         }
     }
