@@ -16,6 +16,7 @@ pub mod game_controller;
 pub mod joystick;
 pub mod keyboard;
 pub mod mouse;
+pub mod sensor;
 pub mod text;
 pub mod window;
 
