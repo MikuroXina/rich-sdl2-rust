@@ -1,5 +1,5 @@
 use static_assertions::assert_not_impl_all;
-use std::{cell::Cell, marker::PhantomData};
+use std::{cell::Cell, ffi::CStr, marker::PhantomData};
 
 use crate::bind;
 
@@ -65,6 +65,11 @@ impl Sdl {
 
     pub fn revision_num() -> u32 {
         (unsafe { bind::SDL_GetRevisionNumber() }) as u32
+    }
+
+    pub fn platform() -> &'static str {
+        let cstr = unsafe { CStr::from_ptr(bind::SDL_GetPlatform()) };
+        cstr.to_str().unwrap()
     }
 
     pub fn error_then_panic(context: &'static str) -> ! {
