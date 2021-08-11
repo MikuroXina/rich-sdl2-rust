@@ -29,6 +29,13 @@ pub struct Joystick {
 assert_not_impl_all!(Joystick: Send, Sync);
 
 impl Joystick {
+    pub(super) fn new(device_index: u32) -> Self {
+        let ptr = unsafe { bind::SDL_JoystickOpen(device_index as c_int) };
+        Self {
+            ptr: NonNull::new(ptr).unwrap(),
+        }
+    }
+
     pub fn from_id(id: JoystickId) -> Option<Self> {
         let ptr = unsafe { bind::SDL_JoystickFromInstanceID(id.0 as bind::SDL_JoystickID) };
         NonNull::new(ptr).map(|ptr| Self { ptr })
@@ -99,14 +106,7 @@ impl JoystickSet {
             bind::SDL_InitSubSystem(bind::SDL_INIT_JOYSTICK);
             bind::SDL_NumJoysticks()
         } as u32;
-        let joysticks = (0..num_joysticks)
-            .map(|index| {
-                let ptr = unsafe { bind::SDL_JoystickOpen(index as c_int) };
-                Joystick {
-                    ptr: NonNull::new(ptr).unwrap(),
-                }
-            })
-            .collect();
+        let joysticks = (0..num_joysticks).map(Joystick::new).collect();
         Self(joysticks)
     }
 }
