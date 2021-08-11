@@ -1,10 +1,24 @@
-use std::ffi::CString;
-use std::os::raw::c_int;
+use std::{
+    ffi::{CStr, CString},
+    os::raw::c_int,
+};
 
 use crate::bind;
 
 #[derive(Debug, Clone)]
 pub struct Guid([u8; 16]);
+
+impl Guid {
+    pub fn mapping(&self) -> String {
+        let ptr = unsafe {
+            bind::SDL_GameControllerMappingForGUID(bind::SDL_JoystickGUID { data: self.0 })
+        };
+        let cstr = unsafe { CStr::from_ptr(ptr) };
+        let ret = cstr.to_string_lossy().to_string();
+        unsafe { bind::SDL_free(ptr as *mut _) };
+        ret
+    }
+}
 
 impl std::fmt::Display for Guid {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
