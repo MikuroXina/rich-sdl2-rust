@@ -18,6 +18,12 @@ impl Haptic {
         let cstr = unsafe { CStr::from_ptr(bind::SDL_HapticName(index)) };
         cstr.to_string_lossy().to_string()
     }
+
+    pub fn stop_all_effect(&self) {
+        unsafe {
+            bind::SDL_HapticStopAll(self.ptr.as_ptr());
+        }
+    }
 }
 
 #[derive(Default)]
