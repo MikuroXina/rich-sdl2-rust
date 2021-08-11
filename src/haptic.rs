@@ -1,15 +1,17 @@
 use bitflags::bitflags;
 use std::{ffi::CStr, marker::PhantomData, os::raw::c_int, ptr::NonNull};
 
-use crate::{bind, event::joystick::Joystick, Sdl};
+use crate::{bind, event::joystick::Joystick, Result, Sdl, SdlError};
 
 pub mod direction;
 pub mod effect;
 mod joystick;
 mod mouse;
+mod playing;
 
 pub use joystick::*;
 pub use mouse::*;
+pub use playing::*;
 
 use self::effect::HapticEffect;
 
@@ -54,6 +56,19 @@ impl Haptic {
         unsafe {
             bind::SDL_HapticEffectSupported(self.ptr.as_ptr(), &mut raw as *mut _) as bind::SDL_bool
                 == bind::SDL_bool_SDL_TRUE
+        }
+    }
+
+    pub fn new_effect(&self, effect: &HapticEffect) -> Result<PendingEffect> {
+        if !self.is_effect_supported(effect) {
+            return Err(SdlError::UnsupportedFeature);
+        }
+        let mut raw = effect.clone().into_raw();
+        let ret = unsafe { bind::SDL_HapticNewEffect(self.ptr.as_ptr(), &mut raw as *mut _) };
+        if ret < 0 {
+            Err(SdlError::Others { msg: Sdl::error() })
+        } else {
+            Ok(PendingEffect::new(ret, self))
         }
     }
 
