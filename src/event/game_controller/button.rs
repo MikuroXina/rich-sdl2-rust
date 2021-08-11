@@ -2,6 +2,7 @@ use std::ffi::CStr;
 
 use crate::bind;
 
+#[derive(Debug, Clone, Copy, PartialEq, PartialOrd, Eq, Hash)]
 pub enum FourButton {
     Up,
     Right,
@@ -9,6 +10,7 @@ pub enum FourButton {
     Left,
 }
 
+#[derive(Debug, Clone, Copy, PartialEq, PartialOrd, Eq, Hash)]
 pub enum Button {
     LeftFour(FourButton),
     RightFour(FourButton),
