@@ -3,6 +3,7 @@ use std::{ffi::CStr, marker::PhantomData, os::raw::c_int, ptr::NonNull};
 
 use crate::{bind, event::joystick::Joystick, Sdl};
 
+pub mod direction;
 mod joystick;
 mod mouse;
 
