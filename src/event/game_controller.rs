@@ -24,6 +24,15 @@ impl GameController {
         unsafe { bind::SDL_free(ptr as *mut _) };
         ret
     }
+
+    pub fn name(&self) -> String {
+        let ptr = unsafe { bind::SDL_GameControllerName(self.ptr.as_ptr()) };
+        if ptr.is_null() {
+            return "".into();
+        }
+        let cstr = unsafe { CStr::from_ptr(ptr) };
+        cstr.to_string_lossy().to_string()
+    }
 }
 
 pub struct GameControllerSet {
