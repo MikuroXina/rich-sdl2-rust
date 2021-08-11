@@ -20,7 +20,7 @@ pub mod power_level;
 pub mod trackball;
 
 #[derive(Debug, Clone, PartialEq)]
-pub struct JoystickId(u32);
+pub struct JoystickId(pub(super) u32);
 
 pub struct Joystick {
     ptr: NonNull<bind::SDL_Joystick>,
