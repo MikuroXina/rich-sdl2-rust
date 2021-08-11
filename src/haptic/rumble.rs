@@ -25,4 +25,22 @@ impl<'haptic> HapticRumble<'haptic> {
             Ok(Self { haptic })
         }
     }
+
+    pub fn play(&self, strength: f32, length: u32) -> Result<()> {
+        let ret = unsafe { bind::SDL_HapticRumblePlay(self.haptic.ptr.as_ptr(), strength, length) };
+        if ret < 0 {
+            Err(SdlError::Others { msg: Sdl::error() })
+        } else {
+            Ok(())
+        }
+    }
+
+    pub fn stop(&self) -> Result<()> {
+        let ret = unsafe { bind::SDL_HapticRumbleStop(self.haptic.ptr.as_ptr()) };
+        if ret < 0 {
+            Err(SdlError::Others { msg: Sdl::error() })
+        } else {
+            Ok(())
+        }
+    }
 }
