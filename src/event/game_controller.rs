@@ -8,6 +8,7 @@ use crate::{bind, Result, Sdl, SdlError};
 
 pub mod axis;
 pub mod button;
+pub mod event;
 pub mod map;
 
 pub struct GameController {
