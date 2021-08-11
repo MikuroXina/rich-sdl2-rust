@@ -1,5 +1,6 @@
 #![allow(unused)]
 
+pub mod audio;
 mod bind;
 mod error;
 mod event;
