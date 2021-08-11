@@ -1,5 +1,5 @@
 use static_assertions::assert_not_impl_all;
-use std::ptr::NonNull;
+use std::{ffi::CStr, ptr::NonNull};
 
 use crate::bind;
 
@@ -12,6 +12,16 @@ pub struct GameController {
 }
 
 assert_not_impl_all!(GameController: Send, Sync);
+
+impl GameController {
+    pub fn mapping(&self) -> String {
+        let ptr = unsafe { bind::SDL_GameControllerMapping(self.ptr.as_ptr()) };
+        let cstr = unsafe { CStr::from_ptr(ptr) };
+        let ret = cstr.to_string_lossy().to_string();
+        unsafe { bind::SDL_free(ptr as *mut _) };
+        ret
+    }
+}
 
 pub struct GameControllerSet {
     controls: Vec<GameController>,
