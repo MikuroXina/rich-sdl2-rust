@@ -24,15 +24,33 @@ pub mod window;
 
 pub type EventHandler<'video, T> = Box<dyn Fn(&T) + 'video>;
 
+struct EventHandlers<'video, T>(Vec<EventHandler<'video, T>>);
+
+impl<T> Default for EventHandlers<'_, T> {
+    fn default() -> Self {
+        Self(vec![])
+    }
+}
+
+impl<'video, T> EventHandlers<'video, T> {
+    fn push(&mut self, handler: EventHandler<'video, T>) {
+        self.0.push(handler);
+    }
+
+    fn call_handlers(&self, event: T) {
+        self.0.iter().for_each(|handler| handler(&event));
+    }
+}
+
 pub struct EventBox<'video> {
-    quit_event_handlers: Vec<EventHandler<'video, QuitEvent>>,
-    window_event_handlers: Vec<EventHandler<'video, WindowEvent>>,
-    keyboard_event_handlers: Vec<EventHandler<'video, KeyboardEvent>>,
-    input_event_handlers: Vec<EventHandler<'video, TextInputEvent>>,
-    editing_event_handlers: Vec<EventHandler<'video, TextEditingEvent>>,
-    mouse_event_handlers: Vec<EventHandler<'video, MouseEvent>>,
-    controller_event_handlers: Vec<EventHandler<'video, ControllerEvent<'video>>>,
-    joystick_event_handlers: Vec<EventHandler<'video, JoystickEvent<'video>>>,
+    quit_event_handlers: EventHandlers<'video, QuitEvent>,
+    window_event_handlers: EventHandlers<'video, WindowEvent>,
+    keyboard_event_handlers: EventHandlers<'video, KeyboardEvent>,
+    input_event_handlers: EventHandlers<'video, TextInputEvent>,
+    editing_event_handlers: EventHandlers<'video, TextEditingEvent>,
+    mouse_event_handlers: EventHandlers<'video, MouseEvent>,
+    controller_event_handlers: EventHandlers<'video, ControllerEvent<'video>>,
+    joystick_event_handlers: EventHandlers<'video, JoystickEvent<'video>>,
     _phantom: PhantomData<&'video ()>,
 }
 
@@ -45,14 +63,14 @@ impl<'video> EventBox<'video> {
             Sdl::error_then_panic("Sdl event")
         }
         Self {
-            quit_event_handlers: vec![],
-            window_event_handlers: vec![],
-            keyboard_event_handlers: vec![],
-            input_event_handlers: vec![],
-            editing_event_handlers: vec![],
-            mouse_event_handlers: vec![],
-            controller_event_handlers: vec![],
-            joystick_event_handlers: vec![],
+            quit_event_handlers: Default::default(),
+            window_event_handlers: Default::default(),
+            keyboard_event_handlers: Default::default(),
+            input_event_handlers: Default::default(),
+            editing_event_handlers: Default::default(),
+            mouse_event_handlers: Default::default(),
+            controller_event_handlers: Default::default(),
+            joystick_event_handlers: Default::default(),
             _phantom: PhantomData,
         }
     }
@@ -94,54 +112,38 @@ impl<'video> EventBox<'video> {
         match ty {
             bind::SDL_EventType_SDL_QUIT => {
                 let quit: QuitEvent = unsafe { event.quit }.into();
-                self.quit_event_handlers
-                    .iter()
-                    .for_each(|handler| handler(&quit))
+                self.quit_event_handlers.call_handlers(quit);
             }
             bind::SDL_EventType_SDL_WINDOWEVENT => {
                 let window: WindowEvent = unsafe { event.window }.into();
-                self.window_event_handlers
-                    .iter()
-                    .for_each(|handler| handler(&window))
+                self.window_event_handlers.call_handlers(window);
             }
             bind::SDL_EventType_SDL_KEYDOWN | bind::SDL_EventType_SDL_KEYUP => {
                 let keyboard: KeyboardEvent = unsafe { event.key }.into();
-                self.keyboard_event_handlers
-                    .iter()
-                    .for_each(|handler| handler(&keyboard))
+                self.keyboard_event_handlers.call_handlers(keyboard);
             }
             bind::SDL_EventType_SDL_TEXTINPUT => {
                 let input: TextInputEvent = unsafe { event.text }.into();
-                self.input_event_handlers
-                    .iter()
-                    .for_each(|handler| handler(&input))
+                self.input_event_handlers.call_handlers(input);
             }
             bind::SDL_EventType_SDL_TEXTEDITING => {
                 let editing: TextEditingEvent = unsafe { event.edit }.into();
-                self.editing_event_handlers
-                    .iter()
-                    .for_each(|handler| handler(&editing))
+                self.editing_event_handlers.call_handlers(editing);
             }
             bind::SDL_EventType_SDL_MOUSEMOTION => {
                 let motion: MouseMotionEvent = unsafe { event.motion }.into();
                 let mouse = MouseEvent::Motion(motion);
-                self.mouse_event_handlers
-                    .iter()
-                    .for_each(|handler| handler(&mouse))
+                self.mouse_event_handlers.call_handlers(mouse);
             }
             bind::SDL_EventType_SDL_MOUSEBUTTONDOWN | bind::SDL_EventType_SDL_MOUSEBUTTONUP => {
                 let button: MouseButtonEvent = unsafe { event.button }.into();
                 let mouse = MouseEvent::Button(button);
-                self.mouse_event_handlers
-                    .iter()
-                    .for_each(|handler| handler(&mouse))
+                self.mouse_event_handlers.call_handlers(mouse);
             }
             bind::SDL_EventType_SDL_MOUSEWHEEL => {
                 let wheel: MouseWheelEvent = unsafe { event.wheel }.into();
                 let mouse = MouseEvent::Wheel(wheel);
-                self.mouse_event_handlers
-                    .iter()
-                    .for_each(|handler| handler(&mouse))
+                self.mouse_event_handlers.call_handlers(mouse);
             }
             _ => {}
         }
