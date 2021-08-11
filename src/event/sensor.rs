@@ -1,9 +1,19 @@
-use std::ptr::NonNull;
+use std::{os::raw::c_int, ptr::NonNull};
 
 use crate::bind;
 
 pub struct Sensor {
     ptr: NonNull<bind::SDL_Sensor>,
+}
+
+impl Sensor {
+    pub fn data(&self, read_count: usize) -> Vec<f32> {
+        let mut data = vec![0.0; read_count];
+        unsafe {
+            bind::SDL_SensorGetData(self.ptr.as_ptr(), data.as_mut_ptr(), read_count as c_int);
+        }
+        data
+    }
 }
 
 pub struct SensorSet(Vec<Sensor>);
