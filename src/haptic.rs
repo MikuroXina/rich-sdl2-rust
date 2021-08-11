@@ -72,6 +72,14 @@ impl Haptic {
         }
     }
 
+    pub fn effects_creation_capacity(&self) -> usize {
+        unsafe { bind::SDL_HapticNumEffects(self.ptr.as_ptr()) as usize }
+    }
+
+    pub fn effects_playing_capacity(&self) -> usize {
+        unsafe { bind::SDL_HapticNumEffectsPlaying(self.ptr.as_ptr()) as usize }
+    }
+
     pub fn stop_all_effect(&self) {
         unsafe {
             bind::SDL_HapticStopAll(self.ptr.as_ptr());
