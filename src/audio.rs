@@ -22,6 +22,7 @@ pub mod format;
 pub mod queue;
 pub mod spec;
 pub mod status;
+pub mod wav;
 
 #[derive(Debug)]
 pub struct AudioDeviceProperty {
