@@ -1,4 +1,6 @@
+use static_assertions::assert_not_impl_all;
 use std::{
+    cell::Cell,
     ffi::{CStr, CString},
     marker::PhantomData,
     mem::MaybeUninit,
@@ -47,7 +49,10 @@ pub trait AudioDevice {
 
 pub struct SpeakerDevice {
     id: u32,
+    _phantom: PhantomData<Cell<u8>>,
 }
+
+assert_not_impl_all!(SpeakerDevice: Send, Sync);
 
 impl SpeakerDevice {
     pub fn all_devices() -> impl Iterator<Item = String> {
@@ -60,7 +65,13 @@ impl SpeakerDevice {
         fallback: FallbackFlag,
     ) -> Result<(Self, AudioDeviceProperty)> {
         let (id, prop) = open(false, device, spec, fallback)?;
-        Ok((Self { id }, prop))
+        Ok((
+            Self {
+                id,
+                _phantom: PhantomData,
+            },
+            prop,
+        ))
     }
 }
 
@@ -78,7 +89,10 @@ impl Drop for SpeakerDevice {
 
 pub struct MicrophoneDevice {
     id: u32,
+    _phantom: PhantomData<Cell<u8>>,
 }
+
+assert_not_impl_all!(MicrophoneDevice: Send, Sync);
 
 impl MicrophoneDevice {
     pub fn all_devices() -> impl Iterator<Item = String> {
