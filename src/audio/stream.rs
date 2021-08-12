@@ -33,6 +33,10 @@ impl AudioStream {
         }
     }
 
+    pub fn available_bytes_len(&self) -> usize {
+        unsafe { bind::SDL_AudioStreamAvailable(self.ptr.as_ptr()) as usize }
+    }
+
     pub fn clear(&self) {
         unsafe { bind::SDL_AudioStreamClear(self.ptr.as_ptr()) }
     }
