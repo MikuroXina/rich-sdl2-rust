@@ -1,5 +1,6 @@
 use std::{
     ffi::{CStr, CString},
+    marker::PhantomData,
     mem::MaybeUninit,
     os::raw::c_int,
 };
@@ -23,11 +24,24 @@ pub struct AudioDeviceProperty {
     pub samples: u16,
 }
 
+pub struct AudioDeviceLock<'device>(u32, PhantomData<&'device mut dyn AudioDevice>);
+
+impl AudioDeviceLock<'_> {
+    fn unlock(self) {
+        unsafe { bind::SDL_UnlockAudioDevice(self.0) }
+    }
+}
+
 pub trait AudioDevice {
     fn id(&self) -> u32;
 
     fn status(&self) -> AudioStatus {
         unsafe { bind::SDL_GetAudioDeviceStatus(self.id()) }.into()
+    }
+
+    fn lock(&mut self) -> AudioDeviceLock {
+        unsafe { bind::SDL_LockAudioDevice(self.id()) }
+        AudioDeviceLock(self.id(), PhantomData)
     }
 }
 
