@@ -95,6 +95,13 @@ impl<'callback> AudioSpec<'callback> {
     }
 }
 
+impl Drop for AudioSpec<'_> {
+    fn drop(&mut self) {
+        let func = unsafe { self.raw.userdata as *mut Box<dyn AudioCallback> };
+        let _ = unsafe { Box::from_raw(func) };
+    }
+}
+
 extern "C" fn audio_spec_wrap_handler(userdata: *mut c_void, stream: *mut u8, len: c_int) {
     let func = unsafe { &mut *(userdata as *mut Box<dyn AudioCallback>) };
     let slice = unsafe { std::slice::from_raw_parts_mut(stream, len as usize) };
