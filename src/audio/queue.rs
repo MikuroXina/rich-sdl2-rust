@@ -1,6 +1,7 @@
-use crate::{bind, Result, Sdl, SdlError};
+use std::io;
 
-use super::SpeakerDevice;
+use super::{MicrophoneDevice, SpeakerDevice};
+use crate::{bind, Result, Sdl, SdlError};
 
 pub struct QueuedAudio<'device> {
     device: &'device mut SpeakerDevice,
@@ -34,5 +35,34 @@ impl<'device> QueuedAudio<'device> {
 impl Drop for QueuedAudio<'_> {
     fn drop(&mut self) {
         unsafe { bind::SDL_ClearQueuedAudio(self.device.id) }
+    }
+}
+
+pub struct DequeueAudio<'device> {
+    device: &'device mut MicrophoneDevice,
+}
+
+impl<'device> DequeueAudio<'device> {
+    pub fn new(device: &'device mut MicrophoneDevice) -> Self {
+        Self { device }
+    }
+
+    pub fn clear(&self) {
+        unsafe { bind::SDL_ClearQueuedAudio(self.device.id) }
+    }
+}
+
+impl Drop for DequeueAudio<'_> {
+    fn drop(&mut self) {
+        unsafe { bind::SDL_ClearQueuedAudio(self.device.id) }
+    }
+}
+
+impl io::Read for DequeueAudio<'_> {
+    fn read(&mut self, buf: &mut [u8]) -> io::Result<usize> {
+        let bytes = unsafe {
+            bind::SDL_DequeueAudio(self.device.id, buf.as_mut_ptr() as *mut _, buf.len() as u32)
+        };
+        Ok(bytes as usize)
     }
 }
