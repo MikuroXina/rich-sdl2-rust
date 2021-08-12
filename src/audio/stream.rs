@@ -64,3 +64,35 @@ impl io::Read for AudioStream {
         }
     }
 }
+
+impl io::Write for AudioStream {
+    fn write(&mut self, buf: &[u8]) -> io::Result<usize> {
+        let ret = unsafe {
+            bind::SDL_AudioStreamPut(
+                self.ptr.as_ptr(),
+                buf.as_ptr() as *const _,
+                buf.len() as i32,
+            )
+        };
+        if ret < 0 {
+            Err(io::Error::new(
+                io::ErrorKind::Other,
+                SdlError::Others { msg: Sdl::error() },
+            ))
+        } else {
+            Ok(buf.len())
+        }
+    }
+
+    fn flush(&mut self) -> io::Result<()> {
+        let ret = unsafe { bind::SDL_AudioStreamFlush(self.ptr.as_ptr()) };
+        if ret < 0 {
+            Err(io::Error::new(
+                io::ErrorKind::Other,
+                SdlError::Others { msg: Sdl::error() },
+            ))
+        } else {
+            Ok(())
+        }
+    }
+}
