@@ -13,7 +13,7 @@ pub struct RwOps {
 }
 
 impl RwOps {
-    fn size(&self) -> Result<usize> {
+    pub fn size(&self) -> Result<usize> {
         let ret = unsafe { bind::SDL_RWsize(self.ptr.as_ptr()) };
         if ret < 0 {
             Err(SdlError::Others { msg: Sdl::error() })
@@ -22,7 +22,7 @@ impl RwOps {
         }
     }
 
-    fn tell(&mut self) -> io::Result<u64> {
+    pub fn tell(&mut self) -> io::Result<u64> {
         self.seek(io::SeekFrom::Current(0))
     }
 }
