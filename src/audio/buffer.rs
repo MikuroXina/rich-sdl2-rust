@@ -25,6 +25,18 @@ impl<T> AudioBuffer<T> {
         }
     }
 
+    pub fn format(&self) -> &AudioFormat {
+        &self.format
+    }
+
+    pub fn samples(&self) -> u32 {
+        self.samples
+    }
+
+    pub fn channels(&self) -> u8 {
+        self.channels
+    }
+
     pub fn convert<U: Default + Clone>(
         self,
         format: AudioFormat,
