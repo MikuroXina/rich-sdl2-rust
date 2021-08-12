@@ -1,7 +1,10 @@
 use std::{mem::MaybeUninit, os::raw::c_int};
 
 use super::format::AudioFormat;
-use crate::{bind, Result, Sdl, SdlError};
+use crate::{
+    bind::{self, SDL_MixAudioFormat},
+    Result, Sdl, SdlError,
+};
 
 pub struct AudioBuffer<T> {
     format: AudioFormat,
@@ -66,7 +69,7 @@ impl<T> AudioBuffer<T> {
         other
             .buffer
             .resize(len * cvt.len_mult as usize, U::default());
-        cvt.buf = as_u8_slice(&mut other.buffer).as_mut_ptr();
+        cvt.buf = as_u8_slice_mut(&mut other.buffer).as_mut_ptr();
         let ret = unsafe { bind::SDL_ConvertAudio(&mut cvt as *mut _) };
         if ret < 0 {
             Err(SdlError::Others { msg: Sdl::error() })
@@ -76,7 +79,12 @@ impl<T> AudioBuffer<T> {
     }
 }
 
-fn as_u8_slice<T>(slice: &mut [T]) -> &mut [u8] {
+fn as_u8_slice<T>(slice: &[T]) -> &[u8] {
+    let size = std::mem::size_of::<T>();
+    unsafe { std::slice::from_raw_parts(slice.as_ptr() as *const _, slice.len() * size) }
+}
+
+fn as_u8_slice_mut<T>(slice: &mut [T]) -> &mut [u8] {
     let size = std::mem::size_of::<T>();
     unsafe { std::slice::from_raw_parts_mut(slice.as_mut_ptr() as *mut _, slice.len() * size) }
 }
