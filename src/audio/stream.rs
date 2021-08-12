@@ -40,15 +40,6 @@ impl AudioStream {
     pub fn clear(&self) {
         unsafe { bind::SDL_AudioStreamClear(self.ptr.as_ptr()) }
     }
-
-    pub fn flush(&self) -> Result<()> {
-        let ret = unsafe { bind::SDL_AudioStreamFlush(self.ptr.as_ptr()) };
-        if ret < 0 {
-            Err(SdlError::Others { msg: Sdl::error() })
-        } else {
-            Ok(())
-        }
-    }
 }
 
 impl Drop for AudioStream {
@@ -67,7 +58,7 @@ impl io::Read for AudioStream {
             )
         };
         if ret < 0 {
-            Err(io::Error::new(io::ErrorKind::InvalidInput, Sdl::error()))
+            Err(io::Error::new(io::ErrorKind::Other, Sdl::error()))
         } else {
             Ok(ret as usize)
         }
