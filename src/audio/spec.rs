@@ -56,9 +56,9 @@ impl AudioSpecBuilder {
 
     pub fn build<'callback>(
         self,
-        callback: impl AudioCallback + 'callback,
+        callback: Option<Box<dyn AudioCallback + 'callback>>,
     ) -> AudioSpec<'callback> {
-        AudioSpec::new(self, Box::new(Box::new(callback)))
+        AudioSpec::new(self, callback.map(Box::new))
     }
 }
 
@@ -70,7 +70,10 @@ pub struct AudioSpec<'callback> {
 }
 
 impl<'callback> AudioSpec<'callback> {
-    fn new(builder: AudioSpecBuilder, callback: Box<Box<dyn AudioCallback + 'callback>>) -> Self {
+    fn new(
+        builder: AudioSpecBuilder,
+        callback: Option<Box<Box<dyn AudioCallback + 'callback>>>,
+    ) -> Self {
         Self {
             raw: bind::SDL_AudioSpec {
                 freq: builder.sample_freq as c_int,
@@ -81,7 +84,9 @@ impl<'callback> AudioSpec<'callback> {
                 padding: 0,
                 size: 0,
                 callback: Some(audio_spec_wrap_handler),
-                userdata: Box::into_raw(callback) as *mut _,
+                userdata: callback.map_or(std::ptr::null_mut(), |callback| {
+                    Box::into_raw(callback) as *mut _
+                }),
             },
             _phantom: PhantomData,
         }
