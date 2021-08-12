@@ -28,6 +28,6 @@ There's no plans to support SDL_image, SDL_mixer and so on right now.
   - [x] Sensor
 - [x] Haptic
 - [x] Audio
-- [ ] Timer
+- [x] Timer
 - [ ] File
 - [ ] Hinting
