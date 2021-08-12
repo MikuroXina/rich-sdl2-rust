@@ -12,5 +12,5 @@ mod video;
 pub use error::*;
 pub use event::{app, EventBox};
 pub use sdl::Sdl;
-pub use timer::Timer;
+pub use timer::*;
 pub use video::*;
