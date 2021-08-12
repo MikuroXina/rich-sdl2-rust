@@ -18,6 +18,7 @@ pub use driver::*;
 
 mod driver;
 pub mod format;
+pub mod queue;
 pub mod spec;
 pub mod status;
 
