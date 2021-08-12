@@ -23,11 +23,19 @@ pub struct AudioDeviceProperty {
     pub samples: u16,
 }
 
-pub struct AudioDevice {
+pub trait AudioDevice {
+    fn id(&self) -> u32;
+
+    fn status(&self) -> AudioStatus {
+        unsafe { bind::SDL_GetAudioDeviceStatus(self.id()) }.into()
+    }
+}
+
+pub struct SpeakerDevice {
     id: u32,
 }
 
-impl AudioDevice {
+impl SpeakerDevice {
     pub fn all_devices() -> impl Iterator<Item = String> {
         devices(false)
     }
@@ -40,25 +48,33 @@ impl AudioDevice {
         let (id, prop) = open(false, device, spec, fallback)?;
         Ok((Self { id }, prop))
     }
+}
 
-    pub fn status(&self) -> AudioStatus {
-        unsafe { bind::SDL_GetAudioDeviceStatus(self.id) }.into()
+impl AudioDevice for SpeakerDevice {
+    fn id(&self) -> u32 {
+        self.id
     }
 }
 
-impl Drop for AudioDevice {
+impl Drop for SpeakerDevice {
     fn drop(&mut self) {
         unsafe { bind::SDL_CloseAudioDevice(self.id) }
     }
 }
 
-pub struct CaptureAudioDevice {
+pub struct MicrophoneDevice {
     id: u32,
 }
 
-impl CaptureAudioDevice {
+impl MicrophoneDevice {
     pub fn all_devices() -> impl Iterator<Item = String> {
         devices(true)
+    }
+}
+
+impl AudioDevice for MicrophoneDevice {
+    fn id(&self) -> u32 {
+        self.id
     }
 }
 
