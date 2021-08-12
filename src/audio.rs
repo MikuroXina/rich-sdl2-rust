@@ -16,6 +16,7 @@ use crate::{bind, Result, Sdl, SdlError};
 
 pub use driver::*;
 
+pub mod buffer;
 mod driver;
 pub mod format;
 pub mod queue;
