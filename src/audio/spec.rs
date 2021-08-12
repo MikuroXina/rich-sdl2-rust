@@ -1,3 +1,4 @@
+use bitflags::bitflags;
 use std::{
     ffi::c_void,
     marker::PhantomData,
@@ -107,4 +108,13 @@ extern "C" fn audio_spec_wrap_handler(userdata: *mut c_void, stream: *mut u8, le
     let slice = unsafe { std::slice::from_raw_parts_mut(stream, len as usize) };
     slice.fill(0);
     func(slice);
+}
+
+bitflags! {
+    pub struct FallbackFlag : u32 {
+        const FREQUENCY = 1 << 0;
+        const FORMAT = 1 << 0;
+        const CHANNELS = 1 << 0;
+        const SAMPLES = 1 << 0;
+    }
 }
