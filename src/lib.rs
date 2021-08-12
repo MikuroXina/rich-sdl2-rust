@@ -4,6 +4,7 @@ pub mod audio;
 mod bind;
 mod error;
 mod event;
+pub mod file;
 pub mod haptic;
 mod sdl;
 mod timer;
