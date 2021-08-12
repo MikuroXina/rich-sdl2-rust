@@ -21,6 +21,14 @@ impl<'device> QueuedAudio<'device> {
             Ok(())
         }
     }
+
+    pub fn clear(&self) {
+        unsafe { bind::SDL_ClearQueuedAudio(self.device.id) }
+    }
+
+    pub fn queue_bytes_size(&self) -> usize {
+        unsafe { bind::SDL_GetQueuedAudioSize(self.device.id) as usize }
+    }
 }
 
 impl Drop for QueuedAudio<'_> {
