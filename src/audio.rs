@@ -7,11 +7,13 @@ use std::{
 use self::{
     format::AudioFormat,
     spec::{AudioSpec, FallbackFlag},
+    status::AudioStatus,
 };
 use crate::{bind, Result, Sdl, SdlError};
 
 pub mod format;
 pub mod spec;
+pub mod status;
 
 #[derive(Debug)]
 pub struct AudioDeviceProperty {
@@ -37,6 +39,10 @@ impl AudioDevice {
     ) -> Result<(Self, AudioDeviceProperty)> {
         let (id, prop) = open(false, device, spec, fallback)?;
         Ok((Self { id }, prop))
+    }
+
+    pub fn status(&self) -> AudioStatus {
+        unsafe { bind::SDL_GetAudioDeviceStatus(self.id) }.into()
     }
 }
 
