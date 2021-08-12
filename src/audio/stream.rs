@@ -32,6 +32,10 @@ impl AudioStream {
             })
         }
     }
+
+    pub fn clear(&self) {
+        unsafe { bind::SDL_AudioStreamClear(self.ptr.as_ptr()) }
+    }
 }
 
 impl Drop for AudioStream {
