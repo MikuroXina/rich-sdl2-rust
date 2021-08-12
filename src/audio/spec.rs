@@ -1,4 +1,11 @@
-use std::sync::{Arc, Mutex};
+use std::{
+    ffi::c_void,
+    marker::PhantomData,
+    os::raw::c_int,
+    sync::{Arc, Mutex},
+};
+
+use crate::bind;
 
 use super::format::AudioFormat;
 
@@ -46,29 +53,51 @@ impl AudioSpecBuilder {
         self
     }
 
-    pub fn build<T>(self, callback: AudioCallback<T>, user_data: Arc<Mutex<T>>) -> AudioSpec<T> {
-        AudioSpec {
-            sample_freq: self.sample_freq,
-            format: self.format,
-            channels: self.channels,
-            silence: 0,
-            samples: self.samples,
-            size: 0,
-            callback,
-            user_data,
-        }
+    pub fn build<'callback>(
+        self,
+        callback: impl AudioCallback + 'callback,
+    ) -> AudioSpec<'callback> {
+        AudioSpec::new(self, Box::new(Box::new(callback)))
     }
 }
 
-type AudioCallback<T> = fn(Arc<Mutex<T>>, &mut [u8]);
+pub trait AudioCallback: FnMut(&mut [u8]) {}
 
-pub struct AudioSpec<T> {
-    pub sample_freq: u32,
-    pub format: AudioFormat,
-    pub channels: u8,
-    pub silence: u8,
-    pub samples: u16,
-    pub size: u32,
-    pub callback: AudioCallback<T>,
-    pub user_data: Arc<Mutex<T>>,
+pub struct AudioSpec<'callback> {
+    raw: bind::SDL_AudioSpec,
+    _phantom: PhantomData<&'callback mut dyn AudioCallback>,
+}
+
+impl<'callback> AudioSpec<'callback> {
+    fn new(builder: AudioSpecBuilder, callback: Box<Box<dyn AudioCallback + 'callback>>) -> Self {
+        Self {
+            raw: bind::SDL_AudioSpec {
+                freq: builder.sample_freq as c_int,
+                format: builder.format.as_raw(),
+                channels: builder.channels,
+                silence: 0,
+                samples: builder.samples,
+                padding: 0,
+                size: 0,
+                callback: Some(audio_spec_wrap_handler),
+                userdata: Box::into_raw(callback) as *mut _,
+            },
+            _phantom: PhantomData,
+        }
+    }
+
+    pub(super) fn raw(&self) -> &bind::SDL_AudioSpec {
+        &self.raw
+    }
+
+    pub(super) fn raw_mut(&mut self) -> &mut bind::SDL_AudioSpec {
+        &mut self.raw
+    }
+}
+
+extern "C" fn audio_spec_wrap_handler(userdata: *mut c_void, stream: *mut u8, len: c_int) {
+    let func = unsafe { &mut *(userdata as *mut Box<dyn AudioCallback>) };
+    let slice = unsafe { std::slice::from_raw_parts_mut(stream, len as usize) };
+    slice.fill(0);
+    func(slice);
 }
