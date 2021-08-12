@@ -80,6 +80,30 @@ impl<T> AudioBuffer<T> {
     }
 }
 
+impl<T: Default + Clone> AudioBuffer<T> {
+    pub fn mix(&self, volume: u8) -> Self {
+        let mut dst = self.clone();
+        self.mix_in(&mut dst, volume);
+        dst
+    }
+
+    pub fn mix_in(&self, dst: &mut Self, volume: u8) {
+        assert_eq!(self.format.as_raw(), dst.format.as_raw());
+        dst.buffer.clear();
+        dst.buffer.resize(self.buffer.len(), T::default());
+        let len = self.buffer.len() * std::mem::size_of::<T>();
+        unsafe {
+            bind::SDL_MixAudioFormat(
+                as_u8_slice_mut(&mut dst.buffer).as_mut_ptr() as *mut _,
+                as_u8_slice(&self.buffer).as_ptr() as *const _,
+                self.format.as_raw(),
+                len as u32,
+                volume.min(bind::SDL_MIX_MAXVOLUME as u8) as c_int,
+            )
+        }
+    }
+}
+
 fn as_u8_slice<T>(slice: &[T]) -> &[u8] {
     let size = std::mem::size_of::<T>();
     unsafe { std::slice::from_raw_parts(slice.as_ptr() as *const _, slice.len() * size) }
