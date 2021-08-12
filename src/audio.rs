@@ -14,6 +14,9 @@ use self::{
 };
 use crate::{bind, Result, Sdl, SdlError};
 
+pub use driver::*;
+
+mod driver;
 pub mod format;
 pub mod spec;
 pub mod status;
