@@ -2,6 +2,10 @@ use std::ffi::{CStr, CString};
 
 use crate::bind;
 
+mod rw;
+
+pub use rw::*;
+
 pub fn base_path() -> String {
     let cstr = unsafe { CStr::from_ptr(bind::SDL_GetBasePath()) };
     cstr.to_string_lossy().to_string()
