@@ -11,3 +11,11 @@ pub fn all_audio_drivers() -> Vec<String> {
         })
         .collect()
 }
+
+pub fn current_driver() -> Option<String> {
+    let ptr = unsafe { bind::SDL_GetCurrentAudioDriver() };
+    (!ptr.is_null()).then(|| {
+        let cstr = unsafe { CStr::from_ptr(ptr) };
+        cstr.to_string_lossy().to_string()
+    })
+}
