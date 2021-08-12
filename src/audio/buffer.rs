@@ -6,6 +6,7 @@ use crate::{
     Result, Sdl, SdlError,
 };
 
+#[derive(Debug, Clone)]
 pub struct AudioBuffer<T> {
     format: AudioFormat,
     samples: u32,
