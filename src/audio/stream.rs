@@ -1,4 +1,4 @@
-use std::ptr::NonNull;
+use std::{io, os::raw::c_int, ptr::NonNull};
 
 use super::buffer::AudioBuffer;
 use crate::{bind, Result, Sdl, SdlError};
@@ -50,5 +50,22 @@ impl AudioStream {
 impl Drop for AudioStream {
     fn drop(&mut self) {
         unsafe { bind::SDL_FreeAudioStream(self.ptr.as_ptr()) }
+    }
+}
+
+impl io::Read for AudioStream {
+    fn read(&mut self, buf: &mut [u8]) -> io::Result<usize> {
+        let ret = unsafe {
+            bind::SDL_AudioStreamGet(
+                self.ptr.as_ptr(),
+                buf.as_mut_ptr() as *mut _,
+                buf.len() as c_int,
+            )
+        };
+        if ret < 0 {
+            Err(io::Error::new(io::ErrorKind::InvalidInput, Sdl::error()))
+        } else {
+            Ok(ret as usize)
+        }
     }
 }
