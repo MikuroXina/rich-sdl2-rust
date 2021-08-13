@@ -1,7 +1,7 @@
 use static_assertions::assert_not_impl_all;
 use std::{cell::Cell, marker::PhantomData, ptr::NonNull};
 
-use crate::bind;
+use crate::{bind, file::RwOps, Result, Sdl, SdlError};
 
 pub mod gesture;
 
@@ -25,7 +25,7 @@ impl TouchFinger<'_> {
     }
 }
 
-pub struct TouchDevice(i64, PhantomData<Cell<u8>>);
+pub struct TouchDevice(bind::SDL_TouchID, PhantomData<Cell<u8>>);
 
 assert_not_impl_all!(TouchDevice: Send, Sync);
 
@@ -55,5 +55,14 @@ impl TouchDevice {
                 })
             })
             .collect()
+    }
+
+    pub fn load_dollar_templates(&self, src: &RwOps) -> Result<usize> {
+        let ret = unsafe { bind::SDL_LoadDollarTemplates(self.0, src.ptr().as_ptr()) };
+        if ret <= 0 {
+            Err(SdlError::Others { msg: Sdl::error() })
+        } else {
+            Ok(ret as usize)
+        }
     }
 }
