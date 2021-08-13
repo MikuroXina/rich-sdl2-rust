@@ -60,3 +60,7 @@ pub fn set_hint_with_priority(key: &str, value: &str, priority: HintPriority) ->
         Err(SdlError::UnsupportedFeature)
     }
 }
+
+pub fn clear_hints() {
+    unsafe { bind::SDL_ClearHints() }
+}
