@@ -18,6 +18,10 @@ pub struct RwOps<'a> {
 }
 
 impl<'a> RwOps<'a> {
+    pub(crate) unsafe fn ptr(&self) -> NonNull<bind::SDL_RWops> {
+        self.ptr
+    }
+
     pub fn from_file(file_name: &str, mode: OpenMode) -> Result<RwOps<'static>> {
         let cstr = CString::new(file_name).expect("file_name must not be empty");
         let ptr = unsafe { bind::SDL_RWFromFile(cstr.as_ptr(), mode.into_raw().as_ptr()) };
