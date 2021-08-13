@@ -8,6 +8,21 @@ pub struct TouchFinger<'device> {
     _phantom: PhantomData<&'device ()>,
 }
 
+impl TouchFinger<'_> {
+    pub fn id(&self) -> i64 {
+        unsafe { self.ptr.as_ref() }.id
+    }
+    pub fn x(&self) -> f32 {
+        unsafe { self.ptr.as_ref() }.x
+    }
+    pub fn y(&self) -> f32 {
+        unsafe { self.ptr.as_ref() }.y
+    }
+    pub fn pressure(&self) -> f32 {
+        unsafe { self.ptr.as_ref() }.pressure
+    }
+}
+
 pub struct TouchDevice(i64, PhantomData<Cell<u8>>);
 
 assert_not_impl_all!(TouchDevice: Send, Sync);
