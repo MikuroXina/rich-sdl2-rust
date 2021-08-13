@@ -1,6 +1,9 @@
 use static_assertions::assert_not_impl_all;
-use std::cell::{Cell, RefCell};
-use std::collections::HashMap;
+use std::{
+    cell::{Cell, RefCell},
+    collections::HashMap,
+    ffi::c_void,
+};
 
 use crate::{bind, geo::Point, Result};
 
@@ -37,52 +40,47 @@ impl HitTestResult {
     }
 }
 
-pub type HitTester = Box<dyn Fn(Point) -> HitTestResult>;
-
-thread_local! {
-    static HIT_TESTERS: RefCell<HashMap<u32, HitTester>> = RefCell::new(HashMap::new());
-}
+pub type HitTester<'window> = Box<dyn FnMut(Point) -> HitTestResult + 'window>;
 
 pub struct HitTest<'window> {
     window: &'window Window<'window>,
+    tester_raw: *mut HitTester<'window>,
 }
 
 assert_not_impl_all!(HitTest: Send, Sync);
 
 impl<'window> HitTest<'window> {
-    pub fn new(window: &'window Window<'window>) -> Self {
-        Self { window }
-    }
-
-    pub fn set_tester(&self, callback: HitTester) -> Result<()> {
-        HIT_TESTERS.with(|tester| tester.borrow_mut().insert(self.window.id(), callback));
+    pub fn new(window: &'window Window<'window>, callback: HitTester<'window>) -> Result<Self> {
+        let wrapped = Box::new(callback);
+        let tester_raw = Box::into_raw(wrapped);
         let ret = unsafe {
-            bind::SDL_SetWindowHitTest(self.window.as_ptr(), Some(handler), std::ptr::null_mut())
+            bind::SDL_SetWindowHitTest(
+                window.as_ptr(),
+                Some(hit_test_wrap_handler),
+                tester_raw as *mut _,
+            )
         };
         if ret != 0 {
-            return Err(crate::SdlError::UnsupportedFeature);
+            Err(crate::SdlError::UnsupportedFeature)
+        } else {
+            Ok(Self { window, tester_raw })
         }
-        Ok(())
     }
 }
 
 impl Drop for HitTest<'_> {
     fn drop(&mut self) {
-        HIT_TESTERS.with(|tester| tester.borrow_mut().remove(&self.window.id()));
+        let _ =
+            unsafe { bind::SDL_SetWindowHitTest(self.window.as_ptr(), None, std::ptr::null_mut()) };
+        let _ = unsafe { Box::from_raw(self.tester_raw) };
     }
 }
 
-unsafe extern "C" fn handler(
+unsafe extern "C" fn hit_test_wrap_handler(
     win: *mut bind::SDL_Window,
     area: *const bind::SDL_Point,
-    _data: *mut ::std::os::raw::c_void,
+    data: *mut c_void,
 ) -> bind::SDL_HitTestResult {
-    let result = Cell::new(0u32);
-    HIT_TESTERS.with(|f| {
-        let id = bind::SDL_GetWindowID(win);
-        if let Some(hit_tester) = f.borrow().get(&id) {
-            result.set(hit_tester((*area).into()).into_arg());
-        }
-    });
-    result.get()
+    let callback = unsafe { &mut *(data as *mut HitTester) };
+    callback((*area).into()).into_arg()
 }
