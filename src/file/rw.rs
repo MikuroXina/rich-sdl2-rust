@@ -67,6 +67,50 @@ impl<'a> RwOps<'a> {
     pub fn tell(&mut self) -> io::Result<u64> {
         self.seek(io::SeekFrom::Current(0))
     }
+
+    pub fn read_u8(&mut self) -> u8 {
+        unsafe { bind::SDL_ReadU8(self.ptr.as_ptr()) }
+    }
+    pub fn read_be16(&mut self) -> u16 {
+        unsafe { bind::SDL_ReadBE16(self.ptr.as_ptr()) }
+    }
+    pub fn read_le16(&mut self) -> u16 {
+        unsafe { bind::SDL_ReadLE16(self.ptr.as_ptr()) }
+    }
+    pub fn read_be32(&mut self) -> u32 {
+        unsafe { bind::SDL_ReadBE32(self.ptr.as_ptr()) }
+    }
+    pub fn read_le32(&mut self) -> u32 {
+        unsafe { bind::SDL_ReadLE32(self.ptr.as_ptr()) }
+    }
+    pub fn read_be64(&mut self) -> u64 {
+        unsafe { bind::SDL_ReadBE64(self.ptr.as_ptr()) }
+    }
+    pub fn read_le64(&mut self) -> u64 {
+        unsafe { bind::SDL_ReadLE64(self.ptr.as_ptr()) }
+    }
+
+    pub fn write_u8(&mut self, value: u8) -> bool {
+        unsafe { bind::SDL_WriteU8(self.ptr.as_ptr(), value) == 1 }
+    }
+    pub fn write_be16(&mut self, value: u16) -> bool {
+        unsafe { bind::SDL_WriteBE16(self.ptr.as_ptr(), value) == 1 }
+    }
+    pub fn write_le16(&mut self, value: u16) -> bool {
+        unsafe { bind::SDL_WriteLE16(self.ptr.as_ptr(), value) == 1 }
+    }
+    pub fn write_be32(&mut self, value: u32) -> bool {
+        unsafe { bind::SDL_WriteBE32(self.ptr.as_ptr(), value) == 1 }
+    }
+    pub fn write_le32(&mut self, value: u32) -> bool {
+        unsafe { bind::SDL_WriteLE32(self.ptr.as_ptr(), value) == 1 }
+    }
+    pub fn write_be64(&mut self, value: u64) -> bool {
+        unsafe { bind::SDL_WriteBE64(self.ptr.as_ptr(), value) == 1 }
+    }
+    pub fn write_le64(&mut self, value: u64) -> bool {
+        unsafe { bind::SDL_WriteLE64(self.ptr.as_ptr(), value) == 1 }
+    }
 }
 
 impl Drop for RwOps<'_> {
