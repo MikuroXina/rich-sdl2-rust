@@ -9,6 +9,7 @@ use self::{
     keyboard::KeyboardEvent,
     mouse::{MouseButtonEvent, MouseEvent, MouseMotionEvent, MouseWheelEvent},
     text::{TextEditingEvent, TextInputEvent},
+    touch::gesture::GestureEvent,
     window::WindowEvent,
 };
 
@@ -56,6 +57,7 @@ pub struct EventBox<'video> {
     joystick_event_handlers: EventHandlers<'video, JoystickEvent<'video>>,
     audio_device_event_handlers: EventHandlers<'video, AudioDeviceEvent>,
     drop_event_handlers: EventHandlers<'video, DropEvent>,
+    gesture_event_handlers: EventHandlers<'video, GestureEvent>,
     _phantom: PhantomData<&'video ()>,
 }
 
@@ -78,6 +80,7 @@ impl<'video> EventBox<'video> {
             joystick_event_handlers: Default::default(),
             audio_device_event_handlers: Default::default(),
             drop_event_handlers: Default::default(),
+            gesture_event_handlers: Default::default(),
             _phantom: PhantomData,
         }
     }
@@ -120,6 +123,10 @@ impl<'video> EventBox<'video> {
 
     pub fn handle_drop(&mut self, handler: EventHandler<'video, DropEvent>) {
         self.drop_event_handlers.push(handler);
+    }
+
+    pub fn handle_gesture(&mut self, handler: EventHandler<'video, GestureEvent>) {
+        self.gesture_event_handlers.push(handler);
     }
 
     fn handle_event(&self, event: bind::SDL_Event) {
@@ -206,6 +213,14 @@ impl<'video> EventBox<'video> {
             | bind::SDL_EventType_SDL_DROPCOMPLETE => {
                 let drop = unsafe { event.drop }.into();
                 self.drop_event_handlers.call_handlers(drop);
+            }
+            bind::SDL_EventType_SDL_MULTIGESTURE => {
+                let gesture = unsafe { event.mgesture }.into();
+                self.gesture_event_handlers.call_handlers(gesture);
+            }
+            bind::SDL_EventType_SDL_DOLLARGESTURE => {
+                let gesture = unsafe { event.dgesture }.into();
+                self.gesture_event_handlers.call_handlers(gesture);
             }
             _ => {}
         }
