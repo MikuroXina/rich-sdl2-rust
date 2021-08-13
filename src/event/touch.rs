@@ -3,6 +3,8 @@ use std::{cell::Cell, marker::PhantomData, ptr::NonNull};
 
 use crate::bind;
 
+pub mod gesture;
+
 pub struct TouchFinger<'device> {
     ptr: NonNull<bind::SDL_Finger>,
     _phantom: PhantomData<&'device ()>,
