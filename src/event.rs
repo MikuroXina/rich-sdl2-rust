@@ -11,7 +11,7 @@ use self::{
     window::WindowEvent,
 };
 
-use crate::{bind, Sdl, Video};
+use crate::{audio::event::AudioDeviceEvent, bind, Sdl, Video};
 
 pub mod app;
 pub mod game_controller;
@@ -51,6 +51,7 @@ pub struct EventBox<'video> {
     mouse_event_handlers: EventHandlers<'video, MouseEvent>,
     controller_event_handlers: EventHandlers<'video, ControllerEvent<'video>>,
     joystick_event_handlers: EventHandlers<'video, JoystickEvent<'video>>,
+    audio_device_event_handlers: EventHandlers<'video, AudioDeviceEvent>,
     _phantom: PhantomData<&'video ()>,
 }
 
@@ -71,6 +72,7 @@ impl<'video> EventBox<'video> {
             mouse_event_handlers: Default::default(),
             controller_event_handlers: Default::default(),
             joystick_event_handlers: Default::default(),
+            audio_device_event_handlers: Default::default(),
             _phantom: PhantomData,
         }
     }
@@ -105,6 +107,10 @@ impl<'video> EventBox<'video> {
 
     pub fn handle_joystick(&mut self, handler: EventHandler<'video, JoystickEvent<'video>>) {
         self.joystick_event_handlers.push(handler);
+    }
+
+    pub fn handle_audio_device(&mut self, handler: EventHandler<'video, AudioDeviceEvent>) {
+        self.audio_device_event_handlers.push(handler);
     }
 
     fn handle_event(&self, event: bind::SDL_Event) {
@@ -179,6 +185,11 @@ impl<'video> EventBox<'video> {
             bind::SDL_EventType_SDL_JOYHATMOTION => {
                 let joy: JoystickEvent = unsafe { event.jhat }.into();
                 self.joystick_event_handlers.call_handlers(joy);
+            }
+            bind::SDL_EventType_SDL_AUDIODEVICEADDED
+            | bind::SDL_EventType_SDL_AUDIODEVICEREMOVED => {
+                let audio = unsafe { event.adevice }.into();
+                self.audio_device_event_handlers.call_handlers(audio);
             }
             _ => {}
         }
