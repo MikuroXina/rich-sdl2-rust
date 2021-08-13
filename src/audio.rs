@@ -105,6 +105,21 @@ impl MicrophoneDevice {
     pub fn all_devices() -> impl Iterator<Item = String> {
         devices(true)
     }
+
+    pub fn open(
+        device: Option<String>,
+        spec: &AudioSpec,
+        fallback: FallbackFlag,
+    ) -> Result<(Self, AudioDeviceProperty)> {
+        let (id, prop) = open(true, device, spec, fallback)?;
+        Ok((
+            Self {
+                id,
+                _phantom: PhantomData,
+            },
+            prop,
+        ))
+    }
 }
 
 impl AudioDevice for MicrophoneDevice {
