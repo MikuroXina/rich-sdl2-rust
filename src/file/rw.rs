@@ -1,8 +1,10 @@
 use std::{
+    ffi::CString,
     io::{self, Seek},
     ptr::NonNull,
 };
 
+use super::mode::OpenMode;
 use crate::{
     bind::{self, size_t},
     Result, Sdl, SdlError,
@@ -13,6 +15,18 @@ pub struct RwOps {
 }
 
 impl RwOps {
+    pub fn from_file(file_name: &str, mode: OpenMode) -> Result<Self> {
+        let cstr = CString::new(file_name).expect("file_name must not be empty");
+        let ptr = unsafe { bind::SDL_RWFromFile(cstr.as_ptr(), mode.into_raw().as_ptr()) };
+        if ptr.is_null() {
+            Err(SdlError::Others { msg: Sdl::error() })
+        } else {
+            Ok(Self {
+                ptr: NonNull::new(ptr).unwrap(),
+            })
+        }
+    }
+
     pub fn size(&self) -> Result<usize> {
         let ret = unsafe { bind::SDL_RWsize(self.ptr.as_ptr()) };
         if ret < 0 {
