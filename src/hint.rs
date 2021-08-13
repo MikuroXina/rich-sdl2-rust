@@ -5,6 +5,10 @@ use std::{
 
 use crate::{bind, Result, SdlError};
 
+mod observer;
+
+pub use observer::*;
+
 pub fn get_hint(key: &str) -> Option<String> {
     let cstr = CString::new(key).expect("key must not be empty");
     let hint = unsafe { bind::SDL_GetHint(cstr.as_ptr()) };
