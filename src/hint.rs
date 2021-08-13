@@ -19,6 +19,12 @@ pub fn get_hint(key: &str) -> Option<String> {
     })
 }
 
+pub fn get_hint_bool(key: &str) -> Option<bool> {
+    let cstr = CString::new(key).expect("key must not be empty");
+    let ret = unsafe { bind::SDL_GetHintBoolean(cstr.as_ptr(), 2) };
+    (ret != 2).then(|| ret == bind::SDL_bool_SDL_TRUE)
+}
+
 pub fn set_hint(key: &str, value: &str) -> Result<()> {
     let key_cstr = CString::new(key).expect("key must not be empty");
     let value_cstr = CString::new(value).expect("value must not be empty");
