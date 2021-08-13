@@ -2,6 +2,7 @@ use std::{
     ffi::CString,
     io::{self, Seek},
     marker::PhantomData,
+    os::raw::c_int,
     ptr::NonNull,
 };
 
@@ -20,6 +21,30 @@ impl<'a> RwOps<'a> {
     pub fn from_file(file_name: &str, mode: OpenMode) -> Result<RwOps<'static>> {
         let cstr = CString::new(file_name).expect("file_name must not be empty");
         let ptr = unsafe { bind::SDL_RWFromFile(cstr.as_ptr(), mode.into_raw().as_ptr()) };
+        if ptr.is_null() {
+            Err(SdlError::Others { msg: Sdl::error() })
+        } else {
+            Ok(RwOps {
+                ptr: NonNull::new(ptr).unwrap(),
+                _phantom: PhantomData,
+            })
+        }
+    }
+
+    pub fn from_mem(buf: &'a [u8]) -> Result<Self> {
+        let ptr = unsafe { bind::SDL_RWFromConstMem(buf.as_ptr() as *const _, buf.len() as c_int) };
+        if ptr.is_null() {
+            Err(SdlError::Others { msg: Sdl::error() })
+        } else {
+            Ok(RwOps {
+                ptr: NonNull::new(ptr).unwrap(),
+                _phantom: PhantomData,
+            })
+        }
+    }
+
+    pub fn from_mem_mut(buf: &'a mut [u8]) -> Result<Self> {
+        let ptr = unsafe { bind::SDL_RWFromMem(buf.as_mut_ptr() as *mut _, buf.len() as c_int) };
         if ptr.is_null() {
             Err(SdlError::Others { msg: Sdl::error() })
         } else {
