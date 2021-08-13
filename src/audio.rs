@@ -18,6 +18,7 @@ pub use driver::*;
 
 pub mod buffer;
 mod driver;
+pub mod event;
 pub mod format;
 pub mod queue;
 pub mod spec;
