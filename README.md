@@ -30,4 +30,5 @@ There's no plans to support SDL_image, SDL_mixer and so on right now.
 - [x] Audio
 - [x] Timer
 - [x] File
+- [ ] Power
 - [ ] Hinting
