@@ -11,6 +11,7 @@ use crate::texture::Texture;
 use crate::{bind, Sdl};
 
 pub mod clip;
+pub mod driver;
 pub mod info;
 mod paste;
 pub mod pen;
