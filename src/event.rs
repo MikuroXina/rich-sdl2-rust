@@ -3,6 +3,7 @@ use std::marker::PhantomData;
 
 use self::{
     app::QuitEvent,
+    drop::DropEvent,
     game_controller::event::ControllerEvent,
     joystick::event::JoystickEvent,
     keyboard::KeyboardEvent,
@@ -53,6 +54,7 @@ pub struct EventBox<'video> {
     controller_event_handlers: EventHandlers<'video, ControllerEvent<'video>>,
     joystick_event_handlers: EventHandlers<'video, JoystickEvent<'video>>,
     audio_device_event_handlers: EventHandlers<'video, AudioDeviceEvent>,
+    drop_event_handlers: EventHandlers<'video, DropEvent>,
     _phantom: PhantomData<&'video ()>,
 }
 
@@ -74,6 +76,7 @@ impl<'video> EventBox<'video> {
             controller_event_handlers: Default::default(),
             joystick_event_handlers: Default::default(),
             audio_device_event_handlers: Default::default(),
+            drop_event_handlers: Default::default(),
             _phantom: PhantomData,
         }
     }
@@ -112,6 +115,10 @@ impl<'video> EventBox<'video> {
 
     pub fn handle_audio_device(&mut self, handler: EventHandler<'video, AudioDeviceEvent>) {
         self.audio_device_event_handlers.push(handler);
+    }
+
+    pub fn handle_drop(&mut self, handler: EventHandler<'video, DropEvent>) {
+        self.drop_event_handlers.push(handler);
     }
 
     fn handle_event(&self, event: bind::SDL_Event) {
@@ -191,6 +198,13 @@ impl<'video> EventBox<'video> {
             | bind::SDL_EventType_SDL_AUDIODEVICEREMOVED => {
                 let audio = unsafe { event.adevice }.into();
                 self.audio_device_event_handlers.call_handlers(audio);
+            }
+            bind::SDL_EventType_SDL_DROPFILE
+            | bind::SDL_EventType_SDL_DROPTEXT
+            | bind::SDL_EventType_SDL_DROPBEGIN
+            | bind::SDL_EventType_SDL_DROPCOMPLETE => {
+                let drop = unsafe { event.drop }.into();
+                self.drop_event_handlers.call_handlers(drop);
             }
             _ => {}
         }
