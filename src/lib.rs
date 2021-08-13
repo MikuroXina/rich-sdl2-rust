@@ -6,6 +6,7 @@ mod error;
 mod event;
 pub mod file;
 pub mod haptic;
+pub mod hint;
 pub mod power;
 mod sdl;
 pub mod system;
