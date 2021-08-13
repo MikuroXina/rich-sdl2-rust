@@ -7,6 +7,7 @@ mod event;
 pub mod file;
 pub mod haptic;
 mod sdl;
+pub mod system;
 mod timer;
 mod video;
 
