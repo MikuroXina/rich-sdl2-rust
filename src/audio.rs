@@ -128,6 +128,13 @@ impl AudioDevice for MicrophoneDevice {
     }
 }
 
+pub fn device_name(device_id: u32, is_microphone: bool) -> Option<String> {
+    let ptr = unsafe {
+        bind::SDL_GetAudioDeviceName(device_id as i32, if is_microphone { 1 } else { 0 })
+    };
+    (!ptr.is_null()).then(|| unsafe { CStr::from_ptr(ptr) }.to_string_lossy().to_string())
+}
+
 fn devices(is_capture: bool) -> impl Iterator<Item = String> {
     let is_capture_raw = if is_capture { 1 } else { 0 };
     let num_devices = unsafe {
