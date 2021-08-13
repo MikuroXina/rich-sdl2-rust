@@ -21,6 +21,25 @@ impl<'renderer> Pen<'renderer> {
         }
     }
 
+    pub fn color(&self) -> Rgb {
+        let mut r = 0;
+        let mut g = 0;
+        let mut b = 0;
+        let ret = unsafe {
+            bind::SDL_GetRenderDrawColor(
+                self.renderer.as_ptr(),
+                &mut r as *mut _,
+                &mut g as *mut _,
+                &mut b as *mut _,
+                std::ptr::null_mut(),
+            )
+        };
+        if ret != 0 {
+            Sdl::error_then_panic("Sdl pen color")
+        }
+        Rgb { r, g, b }
+    }
+
     pub fn clear(&self) {
         let ret = unsafe { bind::SDL_RenderClear(self.renderer.as_ptr()) };
         if ret != 0 {
