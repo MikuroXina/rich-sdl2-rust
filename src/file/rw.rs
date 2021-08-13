@@ -1,6 +1,7 @@
 use std::{
     ffi::CString,
     io::{self, Seek},
+    marker::PhantomData,
     ptr::NonNull,
 };
 
@@ -10,19 +11,21 @@ use crate::{
     Result, Sdl, SdlError,
 };
 
-pub struct RwOps {
+pub struct RwOps<'a> {
     ptr: NonNull<bind::SDL_RWops>,
+    _phantom: PhantomData<&'a mut ()>,
 }
 
-impl RwOps {
-    pub fn from_file(file_name: &str, mode: OpenMode) -> Result<Self> {
+impl<'a> RwOps<'a> {
+    pub fn from_file(file_name: &str, mode: OpenMode) -> Result<RwOps<'static>> {
         let cstr = CString::new(file_name).expect("file_name must not be empty");
         let ptr = unsafe { bind::SDL_RWFromFile(cstr.as_ptr(), mode.into_raw().as_ptr()) };
         if ptr.is_null() {
             Err(SdlError::Others { msg: Sdl::error() })
         } else {
-            Ok(Self {
+            Ok(RwOps {
                 ptr: NonNull::new(ptr).unwrap(),
+                _phantom: PhantomData,
             })
         }
     }
@@ -41,13 +44,13 @@ impl RwOps {
     }
 }
 
-impl Drop for RwOps {
+impl Drop for RwOps<'_> {
     fn drop(&mut self) {
         let _ = unsafe { bind::SDL_RWclose(self.ptr.as_ptr()) };
     }
 }
 
-impl io::Read for RwOps {
+impl io::Read for RwOps<'_> {
     fn read(&mut self, buf: &mut [u8]) -> io::Result<usize> {
         let ret = unsafe {
             bind::SDL_RWread(
@@ -68,7 +71,7 @@ impl io::Read for RwOps {
     }
 }
 
-impl io::Seek for RwOps {
+impl io::Seek for RwOps<'_> {
     fn seek(&mut self, pos: io::SeekFrom) -> io::Result<u64> {
         let ret = match pos {
             io::SeekFrom::Start(pos) => unsafe {
@@ -88,7 +91,7 @@ impl io::Seek for RwOps {
     }
 }
 
-impl io::Write for RwOps {
+impl io::Write for RwOps<'_> {
     fn write(&mut self, buf: &[u8]) -> io::Result<usize> {
         let written = unsafe {
             bind::SDL_RWwrite(
