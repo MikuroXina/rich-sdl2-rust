@@ -14,6 +14,7 @@ use self::{
 use crate::{audio::event::AudioDeviceEvent, bind, Sdl, Video};
 
 pub mod app;
+pub mod drop;
 pub mod game_controller;
 pub mod joystick;
 pub mod keyboard;
