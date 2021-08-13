@@ -1,10 +1,30 @@
 use std::marker::PhantomData;
 
-use crate::bind;
+use crate::{bind, file::RwOps, Result, Sdl, SdlError};
 
 use super::TouchDevice;
 
 pub struct Gesture(bind::SDL_GestureID);
+
+impl Gesture {
+    pub fn save_dollar_template_all(dst: &RwOps) -> Result<usize> {
+        let ret = unsafe { bind::SDL_SaveAllDollarTemplates(dst.ptr().as_ptr()) };
+        if ret == 0 {
+            Err(SdlError::Others { msg: Sdl::error() })
+        } else {
+            Ok(ret as usize)
+        }
+    }
+
+    pub fn save_dollar_template(&self, dst: &RwOps) -> Result<usize> {
+        let ret = unsafe { bind::SDL_SaveDollarTemplate(self.0, dst.ptr().as_ptr()) };
+        if ret == 0 {
+            Err(SdlError::Others { msg: Sdl::error() })
+        } else {
+            Ok(ret as usize)
+        }
+    }
+}
 
 pub enum GestureEvent {
     Multi {
