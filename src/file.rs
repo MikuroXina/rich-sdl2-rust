@@ -2,6 +2,7 @@ use std::ffi::{CStr, CString};
 
 use crate::bind;
 
+pub mod mode;
 mod rw;
 
 pub use rw::*;
