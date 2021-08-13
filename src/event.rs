@@ -22,6 +22,7 @@ pub mod keyboard;
 pub mod mouse;
 pub mod sensor;
 pub mod text;
+pub mod touch;
 pub mod window;
 
 pub type EventHandler<'video, T> = Box<dyn Fn(&T) + 'video>;
