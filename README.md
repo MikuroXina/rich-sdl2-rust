@@ -19,8 +19,8 @@ There's no plans to support SDL_image, SDL_mixer and so on right now.
   - [x] Clipboard
   - [ ] Vulkan
   - [ ] Metal
-- [ ] Input Event
-  - [ ] Handling
+- [x] Input Event
+  - [x] Handling
   - [x] Keyboard
   - [x] Mouse
   - [x] Joystick
