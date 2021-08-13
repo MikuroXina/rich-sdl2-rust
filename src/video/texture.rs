@@ -132,6 +132,28 @@ impl<'renderer> Texture<'renderer> {
     pub fn set_clip(&mut self, clip: Option<Rect>) {
         self.clip = clip;
     }
+
+    pub fn bind_to_current_gl_context(&self) -> Result<(f32, f32)> {
+        let mut width = 0f32;
+        let mut height = 0f32;
+        let ret = unsafe {
+            bind::SDL_GL_BindTexture(self.as_ptr(), &mut width as *mut _, &mut height as *mut _)
+        };
+        if ret != 0 {
+            Err(SdlError::Others { msg: Sdl::error() })
+        } else {
+            Ok((width, height))
+        }
+    }
+
+    pub fn unbind_from_current_gl_context(&self) -> Result<()> {
+        let ret = unsafe { bind::SDL_GL_UnbindTexture(self.as_ptr()) };
+        if ret != 0 {
+            Err(SdlError::UnsupportedFeature)
+        } else {
+            Ok(())
+        }
+    }
 }
 
 impl Drop for Texture<'_> {
