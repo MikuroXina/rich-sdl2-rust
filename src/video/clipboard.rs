@@ -22,5 +22,7 @@ impl ClipboardText {
         &self.text
     }
 
-    // TODO (MikuroXina): into_string
+    pub fn into_string(self) -> String {
+        self.text
+    }
 }
