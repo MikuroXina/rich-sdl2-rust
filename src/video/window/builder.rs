@@ -120,6 +120,13 @@ impl WindowBuilder {
     }
 
     pub fn build<'video>(self, video: &'video Video) -> Window<'video> {
+        if self.context_kind == WindowContextKind::Vulkan {
+            let ret = unsafe { bind::SDL_Vulkan_LoadLibrary(std::ptr::null()) };
+            if ret == -1 {
+                Sdl::error_then_panic("loading vulkan library from SDL_VULKAN_LIBRARY");
+            }
+        }
+
         let flags = self.calc_flags();
 
         use std::os::raw::c_int;
