@@ -3,6 +3,7 @@ use std::{ffi::CStr, marker::PhantomData, mem::MaybeUninit, os::raw::c_uint, ptr
 
 use crate::{
     bind,
+    geo::Size,
     window::{Window, WindowContextKind},
     Result, SdlError,
 };
@@ -45,6 +46,22 @@ impl<'window> VkInstance<'window> {
 
     pub fn extensions(&self) -> &[String] {
         &self.extensions
+    }
+
+    pub fn drawable_size(&self) -> Size {
+        let mut width = 0;
+        let mut height = 0;
+        unsafe {
+            bind::SDL_Vulkan_GetDrawableSize(
+                self.window.as_ptr(),
+                &mut width as _,
+                &mut height as _,
+            )
+        }
+        Size {
+            width: width as _,
+            height: height as _,
+        }
     }
 }
 
