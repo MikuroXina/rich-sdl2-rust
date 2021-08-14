@@ -1,7 +1,11 @@
 use ash::vk::{Handle as _, Instance};
 use std::{ffi::CStr, marker::PhantomData, mem::MaybeUninit, os::raw::c_uint, ptr::NonNull};
 
-use crate::{bind, window::Window, Result, SdlError};
+use crate::{
+    bind,
+    window::{Window, WindowContextKind},
+    Result, SdlError,
+};
 
 pub struct VkInstance<'window> {
     window: &'window Window<'window>,
@@ -10,6 +14,9 @@ pub struct VkInstance<'window> {
 
 impl<'window> VkInstance<'window> {
     pub fn new(window: &'window Window<'window>) -> Result<Self> {
+        if window.state().context_kind != WindowContextKind::Vulkan {
+            return Err(SdlError::UnsupportedFeature);
+        }
         let mut num: c_uint = 0;
         let ret = unsafe {
             bind::SDL_Vulkan_GetInstanceExtensions(
