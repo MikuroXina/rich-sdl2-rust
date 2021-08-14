@@ -146,8 +146,6 @@ impl<'video> Window<'video> {
     pub fn surface(&self) -> WindowSurface {
         WindowSurface::new(self)
     }
-
-    // TODO(MikuroXina): open gl context
 }
 
 impl<'video> Drop for Window<'video> {
