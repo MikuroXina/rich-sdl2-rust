@@ -11450,6 +11450,50 @@ extern "C" {
 extern "C" {
     pub fn SDL_Quit();
 }
+#[repr(C)]
+#[derive(Debug, Copy, Clone)]
+pub struct VkInstance_T {
+    _unused: [u8; 0],
+}
+pub type VkInstance = *mut VkInstance_T;
+#[repr(C)]
+#[derive(Debug, Copy, Clone)]
+pub struct VkSurfaceKHR_T {
+    _unused: [u8; 0],
+}
+pub type VkSurfaceKHR = *mut VkSurfaceKHR_T;
+pub type SDL_vulkanInstance = VkInstance;
+pub type SDL_vulkanSurface = VkSurfaceKHR;
+extern "C" {
+    pub fn SDL_Vulkan_LoadLibrary(path: *const ::std::os::raw::c_char) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    pub fn SDL_Vulkan_GetVkGetInstanceProcAddr() -> *mut ::std::os::raw::c_void;
+}
+extern "C" {
+    pub fn SDL_Vulkan_UnloadLibrary();
+}
+extern "C" {
+    pub fn SDL_Vulkan_GetInstanceExtensions(
+        window: *mut SDL_Window,
+        pCount: *mut ::std::os::raw::c_uint,
+        pNames: *mut *const ::std::os::raw::c_char,
+    ) -> SDL_bool;
+}
+extern "C" {
+    pub fn SDL_Vulkan_CreateSurface(
+        window: *mut SDL_Window,
+        instance: VkInstance,
+        surface: *mut VkSurfaceKHR,
+    ) -> SDL_bool;
+}
+extern "C" {
+    pub fn SDL_Vulkan_GetDrawableSize(
+        window: *mut SDL_Window,
+        w: *mut ::std::os::raw::c_int,
+        h: *mut ::std::os::raw::c_int,
+    );
+}
 pub type __builtin_va_list = [__va_list_tag; 1usize];
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]

@@ -16,6 +16,7 @@ pub mod renderer;
 pub mod screen_saver;
 pub mod surface;
 pub mod texture;
+pub mod vulkan;
 pub mod window;
 
 pub struct Video<'sdl> {
