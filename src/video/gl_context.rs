@@ -68,7 +68,14 @@ impl<'window> GlContext<'window> {
         unsafe { bind::SDL_GL_UnloadLibrary() }
     }
 
-    // TODO(MikuroXina): proc
+    /// # Safety
+    ///
+    /// This return value is valid only on supported the extension.
+    /// You must check by `supported_extension` before casting to any function pointer.
+    pub unsafe fn proc_address(&self, proc: &str) -> *mut c_void {
+        let cstr = CString::new(proc).unwrap();
+        unsafe { bind::SDL_GL_GetProcAddress(cstr.as_ptr()) }
+    }
 }
 
 impl<'window> Drop for GlContext<'window> {
