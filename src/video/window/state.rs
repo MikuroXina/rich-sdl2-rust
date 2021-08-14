@@ -26,7 +26,7 @@ impl From<WindowFlags> for WindowFormat {
     }
 }
 
-#[derive(Debug)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum WindowContextKind {
     Software,
     OpenGl,
