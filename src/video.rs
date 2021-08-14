@@ -2,15 +2,20 @@ use static_assertions::assert_not_impl_all;
 use std::ffi::CStr;
 use std::marker::PhantomData;
 
-use crate::{bind, Sdl};
+use crate::{
+    bind::{self, SDL_GL_SetAttribute},
+    Result, Sdl, SdlError,
+};
 
 use self::display::Display;
+pub use gl_attr::*;
 
 pub mod clipboard;
 pub mod color;
 pub mod display;
 pub mod gamma_ramp;
 pub mod geo;
+mod gl_attr;
 pub mod gl_context;
 pub mod renderer;
 pub mod screen_saver;
@@ -68,6 +73,29 @@ impl<'sdl> Video<'sdl> {
 
     pub fn has_screen_keyboard(&self) -> bool {
         unsafe { bind::SDL_HasScreenKeyboardSupport() != 0 }
+    }
+
+    pub fn set_gl_attribute(&self, attribute: GlAttribute, value: i32) -> Result<()> {
+        let ret = unsafe { bind::SDL_GL_SetAttribute(attribute.into(), value) };
+        if ret < 0 {
+            Err(SdlError::Others { msg: Sdl::error() })
+        } else {
+            Ok(())
+        }
+    }
+
+    pub fn get_gl_attribute(&self, attribute: GlAttribute) -> Result<i32> {
+        let mut value = 0;
+        let ret = unsafe { bind::SDL_GL_GetAttribute(attribute.into(), &mut value as *mut _) };
+        if ret < 0 {
+            Err(SdlError::Others { msg: Sdl::error() })
+        } else {
+            Ok(value)
+        }
+    }
+
+    pub fn reset_gl_attribute(&self) {
+        unsafe { bind::SDL_GL_ResetAttributes() }
     }
 }
 
