@@ -13,6 +13,7 @@ pub mod clipped;
 pub mod cloned;
 pub mod color;
 pub mod rle;
+pub mod window;
 
 use alpha::AlphaMod;
 use blend::Blended;

@@ -3,8 +3,9 @@ use static_assertions::assert_not_impl_all;
 use std::ptr::NonNull;
 
 use super::{color::pixel::kind::PixelFormatKind, display::Display};
+use crate::surface::window::WindowSurface;
 use crate::surface::Surface;
-use crate::{bind, Result, Sdl, Video};
+use crate::{bind, Result, Sdl, SdlError, Video};
 
 mod border;
 mod brightness;
@@ -134,6 +135,10 @@ impl<'video> Window<'video> {
 
     pub fn is_screen_keyboard_shown(&self) -> bool {
         unsafe { bind::SDL_IsScreenKeyboardShown(self.as_ptr()) != 0 }
+    }
+
+    pub fn surface(&self) -> WindowSurface {
+        WindowSurface::new(self)
     }
 
     // TODO(MikuroXina): open gl context
