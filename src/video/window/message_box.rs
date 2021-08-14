@@ -38,22 +38,22 @@ impl MessageBox {
         }
     }
 
-    pub fn title(mut self, title: &str) -> Self {
+    pub fn title(&mut self, title: &str) -> &mut Self {
         self.title = CString::new(title).unwrap();
         self
     }
 
-    pub fn message(mut self, message: &str) -> Self {
+    pub fn message(&mut self, message: &str) -> &mut Self {
         self.message = CString::new(message).unwrap();
         self
     }
 
-    pub fn add_button(mut self, button: Button) -> Self {
+    pub fn add_button(&mut self, button: Button) -> &mut Self {
         self.buttons.push(button);
         self
     }
 
-    pub fn color_scheme(mut self, scheme: Option<ColorScheme>) -> Self {
+    pub fn color_scheme(&mut self, scheme: Option<ColorScheme>) -> &mut Self {
         self.color_scheme = scheme;
         self
     }
