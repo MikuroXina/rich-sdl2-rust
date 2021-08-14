@@ -3,6 +3,7 @@ use crate::{bind, Sdl};
 
 use super::Surface;
 
+#[derive(Debug)]
 pub struct Blended<S> {
     surface: S,
     mode: BlendMode,
@@ -16,7 +17,7 @@ impl<S> Blended<S> {
 
 impl<S: Surface> Blended<S> {
     pub(super) fn new(surface: S, mode: BlendMode) -> Self {
-        let raw_mode = mode.clone().into();
+        let raw_mode = mode.into();
         unsafe {
             let ret = bind::SDL_SetSurfaceBlendMode(surface.as_ptr().as_ptr(), raw_mode);
             if ret != 0 {

@@ -15,6 +15,14 @@ pub struct GameController {
     pub(in crate::event) ptr: NonNull<bind::SDL_GameController>,
 }
 
+impl std::fmt::Debug for GameController {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        f.debug_struct("GameController")
+            .field("name", &self.name())
+            .finish()
+    }
+}
+
 assert_not_impl_all!(GameController: Send, Sync);
 
 impl GameController {
@@ -36,6 +44,7 @@ impl GameController {
     }
 }
 
+#[derive(Debug)]
 pub struct GameControllerSet {
     controls: Vec<GameController>,
 }

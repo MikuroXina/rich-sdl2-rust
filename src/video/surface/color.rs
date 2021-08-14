@@ -3,6 +3,7 @@ use crate::{bind, Sdl};
 
 use super::Surface;
 
+#[derive(Debug)]
 pub struct ColorMod<S> {
     surface: S,
     color: Rgb,

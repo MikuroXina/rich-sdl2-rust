@@ -7,6 +7,12 @@ pub struct RelativeMouse<'video> {
     video: PhantomData<&'video Video<'video>>,
 }
 
+impl std::fmt::Debug for RelativeMouse<'_> {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        f.debug_struct("RelativeMouse").finish()
+    }
+}
+
 assert_not_impl_all!(RelativeMouse: Send, Sync);
 
 impl<'video> RelativeMouse<'video> {

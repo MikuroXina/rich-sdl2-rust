@@ -9,6 +9,12 @@ pub struct Cursor<'window> {
     window: PhantomData<&'window Window<'window>>,
 }
 
+impl std::fmt::Debug for Cursor<'_> {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        f.debug_struct("Cursor").finish()
+    }
+}
+
 assert_not_impl_all!(Cursor: Send, Sync);
 
 impl<'window> Cursor<'window> {

@@ -4,7 +4,7 @@ use std::ptr::NonNull;
 use super::{Window, WindowContextKind, WindowFlags, WindowFormat};
 use crate::{bind, Sdl, Video};
 
-#[derive(Debug)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub struct WindowPos {
     coord: i32,
 }

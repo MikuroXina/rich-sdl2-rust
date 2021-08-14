@@ -5,6 +5,7 @@ use std::{
 
 use crate::bind;
 
+#[derive(Debug, Clone)]
 pub struct HintEvent<'a> {
     name: &'a str,
     old_value: &'a str,
@@ -16,6 +17,14 @@ pub type HintCallback<'callback> = Box<dyn FnMut(HintEvent<'callback>) + 'callba
 pub struct HintObserver<'callback> {
     key: CString,
     callback_raw: *mut HintCallback<'callback>,
+}
+
+impl std::fmt::Debug for HintObserver<'_> {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        f.debug_struct("HintObserver")
+            .field("key", &self.key)
+            .finish()
+    }
 }
 
 impl<'callback> HintObserver<'callback> {

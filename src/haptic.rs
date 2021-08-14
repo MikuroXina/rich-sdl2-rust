@@ -41,6 +41,14 @@ pub struct Haptic {
     ptr: NonNull<bind::SDL_Haptic>,
 }
 
+impl std::fmt::Debug for Haptic {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        f.debug_struct("Haptic")
+            .field("name", &self.name())
+            .finish()
+    }
+}
+
 impl Haptic {
     pub fn name(&self) -> String {
         let index = unsafe { bind::SDL_HapticIndex(self.ptr.as_ptr()) };

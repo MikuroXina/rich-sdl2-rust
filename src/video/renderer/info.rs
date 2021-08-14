@@ -7,11 +7,13 @@ use crate::{bind, Sdl};
 
 use super::Renderer;
 
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum RendererKind {
     Software,
     Accelerated,
 }
 
+#[derive(Debug, Clone)]
 pub struct RendererInfo {
     pub name: String,
     pub kind: RendererKind,

@@ -8,6 +8,7 @@ use crate::{
     Result, SdlError,
 };
 
+#[derive(Debug)]
 pub struct VkInstance<'window> {
     window: &'window Window<'window>,
     extensions: Vec<String>,
@@ -68,6 +69,12 @@ impl<'window> VkInstance<'window> {
 pub struct VkSurface<'vk> {
     ptr: NonNull<bind::VkSurfaceKHR_T>,
     _phantom: PhantomData<&'vk VkInstance<'vk>>,
+}
+
+impl std::fmt::Debug for VkSurface<'_> {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        f.debug_struct("VkSurface").finish()
+    }
 }
 
 impl<'vk> VkSurface<'vk> {

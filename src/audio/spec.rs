@@ -69,6 +69,12 @@ pub struct AudioSpec<'callback> {
     _phantom: PhantomData<&'callback mut dyn AudioCallback>,
 }
 
+impl std::fmt::Debug for AudioSpec<'_> {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        f.debug_struct("AudioSpec").finish()
+    }
+}
+
 impl<'callback> AudioSpec<'callback> {
     fn new(
         builder: AudioSpecBuilder,

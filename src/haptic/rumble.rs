@@ -5,6 +5,7 @@ use crate::{
 
 use super::Haptic;
 
+#[derive(Debug)]
 pub struct HapticRumble<'haptic> {
     haptic: &'haptic Haptic,
 }

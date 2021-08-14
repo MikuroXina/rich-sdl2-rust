@@ -20,7 +20,7 @@ impl Default for PasteExFlip {
     }
 }
 
-#[derive(Debug, Default)]
+#[derive(Debug, Default, Clone, Copy, PartialEq)]
 pub struct PasteExOption {
     pub target_area: Option<Rect>,
     pub rotation_degrees: f64,

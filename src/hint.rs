@@ -36,6 +36,7 @@ pub fn set_hint(key: &str, value: &str) -> Result<()> {
     }
 }
 
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum HintPriority {
     Default,
     Normal,

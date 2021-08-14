@@ -52,6 +52,12 @@ pub struct Window<'video> {
     video: &'video Video<'video>,
 }
 
+impl std::fmt::Debug for Window<'_> {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        f.debug_struct("Window").field("id", &self.id()).finish()
+    }
+}
+
 assert_not_impl_all!(Window: Send, Sync);
 
 impl<'video> Window<'video> {

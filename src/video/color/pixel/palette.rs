@@ -10,6 +10,12 @@ pub struct Palette {
     palette: NonNull<bind::SDL_Palette>,
 }
 
+impl std::fmt::Debug for Palette {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        f.debug_struct("Palette").finish()
+    }
+}
+
 assert_not_impl_all!(Palette: Send, Sync);
 
 impl Palette {

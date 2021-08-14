@@ -2,6 +2,7 @@ use crate::{bind, Sdl};
 
 use super::Surface;
 
+#[derive(Debug)]
 pub struct AlphaMod<S> {
     surface: S,
     alpha: u8,

@@ -2,6 +2,7 @@ use crate::{bind, Result, Sdl, SdlError};
 
 use super::{effect::HapticEffect, Haptic};
 
+#[derive(Debug)]
 pub struct PendingEffect<'haptic> {
     id: i32,
     haptic: &'haptic Haptic,
@@ -47,6 +48,7 @@ impl<'haptic> PendingEffect<'haptic> {
     }
 }
 
+#[derive(Debug)]
 pub struct PlayingEffect<'haptic> {
     id: i32,
     haptic: &'haptic Haptic,

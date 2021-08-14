@@ -12,6 +12,15 @@ pub struct Lock<'texture> {
     len: usize,
 }
 
+impl std::fmt::Debug for Lock<'_> {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        f.debug_struct("Lock")
+            .field("texture", &self.texture)
+            .field("len", &self.len)
+            .finish()
+    }
+}
+
 impl<'texture> Lock<'texture> {
     pub(super) fn new(texture: &'texture mut Texture<'texture>, area: Option<Rect>) -> Self {
         let (mut pixels, mut pitch) = (std::ptr::null_mut(), 0);

@@ -11,14 +11,14 @@ pub use self::{
 mod button;
 mod color_scheme;
 
-#[derive(Debug)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum MessageBoxKind {
     Error,
     Warning,
     Information,
 }
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub struct MessageBox {
     kind: MessageBoxKind,
     title: CString,

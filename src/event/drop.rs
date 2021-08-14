@@ -2,6 +2,7 @@ use std::ffi::CStr;
 
 use crate::bind;
 
+#[derive(Debug, Clone)]
 pub enum DropEvent {
     File {
         timestamp: u32,

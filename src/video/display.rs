@@ -10,6 +10,7 @@ use self::mode::Mode;
 
 pub mod mode;
 
+#[derive(Debug, Clone, Copy, PartialEq)]
 pub struct Dpi {
     pub ddpi: f32,
     pub hdpi: f32,
@@ -19,6 +20,14 @@ pub struct Dpi {
 pub struct Display<'video> {
     index: i32,
     _phantom: PhantomData<&'video Video<'video>>,
+}
+
+impl std::fmt::Debug for Display<'_> {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        f.debug_struct("Display")
+            .field("index", &self.index)
+            .finish()
+    }
 }
 
 assert_not_impl_all!(Display: Send, Sync);

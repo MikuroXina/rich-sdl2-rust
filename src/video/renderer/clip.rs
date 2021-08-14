@@ -3,6 +3,7 @@ use crate::{bind, Sdl};
 
 use super::Renderer;
 
+#[derive(Debug)]
 pub struct ClippedRenderer<'renderer> {
     renderer: &'renderer mut Renderer<'renderer>,
 }

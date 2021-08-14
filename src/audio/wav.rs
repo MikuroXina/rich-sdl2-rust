@@ -10,6 +10,12 @@ pub struct Wav {
     len: usize,
 }
 
+impl std::fmt::Debug for Wav {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        f.debug_struct("Wav").field("len", &self.len).finish()
+    }
+}
+
 impl Wav {
     pub fn new(file_name: &str) -> Result<Self> {
         let read_binary_mode = CStr::from_bytes_with_nul(b"rb\0").unwrap();

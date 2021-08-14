@@ -2,14 +2,14 @@ use crate::bind;
 
 pub mod pixel;
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord)]
 pub struct Rgb {
     pub r: u8,
     pub g: u8,
     pub b: u8,
 }
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord)]
 pub struct Rgba {
     pub r: u8,
     pub g: u8,
@@ -23,7 +23,7 @@ impl From<Rgba> for bind::SDL_Color {
     }
 }
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum BlendMode {
     None,
     AlphaBlend,

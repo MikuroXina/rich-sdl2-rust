@@ -2,6 +2,7 @@ use crate::{bind, Sdl};
 
 use super::Surface;
 
+#[derive(Debug)]
 pub struct Rle<'surface, S: Surface> {
     surface: &'surface mut S,
 }
@@ -20,6 +21,7 @@ impl<'surface, S: Surface> Rle<'surface, S> {
     }
 }
 
+#[derive(Debug)]
 pub struct RleLock<'surface, S: Surface> {
     src: &'surface Rle<'surface, S>,
 }

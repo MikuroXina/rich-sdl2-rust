@@ -13,6 +13,12 @@ pub struct Timer<'callback> {
     raw_callback: *mut TimerCallback<'callback>,
 }
 
+impl std::fmt::Debug for Timer<'_> {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        f.debug_struct("Timer").field("id", &self.id).finish()
+    }
+}
+
 impl<'callback> Timer<'callback> {
     pub fn new(interval: u32, callback: TimerCallback<'callback>) -> Result<Self> {
         let wrapped = Box::into_raw(Box::new(callback));

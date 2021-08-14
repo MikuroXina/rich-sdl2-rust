@@ -2,6 +2,7 @@ use crate::{bind, Result, SdlError};
 
 use super::GlContext;
 
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum IntervalKind {
     AdaptiveVerticalSync,
     Immediate,

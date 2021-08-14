@@ -13,7 +13,7 @@ pub mod order;
 pub mod palette;
 pub mod ty;
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord)]
 pub struct Pixel {
     pixel: u32,
 }
@@ -24,12 +24,14 @@ impl Pixel {
     }
 }
 
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub struct PixelComponent {
     pub mask: u32,
     pub loss: u8,
     pub shift: u8,
 }
 
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub enum PixelComponents {
     PaletteIndex {
         palette: NonNull<bind::SDL_Palette>,
@@ -44,6 +46,14 @@ pub enum PixelComponents {
 
 pub struct PixelFormat {
     format: NonNull<bind::SDL_PixelFormat>,
+}
+
+impl std::fmt::Debug for PixelFormat {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        f.debug_struct("PixelFormat")
+            .field("kind", &self.kind())
+            .finish()
+    }
 }
 
 assert_not_impl_all!(PixelFormat: Send, Sync);

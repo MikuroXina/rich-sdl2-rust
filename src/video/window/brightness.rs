@@ -3,7 +3,7 @@ use crate::{bind, Result, Sdl, SdlError};
 
 use super::Window;
 
-#[derive(Debug)]
+#[derive(Debug, Clone, Copy, PartialEq, PartialOrd)]
 pub struct Brightness {
     brightness: f32,
 }
@@ -42,14 +42,14 @@ impl BrightnessExt for Window<'_> {
     }
 }
 
-#[derive(Debug, Default)]
+#[derive(Debug, Default, Clone, PartialEq, Eq)]
 pub struct Gamma {
     pub red: GammaRamp,
     pub green: GammaRamp,
     pub blue: GammaRamp,
 }
 
-#[derive(Debug)]
+#[derive(Debug, Default, Clone, PartialEq, Eq)]
 pub struct GammaParam {
     pub red: Option<GammaRamp>,
     pub green: Option<GammaRamp>,

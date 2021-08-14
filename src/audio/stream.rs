@@ -7,6 +7,12 @@ pub struct AudioStream {
     ptr: NonNull<bind::SDL_AudioStream>,
 }
 
+impl std::fmt::Debug for AudioStream {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        f.debug_struct("AudioStream").finish()
+    }
+}
+
 impl AudioStream {
     pub fn new<T, U>(src: AudioBuffer<T>, dst: AudioBuffer<U>) -> Result<Self> {
         let ptr = unsafe {

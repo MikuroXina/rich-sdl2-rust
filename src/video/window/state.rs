@@ -1,6 +1,6 @@
 use super::WindowFlags;
 
-#[derive(Debug)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum WindowFormat {
     Normal,
     FullScreen,
@@ -49,6 +49,7 @@ impl From<WindowFlags> for WindowContextKind {
     }
 }
 
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub struct WindowState {
     pub format: WindowFormat,
     pub context_kind: WindowContextKind,

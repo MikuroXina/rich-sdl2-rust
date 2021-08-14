@@ -6,6 +6,7 @@ use crate::{
     event::joystick::{Joystick, JoystickId},
 };
 
+#[derive(Debug)]
 pub enum ControllerEvent<'joystick> {
     Axis {
         timestamp: u32,

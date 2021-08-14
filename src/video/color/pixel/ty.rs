@@ -1,6 +1,6 @@
 use crate::bind;
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum BitmapPixelType {
     Index1,
     Index4,
@@ -33,7 +33,7 @@ impl BitmapPixelType {
     }
 }
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum PackedPixelType {
     _8,
     _16,
@@ -58,7 +58,7 @@ impl PackedPixelType {
     }
 }
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum ArrayPixelType {
     U8,
     U16,

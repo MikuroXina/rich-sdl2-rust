@@ -9,6 +9,7 @@ use crate::{bind, geo::Point, Result};
 
 use super::Window;
 
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum HitTestResult {
     Normal,
     Draggable,
@@ -42,6 +43,7 @@ impl HitTestResult {
 
 pub type HitTester<'window> = Box<dyn FnMut(Point) -> HitTestResult + 'window>;
 
+#[derive(Debug)]
 pub struct HitTest<'window> {
     window: &'window Window<'window>,
     tester_raw: *mut HitTester<'window>,

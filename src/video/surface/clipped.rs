@@ -3,6 +3,7 @@ use crate::geo::Rect;
 
 use super::Surface;
 
+#[derive(Debug)]
 pub struct Clipped<S> {
     surface: S,
     area: Rect,

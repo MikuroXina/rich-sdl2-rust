@@ -2,7 +2,7 @@ use std::ffi::CString;
 
 use crate::bind;
 
-#[derive(Debug)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum ButtonKind {
     Normal,
     Confirm,
@@ -25,7 +25,7 @@ impl ButtonKind {
 
 pub type ButtonId = i32;
 
-#[derive(Debug)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub struct Button {
     kind: ButtonKind,
     id: ButtonId,

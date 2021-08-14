@@ -2,6 +2,7 @@ use crate::{bind, Result};
 
 use super::Window;
 
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub struct BorderWidths {
     pub top: u32,
     pub right: u32,

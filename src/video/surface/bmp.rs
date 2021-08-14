@@ -10,6 +10,12 @@ pub struct Bmp {
     ptr: NonNull<bind::SDL_Surface>,
 }
 
+impl std::fmt::Debug for Bmp {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        f.debug_struct("Bmp").finish()
+    }
+}
+
 assert_not_impl_all!(Bmp: Send, Sync);
 
 impl Bmp {
@@ -39,6 +45,7 @@ impl Drop for Bmp {
     }
 }
 
+#[derive(Debug, Clone)]
 pub struct BmpSaveError(pub String);
 
 pub trait BmpSaveExt {

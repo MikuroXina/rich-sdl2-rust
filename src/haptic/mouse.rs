@@ -4,6 +4,7 @@ use crate::bind;
 
 use super::Haptic;
 
+#[derive(Debug)]
 pub struct MouseHaptic {
     haptic: Haptic,
 }

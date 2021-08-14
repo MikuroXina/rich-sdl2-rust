@@ -44,6 +44,15 @@ pub struct Texture<'renderer> {
     _phantom: PhantomData<&'renderer ()>,
 }
 
+impl std::fmt::Debug for Texture<'_> {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        f.debug_struct("Texture")
+            .field("texture", &self.texture)
+            .field("clip", &self.clip)
+            .finish()
+    }
+}
+
 assert_not_impl_all!(Texture: Send, Sync);
 
 impl<'renderer> Texture<'renderer> {

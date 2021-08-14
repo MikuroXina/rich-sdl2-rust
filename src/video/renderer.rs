@@ -23,6 +23,14 @@ pub struct Renderer<'window> {
     window: &'window Window<'window>,
 }
 
+impl std::fmt::Debug for Renderer<'_> {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        f.debug_struct("Renderer")
+            .field("window", &self.window)
+            .finish()
+    }
+}
+
 assert_not_impl_all!(Renderer: Send, Sync);
 
 impl<'window> Renderer<'window> {

@@ -2,6 +2,7 @@ use std::ffi::CString;
 
 use crate::bind;
 
+#[derive(Debug, PartialEq, Eq)]
 pub struct ClipboardText {
     text: String,
 }
@@ -20,4 +21,6 @@ impl ClipboardText {
     pub fn text(&self) -> &String {
         &self.text
     }
+
+    // TODO (MikuroXina): into_string
 }

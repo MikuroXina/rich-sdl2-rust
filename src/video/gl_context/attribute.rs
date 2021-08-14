@@ -2,7 +2,7 @@ use bitflags::bitflags;
 use static_assertions::assert_not_impl_all;
 use std::marker::PhantomData;
 
-use crate::{bind, Result, Sdl, SdlError};
+use crate::{bind, video::gl_attr, Result, Sdl, SdlError};
 
 use super::GlContext;
 
@@ -41,6 +41,13 @@ bitflags! {
 pub struct GlAttribute<'gl> {
     attr: bind::SDL_GLattr,
     _phantom: PhantomData<&'gl GlContext<'gl>>,
+}
+
+impl std::fmt::Debug for GlAttribute<'_> {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        let attr: gl_attr::GlAttribute = self.attr.into();
+        f.debug_struct("GlAttribute").field("attr", &attr).finish()
+    }
 }
 
 assert_not_impl_all!(GlAttribute: Send, Sync);

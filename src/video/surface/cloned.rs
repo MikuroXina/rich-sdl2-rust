@@ -5,6 +5,7 @@ use crate::bind;
 
 use super::Surface;
 
+#[derive(Debug)]
 pub struct Cloned {
     surface: NonNull<bind::SDL_Surface>,
 }

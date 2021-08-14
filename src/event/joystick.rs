@@ -20,14 +20,28 @@ pub mod hat;
 pub mod power_level;
 pub mod trackball;
 
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Clone, PartialEq)]
 pub struct JoystickId<'joystick> {
     pub(super) id: u32,
     pub(super) _phantom: PhantomData<&'joystick Joystick>,
 }
 
+impl std::fmt::Debug for JoystickId<'_> {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(f, "{}", self.id)
+    }
+}
+
 pub struct Joystick {
     ptr: NonNull<bind::SDL_Joystick>,
+}
+
+impl std::fmt::Debug for Joystick {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        f.debug_struct("Joystick")
+            .field("id", &self.instance_id())
+            .finish()
+    }
 }
 
 assert_not_impl_all!(Joystick: Send, Sync);

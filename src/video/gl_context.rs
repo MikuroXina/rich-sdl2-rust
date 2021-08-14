@@ -19,6 +19,14 @@ pub struct GlContext<'window> {
     window: &'window Window<'window>,
 }
 
+impl std::fmt::Debug for GlContext<'_> {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        f.debug_struct("GlContext")
+            .field("window", &self.window)
+            .finish()
+    }
+}
+
 assert_not_impl_all!(GlContext: Send, Sync);
 
 impl<'window> GlContext<'window> {

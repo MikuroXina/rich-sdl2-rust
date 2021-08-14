@@ -1,6 +1,7 @@
 use crate::bind;
 use crate::color::pixel::kind::PixelFormatKind;
 
+#[derive(Debug, Clone)]
 pub struct Mode {
     pub pixel_format: PixelFormatKind,
     pub width: u32,

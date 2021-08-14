@@ -1,5 +1,6 @@
 use crate::bind;
 
+#[derive(Debug, Clone)]
 pub enum AudioDeviceEvent {
     Added {
         timestamp: u32,

@@ -4,6 +4,7 @@ use crate::bind;
 
 use super::Joystick;
 
+#[derive(Debug)]
 pub struct Axis<'joystick> {
     index: c_int,
     joystick: &'joystick Joystick,
@@ -15,6 +16,7 @@ impl<'joystick> Axis<'joystick> {
     }
 }
 
+#[derive(Debug)]
 pub struct Axes<'joystick>(pub Vec<Axis<'joystick>>);
 
 impl<'joystick> Axes<'joystick> {

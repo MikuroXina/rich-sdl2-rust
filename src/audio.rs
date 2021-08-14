@@ -60,6 +60,14 @@ pub struct SpeakerDevice {
     _phantom: PhantomData<Cell<u8>>,
 }
 
+impl std::fmt::Debug for SpeakerDevice {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        f.debug_struct("SpeakerDevice")
+            .field("id", &self.id)
+            .finish()
+    }
+}
+
 assert_not_impl_all!(SpeakerDevice: Send, Sync);
 
 impl SpeakerDevice {
@@ -98,6 +106,14 @@ impl Drop for SpeakerDevice {
 pub struct MicrophoneDevice {
     id: u32,
     _phantom: PhantomData<Cell<u8>>,
+}
+
+impl std::fmt::Debug for MicrophoneDevice {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        f.debug_struct("MicrophoneDevice")
+            .field("id", &self.id)
+            .finish()
+    }
 }
 
 assert_not_impl_all!(MicrophoneDevice: Send, Sync);

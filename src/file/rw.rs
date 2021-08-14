@@ -17,6 +17,12 @@ pub struct RwOps<'a> {
     _phantom: PhantomData<&'a mut ()>,
 }
 
+impl std::fmt::Debug for RwOps<'_> {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        f.debug_struct("RwOps").finish()
+    }
+}
+
 impl<'a> RwOps<'a> {
     pub(crate) unsafe fn ptr(&self) -> NonNull<bind::SDL_RWops> {
         self.ptr

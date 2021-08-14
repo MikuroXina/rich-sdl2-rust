@@ -3,6 +3,7 @@ use std::{cell::Cell, ffi::CStr, marker::PhantomData};
 
 use crate::bind;
 
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub struct SdlVersion {
     pub major: u8,
     pub minor: u8,

@@ -10,6 +10,14 @@ pub struct TouchFinger<'device> {
     _phantom: PhantomData<&'device ()>,
 }
 
+impl std::fmt::Debug for TouchFinger<'_> {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        f.debug_struct("TouchFinger")
+            .field("id", &self.id())
+            .finish()
+    }
+}
+
 impl TouchFinger<'_> {
     pub fn id(&self) -> i64 {
         unsafe { self.ptr.as_ref() }.id
@@ -25,6 +33,7 @@ impl TouchFinger<'_> {
     }
 }
 
+#[derive(Debug, Clone)]
 pub struct TouchDevice(bind::SDL_TouchID, PhantomData<Cell<u8>>);
 
 assert_not_impl_all!(TouchDevice: Send, Sync);

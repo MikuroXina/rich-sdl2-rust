@@ -9,6 +9,14 @@ pub struct JoystickHaptic<'joystick> {
     _phantom: PhantomData<&'joystick Joystick>,
 }
 
+impl std::fmt::Debug for JoystickHaptic<'_> {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        f.debug_struct("JoystickHaptic")
+            .field("haptic", &self.haptic)
+            .finish()
+    }
+}
+
 impl<'joystick> JoystickHaptic<'joystick> {
     fn from(joystick: impl AsRef<Joystick> + 'joystick) -> Option<Self> {
         let is_supported = unsafe {

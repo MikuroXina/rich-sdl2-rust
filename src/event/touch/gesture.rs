@@ -4,6 +4,7 @@ use crate::{bind, file::RwOps, Result, Sdl, SdlError};
 
 use super::TouchDevice;
 
+#[derive(Debug, Clone)]
 pub struct Gesture(bind::SDL_GestureID);
 
 impl Gesture {
@@ -26,6 +27,7 @@ impl Gesture {
     }
 }
 
+#[derive(Debug, Clone)]
 pub enum GestureEvent {
     Multi {
         timestamp: u32,

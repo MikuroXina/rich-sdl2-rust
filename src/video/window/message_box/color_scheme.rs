@@ -1,6 +1,6 @@
 use crate::{bind, color::Rgb};
 
-#[derive(Debug)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub struct ColorScheme {
     pub background: Rgb,
     pub text: Rgb,

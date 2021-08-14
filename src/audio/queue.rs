@@ -3,6 +3,7 @@ use std::io;
 use super::{MicrophoneDevice, SpeakerDevice};
 use crate::{bind, Result, Sdl, SdlError};
 
+#[derive(Debug)]
 pub struct QueuedAudio<'device> {
     device: &'device mut SpeakerDevice,
 }
@@ -38,6 +39,7 @@ impl Drop for QueuedAudio<'_> {
     }
 }
 
+#[derive(Debug)]
 pub struct DequeueAudio<'device> {
     device: &'device mut MicrophoneDevice,
 }

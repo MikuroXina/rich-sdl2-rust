@@ -5,6 +5,7 @@ use crate::geo::Point;
 
 use super::Joystick;
 
+#[derive(Debug)]
 pub struct Trackball<'joystick> {
     index: c_int,
     joystick: &'joystick Joystick,
@@ -26,6 +27,7 @@ impl<'joystick> Trackball<'joystick> {
     }
 }
 
+#[derive(Debug)]
 pub struct Trackballs<'joystick>(pub Vec<Trackball<'joystick>>);
 
 impl<'joystick> Trackballs<'joystick> {

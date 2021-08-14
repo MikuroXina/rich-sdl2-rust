@@ -1,6 +1,6 @@
 use crate::bind;
 
-#[derive(Debug)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub struct GammaRamp(pub Box<[u16; 256]>);
 
 impl GammaRamp {

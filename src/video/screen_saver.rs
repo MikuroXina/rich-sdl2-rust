@@ -7,6 +7,12 @@ pub struct ScreenSaver<'video> {
     _phantom: PhantomData<&'video Video<'video>>,
 }
 
+impl std::fmt::Debug for ScreenSaver<'_> {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        f.debug_struct("ScreenSaver").finish()
+    }
+}
+
 assert_not_impl_all!(ScreenSaver: Send, Sync);
 
 impl<'video> ScreenSaver<'video> {

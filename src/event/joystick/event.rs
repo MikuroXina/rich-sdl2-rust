@@ -10,6 +10,7 @@ use super::{
     Joystick, JoystickId,
 };
 
+#[derive(Debug)]
 pub enum JoystickEvent<'joystick> {
     Axis {
         timestamp: u32,

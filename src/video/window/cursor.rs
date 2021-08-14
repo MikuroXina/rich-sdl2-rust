@@ -8,6 +8,7 @@ use crate::{bind, Sdl, SdlError};
 
 use super::Window;
 
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum SystemCursorKind {
     Arrow,
     IBeam,
@@ -46,6 +47,12 @@ impl SystemCursorKind {
 pub struct Cursor<'window> {
     cursor: NonNull<bind::SDL_Cursor>,
     window: PhantomData<&'window ()>,
+}
+
+impl std::fmt::Debug for Cursor<'_> {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        f.debug_struct("Cursor").finish()
+    }
 }
 
 assert_not_impl_all!(Cursor: Send, Sync);

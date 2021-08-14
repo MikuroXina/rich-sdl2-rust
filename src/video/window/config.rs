@@ -6,11 +6,13 @@ use crate::{bind, Result, SdlError};
 
 use super::{Window, WindowPos};
 
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub struct Position {
     pub x: WindowPos,
     pub y: WindowPos,
 }
 
+#[derive(Debug, Clone, Copy, PartialEq, PartialOrd)]
 pub struct Opacity {
     opacity: f32,
 }

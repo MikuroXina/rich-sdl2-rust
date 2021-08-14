@@ -1,6 +1,6 @@
 use std::ffi::CString;
 
-#[derive(Debug, Default)]
+#[derive(Debug, Default, Clone)]
 pub struct OpenMode {
     read: bool,
     create: bool,

@@ -19,6 +19,7 @@ bitflags! {
     }
 }
 
+#[derive(Debug)]
 pub struct Hat<'joystick> {
     index: c_int,
     joystick: &'joystick Joystick,
@@ -31,6 +32,7 @@ impl<'joystick> Hat<'joystick> {
     }
 }
 
+#[derive(Debug)]
 pub struct Hats<'joystick>(pub Vec<Hat<'joystick>>);
 
 impl<'joystick> Hats<'joystick> {

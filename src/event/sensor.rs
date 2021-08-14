@@ -2,6 +2,7 @@ use std::{ffi::CStr, os::raw::c_int, ptr::NonNull};
 
 use crate::bind;
 
+#[derive(Debug, Clone)]
 pub enum SensorKind {
     Others(i32),
     Accel,
@@ -10,6 +11,14 @@ pub enum SensorKind {
 
 pub struct Sensor {
     ptr: NonNull<bind::SDL_Sensor>,
+}
+
+impl std::fmt::Debug for Sensor {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        f.debug_struct("Sensor")
+            .field("name", &self.name())
+            .finish()
+    }
 }
 
 impl Sensor {
@@ -40,6 +49,7 @@ impl Sensor {
     }
 }
 
+#[derive(Debug)]
 pub struct SensorSet(Vec<Sensor>);
 
 impl SensorSet {

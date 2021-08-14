@@ -1,5 +1,6 @@
 use crate::bind;
 
+#[derive(Debug, Clone, Copy)]
 pub enum PowerLevel {
     Unknown,
     Empty,

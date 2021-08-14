@@ -4,6 +4,7 @@ use crate::bind;
 
 use super::Joystick;
 
+#[derive(Debug)]
 pub struct Button<'joystick> {
     index: c_int,
     joystick: &'joystick Joystick,
@@ -15,6 +16,7 @@ impl<'joystick> Button<'joystick> {
     }
 }
 
+#[derive(Debug)]
 pub struct Buttons<'joystick>(pub Vec<Button<'joystick>>);
 
 impl<'joystick> Buttons<'joystick> {

@@ -9,6 +9,14 @@ pub struct WindowSurface<'window> {
     window: &'window Window<'window>,
 }
 
+impl std::fmt::Debug for WindowSurface<'_> {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        f.debug_struct("WindowSurface")
+            .field("window", &self.window)
+            .finish()
+    }
+}
+
 impl<'window> WindowSurface<'window> {
     pub(crate) fn new(window: &'window Window<'window>) -> Self {
         let surface = unsafe { bind::SDL_GetWindowSurface(window.as_ptr()) };

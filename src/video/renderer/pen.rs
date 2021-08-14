@@ -5,6 +5,7 @@ use crate::{bind, Sdl};
 
 use super::Renderer;
 
+#[derive(Debug)]
 pub struct Pen<'renderer> {
     renderer: &'renderer Renderer<'renderer>,
 }
