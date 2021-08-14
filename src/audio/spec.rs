@@ -85,7 +85,7 @@ impl<'callback> AudioSpec<'callback> {
                 size: 0,
                 callback: Some(audio_spec_wrap_handler),
                 userdata: callback.map_or(std::ptr::null_mut(), |callback| {
-                    Box::into_raw(callback) as *mut _
+                    Box::into_raw(callback).cast()
                 }),
             },
             _phantom: PhantomData,

@@ -15,7 +15,7 @@ impl Guid {
         };
         let cstr = unsafe { CStr::from_ptr(ptr) };
         let ret = cstr.to_string_lossy().to_string();
-        unsafe { bind::SDL_free(ptr as *mut _) };
+        unsafe { bind::SDL_free(ptr.cast()) };
         ret
     }
 }
@@ -26,7 +26,7 @@ impl std::fmt::Display for Guid {
         unsafe {
             bind::SDL_JoystickGetGUIDString(
                 bind::SDL_JoystickGUID { data: self.0 },
-                buf.as_mut_ptr() as *mut _,
+                buf.as_mut_ptr().cast(),
                 buf.len() as c_int,
             )
         }

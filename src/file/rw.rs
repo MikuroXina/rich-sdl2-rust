@@ -36,7 +36,7 @@ impl<'a> RwOps<'a> {
     }
 
     pub fn from_mem(buf: &'a [u8]) -> Result<Self> {
-        let ptr = unsafe { bind::SDL_RWFromConstMem(buf.as_ptr() as *const _, buf.len() as c_int) };
+        let ptr = unsafe { bind::SDL_RWFromConstMem(buf.as_ptr().cast(), buf.len() as c_int) };
         if ptr.is_null() {
             Err(SdlError::Others { msg: Sdl::error() })
         } else {
@@ -48,7 +48,7 @@ impl<'a> RwOps<'a> {
     }
 
     pub fn from_mem_mut(buf: &'a mut [u8]) -> Result<Self> {
-        let ptr = unsafe { bind::SDL_RWFromMem(buf.as_mut_ptr() as *mut _, buf.len() as c_int) };
+        let ptr = unsafe { bind::SDL_RWFromMem(buf.as_mut_ptr().cast(), buf.len() as c_int) };
         if ptr.is_null() {
             Err(SdlError::Others { msg: Sdl::error() })
         } else {
@@ -128,7 +128,7 @@ impl io::Read for RwOps<'_> {
         let ret = unsafe {
             bind::SDL_RWread(
                 self.ptr.as_ptr(),
-                buf.as_mut_ptr() as *mut _,
+                buf.as_mut_ptr().cast(),
                 1,
                 buf.len() as size_t,
             )
@@ -169,7 +169,7 @@ impl io::Write for RwOps<'_> {
         let written = unsafe {
             bind::SDL_RWwrite(
                 self.ptr.as_ptr(),
-                buf.as_ptr() as *const _,
+                buf.as_ptr().cast(),
                 1,
                 buf.len() as size_t,
             ) as usize

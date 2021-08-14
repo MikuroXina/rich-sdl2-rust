@@ -106,8 +106,8 @@ impl<T: Default + Clone> AudioBuffer<T> {
         let len = self.buffer.len() * std::mem::size_of::<T>();
         unsafe {
             bind::SDL_MixAudioFormat(
-                as_u8_slice_mut(&mut dst.buffer).as_mut_ptr() as *mut _,
-                as_u8_slice(&self.buffer).as_ptr() as *const _,
+                as_u8_slice_mut(&mut dst.buffer).as_mut_ptr().cast(),
+                as_u8_slice(&self.buffer).as_ptr().cast(),
                 self.format.as_raw(),
                 len as u32,
                 volume.min(bind::SDL_MIX_MAXVOLUME as u8) as c_int,
@@ -118,10 +118,10 @@ impl<T: Default + Clone> AudioBuffer<T> {
 
 fn as_u8_slice<T>(slice: &[T]) -> &[u8] {
     let size = std::mem::size_of::<T>();
-    unsafe { std::slice::from_raw_parts(slice.as_ptr() as *const _, slice.len() * size) }
+    unsafe { std::slice::from_raw_parts(slice.as_ptr().cast(), slice.len() * size) }
 }
 
 fn as_u8_slice_mut<T>(slice: &mut [T]) -> &mut [u8] {
     let size = std::mem::size_of::<T>();
-    unsafe { std::slice::from_raw_parts_mut(slice.as_mut_ptr() as *mut _, slice.len() * size) }
+    unsafe { std::slice::from_raw_parts_mut(slice.as_mut_ptr().cast(), slice.len() * size) }
 }

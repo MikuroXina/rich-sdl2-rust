@@ -27,7 +27,7 @@ impl<'callback> HintObserver<'callback> {
             bind::SDL_AddHintCallback(
                 key.as_ptr(),
                 Some(hint_observer_wrap_handler),
-                callback_raw as *mut _,
+                callback_raw.cast(),
             )
         }
         Self { key, callback_raw }
@@ -40,7 +40,7 @@ impl Drop for HintObserver<'_> {
             bind::SDL_DelHintCallback(
                 self.key.as_ptr(),
                 Some(hint_observer_wrap_handler),
-                self.callback_raw as *mut _,
+                self.callback_raw.cast(),
             )
         }
         let _ = unsafe { Box::from_raw(self.callback_raw) };

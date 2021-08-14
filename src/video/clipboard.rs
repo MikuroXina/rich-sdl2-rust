@@ -13,7 +13,7 @@ impl ClipboardText {
             return None;
         }
         let text = unsafe { CString::from_raw(ptr) }.into_string().ok()?;
-        unsafe { bind::SDL_free(ptr as *mut _) }
+        unsafe { bind::SDL_free(ptr.cast()) }
         Some(Self { text })
     }
 

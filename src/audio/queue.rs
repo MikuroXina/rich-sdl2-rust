@@ -15,7 +15,7 @@ impl<'device> QueuedAudio<'device> {
     pub fn queue<T>(&self, data: &[T]) -> Result<()> {
         let size = data.len() * std::mem::size_of::<T>();
         let ret =
-            unsafe { bind::SDL_QueueAudio(self.device.id, data.as_ptr() as *const _, size as u32) };
+            unsafe { bind::SDL_QueueAudio(self.device.id, data.as_ptr().cast(), size as u32) };
         if ret < 0 {
             Err(SdlError::Others { msg: Sdl::error() })
         } else {
@@ -61,7 +61,7 @@ impl Drop for DequeueAudio<'_> {
 impl io::Read for DequeueAudio<'_> {
     fn read(&mut self, buf: &mut [u8]) -> io::Result<usize> {
         let bytes = unsafe {
-            bind::SDL_DequeueAudio(self.device.id, buf.as_mut_ptr() as *mut _, buf.len() as u32)
+            bind::SDL_DequeueAudio(self.device.id, buf.as_mut_ptr().cast(), buf.len() as u32)
         };
         Ok(bytes as usize)
     }

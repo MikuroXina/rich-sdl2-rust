@@ -22,7 +22,7 @@ impl GameController {
         let ptr = unsafe { bind::SDL_GameControllerMapping(self.ptr.as_ptr()) };
         let cstr = unsafe { CStr::from_ptr(ptr) };
         let ret = cstr.to_string_lossy().to_string();
-        unsafe { bind::SDL_free(ptr as *mut _) };
+        unsafe { bind::SDL_free(ptr.cast()) };
         ret
     }
 

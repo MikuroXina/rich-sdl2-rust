@@ -16,8 +16,7 @@ pub struct Timer<'callback> {
 impl<'callback> Timer<'callback> {
     pub fn new(interval: u32, callback: TimerCallback<'callback>) -> Result<Self> {
         let wrapped = Box::into_raw(Box::new(callback));
-        let id =
-            unsafe { bind::SDL_AddTimer(interval, Some(timer_wrap_handler), wrapped as *mut _) };
+        let id = unsafe { bind::SDL_AddTimer(interval, Some(timer_wrap_handler), wrapped.cast()) };
         if id == 0 {
             Err(SdlError::Others { msg: Sdl::error() })
         } else {

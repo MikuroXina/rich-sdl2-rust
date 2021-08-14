@@ -67,9 +67,9 @@ impl GammaExt for Window<'_> {
         let ret = unsafe {
             bind::SDL_GetWindowGammaRamp(
                 self.as_ptr(),
-                gamma.red.0.as_mut_ptr() as *mut _,
-                gamma.green.0.as_mut_ptr() as *mut _,
-                gamma.blue.0.as_mut_ptr() as *mut _,
+                gamma.red.0.as_mut_ptr().cast(),
+                gamma.green.0.as_mut_ptr().cast(),
+                gamma.blue.0.as_mut_ptr().cast(),
             )
         };
         if ret != 0 {
@@ -89,13 +89,13 @@ impl GammaExt for Window<'_> {
                 self.as_ptr(),
                 gamma
                     .red
-                    .map_or(std::ptr::null(), |ramp| ramp.0.as_ptr() as *const _),
+                    .map_or(std::ptr::null(), |ramp| ramp.0.as_ptr().cast()),
                 gamma
                     .green
-                    .map_or(std::ptr::null(), |ramp| ramp.0.as_ptr() as *const _),
+                    .map_or(std::ptr::null(), |ramp| ramp.0.as_ptr().cast()),
                 gamma
                     .blue
-                    .map_or(std::ptr::null(), |ramp| ramp.0.as_ptr() as *const _),
+                    .map_or(std::ptr::null(), |ramp| ramp.0.as_ptr().cast()),
             )
         };
         if ret != 0 {

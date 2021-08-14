@@ -57,7 +57,7 @@ impl<'window> HitTest<'window> {
             bind::SDL_SetWindowHitTest(
                 window.as_ptr(),
                 Some(hit_test_wrap_handler),
-                tester_raw as *mut _,
+                tester_raw.cast(),
             )
         };
         if ret != 0 {

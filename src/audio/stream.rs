@@ -53,7 +53,7 @@ impl io::Read for AudioStream {
         let ret = unsafe {
             bind::SDL_AudioStreamGet(
                 self.ptr.as_ptr(),
-                buf.as_mut_ptr() as *mut _,
+                buf.as_mut_ptr().cast(),
                 buf.len() as c_int,
             )
         };
@@ -68,11 +68,7 @@ impl io::Read for AudioStream {
 impl io::Write for AudioStream {
     fn write(&mut self, buf: &[u8]) -> io::Result<usize> {
         let ret = unsafe {
-            bind::SDL_AudioStreamPut(
-                self.ptr.as_ptr(),
-                buf.as_ptr() as *const _,
-                buf.len() as i32,
-            )
+            bind::SDL_AudioStreamPut(self.ptr.as_ptr(), buf.as_ptr().cast(), buf.len() as i32)
         };
         if ret < 0 {
             Err(io::Error::new(
