@@ -17,7 +17,7 @@ There's no plans to support SDL_image, SDL_mixer and so on right now.
   - [x] Geometry
   - [x] Surface
   - [x] Clipboard
-  - [ ] Vulkan
+  - [x] Vulkan
   - [ ] Metal
 - [x] Input Event
   - [x] Handling
