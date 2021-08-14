@@ -3,9 +3,13 @@ use std::ffi::CString;
 
 use super::Window;
 
-pub use self::button::{Button, ButtonId, ButtonKind};
+pub use self::{
+    button::{Button, ButtonId, ButtonKind},
+    color_scheme::ColorScheme,
+};
 
 mod button;
+mod color_scheme;
 
 #[derive(Debug)]
 pub enum MessageBoxKind {
@@ -20,6 +24,7 @@ pub struct MessageBox {
     title: CString,
     message: CString,
     buttons: Vec<Button>,
+    color_scheme: Option<ColorScheme>,
 }
 
 impl MessageBox {
@@ -29,6 +34,7 @@ impl MessageBox {
             title: CString::default(),
             message: CString::default(),
             buttons: vec![],
+            color_scheme: None,
         }
     }
 
@@ -47,10 +53,16 @@ impl MessageBox {
         self
     }
 
+    pub fn color_scheme(mut self, scheme: Option<ColorScheme>) -> Self {
+        self.color_scheme = scheme;
+        self
+    }
+
     pub fn show(self, parent: &'_ Window<'_>) -> Result<ButtonId> {
         let title_cstr = CString::new(self.title).unwrap_or_default();
         let message_cstr = CString::new(self.message).unwrap_or_default();
         let buttons_raw: Vec<_> = self.buttons.iter().map(|button| button.as_raw()).collect();
+        let color_scheme = self.color_scheme.map(|scheme| scheme.into());
         let data = bind::SDL_MessageBoxData {
             flags: 0,
             window: parent.as_ptr(),
@@ -58,7 +70,9 @@ impl MessageBox {
             message: message_cstr.as_ptr(),
             numbuttons: buttons_raw.len() as i32,
             buttons: buttons_raw.as_ptr(),
-            colorScheme: std::ptr::null(),
+            colorScheme: color_scheme
+                .as_ref()
+                .map_or(std::ptr::null(), |scheme| scheme as *const _),
         };
         let mut button_id = 0;
         let ret = unsafe { bind::SDL_ShowMessageBox(&data as *const _, &mut button_id as *mut _) };
