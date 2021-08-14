@@ -21,6 +21,15 @@ dependencies = [
 ]
 
 [[package]]
+name = "ash"
+version = "0.33.0+1.2.186"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "a2142f1fa77cc4d24ffd2f24dc84f88ce5b1e588d524f10fb473a04b93aef14f"
+dependencies = [
+ "libloading",
+]
+
+[[package]]
 name = "atty"
 version = "0.2.14"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -233,6 +242,7 @@ checksum = "f497285884f3fcff424ffc933e56d7cbca511def0c9831a7f9b5f6153e3cc89b"
 name = "rich-sdl2-rust"
 version = "0.2.0"
 dependencies = [
+ "ash",
  "bindgen",
  "bitflags",
  "static_assertions",
