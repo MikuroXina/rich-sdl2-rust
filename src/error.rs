@@ -1,14 +1,22 @@
 use static_assertions::assert_impl_all;
 
+/// An error occurred from SDL2.
 #[derive(Debug, Clone)]
 pub enum SdlError {
+    /// The feature is unsupported on the platform.
     UnsupportedFeature,
+    /// There is no free memory.
     OutOfMemory,
-    Others { msg: String },
+    /// There is other reasons.
+    Others {
+        /// The message describing reasons.
+        msg: String,
+    },
 }
 
 assert_impl_all!(SdlError: Send, Sync);
 
+/// A specialized [`std::result::Result`] type for this crate.
 pub type Result<T> = std::result::Result<T, SdlError>;
 
 impl std::fmt::Display for SdlError {
