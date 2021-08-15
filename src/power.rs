@@ -1,11 +1,19 @@
+//! System power monitoring.
+
 use crate::bind;
 
+/// A state of power in the system.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum PowerState {
+    /// A state cannot be known.
     Unknown,
+    /// It has a battery, not charging.
     OnBattery,
+    /// It has no batteries.
     NoBattery,
+    /// It has a battery, charging.
     Charging,
+    /// It has a battery, completed to charge.
     Charged,
 }
 
@@ -23,14 +31,19 @@ impl From<bind::SDL_PowerState> for PowerState {
     }
 }
 
+/// A detail information of the system battery.
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct PowerInfo {
+    /// The battery state of the system.
     pub state: PowerState,
+    /// The remaining amount of battery in seconds if available.
     pub remaining_seconds: Option<u32>,
+    /// The remaining amount of battery in percent if available.
     pub remaining_ratio: Option<u32>,
 }
 
 impl PowerInfo {
+    /// Returns a power information at now.
     pub fn now() -> Self {
         let mut remaining_seconds = 0;
         let mut remaining_ratio = 0;
