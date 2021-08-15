@@ -6,6 +6,8 @@ use std::{
 
 use crate::{bind, Result, Sdl, SdlError};
 
+use self::{axis::Axis, button::Button, map::MapInput};
+
 pub mod axis;
 pub mod button;
 pub mod event;
@@ -41,6 +43,20 @@ impl GameController {
         }
         let cstr = unsafe { CStr::from_ptr(ptr) };
         cstr.to_string_lossy().to_string()
+    }
+
+    pub fn bind_for_axis(&self, axis: Axis) -> Option<MapInput> {
+        let ret =
+            unsafe { bind::SDL_GameControllerGetBindForAxis(self.ptr.as_ptr(), axis.as_raw()) };
+        (ret.bindType != bind::SDL_GameControllerBindType_SDL_CONTROLLER_BINDTYPE_NONE)
+            .then(|| ret.into())
+    }
+
+    pub fn bind_for_button(&self, button: Button) -> Option<MapInput> {
+        let ret =
+            unsafe { bind::SDL_GameControllerGetBindForButton(self.ptr.as_ptr(), button.as_raw()) };
+        (ret.bindType != bind::SDL_GameControllerBindType_SDL_CONTROLLER_BINDTYPE_NONE)
+            .then(|| ret.into())
     }
 }
 
