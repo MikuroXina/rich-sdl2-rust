@@ -1,3 +1,7 @@
+//! SDL2 event system and handlers.
+//!
+//! Most event structures are defined in these sub modules, but [`crate::audio::event::AudioDeviceEvent`] is defined in the external module.
+
 use static_assertions::assert_not_impl_all;
 use std::marker::PhantomData;
 
@@ -26,6 +30,7 @@ pub mod text;
 pub mod touch;
 pub mod window;
 
+/// An event handler to receive some event structure,
 pub type EventHandler<'video, T> = Box<dyn Fn(&T) + 'video>;
 
 struct EventHandlers<'video, T>(Vec<EventHandler<'video, T>>);
@@ -46,6 +51,7 @@ impl<'video, T> EventHandlers<'video, T> {
     }
 }
 
+/// It takes the closure of handler to register, and delivers event to your event handlers by polling the events.
 pub struct EventBox<'video> {
     quit_event_handlers: EventHandlers<'video, QuitEvent>,
     window_event_handlers: EventHandlers<'video, WindowEvent>,
@@ -64,6 +70,7 @@ pub struct EventBox<'video> {
 assert_not_impl_all!(EventBox: Send, Sync);
 
 impl<'video> EventBox<'video> {
+    /// Constructs an event box from the video system.
     pub fn new(_: &'video Video) -> Self {
         let ret = unsafe { bind::SDL_InitSubSystem(bind::SDL_INIT_EVENTS) };
         if ret != 0 {
@@ -85,46 +92,57 @@ impl<'video> EventBox<'video> {
         }
     }
 
+    /// Registers the handler to handle [`QuitEvent`].
     pub fn handle_quit(&mut self, handler: EventHandler<'video, QuitEvent>) {
         self.quit_event_handlers.push(handler);
     }
 
+    /// Registers the handler to handle [`WindowEvent`].
     pub fn handle_window(&mut self, handler: EventHandler<'video, WindowEvent>) {
         self.window_event_handlers.push(handler);
     }
 
+    /// Registers the handler to handle [`KeyboardEvent`].
     pub fn handle_keyboard(&mut self, handler: EventHandler<'video, KeyboardEvent>) {
         self.keyboard_event_handlers.push(handler);
     }
 
+    /// Registers the handler to handle [`TextInputEvent`].
     pub fn handle_input(&mut self, handler: EventHandler<'video, TextInputEvent>) {
         self.input_event_handlers.push(handler);
     }
 
+    /// Registers the handler to handle [`TextEditingEvent`].
     pub fn handle_editing(&mut self, handler: EventHandler<'video, TextEditingEvent>) {
         self.editing_event_handlers.push(handler);
     }
 
+    /// Registers the handler to handle [`MouseEvent`].
     pub fn handle_mouse(&mut self, handler: EventHandler<'video, MouseEvent>) {
         self.mouse_event_handlers.push(handler);
     }
 
+    /// Registers the handler to handle [`ControllerEvent`].
     pub fn handle_controller(&mut self, handler: EventHandler<'video, ControllerEvent<'video>>) {
         self.controller_event_handlers.push(handler);
     }
 
+    /// Registers the handler to handle [`JoystickEvent`].
     pub fn handle_joystick(&mut self, handler: EventHandler<'video, JoystickEvent<'video>>) {
         self.joystick_event_handlers.push(handler);
     }
 
+    /// Registers the handler to handle [`AudioDeviceEvent`].
     pub fn handle_audio_device(&mut self, handler: EventHandler<'video, AudioDeviceEvent>) {
         self.audio_device_event_handlers.push(handler);
     }
 
+    /// Registers the handler to handle [`DropEvent`].
     pub fn handle_drop(&mut self, handler: EventHandler<'video, DropEvent>) {
         self.drop_event_handlers.push(handler);
     }
 
+    /// Registers the handler to handle [`GestureEvent`].
     pub fn handle_gesture(&mut self, handler: EventHandler<'video, GestureEvent>) {
         self.gesture_event_handlers.push(handler);
     }
@@ -226,6 +244,7 @@ impl<'video> EventBox<'video> {
         }
     }
 
+    /// Polling the events and triggers the event handlers.
     pub fn poll(&self) {
         use std::mem::MaybeUninit;
         let mut event = MaybeUninit::uninit();
@@ -237,14 +256,15 @@ impl<'video> EventBox<'video> {
         self.handle_event(event);
     }
 
+    /// Waits until the next event occurs, but unlock with timeout seconds.
     pub fn wait_next_event_with(&self, timeout_ms: u32) {
         use std::mem::MaybeUninit;
         let mut event = MaybeUninit::uninit();
         let ret = unsafe { bind::SDL_WaitEventTimeout(event.as_mut_ptr(), timeout_ms as i32) };
-        let event = unsafe { event.assume_init() };
         if ret == 0 {
             return;
         }
+        let event = unsafe { event.assume_init() };
         self.handle_event(event);
     }
 }
