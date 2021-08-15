@@ -10,7 +10,7 @@ use crate::{
 pub enum WindowEventDetails {
     /// The window became to be shown.
     Shown,
-    /// The window became to bi hidden.
+    /// The window became to be hidden.
     Hidden,
     /// The window was exposed.
     Exposed,
