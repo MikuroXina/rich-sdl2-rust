@@ -13,9 +13,12 @@ pub mod scan_code;
 /// A symbol on the keyboard with the modification and the relationship of actual and virtual key code.
 #[derive(Debug, Clone)]
 pub struct KeySymbol {
-    scan_code: ScanCode,
-    key_code: KeyCode,
-    key_mod: KeyMod,
+    /// The actual key code on the keyboard.
+    pub scan_code: ScanCode,
+    /// The virtual key code on the keyboard.
+    pub key_code: KeyCode,
+    /// The key modification on the keyboard.
+    pub key_mod: KeyMod,
 }
 
 impl From<bind::SDL_Keysym> for KeySymbol {
