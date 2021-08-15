@@ -1,10 +1,13 @@
+//! Trackballs for a physical joystick.
+
 use std::os::raw::c_int;
 
 use crate::bind;
 use crate::geo::Point;
 
-use super::Joystick;
+use super::{InputIndex, Joystick};
 
+/// A trackball on a physical joystick.
 #[derive(Debug)]
 pub struct Trackball<'joystick> {
     index: c_int,
@@ -12,6 +15,14 @@ pub struct Trackball<'joystick> {
 }
 
 impl<'joystick> Trackball<'joystick> {
+    pub(super) fn new(index: InputIndex, joystick: &'joystick Joystick) -> Self {
+        Self {
+            index: index.0,
+            joystick,
+        }
+    }
+
+    /// Returns the delta between the current ball position and previously invoking this method.
     pub fn delta(&self) -> Point {
         let (mut dx, mut dy): (c_int, c_int) = (0, 0);
         let ret = unsafe {
@@ -27,6 +38,7 @@ impl<'joystick> Trackball<'joystick> {
     }
 }
 
+/// A set of `Trackball` for a physical joystick.
 #[derive(Debug)]
 pub struct Trackballs<'joystick>(pub Vec<Trackball<'joystick>>);
 

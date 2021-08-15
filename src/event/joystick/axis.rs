@@ -1,9 +1,12 @@
+//! Axes for a physical joystick.
+
 use std::os::raw::c_int;
 
 use crate::bind;
 
-use super::Joystick;
+use super::{InputIndex, Joystick};
 
+/// An axis for a physical joystick.
 #[derive(Debug)]
 pub struct Axis<'joystick> {
     index: c_int,
@@ -11,11 +14,20 @@ pub struct Axis<'joystick> {
 }
 
 impl<'joystick> Axis<'joystick> {
+    pub(super) fn new(index: InputIndex, joystick: &'joystick Joystick) -> Self {
+        Self {
+            index: index.0,
+            joystick,
+        }
+    }
+
+    /// Returns the state of axis.
     pub fn state(&self) -> i16 {
         unsafe { bind::SDL_JoystickGetAxis(self.joystick.ptr.as_ptr(), self.index) }
     }
 }
 
+/// A set of `Axis` for a physical joystick.
 #[derive(Debug)]
 pub struct Axes<'joystick>(pub Vec<Axis<'joystick>>);
 

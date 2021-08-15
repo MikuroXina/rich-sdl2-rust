@@ -1,3 +1,5 @@
+//! A representation of the power level of the battery in the joystick.
+
 use crate::bind;
 
 /// A power level of a joystick.

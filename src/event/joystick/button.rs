@@ -1,9 +1,12 @@
+//! Buttons for a physical joystick.
+
 use std::os::raw::c_int;
 
 use crate::bind;
 
-use super::Joystick;
+use super::{InputIndex, Joystick};
 
+/// A button for a physical joystick.
 #[derive(Debug)]
 pub struct Button<'joystick> {
     index: c_int,
@@ -11,11 +14,20 @@ pub struct Button<'joystick> {
 }
 
 impl<'joystick> Button<'joystick> {
+    pub(super) fn new(index: InputIndex, joystick: &'joystick Joystick) -> Self {
+        Self {
+            index: index.0,
+            joystick,
+        }
+    }
+
+    /// Returns whether the button is pressed.
     pub fn is_pressed(&self) -> bool {
         unsafe { bind::SDL_JoystickGetButton(self.joystick.ptr.as_ptr(), self.index) != 0 }
     }
 }
 
+/// A set of `Button` for a physical joystick.
 #[derive(Debug)]
 pub struct Buttons<'joystick>(pub Vec<Button<'joystick>>);
 

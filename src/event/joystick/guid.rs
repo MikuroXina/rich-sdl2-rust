@@ -1,3 +1,5 @@
+//! The GUID of joystick devices.
+
 use std::{
     ffi::{CStr, CString},
     os::raw::c_int,
@@ -5,10 +7,12 @@ use std::{
 
 use crate::bind;
 
+/// A GUID associated with joystick devices.
 #[derive(Debug, Clone)]
 pub struct Guid([u8; 16]);
 
 impl Guid {
+    /// Returns mapping string for the game controller having the GUID.
     pub fn mapping(&self) -> String {
         let ptr = unsafe {
             bind::SDL_GameControllerMappingForGUID(bind::SDL_JoystickGUID { data: self.0 })
@@ -34,6 +38,7 @@ impl std::fmt::Display for Guid {
     }
 }
 
+/// An error to tell the failure on parsing `Guid` from string, showing that it is invalid length to convert into.
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct InvalidLengthError {
     actual_length: usize,
@@ -48,6 +53,8 @@ impl std::fmt::Display for InvalidLengthError {
         )
     }
 }
+
+impl std::error::Error for InvalidLengthError {}
 
 impl std::str::FromStr for Guid {
     type Err = InvalidLengthError;
