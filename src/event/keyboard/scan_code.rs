@@ -1,3 +1,7 @@
+//! Actual scan codes corresponded to virtual key codes.
+
+#![allow(missing_docs)]
+
 use crate::bind;
 
 use super::key_code::KeyCode;

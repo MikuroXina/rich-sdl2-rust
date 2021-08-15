@@ -1,3 +1,7 @@
+//! Virtual key codes corresponded to physical scan codes.
+
+#![allow(missing_docs)]
+
 use std::ffi::{CStr, CString};
 
 use crate::bind;
