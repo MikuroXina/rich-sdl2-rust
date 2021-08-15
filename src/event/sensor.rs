@@ -1,14 +1,21 @@
+//! Setup and reading data from other sensors.
+
 use std::{ffi::CStr, os::raw::c_int, ptr::NonNull};
 
 use crate::bind;
 
+/// A kind of the other sensors.
 #[derive(Debug, Clone)]
 pub enum SensorKind {
+    /// The others unrecognized by SDL2.
     Others(i32),
+    /// The accelerometer.
     Accel,
+    /// The gyroscope.
     Gyro,
 }
 
+/// A sensor loaded by SDL2.
 pub struct Sensor {
     ptr: NonNull<bind::SDL_Sensor>,
 }
@@ -22,6 +29,7 @@ impl std::fmt::Debug for Sensor {
 }
 
 impl Sensor {
+    /// Reads some `f32` data by count
     pub fn data(&self, read_count: usize) -> Vec<f32> {
         let mut data = vec![0.0; read_count];
         unsafe {
@@ -30,11 +38,13 @@ impl Sensor {
         data
     }
 
+    /// Returns the name of the sensor
     pub fn name(&self) -> &str {
         let cstr = unsafe { CStr::from_ptr(bind::SDL_SensorGetName(self.ptr.as_ptr())) };
         cstr.to_str().unwrap()
     }
 
+    /// Returns the kind of the sensor
     pub fn kind(&self) -> SensorKind {
         let ty = unsafe { bind::SDL_SensorGetType(self.ptr.as_ptr()) };
         match ty {
@@ -49,10 +59,12 @@ impl Sensor {
     }
 }
 
+/// A set of `Sensor`, containing other sensors.
 #[derive(Debug)]
 pub struct SensorSet(Vec<Sensor>);
 
 impl SensorSet {
+    /// Setup the system and recognizes the sensors.
     pub fn new() -> Self {
         let sensor_count = unsafe {
             bind::SDL_InitSubSystem(bind::SDL_INIT_SENSOR);
@@ -70,8 +82,15 @@ impl SensorSet {
         )
     }
 
+    /// Returns the sensors slice.
     pub fn sensors(&self) -> &[Sensor] {
         &self.0
+    }
+}
+
+impl Default for SensorSet {
+    fn default() -> Self {
+        Self::new()
     }
 }
 
