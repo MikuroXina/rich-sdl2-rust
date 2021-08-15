@@ -1,3 +1,5 @@
+//! Provides audio device control, configuration, wav format utilities and so on.
+
 use static_assertions::assert_not_impl_all;
 use std::{
     cell::Cell,
@@ -26,35 +28,47 @@ pub mod status;
 pub mod stream;
 pub mod wav;
 
+/// A property of an audio device.
 #[derive(Debug)]
 pub struct AudioDeviceProperty {
+    /// The sample frequencies of an audio device..
     pub sample_freq: u32,
+    /// The format of an audio device.
     pub format: AudioFormat,
+    /// The numbers of channels of an audio device.
     pub channels: u8,
+    /// The sample rates of an audio device.
     pub samples: u16,
 }
 
+/// A lock to prevent an audio device from calling the callback [`spec::AudioCallback`].
 pub struct AudioDeviceLock<'device>(u32, PhantomData<&'device mut dyn AudioDevice>);
 
 impl AudioDeviceLock<'_> {
+    /// Unlocks the lock of an audio device.
     fn unlock(self) {
         unsafe { bind::SDL_UnlockAudioDevice(self.0) }
     }
 }
 
+/// Common methods for an audio device, such as a speaker and a microphone.
 pub trait AudioDevice {
+    /// Returns the id of an audio device.
     fn id(&self) -> u32;
 
+    /// Returns the status of an audio device.
     fn status(&self) -> AudioStatus {
         unsafe { bind::SDL_GetAudioDeviceStatus(self.id()) }.into()
     }
 
+    /// Obtains the lock preventing from calling the callback [`spec::AudioCallback`].
     fn lock(&mut self) -> AudioDeviceLock {
         unsafe { bind::SDL_LockAudioDevice(self.id()) }
         AudioDeviceLock(self.id(), PhantomData)
     }
 }
 
+/// An audio device to output sound.
 pub struct SpeakerDevice {
     id: u32,
     _phantom: PhantomData<Cell<u8>>,
@@ -71,10 +85,13 @@ impl std::fmt::Debug for SpeakerDevice {
 assert_not_impl_all!(SpeakerDevice: Send, Sync);
 
 impl SpeakerDevice {
+    /// Returns all of speaker audio device names on now.
     pub fn all_devices() -> impl Iterator<Item = String> {
         devices(false)
     }
 
+    /// Opens the audio device named `device` with the specification and fallback flag.
+    /// If device is `None`, the default audio device is used.
     pub fn open(
         device: Option<String>,
         spec: &AudioSpec,
@@ -103,6 +120,7 @@ impl Drop for SpeakerDevice {
     }
 }
 
+/// An audio device to input sound.
 pub struct MicrophoneDevice {
     id: u32,
     _phantom: PhantomData<Cell<u8>>,
@@ -119,10 +137,13 @@ impl std::fmt::Debug for MicrophoneDevice {
 assert_not_impl_all!(MicrophoneDevice: Send, Sync);
 
 impl MicrophoneDevice {
+    /// Returns all of microphone audio device names on now.
     pub fn all_devices() -> impl Iterator<Item = String> {
         devices(true)
     }
 
+    /// Opens the audio device named `device` with the specification and fallback flag.
+    /// If device is `None`, the default audio device is used.
     pub fn open(
         device: Option<String>,
         spec: &AudioSpec,
@@ -145,6 +166,7 @@ impl AudioDevice for MicrophoneDevice {
     }
 }
 
+/// Returns the device name of the id `device_id`. Please set `is_microphone` according to what type you want to.
 pub fn device_name(device_id: u32, is_microphone: bool) -> Option<String> {
     let ptr = unsafe {
         bind::SDL_GetAudioDeviceName(device_id as i32, if is_microphone { 1 } else { 0 })

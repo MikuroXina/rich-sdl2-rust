@@ -1,3 +1,5 @@
+//! Provides tools to make a specification to require what an audio device is.
+
 use bitflags::bitflags;
 use std::{
     ffi::c_void,
@@ -10,6 +12,7 @@ use crate::bind;
 
 use super::format::AudioFormat;
 
+/// A builder to build an information representing what specification is required for an audio device.
 #[derive(Debug)]
 pub struct AudioSpecBuilder {
     sample_freq: u32,
@@ -25,6 +28,7 @@ impl Default for AudioSpecBuilder {
 }
 
 impl AudioSpecBuilder {
+    /// Constructs an empty builder with the standard specification.
     pub fn new() -> Self {
         Self {
             sample_freq: 44100,
@@ -34,26 +38,31 @@ impl AudioSpecBuilder {
         }
     }
 
+    /// Changes the sample frequencies of the specification.
     pub fn sample_freq(&mut self, value: u32) -> &mut Self {
         self.sample_freq = value;
         self
     }
 
+    /// Changes the format of the specification.
     pub fn format(&mut self, value: AudioFormat) -> &mut Self {
         self.format = value;
         self
     }
 
+    /// Changes the numbers of channels of the specification.
     pub fn channels(&mut self, value: u8) -> &mut Self {
         self.channels = value;
         self
     }
 
+    /// Changes the sample rates of the specification.
     pub fn samples(&mut self, value: u16) -> &mut Self {
         self.samples = value;
         self
     }
 
+    /// Builds an [`AudioSpec`] with an optional callback.
     pub fn build<'callback>(
         self,
         callback: Option<Box<dyn AudioCallback + 'callback>>,
@@ -62,8 +71,10 @@ impl AudioSpecBuilder {
     }
 }
 
+/// A type of the callback to interact with the raw audio buffer.
 pub trait AudioCallback: FnMut(&mut [u8]) {}
 
+/// A specification to require what an audio device is.
 pub struct AudioSpec<'callback> {
     raw: bind::SDL_AudioSpec,
     _phantom: PhantomData<&'callback mut dyn AudioCallback>,
@@ -122,10 +133,15 @@ extern "C" fn audio_spec_wrap_handler(userdata: *mut c_void, stream: *mut u8, le
 }
 
 bitflags! {
+    /// A flag what component may fallback into an actual audio device.
     pub struct FallbackFlag : u32 {
+        /// Allows to fallback frequencies.
         const FREQUENCY = 1 << 0;
+        /// Allows to fallback a format.
         const FORMAT = 1 << 0;
+        /// Allows to fallback numbers of channels.
         const CHANNELS = 1 << 0;
+        /// Allows to fallback sample rates.
         const SAMPLES = 1 << 0;
     }
 }

@@ -1,8 +1,11 @@
+//! An audio stream allows to read and write by streaming method.
+
 use std::{io, os::raw::c_int, ptr::NonNull};
 
 use super::buffer::AudioBuffer;
 use crate::{bind, Result, Sdl, SdlError};
 
+/// An audio stream to read and write audio data by streaming method. To read/write the data, `use` the implementation [`std::io::Read`]/[`std::io::Write`] for this.
 pub struct AudioStream {
     ptr: NonNull<bind::SDL_AudioStream>,
 }
@@ -14,6 +17,7 @@ impl std::fmt::Debug for AudioStream {
 }
 
 impl AudioStream {
+    /// Constructs a stream from two audio buffers.
     pub fn new<T, U>(src: AudioBuffer<T>, dst: AudioBuffer<U>) -> Result<Self> {
         let ptr = unsafe {
             bind::SDL_NewAudioStream(
@@ -39,10 +43,12 @@ impl AudioStream {
         }
     }
 
+    /// Returns the available length of the stream in bytes.
     pub fn available_bytes_len(&self) -> usize {
         unsafe { bind::SDL_AudioStreamAvailable(self.ptr.as_ptr()) as usize }
     }
 
+    /// Clears the audio data in the stream.
     pub fn clear(&self) {
         unsafe { bind::SDL_AudioStreamClear(self.ptr.as_ptr()) }
     }

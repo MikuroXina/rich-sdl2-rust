@@ -1,3 +1,5 @@
+//! A structure for wav format.
+
 use std::{
     ffi::{CStr, CString},
     mem::MaybeUninit,
@@ -5,6 +7,7 @@ use std::{
 
 use crate::{bind, Result, Sdl, SdlError};
 
+/// A wav format buffer.
 pub struct Wav {
     buffer: *mut u8,
     len: usize,
@@ -17,6 +20,7 @@ impl std::fmt::Debug for Wav {
 }
 
 impl Wav {
+    /// Constructs a wav buffer from file named `file_name`.
     pub fn new(file_name: &str) -> Result<Self> {
         let read_binary_mode = CStr::from_bytes_with_nul(b"rb\0").unwrap();
         let cstr = CString::new(file_name).expect("file_name must not be empty");
@@ -42,14 +46,17 @@ impl Wav {
         }
     }
 
+    /// Treats as an `u8` slice.
     pub fn as_slice(&self) -> &[u8] {
         unsafe { std::slice::from_raw_parts(self.buffer, self.len) }
     }
 
+    /// Treats as an mutable `u8` slice.
     pub fn as_slice_mut(&mut self) -> &mut [u8] {
         unsafe { std::slice::from_raw_parts_mut(self.buffer, self.len) }
     }
 
+    /// Convert into a vector.
     pub fn to_vec(&self) -> Vec<u8> {
         self.as_slice().to_vec()
     }

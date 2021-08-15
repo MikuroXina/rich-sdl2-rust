@@ -1,9 +1,15 @@
+//! A status of an audio device.
+
 use crate::bind;
 
+/// A playing status of an audio device.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum AudioStatus {
+    /// An audio device is closed or on error.
     Stopped,
+    /// An audio device is open and playing the sound.
     Playing,
+    /// An audio device is open but not playing the sound.
     Paused,
 }
 

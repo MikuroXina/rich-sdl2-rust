@@ -1,22 +1,32 @@
+//! Type definitions for a format of audio data.
+
 use bitflags::bitflags;
 
 use crate::bind;
 
 bitflags! {
+    /// A flag to represent what type is used in audio data.
     pub struct AudioFormatFlag: u8 {
+        /// Whether a type is floating-point number.
         const FLOAT = 1 << 0;
+        /// Whether a type is big endian.
         const BIG_ENDIAN = 1 << 4;
+        /// Whether a type is signed.
         const SIGNED = 1 << 7;
     }
 }
 
+/// A format to represent how is stored samples in audio data.
 #[derive(Debug, Clone, Copy)]
 pub struct AudioFormat {
+    /// A flag to represent characteristics of a type.
     pub flag: AudioFormatFlag,
+    /// A size in bits of a type.
     pub bit_size: u8,
 }
 
 impl AudioFormat {
+    /// A format for signed 8-bit data.
     pub fn signed8() -> Self {
         Self {
             flag: AudioFormatFlag::SIGNED,
@@ -24,6 +34,7 @@ impl AudioFormat {
         }
     }
 
+    /// A format for unsigned 8-bit data.
     pub fn unsigned8() -> Self {
         Self {
             flag: AudioFormatFlag::empty(),
@@ -31,6 +42,7 @@ impl AudioFormat {
         }
     }
 
+    /// A format for signed little endian 16-bit data.
     pub fn signed16_lsb() -> Self {
         Self {
             flag: AudioFormatFlag::SIGNED,
@@ -38,6 +50,7 @@ impl AudioFormat {
         }
     }
 
+    /// A format for unsigned little endian 16-bit data.
     pub fn unsigned16_lsb() -> Self {
         Self {
             flag: AudioFormatFlag::empty(),
@@ -45,6 +58,7 @@ impl AudioFormat {
         }
     }
 
+    /// A format for signed big endian 16-bit data.
     pub fn signed16_msb() -> Self {
         Self {
             flag: AudioFormatFlag::BIG_ENDIAN | AudioFormatFlag::SIGNED,
@@ -52,6 +66,7 @@ impl AudioFormat {
         }
     }
 
+    /// A format for unsigned big endian 16-bit data.
     pub fn unsigned16_msb() -> Self {
         Self {
             flag: AudioFormatFlag::BIG_ENDIAN,
@@ -59,6 +74,7 @@ impl AudioFormat {
         }
     }
 
+    /// A format for signed little endian 32-bit data.
     pub fn signed32_lsb() -> Self {
         Self {
             flag: AudioFormatFlag::SIGNED,
@@ -66,6 +82,7 @@ impl AudioFormat {
         }
     }
 
+    /// A format for signed big endian 32-bit data.
     pub fn signed32_msb() -> Self {
         Self {
             flag: AudioFormatFlag::BIG_ENDIAN | AudioFormatFlag::SIGNED,
@@ -73,6 +90,7 @@ impl AudioFormat {
         }
     }
 
+    /// A format for floating-point little endian 32-bit data.
     pub fn float32_lsb() -> Self {
         Self {
             flag: AudioFormatFlag::FLOAT | AudioFormatFlag::SIGNED,
@@ -80,6 +98,7 @@ impl AudioFormat {
         }
     }
 
+    /// A format for floating-point big endian 32-bit data.
     pub fn float32_msb() -> Self {
         Self {
             flag: AudioFormatFlag::FLOAT | AudioFormatFlag::BIG_ENDIAN | AudioFormatFlag::SIGNED,
