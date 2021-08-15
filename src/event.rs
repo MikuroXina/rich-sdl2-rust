@@ -51,7 +51,7 @@ impl<'video, T> EventHandlers<'video, T> {
     }
 }
 
-/// It takes the closure of handler to register, and delivers event to your event handlers by polling the events.
+/// It takes the closure of handler to register, and delivers events to your event handlers by polling.
 pub struct EventBox<'video> {
     quit_event_handlers: EventHandlers<'video, QuitEvent>,
     window_event_handlers: EventHandlers<'video, WindowEvent>,
