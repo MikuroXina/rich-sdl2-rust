@@ -1,10 +1,12 @@
+//! Controlling cursor to show/hide.
+
 use static_assertions::assert_not_impl_all;
 use std::marker::PhantomData;
 use std::os::raw::c_int;
 
-use crate::window::Window;
-use crate::{bind, Sdl};
+use crate::{bind, window::Window, Sdl};
 
+/// This controls the cursor on the window. It can show/hide the cursor.
 pub struct Cursor<'window> {
     window: PhantomData<&'window Window<'window>>,
 }
@@ -18,12 +20,14 @@ impl std::fmt::Debug for Cursor<'_> {
 assert_not_impl_all!(Cursor: Send, Sync);
 
 impl<'window> Cursor<'window> {
+    /// Constructs cursor control from the window.
     pub fn new(_: &'window Window) -> Self {
         Self {
             window: PhantomData,
         }
     }
 
+    /// Shows the cursor on the window.
     pub fn show(&self) {
         let ret = unsafe { bind::SDL_ShowCursor(bind::SDL_ENABLE as c_int) };
         if ret < 0 {
@@ -31,6 +35,7 @@ impl<'window> Cursor<'window> {
         }
     }
 
+    /// Hides the cursor on the window.
     pub fn hide(&self) {
         let ret = unsafe { bind::SDL_ShowCursor(bind::SDL_DISABLE as c_int) };
         if ret < 0 {
@@ -38,6 +43,7 @@ impl<'window> Cursor<'window> {
         }
     }
 
+    /// Returns whether the cursor is shown.
     pub fn is_shown(&self) -> bool {
         let ret = unsafe { bind::SDL_ShowCursor(bind::SDL_QUERY as c_int) };
         if ret < 0 {

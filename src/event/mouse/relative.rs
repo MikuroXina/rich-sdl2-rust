@@ -1,8 +1,12 @@
+//! Hold the cursor position and change to get relative motions from the mouse.
+
 use static_assertions::assert_not_impl_all;
 use std::marker::PhantomData;
 
 use crate::{bind, SdlError, Video};
 
+/// It provides the relative mouse mode, which hiding and holding the cursor and be able to obtain relative motions from the mouse.
+/// Dropping this will come back to the normal mouse mode.
 pub struct RelativeMouse<'video> {
     video: PhantomData<&'video Video<'video>>,
 }
@@ -16,6 +20,7 @@ impl std::fmt::Debug for RelativeMouse<'_> {
 assert_not_impl_all!(RelativeMouse: Send, Sync);
 
 impl<'video> RelativeMouse<'video> {
+    /// Starts the relative mouse mode, but returns `Err(UnsupportedFeature)` if this is not supported.
     pub fn new(_: &'video Video) -> Result<Self, SdlError> {
         let ret = unsafe { bind::SDL_SetRelativeMouseMode(bind::SDL_bool_SDL_TRUE) };
         if ret == -1 {

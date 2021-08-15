@@ -1,15 +1,23 @@
+//! Events and utilities for the mouse.
+
 use crate::bind;
 use crate::geo::Point;
 
 pub mod cursor;
 pub mod relative;
 
+/// A kind of the mouse button.
 #[derive(Debug, Clone)]
 pub enum MouseButton {
+    /// The left button of the mouse.
     Left,
+    /// The middle or wheel button of the mouse.
     Middle,
+    /// The right button of the mouse.
     Right,
+    /// The x1 of the mouse.
     X1,
+    /// The x2 of the mouse.
     X2,
 }
 
@@ -27,20 +35,31 @@ impl MouseButton {
     }
 }
 
+/// An event related on the mouse.
 #[derive(Debug, Clone)]
 pub enum MouseEvent {
+    /// A motion event [`MouseMotionEvent`].
     Motion(MouseMotionEvent),
+    /// A button event [`MouseButtonEvent`].
     Button(MouseButtonEvent),
+    /// A wheel event [`MouseWheelEvent`].
     Wheel(MouseWheelEvent),
 }
 
+/// An event that the mouse was moved.
 #[derive(Debug, Clone)]
 pub struct MouseMotionEvent {
+    /// When this event occurred.
     pub timestamp: u32,
+    /// The id of the window focused.
     pub window_id: u32,
+    /// The id of the moved.
     pub mouse_id: u32,
+    /// The button state of the mouse.
     pub button: Option<MouseButton>,
+    /// The mouse position.
     pub pos: Point,
+    /// The moved amount of the mouse.
     pub move_amount: Point,
 }
 
@@ -60,14 +79,22 @@ impl From<bind::SDL_MouseMotionEvent> for MouseMotionEvent {
     }
 }
 
+/// An event that th mouse button was pressed/released.
 #[derive(Debug, Clone)]
 pub struct MouseButtonEvent {
+    /// When this event occurred.
     pub timestamp: u32,
+    /// The id of the window focused.
     pub window_id: u32,
+    /// The id of the moved.
     pub mouse_id: u32,
+    /// The button state of the mouse.
     pub button: Option<MouseButton>,
+    /// Whether the mouse button is pressed.
     pub is_pressed: bool,
+    /// The click count of the button.
     pub clicks: u8,
+    /// The mouse position.
     pub pos: Point,
 }
 
@@ -85,12 +112,18 @@ impl From<bind::SDL_MouseButtonEvent> for MouseButtonEvent {
     }
 }
 
+/// An event that the mouse wheel was scrolled.
 #[derive(Debug, Clone)]
 pub struct MouseWheelEvent {
+    /// When this event occurred.
     pub timestamp: u32,
+    /// The id of the window focused.
     pub window_id: u32,
+    /// The id of the moved.
     pub mouse_id: u32,
+    /// How the wheel scrolled.
     pub scroll_amount: Point,
+    /// Whether the scroll direction is inverted.
     pub is_flipped: bool,
 }
 
