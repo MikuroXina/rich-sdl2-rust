@@ -5,6 +5,7 @@ use std::{
 
 use crate::bind;
 
+/// An event on updated the hint.
 #[derive(Debug, Clone)]
 pub struct HintEvent<'a> {
     name: &'a str,
@@ -12,8 +13,10 @@ pub struct HintEvent<'a> {
     new_value: &'a str,
 }
 
+/// A callback invoked on updated the hint.
 pub type HintCallback<'callback> = Box<dyn FnMut(HintEvent<'callback>) + 'callback>;
 
+/// An hint update observer.
 pub struct HintObserver<'callback> {
     key: CString,
     callback_raw: *mut HintCallback<'callback>,
@@ -28,6 +31,7 @@ impl std::fmt::Debug for HintObserver<'_> {
 }
 
 impl<'callback> HintObserver<'callback> {
+    /// Constructs an observer to observe by the key and callback.
     pub fn new(key: &str, callback: HintCallback<'callback>) -> Self {
         let key = CString::new(key).expect("key must not be empty");
         let wrapped = Box::new(callback);
