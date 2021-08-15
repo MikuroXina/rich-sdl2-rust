@@ -1,7 +1,11 @@
+//! Events occurring on the application.
+
 use crate::bind;
 
+/// An event on quitting the application.
 #[derive(Debug, Clone)]
 pub struct QuitEvent {
+    /// When this event occurred.
     pub timestamp: u32,
 }
 

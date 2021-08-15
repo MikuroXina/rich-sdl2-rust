@@ -1,3 +1,5 @@
+//! A logical game controller that attached to a physical device.
+
 use static_assertions::assert_not_impl_all;
 use std::{
     ffi::{CStr, CString},
@@ -13,6 +15,7 @@ pub mod button;
 pub mod event;
 pub mod map;
 
+/// A logical game controller manages binding of the physical devices.
 pub struct GameController {
     pub(in crate::event) ptr: NonNull<bind::SDL_GameController>,
 }
@@ -28,6 +31,7 @@ impl std::fmt::Debug for GameController {
 assert_not_impl_all!(GameController: Send, Sync);
 
 impl GameController {
+    /// Returns the string of all mapping `GameController` holds.
     pub fn mapping(&self) -> String {
         let ptr = unsafe { bind::SDL_GameControllerMapping(self.ptr.as_ptr()) };
         let cstr = unsafe { CStr::from_ptr(ptr) };
@@ -36,6 +40,7 @@ impl GameController {
         ret
     }
 
+    /// Returns the name of the game controller.
     pub fn name(&self) -> String {
         let ptr = unsafe { bind::SDL_GameControllerName(self.ptr.as_ptr()) };
         if ptr.is_null() {
@@ -45,6 +50,7 @@ impl GameController {
         cstr.to_string_lossy().to_string()
     }
 
+    /// Returns the bind for an axis if exists.
     pub fn bind_for_axis(&self, axis: Axis) -> Option<MapInput> {
         let ret =
             unsafe { bind::SDL_GameControllerGetBindForAxis(self.ptr.as_ptr(), axis.as_raw()) };
@@ -52,6 +58,7 @@ impl GameController {
             .then(|| ret.into())
     }
 
+    /// Returns the bind for a button if exists.
     pub fn bind_for_button(&self, button: Button) -> Option<MapInput> {
         let ret =
             unsafe { bind::SDL_GameControllerGetBindForButton(self.ptr.as_ptr(), button.as_raw()) };
@@ -60,12 +67,14 @@ impl GameController {
     }
 }
 
+/// All of recognized game controllers at initialized.
 #[derive(Debug)]
 pub struct GameControllerSet {
     controls: Vec<GameController>,
 }
 
 impl GameControllerSet {
+    /// Constructs and initializes the system and recognizes controllers.
     pub fn new() -> Self {
         let num_controls = unsafe {
             bind::SDL_InitSubSystem(bind::SDL_INIT_JOYSTICK);
@@ -82,6 +91,7 @@ impl GameControllerSet {
         Self { controls }
     }
 
+    /// Applies mapping string, or returns `Err` on failure.
     pub fn add_mapping(string: &str) -> Result<bool> {
         let cstr = CString::new(string).expect("string must not be empty");
         let ret = unsafe { bind::SDL_GameControllerAddMapping(cstr.as_ptr()) };
@@ -92,6 +102,7 @@ impl GameControllerSet {
         }
     }
 
+    /// Applies mapping file, or returns `Err` on failure.
     pub fn add_mapping_from_file(file_name: &str) -> Result<u32> {
         let cstr = CString::new(file_name).expect("string must not be empty");
         let read_binary_mode = CStr::from_bytes_with_nul(b"rb\0").unwrap();
@@ -108,8 +119,15 @@ impl GameControllerSet {
         }
     }
 
+    /// Returns the `GameController` list.
     pub fn controllers(&self) -> &[GameController] {
         &self.controls
+    }
+}
+
+impl Default for GameControllerSet {
+    fn default() -> Self {
+        Self::new()
     }
 }
 

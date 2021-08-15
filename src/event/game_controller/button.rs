@@ -1,3 +1,5 @@
+//! Buttons for a game controller.
+
 use std::{
     ffi::{CStr, CString},
     str::FromStr,
@@ -5,24 +7,40 @@ use std::{
 
 use crate::{bind, SdlError};
 
+/// An one of four buttons which be placed like the diamond.
 #[derive(Debug, Clone, Copy, PartialEq, PartialOrd, Eq, Hash)]
 pub enum FourButton {
+    /// A button on the up.
     Up,
+    /// A button on the right.
     Right,
+    /// A button on the down.
     Down,
+    /// A button on the left.
     Left,
 }
 
+/// A button on a game controller except the trigger buttons.
+/// Trigger buttons are covered by [`super::axis::Axis`].
 #[derive(Debug, Clone, Copy, PartialEq, PartialOrd, Eq, Hash)]
 pub enum Button {
+    /// Four buttons on the left.
     LeftFour(FourButton),
+    /// Four buttons on the right.
     RightFour(FourButton),
+    /// A back button on the center.
     Back,
+    /// A meta button on the center.
     Guide,
+    /// A start button on the center.
     Start,
+    /// A stick push button on the left.
     LeftStick,
+    /// A stick push button on the right.
     RightStick,
+    /// A sub trigger button on the left.
     LeftShoulder,
+    /// A sub trigger button on the right.
     RightShoulder,
 }
 
@@ -88,6 +106,7 @@ impl Button {
         }
     }
 
+    /// Returns the mapping string if exists.
     pub fn to_mapping_string(self) -> Option<String> {
         let ptr = unsafe { bind::SDL_GameControllerGetStringForButton(self.as_raw()) };
         if ptr.is_null() {

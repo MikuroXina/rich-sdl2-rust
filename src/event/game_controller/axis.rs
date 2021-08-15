@@ -1,3 +1,5 @@
+//! Axes for a game controller.
+
 use std::{
     ffi::{CStr, CString},
     str::FromStr,
@@ -5,13 +7,20 @@ use std::{
 
 use crate::{bind, SdlError};
 
+/// An axis like sticks and trigger buttons on a game controller.
 #[derive(Debug, Clone, Copy, PartialEq, PartialOrd, Eq, Hash)]
 pub enum Axis {
+    /// An horizontal input of the left stick.
     LeftX,
+    /// An vertical input of the left stick.
     LeftY,
+    /// An horizontal input of the right stick.
     RightX,
+    /// An vertical input of the right stick.
     RightY,
+    /// An trigger button on the left.
     TriggerLeft,
+    /// An trigger button on the right.
     TriggerRight,
 }
 
@@ -42,6 +51,7 @@ impl Axis {
         }
     }
 
+    /// Returns the mapping string if exists.
     pub fn to_mapping_string(self) -> Option<String> {
         let ptr = unsafe { bind::SDL_GameControllerGetStringForAxis(self.as_raw()) };
         if ptr.is_null() {
