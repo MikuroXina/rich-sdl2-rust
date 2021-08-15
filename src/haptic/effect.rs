@@ -1,18 +1,30 @@
+//! Controls the effect on the haptic device.
+
 use crate::bind;
 
 use super::direction::Direction;
 
+/// An effect on the haptic device.
 #[derive(Debug, Clone)]
 pub enum HapticEffect {
+    /// Applies the constant force in the direction.
     Constant(Direction, Play, Trigger, Level, Envelope),
+    /// Applies the force of the periodic waveform.
     Periodic(Direction, Play, Trigger, Wave, Envelope),
+    /// Applies the force on fulfilled the condition.
     Condition(Play, Trigger, Condition),
+    /// Applies the force by linear ramp.
     Ramp(Direction, Play, Trigger, Ramp, Envelope),
+    /// Applies the left/right effect with two motors magnitude. One motor is high frequency, the other is low frequency.
     LeftRight {
+        /// The length of the playing in milliseconds.
         length: u32,
+        /// The magnitude for the large motor.
         large_magnitude: u16,
+        /// The magnitude for the small motor.
         small_magnitude: u16,
     },
+    /// Applies the force of the periodic waveform from your sampled data.
     Custom(Direction, Play, Trigger, Custom, Envelope),
 }
 
@@ -54,7 +66,7 @@ impl HapticEffect {
             },
             HapticEffect::Condition(play, trigger, condition) => bind::SDL_HapticEffect {
                 condition: bind::SDL_HapticCondition {
-                    type_: condition.kind.to_raw(),
+                    type_: 0,
                     direction: bind::SDL_HapticDirection {
                         type_: 0,
                         dir: [0; 3],
@@ -63,10 +75,10 @@ impl HapticEffect {
                     delay: play.delay,
                     button: trigger.button,
                     interval: trigger.interval,
-                    right_sat: condition.right_level.0,
-                    left_sat: condition.left_level.0,
-                    right_coeff: condition.right_coefficient.0,
-                    left_coeff: condition.left_coefficient.0,
+                    right_sat: condition.positive_level.0,
+                    left_sat: condition.negative_level.0,
+                    right_coeff: condition.positive_coefficient.0,
+                    left_coeff: condition.negative_coefficient.0,
                     deadband: condition.dead_band.0,
                     center: condition.center.0,
                 },
@@ -213,11 +225,10 @@ impl From<bind::SDL_HapticEffect> for HapticEffect {
                     Play { length, delay },
                     Trigger { button, interval },
                     Condition {
-                        kind: type_.into(),
-                        right_level: Vector3(right_sat),
-                        left_level: Vector3(left_sat),
-                        right_coefficient: Vector3(right_coeff),
-                        left_coefficient: Vector3(left_coeff),
+                        positive_level: Vector3(right_sat),
+                        negative_level: Vector3(left_sat),
+                        positive_coefficient: Vector3(right_coeff),
+                        negative_coefficient: Vector3(left_coeff),
                         dead_band: Vector3(deadband),
                         center: Vector3(center),
                     },
@@ -313,43 +324,111 @@ impl From<bind::SDL_HapticEffect> for HapticEffect {
     }
 }
 
+/// Length and delay of the playing.
 #[derive(Debug, Clone)]
 pub struct Play {
+    /// The length of the playing in milliseconds.
     pub length: u32,
+    /// The delay of the playing.
     pub delay: u16,
 }
 
+/// A trigger button to start the effect, and an interval between the effect.
 #[derive(Debug, Clone)]
 pub struct Trigger {
+    /// The trigger button to start the effect
     pub button: u16,
+    /// The interval between the effect in milliseconds.
     pub interval: u16,
 }
 
+/// A magnitude level of the force.
 #[derive(Debug, Clone)]
 pub struct Level(pub i16);
 
+/// An envelope to fade in/out the effect. If both `attack_length` and `fade_level` are `0`, the envelope is not used. An example of a constant effect evolution in time:
+///
+/// ```text
+/// Strength
+/// ^
+/// |
+/// |      effect level --> _________________
+/// |                      /                 \
+/// |                     /                   \
+/// |                    /                     \
+/// |                   /                       \
+/// | attack_level --> |                         \
+/// |                  |                          | <--- fade_level
+/// |
+/// +--------------------------------------------------> Time
+///
+///                    [--]                 [---]
+///                attack_length          fade_length
+///
+/// [------------------][-----------------------]
+///        delay                 length
+/// ```
 #[derive(Debug, Clone)]
 pub struct Envelope {
+    /// The length of the level from `attack_level` to the effect level in milliseconds.
     pub attack_length: u16,
+    /// The initial force level on applying.
     pub attack_level: u16,
+    /// The length of the level from the effect level to `attack_level`in milliseconds.
     pub fade_length: u16,
+    /// The end force level on applying.
     pub fade_level: u16,
 }
 
+/// A periodic waveform specification.
 #[derive(Debug, Clone)]
 pub struct Wave {
+    /// The kind of the waveform.
     pub kind: WaveKind,
+    /// The period of the waveform.
     pub period: u16,
+    /// The magnitude by peak-to-peak level of the waveform.
     pub magnitude: i16,
+    /// The amplifier offset, mean value of the waveform.
     pub offset: i16,
+    /// The phase shift in degrees times 100.
     pub phase: u16,
 }
 
+/// A kind of the waveform.
 #[derive(Debug, Clone)]
 pub enum WaveKind {
+    /// A sine wave like:
+    ///
+    /// ```text
+    ///   __      __      __      __
+    ///  /  \    /  \    /  \    /
+    /// /    \__/    \__/    \__/
+    /// ```
     Sine,
+    /// A triangle wave like:
+    ///
+    /// ```text
+    ///   /\    /\    /\    /\    /\
+    ///  /  \  /  \  /  \  /  \  /
+    /// /    \/    \/    \/    \/
+    /// ```
     Triangle,
+    /// An upwards sawtooth wave like:
+    ///
+    /// ```text
+    ///   /|  /|  /|  /|  /|  /|  /|
+    ///  / | / | / | / | / | / | / |
+    /// /  |/  |/  |/  |/  |/  |/  |
+    /// ```
     SawToothUp,
+    /// A downwards sawtooth wave like:
+    ///
+    /// ```text
+    /// \  |\  |\  |\  |\  |\  |\  |
+    ///  \ | \ | \ | \ | \ | \ | \ |
+    ///   \|  \|  \|  \|  \|  \|  \|
+    /// ```
     SwaToothDown,
 }
 
@@ -376,61 +455,45 @@ impl From<u16> for WaveKind {
     }
 }
 
+/// A vector to represent the XYZ component for [`Condition`].
 #[derive(Debug, Clone)]
 pub struct Vector3<T>(pub [T; 3]);
 
+/// A condition to trigger the effect. Refer to [`Direction`] for which side is the positive/negative on the joystick.
 #[derive(Debug, Clone)]
 pub struct Condition {
-    pub kind: ConditionKind,
-    pub right_level: Vector3<u16>,
-    pub left_level: Vector3<u16>,
-    pub right_coefficient: Vector3<i16>,
-    pub left_coefficient: Vector3<i16>,
+    /// The level when the joystick in the positive side.
+    pub positive_level: Vector3<u16>,
+    /// The level when the joystick in the negative side.
+    pub negative_level: Vector3<u16>,
+    /// How fast to increase the force towards the positive side.
+    pub positive_coefficient: Vector3<i16>,
+    /// How fast to increase the force towards the negative side.
+    pub negative_coefficient: Vector3<i16>,
+    /// The size of the dead zone.
     pub dead_band: Vector3<u16>,
+    /// The position of the dead zone.
     pub center: Vector3<i16>,
 }
 
-#[derive(Debug, Clone)]
-pub enum ConditionKind {
-    Spring,
-    Damper,
-    Inertia,
-    Friction,
-}
-
-impl ConditionKind {
-    fn to_raw(&self) -> u16 {
-        (match *self {
-            ConditionKind::Spring => bind::SDL_HAPTIC_SPRING,
-            ConditionKind::Damper => bind::SDL_HAPTIC_DAMPER,
-            ConditionKind::Inertia => bind::SDL_HAPTIC_INERTIA,
-            ConditionKind::Friction => bind::SDL_HAPTIC_FRICTION,
-        }) as u16
-    }
-}
-
-impl From<u16> for ConditionKind {
-    fn from(raw: u16) -> Self {
-        match raw as u32 {
-            bind::SDL_HAPTIC_SPRING => Self::Spring,
-            bind::SDL_HAPTIC_DAMPER => Self::Damper,
-            bind::SDL_HAPTIC_INERTIA => Self::Inertia,
-            bind::SDL_HAPTIC_FRICTION => Self::Friction,
-            _ => unreachable!(),
-        }
-    }
-}
-
+/// A linear ramp to interpolate the force of the effect.
 #[derive(Debug, Clone)]
 pub struct Ramp {
+    /// The level at the start to play.
     pub start: Level,
+    /// The level at the end to play.
     pub end: Level,
 }
 
+/// A custom periodic waveform by your sampled data.
 #[derive(Debug, Clone)]
 pub struct Custom {
-    channels: u8,
-    period: u16,
-    samples: u16,
-    data: Vec<u16>,
+    /// The numbers of using axes.
+    pub channels: u8,
+    /// The period of your sampled data.
+    pub period: u16,
+    /// The numbers of the samples in your data.
+    pub samples: u16,
+    /// The sampled data. Its length must be equal to `channels * samples`.
+    pub data: Vec<u16>,
 }

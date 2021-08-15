@@ -1,17 +1,29 @@
+//! Defining directions and coordinate systems of the haptic movements.
+
 use crate::bind;
 
+/// A direction and coordinate system of the haptic movements.
 #[derive(Debug, Clone)]
 pub enum Direction {
+    /// A polar coordinate system.
     Polar {
+        /// The direction in degrees times 100. The north is 0, the east is 9000, and so on.
         degree_100: i32,
     },
+    /// A cartesian coordinate system.
     Cartesian {
+        /// The east is positive direction.
         x: i32,
+        /// The south is positive direction.
         y: i32,
+        /// Z means the level of power if supported it.
         z: i32,
     },
+    /// A spherical coordinate system (3-axis haptic device).
     Spherical {
+        /// The direction in degrees times 100, rotating from (1, 0, 0) to (0, 1, 0).
         z_degree_100: i32,
+        /// The degree times 100, rotating to (0, 0, 1) after above.
         elevation_degree_100: i32,
     },
 }

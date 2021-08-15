@@ -1,16 +1,20 @@
+//! A haptic device integrated with the mouse.
+
 use std::{marker::PhantomData, ops::Deref, ptr::NonNull};
 
 use crate::bind;
 
 use super::Haptic;
 
+/// A haptic device got from the mouse.
 #[derive(Debug)]
 pub struct MouseHaptic {
     haptic: Haptic,
 }
 
 impl MouseHaptic {
-    fn new() -> Option<Self> {
+    /// Constructs if the mouse had the haptic device.
+    pub fn new() -> Option<Self> {
         let is_supported =
             unsafe { bind::SDL_MouseIsHaptic() as bind::SDL_bool == bind::SDL_bool_SDL_TRUE };
         if !is_supported {

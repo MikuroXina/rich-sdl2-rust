@@ -1,9 +1,12 @@
+//! A haptic device integrated with the joystick.
+
 use std::{marker::PhantomData, ops::Deref, ptr::NonNull};
 
 use crate::{bind, event::joystick::Joystick};
 
 use super::Haptic;
 
+/// A haptic device got from the joystick.
 pub struct JoystickHaptic<'joystick> {
     haptic: Haptic,
     _phantom: PhantomData<&'joystick Joystick>,
@@ -18,7 +21,8 @@ impl std::fmt::Debug for JoystickHaptic<'_> {
 }
 
 impl<'joystick> JoystickHaptic<'joystick> {
-    fn from(joystick: impl AsRef<Joystick> + 'joystick) -> Option<Self> {
+    /// Constructs from a reference to [`Joystick`].
+    pub fn new(joystick: impl AsRef<Joystick> + 'joystick) -> Option<Self> {
         let is_supported = unsafe {
             bind::SDL_JoystickIsHaptic(joystick.as_ref().ptr().as_ptr()) as bind::SDL_bool
                 == bind::SDL_bool_SDL_TRUE
