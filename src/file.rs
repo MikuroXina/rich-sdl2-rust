@@ -1,3 +1,5 @@
+//! A file handing on SDL2.
+
 use std::ffi::{CStr, CString};
 
 use crate::bind;
@@ -7,11 +9,13 @@ mod rw;
 
 pub use rw::*;
 
+/// Returns the base path of your application.
 pub fn base_path() -> String {
     let cstr = unsafe { CStr::from_ptr(bind::SDL_GetBasePath()) };
     cstr.to_string_lossy().to_string()
 }
 
+/// Returns the preferences path for your application.
 pub fn pref_path(org: &str, app: &str) -> String {
     let org_cstr = CString::new(org).unwrap();
     let app_cstr = CString::new(app).unwrap();

@@ -12,6 +12,7 @@ use crate::{
     Result, Sdl, SdlError,
 };
 
+/// A file handler, how to read and write from file on SDL2.
 pub struct RwOps<'a> {
     ptr: NonNull<bind::SDL_RWops>,
     _phantom: PhantomData<&'a mut ()>,
@@ -28,6 +29,7 @@ impl<'a> RwOps<'a> {
         self.ptr
     }
 
+    /// Constructs from file name with the open mode, or `Err` on failure.
     pub fn from_file(file_name: &str, mode: OpenMode) -> Result<RwOps<'static>> {
         let cstr = CString::new(file_name).expect("file_name must not be empty");
         let ptr = unsafe { bind::SDL_RWFromFile(cstr.as_ptr(), mode.into_raw().as_ptr()) };
@@ -41,6 +43,7 @@ impl<'a> RwOps<'a> {
         }
     }
 
+    /// Constructs from the buffer `&[u8]`, or `Err` on failure.
     pub fn from_mem(buf: &'a [u8]) -> Result<Self> {
         let ptr = unsafe { bind::SDL_RWFromConstMem(buf.as_ptr().cast(), buf.len() as c_int) };
         if ptr.is_null() {
@@ -53,6 +56,7 @@ impl<'a> RwOps<'a> {
         }
     }
 
+    /// Constructs from the mutable buffer `&mut [u8]`, or `Err` on failure.
     pub fn from_mem_mut(buf: &'a mut [u8]) -> Result<Self> {
         let ptr = unsafe { bind::SDL_RWFromMem(buf.as_mut_ptr().cast(), buf.len() as c_int) };
         if ptr.is_null() {
@@ -65,6 +69,7 @@ impl<'a> RwOps<'a> {
         }
     }
 
+    /// Returns the size of the read/write target.
     pub fn size(&self) -> Result<usize> {
         let ret = unsafe { bind::SDL_RWsize(self.ptr.as_ptr()) };
         if ret < 0 {
@@ -74,50 +79,65 @@ impl<'a> RwOps<'a> {
         }
     }
 
+    /// Returns the current position of seeking.
     pub fn tell(&mut self) -> io::Result<u64> {
         self.seek(io::SeekFrom::Current(0))
     }
 
+    /// Reads and pops the 8-bits value.
     pub fn read_u8(&mut self) -> u8 {
         unsafe { bind::SDL_ReadU8(self.ptr.as_ptr()) }
     }
+    /// Reads and pops the big endian 16-bits value.
     pub fn read_be16(&mut self) -> u16 {
         unsafe { bind::SDL_ReadBE16(self.ptr.as_ptr()) }
     }
+    /// Reads and pops the little endian 16-bits value.
     pub fn read_le16(&mut self) -> u16 {
         unsafe { bind::SDL_ReadLE16(self.ptr.as_ptr()) }
     }
+    /// Reads and pops the big endian 32-bits value.
     pub fn read_be32(&mut self) -> u32 {
         unsafe { bind::SDL_ReadBE32(self.ptr.as_ptr()) }
     }
+    /// Reads and pops the little endian 32-bits value.
     pub fn read_le32(&mut self) -> u32 {
         unsafe { bind::SDL_ReadLE32(self.ptr.as_ptr()) }
     }
+    /// Reads and pops the big endian 64-bits value.
     pub fn read_be64(&mut self) -> u64 {
         unsafe { bind::SDL_ReadBE64(self.ptr.as_ptr()) }
     }
+    /// Reads and pops the little endian 64-bits value.
     pub fn read_le64(&mut self) -> u64 {
         unsafe { bind::SDL_ReadLE64(self.ptr.as_ptr()) }
     }
 
+    /// Writes the 8-bits value.
     pub fn write_u8(&mut self, value: u8) -> bool {
         unsafe { bind::SDL_WriteU8(self.ptr.as_ptr(), value) == 1 }
     }
+    /// Writes the big endian 16-bits value.
     pub fn write_be16(&mut self, value: u16) -> bool {
         unsafe { bind::SDL_WriteBE16(self.ptr.as_ptr(), value) == 1 }
     }
+    /// Writes the little endian 16-bits value.
     pub fn write_le16(&mut self, value: u16) -> bool {
         unsafe { bind::SDL_WriteLE16(self.ptr.as_ptr(), value) == 1 }
     }
+    /// Writes the big endian 32-bits value.
     pub fn write_be32(&mut self, value: u32) -> bool {
         unsafe { bind::SDL_WriteBE32(self.ptr.as_ptr(), value) == 1 }
     }
+    /// Writes the little endian 32-bits value.
     pub fn write_le32(&mut self, value: u32) -> bool {
         unsafe { bind::SDL_WriteLE32(self.ptr.as_ptr(), value) == 1 }
     }
+    /// Writes the big endian 64-bits value.
     pub fn write_be64(&mut self, value: u64) -> bool {
         unsafe { bind::SDL_WriteBE64(self.ptr.as_ptr(), value) == 1 }
     }
+    /// Writes the little endian 64-bits value.
     pub fn write_le64(&mut self, value: u64) -> bool {
         unsafe { bind::SDL_WriteLE64(self.ptr.as_ptr(), value) == 1 }
     }
