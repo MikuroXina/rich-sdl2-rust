@@ -30,7 +30,7 @@ pub enum ControllerEvent<'joystick> {
         id: JoystickId<'joystick>,
         /// A changed button.
         button: Button,
-        /// Whether the button is pressed.
+        /// Whether the button was pressed.
         is_pressed: bool,
     },
     /// A game controller was added.
