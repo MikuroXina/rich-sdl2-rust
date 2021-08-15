@@ -1,3 +1,5 @@
+//! Controls of a simple text input field.
+
 use static_assertions::assert_not_impl_all;
 use std::ffi::CStr;
 use std::marker::PhantomData;
@@ -6,10 +8,14 @@ use std::os::raw::c_char;
 use crate::geo::Rect;
 use crate::{bind, Video};
 
+/// An event on input the text directly or confirm the conversion on the window.
 #[derive(Debug, Clone)]
 pub struct TextInputEvent {
+    /// When this event occurred.
     pub timestamp: u32,
+    /// The id of the window focused.
     pub window_id: u32,
+    /// The text inputted.
     pub text: String,
 }
 
@@ -25,12 +31,18 @@ impl From<bind::SDL_TextInputEvent> for TextInputEvent {
     }
 }
 
+/// An event on editing conversion on a software input method.
 #[derive(Debug, Clone)]
 pub struct TextEditingEvent {
+    /// When this event occurred.
     pub timestamp: u32,
+    /// The id of the window focused.
     pub window_id: u32,
+    /// The text inputted.
     pub text: String,
+    /// The editing position from the start.
     pub start: i32,
+    /// The length of editing characters.
     pub length: i32,
 }
 
@@ -48,6 +60,7 @@ impl From<bind::SDL_TextEditingEvent> for TextEditingEvent {
     }
 }
 
+/// A controller of inputting texts.
 pub struct TextInput<'video> {
     video: PhantomData<&'video Video<'video>>,
 }
@@ -61,6 +74,7 @@ impl std::fmt::Debug for TextInput<'_> {
 assert_not_impl_all!(TextInput: Send, Sync);
 
 impl<'video> TextInput<'video> {
+    /// Starts to input the text on area `input_rect`.
     pub fn new(_: &'video Video, input_rect: Rect) -> Self {
         let mut raw_rect = input_rect.into();
         unsafe {
