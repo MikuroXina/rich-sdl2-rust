@@ -1,3 +1,5 @@
+//! Querying display information.
+
 use static_assertions::assert_not_impl_all;
 use std::ffi::CStr;
 use std::marker::PhantomData;

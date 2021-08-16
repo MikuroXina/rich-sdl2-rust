@@ -1,3 +1,5 @@
+//! OpenGL contexts and attributes.
+
 use static_assertions::assert_not_impl_all;
 use std::ffi::{c_void, CString};
 use std::mem::MaybeUninit;

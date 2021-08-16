@@ -1,3 +1,5 @@
+//! Geometry structures such as [`Point`], [`Size`], [`Rect`] and so on.
+
 use crate::bind;
 
 mod rect;
