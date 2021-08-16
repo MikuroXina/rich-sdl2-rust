@@ -4,13 +4,13 @@ use std::ptr::NonNull;
 use super::{Window, WindowContextKind, WindowFlags, WindowFormat};
 use crate::{bind, Sdl, Video};
 
-/// A position coordinate value for the window.
+/// A coordinate value for the window position.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
-pub struct WindowPos {
+pub struct WindowCoord {
     coord: i32,
 }
 
-impl WindowPos {
+impl WindowCoord {
     /// Constructs from coord value. Must be in `-16384..=16384`.
     ///
     /// # Panics
@@ -42,8 +42,8 @@ impl WindowPos {
 #[derive(Debug)]
 pub struct WindowBuilder {
     title: String,
-    x: WindowPos,
-    y: WindowPos,
+    x: WindowCoord,
+    y: WindowCoord,
     width: u32,
     height: u32,
     format: WindowFormat,
@@ -58,8 +58,8 @@ impl Default for WindowBuilder {
     fn default() -> Self {
         Self {
             title: "Untitled".into(),
-            x: WindowPos::centered(),
-            y: WindowPos::centered(),
+            x: WindowCoord::centered(),
+            y: WindowCoord::centered(),
             width: 640,
             height: 480,
             format: WindowFormat::Normal,
@@ -80,13 +80,13 @@ impl WindowBuilder {
     }
 
     /// Sets the x coordinate of the window.
-    pub fn x(mut self, x: WindowPos) -> Self {
+    pub fn x(mut self, x: WindowCoord) -> Self {
         self.x = x;
         self
     }
 
     /// Sets the y coordinate of the window.
-    pub fn y(mut self, y: WindowPos) -> Self {
+    pub fn y(mut self, y: WindowCoord) -> Self {
         self.y = y;
         self
     }

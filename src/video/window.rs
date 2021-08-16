@@ -19,7 +19,7 @@ mod state;
 
 pub use border::*;
 pub use brightness::*;
-pub use builder::{WindowBuilder, WindowPos};
+pub use builder::{WindowBuilder, WindowCoord};
 pub use config::*;
 pub use grab::*;
 pub use hit_test::*;

@@ -4,12 +4,12 @@ use std::mem::MaybeUninit;
 use crate::geo::{Point, Size};
 use crate::{bind, Result, SdlError};
 
-use super::{Window, WindowPos};
+use super::{Window, WindowCoord};
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub struct Position {
-    pub x: WindowPos,
-    pub y: WindowPos,
+    pub x: WindowCoord,
+    pub y: WindowCoord,
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, PartialOrd)]
