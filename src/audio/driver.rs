@@ -15,7 +15,7 @@ pub fn all_audio_drivers() -> Vec<String> {
         .collect()
 }
 
-/// Returns the current audio driver name, or `None` if it does not exists.
+/// Returns the current audio driver name, or `None` if it does not exist.
 pub fn current_driver() -> Option<String> {
     let ptr = unsafe { bind::SDL_GetCurrentAudioDriver() };
     (!ptr.is_null()).then(|| {
