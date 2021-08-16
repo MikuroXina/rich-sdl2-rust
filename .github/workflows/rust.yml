@@ -32,6 +32,11 @@ jobs:
       - name: Build SDL2 dependency
         run: cd SDL2 && ./configure && make -j4 && cd ..
 
+      - uses: actions/upload-artifact@v2
+        with:
+          name: sdl2-artifact
+          path: SDL2/build/
+
       - name: Build
         run: cargo build --verbose
       - name: Run tests
@@ -44,6 +49,11 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
+      - uses: actions/download-artifact@v2
+        with:
+          name: sdl2-artifact
+          path: SDL2/build
+
       - name: Run doc
         run: cargo doc --no-deps
 
