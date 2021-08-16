@@ -3,6 +3,7 @@ fn main() {
     use std::path::PathBuf;
 
     println!("cargo:rustc-link-lib=SDL2");
+    println!("cargo:rustc-link-search=native=SDL2/build");
     println!("cargo:rerun-if-changed=wrapper.h");
 
     let bindings = bindgen::Builder::default()
