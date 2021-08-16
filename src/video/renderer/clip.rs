@@ -1,8 +1,11 @@
+//! Clipping a renderer.
+
 use crate::geo::Rect;
 use crate::{bind, Sdl};
 
 use super::Renderer;
 
+/// A renderer that clipped from another renderer.
 #[derive(Debug)]
 pub struct ClippedRenderer<'renderer> {
     renderer: &'renderer mut Renderer<'renderer>,

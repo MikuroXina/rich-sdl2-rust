@@ -1,3 +1,5 @@
+//! Defining information structures of a renderer.
+
 use std::ffi::CStr;
 use std::mem::MaybeUninit;
 
@@ -7,19 +9,29 @@ use crate::{bind, Sdl};
 
 use super::Renderer;
 
+/// A kind of renderer.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum RendererKind {
+    /// Software renderer, normally slow.
     Software,
+    /// GPU accelerated renderer, normally fast.
     Accelerated,
 }
 
+/// An information of a renderer.
 #[derive(Debug, Clone)]
 pub struct RendererInfo {
+    /// The name of the renderer.
     pub name: String,
+    /// The kind of the renderer.
     pub kind: RendererKind,
+    /// Whether vertical sync is enabled.
     pub is_v_sync: bool,
+    /// Whether texture is supported.
     pub supported_texture: bool,
+    /// The list of supported format kinds.
     pub supported_formats: Vec<PixelFormatKind>,
+    /// The max size of texture.
     pub max_texture_size: Size,
 }
 
@@ -53,7 +65,9 @@ impl From<bind::SDL_RendererInfo> for RendererInfo {
     }
 }
 
+/// An extension for [`Renderer`] to get [`RendererInfo`].
 pub trait RendererInfoExt {
+    /// Returns the information of the renderer.
     fn renderer_info(&self) -> RendererInfo;
 }
 

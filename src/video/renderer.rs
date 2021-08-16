@@ -18,6 +18,7 @@ pub mod pen;
 
 pub use paste::*;
 
+/// A SDL2 renderer. This is often used for rendering with [`pen::Pen`].
 pub struct Renderer<'window> {
     renderer: NonNull<bind::SDL_Renderer>,
     window: &'window Window<'window>,
@@ -34,6 +35,7 @@ impl std::fmt::Debug for Renderer<'_> {
 assert_not_impl_all!(Renderer: Send, Sync);
 
 impl<'window> Renderer<'window> {
+    /// Constructs a renderer from the window.
     pub fn new(window: &'window Window) -> Self {
         let raw = unsafe { bind::SDL_CreateRenderer(window.as_ptr(), -1, 0) };
         NonNull::new(raw).map_or_else(
@@ -42,14 +44,16 @@ impl<'window> Renderer<'window> {
         )
     }
 
-    pub fn as_ptr(&self) -> *mut bind::SDL_Renderer {
+    pub(crate) fn as_ptr(&self) -> *mut bind::SDL_Renderer {
         self.renderer.as_ptr()
     }
 
+    /// Returns the borrowing window.
     pub fn window(&self) -> &Window {
         self.window
     }
 
+    /// Returns the geometry size of the output from the renderer.
     pub fn output_size(&self) -> Size {
         let (mut w, mut h) = (0i32, 0i32);
         let ret = unsafe {
@@ -64,10 +68,12 @@ impl<'window> Renderer<'window> {
         }
     }
 
+    /// Clips the renderer by `area`.
     pub fn clip(&'window mut self, area: Rect) -> ClippedRenderer<'window> {
         ClippedRenderer::new(self, area)
     }
 
+    /// Returns the logical size of the renderer if available.
     pub fn logical_size(&self) -> Option<Size> {
         let (mut width, mut height) = (0, 0);
         unsafe {
@@ -86,6 +92,7 @@ impl<'window> Renderer<'window> {
         })
     }
 
+    /// Sets the logical size of the renderer.
     pub fn set_logical_size(&self, Size { width, height }: Size) {
         use std::os::raw::c_int;
         let ret = unsafe {
@@ -96,10 +103,12 @@ impl<'window> Renderer<'window> {
         }
     }
 
+    /// Returns whether integer scaled is forced.
     pub fn is_forced_integer_scale(&self) -> bool {
         unsafe { bind::SDL_RenderGetIntegerScale(self.as_ptr()) != 0 }
     }
 
+    /// Sets whether integer scaled is forced.
     pub fn force_integer_scale(&self, enabled: bool) {
         let ret =
             unsafe { bind::SDL_RenderSetIntegerScale(self.as_ptr(), if enabled { 1 } else { 0 }) };
@@ -108,6 +117,7 @@ impl<'window> Renderer<'window> {
         }
     }
 
+    /// Returns the scale of th renderer.
     pub fn scale(&self) -> Scale {
         let mut scale = Scale {
             horizontal: 0.0,
@@ -123,6 +133,7 @@ impl<'window> Renderer<'window> {
         scale
     }
 
+    /// Sets the scale of the renderer.
     pub fn set_scale(
         &self,
         Scale {
@@ -136,12 +147,14 @@ impl<'window> Renderer<'window> {
         }
     }
 
+    /// Returns the viewport rectangle of the renderer.
     pub fn viewport(&self) -> Rect {
         let mut raw_rect = MaybeUninit::uninit();
         unsafe { bind::SDL_RenderGetViewport(self.as_ptr(), raw_rect.as_mut_ptr()) }
         unsafe { raw_rect.assume_init() }.into()
     }
 
+    /// Sets the viewport rectangle of the renderer.
     pub fn set_viewport(&self, area: Option<Rect>) {
         let ret = unsafe {
             bind::SDL_RenderSetViewport(
@@ -154,6 +167,7 @@ impl<'window> Renderer<'window> {
         }
     }
 
+    /// Sets the render target to the texture.
     pub fn set_target<'texture: 'window>(&'window self, texture: &'texture Texture) {
         let ret = unsafe { bind::SDL_SetRenderTarget(self.as_ptr(), texture.as_ptr()) };
         if ret != 0 {
@@ -161,6 +175,7 @@ impl<'window> Renderer<'window> {
         }
     }
 
+    /// Resets the render target to the original window.
     pub fn set_target_default(&self) {
         let ret = unsafe { bind::SDL_SetRenderTarget(self.as_ptr(), std::ptr::null_mut()) };
         if ret != 0 {

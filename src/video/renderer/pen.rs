@@ -1,3 +1,5 @@
+//! Rendering geometries and setting colors.
+
 use crate::color::{BlendMode, Rgb};
 use crate::geo::Rect;
 use crate::video::geo::{Line, Point};
@@ -5,16 +7,19 @@ use crate::{bind, Sdl};
 
 use super::Renderer;
 
+/// A pen controls its color and renders geometries to the renderer.
 #[derive(Debug)]
 pub struct Pen<'renderer> {
     renderer: &'renderer Renderer<'renderer>,
 }
 
 impl<'renderer> Pen<'renderer> {
+    /// Constructs a pen from the renderer [`Renderer`].
     pub fn new(renderer: &'renderer Renderer) -> Self {
         Self { renderer }
     }
 
+    /// Sets the drawing color.
     pub fn set_color(&self, Rgb { r, g, b }: Rgb) {
         let ret = unsafe { bind::SDL_SetRenderDrawColor(self.renderer.as_ptr(), r, g, b, 255) };
         if ret != 0 {
@@ -22,6 +27,7 @@ impl<'renderer> Pen<'renderer> {
         }
     }
 
+    /// Returns the drawing color.
     pub fn color(&self) -> Rgb {
         let mut r = 0;
         let mut g = 0;
@@ -41,6 +47,7 @@ impl<'renderer> Pen<'renderer> {
         Rgb { r, g, b }
     }
 
+    /// Clears all the renderer area.
     pub fn clear(&self) {
         let ret = unsafe { bind::SDL_RenderClear(self.renderer.as_ptr()) };
         if ret != 0 {
@@ -48,6 +55,7 @@ impl<'renderer> Pen<'renderer> {
         }
     }
 
+    /// Returns the current color blend mode.
     pub fn blend_mode(&self) -> BlendMode {
         let mut raw = 0;
         let ret =
@@ -58,6 +66,7 @@ impl<'renderer> Pen<'renderer> {
         raw.into()
     }
 
+    /// Sets the color blend mode.
     pub fn set_blend_mode(&self, mode: BlendMode) {
         let ret = unsafe { bind::SDL_SetRenderDrawBlendMode(self.renderer.as_ptr(), mode.into()) };
         if ret != 0 {
@@ -65,6 +74,7 @@ impl<'renderer> Pen<'renderer> {
         }
     }
 
+    /// Draws the line.
     pub fn line(&self, line: Line) {
         let ret = unsafe {
             bind::SDL_RenderDrawLine(
@@ -80,6 +90,7 @@ impl<'renderer> Pen<'renderer> {
         }
     }
 
+    /// Draws the lines.
     pub fn lines(&self, points: impl IntoIterator<Item = Point>) {
         let points: Vec<_> = points.into_iter().map(|p| p.into()).collect();
         let ret = unsafe {
@@ -90,6 +101,7 @@ impl<'renderer> Pen<'renderer> {
         }
     }
 
+    /// Draw the point.
     pub fn point(&self, point: Point) {
         let ret = unsafe { bind::SDL_RenderDrawPoint(self.renderer.as_ptr(), point.x, point.y) };
         if ret != 0 {
@@ -97,6 +109,7 @@ impl<'renderer> Pen<'renderer> {
         }
     }
 
+    /// Draw the points.
     pub fn points(&self, points: impl IntoIterator<Item = Point>) {
         let points: Vec<_> = points.into_iter().map(|p| p.into()).collect();
         let ret = unsafe {
@@ -107,6 +120,7 @@ impl<'renderer> Pen<'renderer> {
         }
     }
 
+    /// Draw the rectangle only lines.
     pub fn stroke_rect(&self, rect: Rect) {
         let ret =
             unsafe { bind::SDL_RenderDrawRect(self.renderer.as_ptr(), &rect.into() as *const _) };
@@ -115,6 +129,7 @@ impl<'renderer> Pen<'renderer> {
         }
     }
 
+    /// Draw the rectangles only lines.
     pub fn stroke_rects(&self, rects: impl IntoIterator<Item = Rect>) {
         let rects: Vec<_> = rects.into_iter().map(|r| r.into()).collect();
         let ret = unsafe {
@@ -125,6 +140,7 @@ impl<'renderer> Pen<'renderer> {
         }
     }
 
+    /// Draw the filled rectangle.
     pub fn fill_rect(&self, rect: Rect) {
         let ret =
             unsafe { bind::SDL_RenderFillRect(self.renderer.as_ptr(), &rect.into() as *const _) };
@@ -133,6 +149,7 @@ impl<'renderer> Pen<'renderer> {
         }
     }
 
+    /// Draw the filled rectangles.
     pub fn fill_rects(&self, rects: impl IntoIterator<Item = Rect>) {
         let rects: Vec<_> = rects.into_iter().map(|r| r.into()).collect();
         let ret = unsafe {

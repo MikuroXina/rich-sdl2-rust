@@ -7,9 +7,13 @@ use crate::{bind, Sdl};
 use super::Renderer;
 
 bitflags! {
+    /// Flip mode on pasting from another texture.
     pub struct PasteExFlip: u32 {
+        /// Flips horizontal.
         const HORIZONTAL = bind::SDL_RendererFlip_SDL_FLIP_HORIZONTAL;
+        /// Flips vertical.
         const VERTICAL = bind::SDL_RendererFlip_SDL_FLIP_VERTICAL;
+        /// Flips both horizontal and vertical.
         const BOTH = Self::HORIZONTAL.bits | Self::VERTICAL.bits;
     }
 }
@@ -20,16 +24,24 @@ impl Default for PasteExFlip {
     }
 }
 
+/// An option for [`PasteExt::paste_ex`].
 #[derive(Debug, Default, Clone, Copy, PartialEq)]
 pub struct PasteExOption {
+    /// The target area of pasting, or whole if `None`.
     pub target_area: Option<Rect>,
+    /// The degrees of rotating another texture.
     pub rotation_degrees: f64,
+    /// The center point of pasting.
     pub center: Option<Point>,
+    /// The flip mode of pasting.
     pub flip: PasteExFlip,
 }
 
+/// An extension for [`Renderer`] to paste from another texture.
 pub trait PasteExt {
+    /// Pastes the texture into `target_area`, or whole if `None`.
     fn paste(&self, texture: Texture, target_area: Option<Rect>);
+    /// Pastes the texture with options [`PasteExOption`].
     fn paste_ex(&self, texture: Texture, options: PasteExOption);
 }
 
