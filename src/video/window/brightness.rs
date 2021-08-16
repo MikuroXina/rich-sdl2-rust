@@ -17,6 +17,12 @@ impl Brightness {
         }
     }
 
+    pub fn with_clamped(brightness: f32) -> Self {
+        Self {
+            brightness: brightness.clamp(0.0, 1.0),
+        }
+    }
+
     pub fn as_f32(&self) -> f32 {
         self.brightness
     }
