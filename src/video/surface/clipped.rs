@@ -1,8 +1,11 @@
+//! Clipping an area of a [`Surface`].
+
 use crate::bind;
 use crate::geo::Rect;
 
-use super::Surface;
+use super::{RawSurface, Surface};
 
+/// A clipped [`Surface`] with an area.
 #[derive(Debug)]
 pub struct Clipped<S> {
     surface: S,
@@ -10,6 +13,7 @@ pub struct Clipped<S> {
 }
 
 impl<S> Clipped<S> {
+    /// Returns the clipped area.
     pub fn area(&self) -> Rect {
         self.area
     }
@@ -26,7 +30,7 @@ impl<S: Surface> Clipped<S> {
 }
 
 impl<S: Surface> Surface for Clipped<S> {
-    fn as_ptr(&self) -> std::ptr::NonNull<bind::SDL_Surface> {
+    fn as_ptr(&self) -> std::ptr::NonNull<RawSurface> {
         self.surface.as_ptr()
     }
 }

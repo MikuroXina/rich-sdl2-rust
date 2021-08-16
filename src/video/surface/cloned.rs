@@ -1,19 +1,22 @@
+//! Cloning a [`Surface`].
+
 use static_assertions::assert_not_impl_all;
 use std::ptr::NonNull;
 
 use crate::bind;
 
-use super::Surface;
+use super::{RawSurface, Surface};
 
+/// A cloned [`Surface`].
 #[derive(Debug)]
 pub struct Cloned {
-    surface: NonNull<bind::SDL_Surface>,
+    surface: NonNull<RawSurface>,
 }
 
 assert_not_impl_all!(Cloned: Send, Sync);
 
 impl Cloned {
-    pub(super) fn new(src: NonNull<bind::SDL_Surface>) -> Self {
+    pub(super) fn new(src: NonNull<RawSurface>) -> Self {
         let raw = unsafe {
             let src = src.as_ref();
             bind::SDL_CreateRGBSurface(
@@ -34,7 +37,7 @@ impl Cloned {
 }
 
 impl Surface for Cloned {
-    fn as_ptr(&self) -> NonNull<bind::SDL_Surface> {
+    fn as_ptr(&self) -> NonNull<RawSurface> {
         self.surface
     }
 }

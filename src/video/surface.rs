@@ -1,3 +1,5 @@
+//! Surface, providing flexible modification for the pixels.
+
 use std::ptr::NonNull;
 
 use crate::color::pixel::palette::Palette;
@@ -5,6 +7,7 @@ use crate::color::pixel::Pixel;
 use crate::color::{BlendMode, Rgb};
 use crate::geo::{Point, Rect};
 use crate::{bind, Sdl};
+pub use bind::SDL_Surface as RawSurface;
 
 pub mod alpha;
 pub mod blend;
@@ -22,13 +25,17 @@ use cloned::Cloned;
 use color::ColorMod;
 use rle::Rle;
 
+/// A trait that provides flexible modification methods.
 pub trait Surface {
-    fn as_ptr(&self) -> NonNull<bind::SDL_Surface>;
+    /// Returns the raw non-null pointer.
+    fn as_ptr(&self) -> NonNull<RawSurface>;
 
+    /// Clones the surface.
     fn cloned(&self) -> Cloned {
         Cloned::new(self.as_ptr())
     }
 
+    /// Clips the surface by `area`.
     fn clipped(self, area: Rect) -> Clipped<Self>
     where
         Self: Sized,
@@ -36,6 +43,7 @@ pub trait Surface {
         Clipped::new(self, area)
     }
 
+    /// Changes blend mode of the surface.
     fn blend(self, mode: BlendMode) -> Blended<Self>
     where
         Self: Sized,
@@ -43,6 +51,7 @@ pub trait Surface {
         Blended::new(self, mode)
     }
 
+    /// Modifies the alpha of the surface.
     fn alpha_mod(self, alpha: u8) -> AlphaMod<Self>
     where
         Self: Sized,
@@ -50,6 +59,7 @@ pub trait Surface {
         AlphaMod::new(self, alpha)
     }
 
+    /// Modifies the color of the surface.
     fn color_mod(self, color: Rgb) -> ColorMod<Self>
     where
         Self: Sized,
@@ -57,6 +67,7 @@ pub trait Surface {
         ColorMod::new(self, color)
     }
 
+    /// Fills in the `area` with the `color`, or whole if `area` is `None`.
     fn fill_rect(&self, area: Option<Rect>, color: Pixel) {
         let raw_rect = area.map(|rect| rect.into());
         unsafe {
@@ -71,6 +82,7 @@ pub trait Surface {
         }
     }
 
+    /// Fills in the `areas` with the `color`.
     fn fill_rects(&self, areas: impl IntoIterator<Item = Rect>, color: Pixel) {
         let raw_rects: Vec<_> = areas.into_iter().map(|area| area.into()).collect();
         unsafe {
@@ -86,6 +98,7 @@ pub trait Surface {
         }
     }
 
+    /// Overwrites the palette of the surface.
     fn set_palette(&self, palette: &Palette) {
         let ret = unsafe { bind::SDL_SetSurfacePalette(self.as_ptr().as_ptr(), palette.as_ptr()) };
         if ret != 0 {
@@ -93,6 +106,7 @@ pub trait Surface {
         }
     }
 
+    /// Copies `src_area` area in the surface into `dst_pos` on another surface.
     fn copy_to(&self, src_area: Rect, dst: &Self, dst_pos: Point) {
         let src_rect = src_area.into();
         let mut dst_rect = bind::SDL_Rect {
@@ -114,6 +128,7 @@ pub trait Surface {
         }
     }
 
+    /// Run-length encodes the surface.
     fn rle(&'_ mut self) -> Rle<'_, Self>
     where
         Self: Sized,

@@ -1,8 +1,11 @@
+//! Blending for a [`Surface`].
+
 use crate::color::BlendMode;
 use crate::{bind, Sdl};
 
-use super::Surface;
+use super::{RawSurface, Surface};
 
+/// A blended [`Surface`].
 #[derive(Debug)]
 pub struct Blended<S> {
     surface: S,
@@ -10,6 +13,7 @@ pub struct Blended<S> {
 }
 
 impl<S> Blended<S> {
+    /// Returns the blend mode.
     pub fn blend_mode(&self) -> &BlendMode {
         &self.mode
     }
@@ -29,7 +33,7 @@ impl<S: Surface> Blended<S> {
 }
 
 impl<S: Surface> Surface for Blended<S> {
-    fn as_ptr(&self) -> std::ptr::NonNull<bind::SDL_Surface> {
+    fn as_ptr(&self) -> std::ptr::NonNull<RawSurface> {
         self.surface.as_ptr()
     }
 }

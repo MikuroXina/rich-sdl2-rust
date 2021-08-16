@@ -1,8 +1,11 @@
+//! Color modification for a [`Surface`].
+
 use crate::color::Rgb;
 use crate::{bind, Sdl};
 
-use super::Surface;
+use super::{RawSurface, Surface};
 
+/// A color modified [`Surface`].
 #[derive(Debug)]
 pub struct ColorMod<S> {
     surface: S,
@@ -10,6 +13,7 @@ pub struct ColorMod<S> {
 }
 
 impl<S> ColorMod<S> {
+    /// Returns the color modification value.
     pub fn color(&self) -> &Rgb {
         &self.color
     }
@@ -29,7 +33,7 @@ impl<S: Surface> ColorMod<S> {
 }
 
 impl<S: Surface> Surface for ColorMod<S> {
-    fn as_ptr(&self) -> std::ptr::NonNull<bind::SDL_Surface> {
+    fn as_ptr(&self) -> std::ptr::NonNull<RawSurface> {
         self.surface.as_ptr()
     }
 }

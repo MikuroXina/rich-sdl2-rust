@@ -1,11 +1,14 @@
+//! A window treating as a [`Surface`].
+
 use std::{marker::PhantomData, os::raw::c_int, ptr::NonNull};
 
 use crate::{bind, geo::Rect, window::Window, Result, Sdl, SdlError};
 
-use super::Surface;
+use super::{RawSurface, Surface};
 
+/// A [`Surface`] made from the [`Window`].
 pub struct WindowSurface<'window> {
-    surface: NonNull<bind::SDL_Surface>,
+    surface: NonNull<RawSurface>,
     window: &'window Window<'window>,
 }
 
@@ -26,6 +29,7 @@ impl<'window> WindowSurface<'window> {
         }
     }
 
+    /// Applies the surface into the original window.
     pub fn update_window_surface(&self) -> Result<()> {
         let ret = unsafe { bind::SDL_UpdateWindowSurface(self.window.as_ptr()) };
         if ret < 0 {
@@ -35,6 +39,7 @@ impl<'window> WindowSurface<'window> {
         }
     }
 
+    /// Applies the surface into the original window area only where `rects`.
     pub fn update_window_surface_rects(&self, rects: &[Rect]) -> Result<()> {
         let rects: Vec<_> = rects.iter().map(|&rect| rect.into()).collect();
         let ret = unsafe {
@@ -53,7 +58,7 @@ impl<'window> WindowSurface<'window> {
 }
 
 impl Surface for WindowSurface<'_> {
-    fn as_ptr(&self) -> std::ptr::NonNull<bind::SDL_Surface> {
+    fn as_ptr(&self) -> std::ptr::NonNull<RawSurface> {
         self.surface
     }
 }

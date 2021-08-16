@@ -1,7 +1,10 @@
+//! Alpha modification for a [`Surface`].
+
 use crate::{bind, Sdl};
 
-use super::Surface;
+use super::{RawSurface, Surface};
 
+/// An alpha modified [`Surface`].
 #[derive(Debug)]
 pub struct AlphaMod<S> {
     surface: S,
@@ -9,6 +12,7 @@ pub struct AlphaMod<S> {
 }
 
 impl<S> AlphaMod<S> {
+    /// Returns the alpha modification value.
     pub fn alpha(&self) -> u8 {
         self.alpha
     }
@@ -27,7 +31,7 @@ impl<S: Surface> AlphaMod<S> {
 }
 
 impl<S: Surface> Surface for AlphaMod<S> {
-    fn as_ptr(&self) -> std::ptr::NonNull<bind::SDL_Surface> {
+    fn as_ptr(&self) -> std::ptr::NonNull<RawSurface> {
         self.surface.as_ptr()
     }
 }

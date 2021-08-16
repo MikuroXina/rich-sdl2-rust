@@ -1,13 +1,16 @@
+//! Bitmap texture as a [`Surface`].
+
 use static_assertions::assert_not_impl_all;
 use std::ffi::{CStr, CString};
 use std::ptr::NonNull;
 
-use crate::{bind, Sdl};
+use crate::{bind, Result, Sdl, SdlError};
 
-use super::Surface;
+use super::{RawSurface, Surface};
 
+/// A bitmap texture as a [`Surface`].
 pub struct Bmp {
-    ptr: NonNull<bind::SDL_Surface>,
+    ptr: NonNull<RawSurface>,
 }
 
 impl std::fmt::Debug for Bmp {
@@ -19,7 +22,8 @@ impl std::fmt::Debug for Bmp {
 assert_not_impl_all!(Bmp: Send, Sync);
 
 impl Bmp {
-    pub fn new(file_name: &str) -> Self {
+    /// Constructs from the bitmap file name.
+    pub fn new(file_name: &str) -> Result<Self> {
         let c_str = CString::new(file_name).expect("must be a valid string");
         let read_binary_mode = CStr::from_bytes_with_nul(b"rb\0").unwrap();
         let ptr = NonNull::new(unsafe {
@@ -28,13 +32,13 @@ impl Bmp {
                 1,
             )
         })
-        .unwrap_or_else(|| Sdl::error_then_panic("Surface from BMP file"));
-        Self { ptr }
+        .ok_or_else(|| SdlError::Others { msg: Sdl::error() })?;
+        Ok(Self { ptr })
     }
 }
 
 impl Surface for Bmp {
-    fn as_ptr(&self) -> NonNull<bind::SDL_Surface> {
+    fn as_ptr(&self) -> NonNull<RawSurface> {
         self.ptr
     }
 }
@@ -45,15 +49,18 @@ impl Drop for Bmp {
     }
 }
 
+/// An error on saving as the bitmap texture.
 #[derive(Debug, Clone)]
 pub struct BmpSaveError(pub String);
 
+/// An extension for a [`Surface`] to save the image as BMP format.
 pub trait BmpSaveExt {
-    fn save_bmp(&self, file_name: &str) -> Result<(), BmpSaveError>;
+    /// Saves the surface image as BMP format.
+    fn save_bmp(&self, file_name: &str) -> std::result::Result<(), BmpSaveError>;
 }
 
 impl<T: Surface> BmpSaveExt for T {
-    fn save_bmp(&self, file_name: &str) -> Result<(), BmpSaveError> {
+    fn save_bmp(&self, file_name: &str) -> std::result::Result<(), BmpSaveError> {
         let write_binary_mode = CStr::from_bytes_with_nul(b"wb\0").unwrap();
         let c_str = CString::new(file_name).expect("must be a valid string");
         let ret = unsafe {
