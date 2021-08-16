@@ -1,3 +1,4 @@
+//! Pixel definitions for operating colors.
 use std::ptr::NonNull;
 
 use kind::PixelFormatKind;
@@ -13,37 +14,42 @@ pub mod order;
 pub mod palette;
 pub mod ty;
 
+/// A simple pixel that can convert into `u32`.
 #[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord)]
 pub struct Pixel {
     pixel: u32,
 }
 
 impl Pixel {
-    pub fn as_u32(&self) -> u32 {
+    /// Convert into `u32`.
+    pub fn as_u32(self) -> u32 {
         self.pixel
     }
 }
 
+/// A bit mask to extract a component.
 #[derive(Debug, Clone, PartialEq, Eq)]
-pub struct PixelComponent {
-    pub mask: u32,
-    pub loss: u8,
-    pub shift: u8,
-}
+pub struct PixelMask(pub u32);
 
-#[derive(Debug, Clone, PartialEq, Eq)]
-pub enum PixelComponents {
-    PaletteIndex {
-        palette: NonNull<bind::SDL_Palette>,
-    },
+/// A property of a pixel format.
+#[derive(Debug)]
+pub enum PixelFormatProperty {
+    /// A pixel format with a palette, so a pixel has an index of the palette.
+    Palette(Palette),
+    /// A pixel has own color information.
     TrueColor {
-        red: PixelComponent,
-        green: PixelComponent,
-        blue: PixelComponent,
-        alpha: PixelComponent,
+        /// A mask of red component.
+        red: PixelMask,
+        /// A mask of green component.
+        green: PixelMask,
+        /// A mask of blue component.
+        blue: PixelMask,
+        /// A mask of alpha component.
+        alpha: PixelMask,
     },
 }
 
+/// A pixel format.
 pub struct PixelFormat {
     format: NonNull<bind::SDL_PixelFormat>,
 }
@@ -59,6 +65,7 @@ impl std::fmt::Debug for PixelFormat {
 assert_not_impl_all!(PixelFormat: Send, Sync);
 
 impl PixelFormat {
+    /// Constructs a pixel format from [`PixelFormatKind`], or `Err` on failure.
     pub fn new(kind: PixelFormatKind) -> Result<Self> {
         NonNull::new(unsafe { bind::SDL_AllocFormat(kind.into()) }).map_or_else(
             || {
@@ -73,57 +80,50 @@ impl PixelFormat {
         )
     }
 
+    /// Returns the kind of the format.
     pub fn kind(&self) -> PixelFormatKind {
         unsafe { self.format.as_ref() }.format.into()
     }
 
+    /// Returns the bits per pixel of the format.
     pub fn bits_per_pixel(&self) -> u8 {
         unsafe { self.format.as_ref() }.BitsPerPixel
     }
 
+    /// Returns the bytes per pixel of the format.
     pub fn bytes_per_pixel(&self) -> u8 {
         unsafe { self.format.as_ref() }.BytesPerPixel
     }
 
-    pub fn components(&self) -> PixelComponents {
+    /// Returns the property of the format.
+    pub fn property(&self) -> PixelFormatProperty {
         let raw = unsafe { self.format.as_ref() };
         NonNull::new(raw.palette).map_or_else(
-            || PixelComponents::TrueColor {
-                red: PixelComponent {
-                    mask: raw.Rmask,
-                    loss: raw.Rloss,
-                    shift: raw.Rshift,
-                },
-                green: PixelComponent {
-                    mask: raw.Gmask,
-                    loss: raw.Gloss,
-                    shift: raw.Gshift,
-                },
-                blue: PixelComponent {
-                    mask: raw.Bmask,
-                    loss: raw.Bloss,
-                    shift: raw.Bshift,
-                },
-                alpha: PixelComponent {
-                    mask: raw.Amask,
-                    loss: raw.Aloss,
-                    shift: raw.Ashift,
-                },
+            || PixelFormatProperty::TrueColor {
+                red: PixelMask(raw.Rmask),
+                green: PixelMask(raw.Gmask),
+                blue: PixelMask(raw.Bmask),
+                alpha: PixelMask(raw.Amask),
             },
-            |palette| PixelComponents::PaletteIndex { palette },
+            |palette|PixelFormatProperty::Palette(Palette{
+                palette,
+            }),
         )
     }
 
+    /// Converts [`Rgb`] into [`Pixel`].
     pub fn pixel_by_rgb(&self, Rgb { r, g, b }: Rgb) -> Pixel {
         let pixel = unsafe { bind::SDL_MapRGB(self.format.as_ptr(), r, g, b) };
         Pixel { pixel }
     }
 
+    /// Converts [`Rgba`] into [`Pixel`].
     pub fn pixel_by_rgba(&self, Rgba { r, g, b, a }: Rgba) -> Pixel {
         let pixel = unsafe { bind::SDL_MapRGBA(self.format.as_ptr(), r, g, b, a) };
         Pixel { pixel }
     }
 
+    /// Converts [`Pixel`] into [`Rgb`].
     pub fn rgb_from_pixel(&self, Pixel { pixel }: Pixel) -> Rgb {
         let mut rgb = Rgb { r: 0, g: 0, b: 0 };
         unsafe {
@@ -138,6 +138,7 @@ impl PixelFormat {
         rgb
     }
 
+    /// Converts [`Pixel`] into [`Rgba`].
     pub fn rgba_from_pixel(&self, Pixel { pixel }: Pixel) -> Rgba {
         let mut rgba = Rgba {
             r: 0,
@@ -158,6 +159,7 @@ impl PixelFormat {
         rgba
     }
 
+    /// Overwrites the palette with a new [`Palette`].
     pub fn set_palette(&self, palette: Palette) {
         let ret =
             unsafe { bind::SDL_SetPixelFormatPalette(self.format.as_ptr(), palette.as_ptr()) };

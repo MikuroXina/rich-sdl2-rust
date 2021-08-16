@@ -1,38 +1,60 @@
+//! Kinds for a pixel format, aggregates type, layout and order.
+
 use std::ffi::CStr;
 
 use crate::bind;
 
 use super::{layout::*, order::*, ty::*};
 
+/// A kind of pixel format.
 #[derive(Debug, Clone)]
 pub enum PixelFormatKind {
+    /// A format not supported by SDL2.
     Unknown,
+    /// An indexed bitmap format with a palette.
     Bitmap {
+        /// The type of the bitmap.
         ty: BitmapPixelType,
+        /// The type of the bitmap.
         order: BitmapPixelOrder,
     },
+    /// A packed pixel format.
     Packed {
+        /// The type of the pack.
         ty: PackedPixelType,
+        /// The order of the pack.
         order: PackedPixelOrder,
+        /// The layout of the pack.
         layout: PackedPixelLayout,
     },
+    /// A pixel array format.
     Array {
+        /// The type of the array.
         ty: ArrayPixelType,
+        /// The order of the array.
         order: ArrayPixelOrder,
     },
+    /// A special format such as YUV in FourCC code.
     FourCode(String),
 }
 
+/// Bpp and RGBA mask.
 #[derive(Debug, Default)]
 pub struct BppMask {
+    /// Bits per pixel, normally 15, 16 or 32.
     pub bpp: std::os::raw::c_int,
+    /// Mask for the red component.
     pub r_mask: u32,
+    /// Mask for the green component.
     pub g_mask: u32,
+    /// Mask for the blue component.
     pub b_mask: u32,
+    /// Mask for the alpha component.
     pub a_mask: u32,
 }
 
 impl PixelFormatKind {
+    /// Constructs from [`BppMask`].
     pub fn from_bpp_mask(
         BppMask {
             bpp,
@@ -46,6 +68,7 @@ impl PixelFormatKind {
         raw.into()
     }
 
+    /// Converts to [`BppMask`], if able to do.
     pub fn to_bpp_mask(&self) -> Option<BppMask> {
         let mut bpp_mask = BppMask::default();
         let BppMask {
@@ -72,6 +95,7 @@ impl PixelFormatKind {
         }
     }
 
+    /// Returns the name for the pixel format, or empty string if does not exist.
     pub fn name(&self) -> &'static str {
         unsafe { CStr::from_ptr(bind::SDL_GetPixelFormatName(self.clone().into())) }
             .to_str()
@@ -141,8 +165,6 @@ impl From<bind::SDL_PixelFormatEnum> for PixelFormatKind {
 
 fn bits_per_packed_pixel(order: PackedPixelOrder, layout: PackedPixelLayout) -> u32 {
     match (order, layout) {
-        (PackedPixelOrder::None, _) => 0,
-        (_, PackedPixelLayout::None) => 0,
         (PackedPixelOrder::Xrgb, PackedPixelLayout::_332) => 8,
         (PackedPixelOrder::Xrgb, PackedPixelLayout::_4444) => 12,
         (PackedPixelOrder::Xrgb, PackedPixelLayout::_1555) => 15,
@@ -174,7 +196,6 @@ fn bits_per_packed_pixel(order: PackedPixelOrder, layout: PackedPixelLayout) -> 
 
 fn bytes_per_array_pixel(ty: &ArrayPixelType, order: &ArrayPixelOrder) -> u32 {
     let components = match order {
-        ArrayPixelOrder::None => return 0,
         ArrayPixelOrder::Rgb | ArrayPixelOrder::Bgr => 3,
         ArrayPixelOrder::Rgba
         | ArrayPixelOrder::Argb

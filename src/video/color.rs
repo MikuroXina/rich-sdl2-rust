@@ -1,19 +1,30 @@
+//! Color managements for graphics.
+
 use crate::bind;
 
 pub mod pixel;
 
+/// A RGB color structure.
 #[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord)]
 pub struct Rgb {
+    /// A red component in RGB.
     pub r: u8,
+    /// A green component in RGB.
     pub g: u8,
+    /// A blue component in RGB.
     pub b: u8,
 }
 
+/// A RGBA color structure.
 #[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord)]
 pub struct Rgba {
+    /// A red component in RGB.
     pub r: u8,
+    /// A green component in RGB.
     pub g: u8,
+    /// A blue component in RGB.
     pub b: u8,
+    /// An alpha component in RGB.
     pub a: u8,
 }
 
@@ -23,11 +34,16 @@ impl From<Rgba> for bind::SDL_Color {
     }
 }
 
+/// A mode for blending colors.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum BlendMode {
+    /// Not blend, overwrites a color by the another one.
     None,
+    /// Blending colors by their alpha values.
     AlphaBlend,
+    /// Blending colors by addition.
     Add,
+    /// Blending colors by multiplication.
     Mul,
 }
 

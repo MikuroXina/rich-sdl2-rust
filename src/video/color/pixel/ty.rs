@@ -1,9 +1,15 @@
+//! Types for a pixel format.
+
 use crate::bind;
 
+/// A type in a bitmap pixel format.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum BitmapPixelType {
+    /// An 1 bit index of the palette with 2 colors.
     Index1,
+    /// A 4 bits index of the palette with 16 colors.
     Index4,
+    /// An 8 bits index of the palette with 256 colors.
     Index8,
 }
 
@@ -33,10 +39,14 @@ impl BitmapPixelType {
     }
 }
 
+/// A type in a packed pixel format.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum PackedPixelType {
+    /// An unsigned 8 bits.
     _8,
+    /// An unsigned 16 bits.
     _16,
+    /// An unsigned 32 bits.
     _32,
 }
 
@@ -58,12 +68,18 @@ impl PackedPixelType {
     }
 }
 
+/// A type in a pixel array format.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum ArrayPixelType {
+    /// A type of array is `u8`.
     U8,
+    /// A type of array is `u16`.
     U16,
+    /// A type of array is `u32`.
     U32,
+    /// A type of array is `f16` (note that not supported by first party).
     F16,
+    /// A type of array is `f32`.
     F32,
 }
 
