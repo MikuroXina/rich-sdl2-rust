@@ -1,4 +1,18 @@
 #![allow(unused)]
+#![warn(missing_docs)]
+#![warn(rustdoc::broken_intra_doc_links)]
+
+//! # rich-sdl2-rust
+//!
+//! The rich-sdl2-rust provides wrapper for SDL2 and abstractions of that APIs, [`audio`], [`window`], [`EventBox`] and so on.
+//!
+//! ## Module Navigation
+//!
+//! - [Window and Graphics](window)
+//! - [Simple Audio Control](audio)
+//! - [Handling Events](EventBox)
+//! - ...
+//!
 
 pub mod audio;
 mod bind;
