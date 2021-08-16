@@ -1,12 +1,14 @@
 use std::ops;
 
-use crate::bind;
+use crate::{Sdl, bind};
 
+/// An elapsed time from when SDL2 has initialized. Please note that the value formed 32-bit, overflowing after about 49 days.
 #[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord)]
 pub struct Ticks(pub u32);
 
 impl Ticks {
-    pub fn now() -> Self {
+    /// Gets a current [`Ticks`].
+    pub fn now(_: &Sdl) -> Self {
         let ticks = unsafe { bind::SDL_GetTicks() };
         Ticks(ticks)
     }

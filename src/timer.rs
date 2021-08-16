@@ -6,8 +6,10 @@ mod ticks;
 
 pub use ticks::*;
 
-type TimerCallback<'callback> = Box<dyn FnMut() -> u32 + 'callback>;
+/// A callback for [`Timer`], that returns an interval for next calling.
+pub type TimerCallback<'callback> = Box<dyn FnMut() -> u32 + 'callback>;
 
+/// A timer invokes a [`TimerCallback`] with the interval.
 pub struct Timer<'callback> {
     id: NonZeroU32,
     raw_callback: *mut TimerCallback<'callback>,
@@ -20,6 +22,7 @@ impl std::fmt::Debug for Timer<'_> {
 }
 
 impl<'callback> Timer<'callback> {
+    /// Constructs a timer with initial interval and callback.
     pub fn new(interval: u32, callback: TimerCallback<'callback>) -> Result<Self> {
         let wrapped = Box::into_raw(Box::new(callback));
         let id = unsafe { bind::SDL_AddTimer(interval, Some(timer_wrap_handler), wrapped.cast()) };
@@ -46,17 +49,21 @@ impl Drop for Timer<'_> {
     }
 }
 
+/// Stops the current thread for `ms` milliseconds, then returns.
 pub fn delay(ms: u32) {
     unsafe { bind::SDL_Delay(ms) }
 }
 
+/// A counter for performance analysis.
 pub mod performance {
     use crate::bind;
 
+    /// Returns current counts of the high resolution counter.
     pub fn counter() -> u64 {
         unsafe { bind::SDL_GetPerformanceCounter() }
     }
 
+    /// Returns the numbers of counts per one seconds of the high resolution counter.
     pub fn frequency() -> u64 {
         unsafe { bind::SDL_GetPerformanceFrequency() }
     }
