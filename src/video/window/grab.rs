@@ -2,9 +2,13 @@ use crate::bind;
 
 use super::Window;
 
+/// An extension for [`Window`] to grab/ungrab the mouse.
 pub trait MouseGrabExt {
+    /// Grabs the mouse.
     fn grab(&self);
+    /// Ungrabs the mouse.
     fn ungrab(&self);
+    /// Returns whether the window is grabbing the mouse.
     fn is_grabbed(&self) -> bool;
 }
 

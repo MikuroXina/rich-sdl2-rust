@@ -9,17 +9,28 @@ use crate::{bind, geo::Point, Result};
 
 use super::Window;
 
+/// A hit test result that determined cursor from the mouse position.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum HitTestResult {
+    /// The cursor should be normal.
     Normal,
+    /// The cursor should be draggable.
     Draggable,
+    /// The cursor should be resizing on the top left.
     ResizeTopLeft,
+    /// The cursor should be resizing on the top.
     ResizeTop,
+    /// The cursor should be resizing on the top right.
     ResizeTopRight,
+    /// The cursor should be resizing on the right.
     ResizeRight,
+    /// The cursor should be resizing on the bottom right.
     ResizeBottomRight,
+    /// The cursor should be resizing on the bottom.
     ResizeBottom,
+    /// The cursor should be resizing on the bottom left.
     ResizeBottomLeft,
+    /// The cursor should be resizing on the left.
     ResizeLeft,
 }
 
@@ -41,8 +52,10 @@ impl HitTestResult {
     }
 }
 
+/// A callback to hit test with the mouse position.
 pub type HitTester<'window> = Box<dyn FnMut(Point) -> HitTestResult + 'window>;
 
+/// A hit tester for a window.
 #[derive(Debug)]
 pub struct HitTest<'window> {
     window: &'window Window<'window>,
@@ -52,6 +65,7 @@ pub struct HitTest<'window> {
 assert_not_impl_all!(HitTest: Send, Sync);
 
 impl<'window> HitTest<'window> {
+    /// Constructs a hit test from the window and a callback.
     pub fn new(window: &'window Window<'window>, callback: HitTester<'window>) -> Result<Self> {
         let wrapped = Box::new(callback);
         let tester_raw = Box::into_raw(wrapped);

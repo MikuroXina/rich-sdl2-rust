@@ -1,23 +1,30 @@
+//! Modal control for a window.
+
 use crate::{bind, Result, Sdl, SdlError};
 use std::ffi::CString;
 
 use super::Window;
 
 pub use self::{
-    button::{Button, ButtonId, ButtonKind},
+    button::{Button, ButtonId},
     color_scheme::ColorScheme,
 };
 
 mod button;
 mod color_scheme;
 
+/// A kind of [`MessageBox`].
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum MessageBoxKind {
+    /// An error message.
     Error,
+    /// A warning message.
     Warning,
+    /// An information message.
     Information,
 }
 
+/// A message box builder.
 #[derive(Debug, Clone)]
 pub struct MessageBox {
     kind: MessageBoxKind,
@@ -28,6 +35,7 @@ pub struct MessageBox {
 }
 
 impl MessageBox {
+    /// Constructs a message box builder from the kind.
     pub fn new(kind: MessageBoxKind) -> Self {
         Self {
             kind,
@@ -38,26 +46,31 @@ impl MessageBox {
         }
     }
 
+    /// Sets the title of the message box.
     pub fn title(&mut self, title: &str) -> &mut Self {
         self.title = CString::new(title).unwrap();
         self
     }
 
+    /// Sets the message of the message box.
     pub fn message(&mut self, message: &str) -> &mut Self {
         self.message = CString::new(message).unwrap();
         self
     }
 
+    /// Adds a button to the message box.
     pub fn add_button(&mut self, button: Button) -> &mut Self {
         self.buttons.push(button);
         self
     }
 
+    /// Sets the color scheme of the message box.
     pub fn color_scheme(&mut self, scheme: Option<ColorScheme>) -> &mut Self {
         self.color_scheme = scheme;
         self
     }
 
+    /// Shows the message box for a window. And returns the pushed button's [`ButtonId`], or `Err` on failure.
     pub fn show(self, parent: &'_ Window<'_>) -> Result<ButtonId> {
         let title_cstr = CString::new(self.title).unwrap_or_default();
         let message_cstr = CString::new(self.message).unwrap_or_default();

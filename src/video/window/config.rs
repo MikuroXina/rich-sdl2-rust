@@ -6,18 +6,23 @@ use crate::{bind, Result, SdlError};
 
 use super::{Window, WindowCoord};
 
+/// A position of the window.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub struct Position {
+    /// The x coordinate of the window.
     pub x: WindowCoord,
+    /// The y coordinate of the window.
     pub y: WindowCoord,
 }
 
+/// An opacity of the window.
 #[derive(Debug, Clone, Copy, PartialEq, PartialOrd)]
 pub struct Opacity {
     opacity: f32,
 }
 
 impl Opacity {
+    /// Constructs from opacity, or `None` if the value is not in `0.0..=1.0`.
     pub fn new(opacity: f32) -> Option<Self> {
         if (0.0..=1.0).contains(&opacity) {
             return None;
@@ -25,28 +30,52 @@ impl Opacity {
         Some(Self { opacity })
     }
 
+    /// Constructs from opacity, clamping to `0.0,,=1.0`.
+    pub fn with_clamped(opacity: f32) -> Self {
+        Self {
+            opacity: opacity.clamp(0.0, 1.0),
+        }
+    }
+
+    /// Converts into `f32`
     pub fn as_f32(&self) -> f32 {
         self.opacity
     }
 }
 
+/// An extension for [`Window`] to configure its properties.
 pub trait ConfigExt {
+    /// Returns the maximum size of the window.
     fn max_size(&self) -> Size;
+    /// Returns the minimum size of the window.
     fn min_size(&self) -> Size;
+    /// Returns the current size of the window.
     fn size(&self) -> Size;
+    /// Returns the opacity of the window.
     fn opacity(&self) -> Opacity;
+    /// Returns the position of the window.
     fn pos(&self) -> Point;
+    /// Returns the title of the window.
     fn title(&self) -> &str;
 
+    /// Sets the maximum size of the window.
     fn set_max_size(&self, max_size: Size);
+    /// Sets the minimum size of the window.
     fn set_min_size(&self, min_size: Size);
+    /// Sets the current size of the window.
     fn set_size(&self, size: Size);
+    /// Sets the opacity of the window.
     fn set_opacity(&self, opacity: Opacity) -> Result<()>;
+    /// Sets the position of the window.
     fn set_pos(&self, pos: Position);
+    /// Sets the title of the window.
     fn set_title(&self, title: &str);
+    /// Sets whether the window is resizable.
     fn set_resizable(&self, resizable: bool);
 
+    /// Adds a frame to the window.
     fn add_frame(&self);
+    /// Removes a frame from the window.
     fn remove_frame(&self);
 }
 

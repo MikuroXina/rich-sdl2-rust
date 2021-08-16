@@ -1,11 +1,17 @@
 use crate::{bind, color::Rgb};
 
+/// A color scheme for a message box.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub struct ColorScheme {
+    /// A background color in the message box.
     pub background: Rgb,
+    /// A foreground text color in the message box.
     pub text: Rgb,
+    /// A border color in the message box button.
     pub button_border: Rgb,
+    /// A background color in the message box button.
     pub button_background: Rgb,
+    /// A selected color in the message box button.
     pub button_selected: Rgb,
 }
 

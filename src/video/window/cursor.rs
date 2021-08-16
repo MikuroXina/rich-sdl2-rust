@@ -1,26 +1,39 @@
+//! Cursor control on a window.
+
 use static_assertions::assert_not_impl_all;
 use std::marker::PhantomData;
 use std::ptr::NonNull;
 
-use crate::geo::Point;
-use crate::surface::Surface;
-use crate::{bind, Sdl, SdlError};
+use crate::{bind, geo::Point, surface::Surface, Result, Sdl, SdlError};
 
 use super::Window;
 
+/// A kind of the system cursor.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum SystemCursorKind {
+    /// The arrow cursor.
     Arrow,
+    /// The I beam cursor.
     IBeam,
+    /// The waiting cursor.
     Wait,
+    /// The crosshair cursor.
     Crosshair,
+    /// The waiting cursor with arrow.
     WaitArrow,
+    /// The resizing cursor between north west and south east.
     SizeNwse,
+    /// The resizing cursor between north east and south west.
     SizeNesw,
+    /// The resizing cursor between east and west.
     SizeWe,
+    /// The resizing cursor between north and south.
     SizeNs,
+    /// The resizing cursor for all directions.
     SizeAll,
+    /// The prohibiting cursor.
     No,
+    /// The hand cursor.
     Hand,
 }
 
@@ -44,6 +57,7 @@ impl SystemCursorKind {
     }
 }
 
+/// A system cursor controller.
 pub struct Cursor<'window> {
     cursor: NonNull<bind::SDL_Cursor>,
     window: PhantomData<&'window ()>,
@@ -58,7 +72,8 @@ impl std::fmt::Debug for Cursor<'_> {
 assert_not_impl_all!(Cursor: Send, Sync);
 
 impl<'window> Cursor<'window> {
-    pub fn system(_: &'window Window, kind: SystemCursorKind) -> Result<Self, SdlError> {
+    /// Constructs a system cursor from kind, or `Err` on failure.
+    pub fn system(_: &'window Window, kind: SystemCursorKind) -> Result<Self> {
         let cursor = unsafe { bind::SDL_CreateSystemCursor(kind.as_raw()) };
         let cursor = NonNull::new(cursor).ok_or(SdlError::UnsupportedFeature)?;
         Ok(Self {
@@ -67,11 +82,8 @@ impl<'window> Cursor<'window> {
         })
     }
 
-    pub fn colored(
-        _: &'window Window,
-        surface: &impl Surface,
-        hot_spot: Point,
-    ) -> Result<Self, SdlError> {
+    /// Constructs a colored cursor from surface and hot spot point, or `Err` on failure.
+    pub fn colored(_: &'window Window, surface: &impl Surface, hot_spot: Point) -> Result<Self> {
         let cursor = unsafe {
             bind::SDL_CreateColorCursor(surface.as_ptr().as_ptr(), hot_spot.x, hot_spot.y)
         };
@@ -82,12 +94,13 @@ impl<'window> Cursor<'window> {
         })
     }
 
+    /// Constructs a completely customized color from data, mask and hot spot point, or `Err` on failure.
     pub fn customized(
         _: &'window Window,
         data: &[u8],
         mask: &[u8],
         hot_spot: Point,
-    ) -> Result<Self, SdlError> {
+    ) -> Result<Self> {
         debug_assert_eq!(data.len(), mask.len());
         let width_height = (data.len() / 4) as i32;
         let cursor = unsafe {
@@ -107,6 +120,7 @@ impl<'window> Cursor<'window> {
         })
     }
 
+    /// Constructs a default cursor, or `None` if unavailable.
     pub fn default(_: &'window Window) -> Option<Self> {
         NonNull::new(unsafe { bind::SDL_GetDefaultCursor() }).map(|cursor| Self {
             cursor,
@@ -114,10 +128,12 @@ impl<'window> Cursor<'window> {
         })
     }
 
+    /// Sets the cursor to the current.
     pub fn set(&self) {
         unsafe { bind::SDL_SetCursor(self.cursor.as_ptr()) }
     }
 
+    /// Redraws a cursor.
     pub fn redraw(&self) {
         unsafe { bind::SDL_SetCursor(std::ptr::null_mut()) }
     }

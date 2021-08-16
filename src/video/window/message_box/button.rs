@@ -3,7 +3,7 @@ use std::ffi::CString;
 use crate::bind;
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
-pub enum ButtonKind {
+enum ButtonKind {
     Normal,
     Confirm,
     Cancel,
@@ -23,8 +23,10 @@ impl ButtonKind {
     }
 }
 
+/// An id type for a button.
 pub type ButtonId = i32;
 
+/// A button in a [`super::MessageBox`].
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct Button {
     kind: ButtonKind,
@@ -33,6 +35,7 @@ pub struct Button {
 }
 
 impl Button {
+    /// Constructs a normal button.
     pub fn normal(id: ButtonId, text: &str) -> Self {
         Self {
             kind: ButtonKind::Normal,
@@ -40,6 +43,7 @@ impl Button {
             text: CString::new(text).unwrap(),
         }
     }
+    /// Constructs a confirm button.
     pub fn confirm(id: ButtonId, text: &str) -> Self {
         Self {
             kind: ButtonKind::Confirm,
@@ -47,6 +51,7 @@ impl Button {
             text: CString::new(text).unwrap(),
         }
     }
+    /// Constructs a cancel button.
     pub fn cancel(id: ButtonId, text: &str) -> Self {
         Self {
             kind: ButtonKind::Cancel,

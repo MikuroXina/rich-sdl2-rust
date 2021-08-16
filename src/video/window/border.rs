@@ -2,15 +2,22 @@ use crate::{bind, Result};
 
 use super::Window;
 
+/// A border widths for the window.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub struct BorderWidths {
+    /// A border width on the top.
     pub top: u32,
+    /// A border width on the right.
     pub right: u32,
+    /// A border width on the bottom.
     pub bottom: u32,
+    /// A border width on the left.
     pub left: u32,
 }
 
+/// An extension for [`Window`] to query border widths.
 pub trait BorderExt {
+    /// Returns the border widths of the window.
     fn border_widths(&self) -> Result<BorderWidths>;
 }
 
