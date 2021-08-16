@@ -39,6 +39,10 @@ assert_not_impl_all!(Sdl: Send, Sync);
 
 impl Sdl {
     /// Setup the SDL2 system.
+    ///
+    /// # Panics
+    ///
+    /// Panics if SDL2 system is already initialized such as there are existing `Sdl` instances
     pub fn new() -> Self {
         let ret = unsafe {
             bind::SDL_SetMainReady();
