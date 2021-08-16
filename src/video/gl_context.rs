@@ -16,6 +16,7 @@ pub use buffer::*;
 pub use context_switch::*;
 pub use flag::*;
 
+/// An OpenGL context controller.
 pub struct GlContext<'window> {
     ctx: NonNull<c_void>,
     window: &'window Window<'window>,
@@ -32,6 +33,7 @@ impl std::fmt::Debug for GlContext<'_> {
 assert_not_impl_all!(GlContext: Send, Sync);
 
 impl<'window> GlContext<'window> {
+    /// Constructs from a reference to [`Window`], or `Err` on failure.
     pub fn new(window: &'window Window) -> Option<Self> {
         if let WindowContextKind::OpenGl = window.state().context_kind {
             let raw = unsafe { bind::SDL_GL_CreateContext(window.as_ptr()) };
@@ -41,10 +43,12 @@ impl<'window> GlContext<'window> {
         }
     }
 
+    /// Returns the internal pointer of the OpenGL context.
     pub fn as_ptr(&self) -> *mut c_void {
         self.ctx.as_ptr()
     }
 
+    /// Returns the size that can be used to draw.
     pub fn drawable_size(&self) -> Size {
         let (mut width, mut height) = (MaybeUninit::uninit(), MaybeUninit::uninit());
         unsafe {
@@ -60,11 +64,13 @@ impl<'window> GlContext<'window> {
         }
     }
 
+    /// Returns whether the extension `name` is supported.
     pub fn supported_extension(&self, name: &'static str) -> bool {
         let cstr = CString::new(name).unwrap();
         unsafe { bind::SDL_GL_ExtensionSupported(cstr.as_ptr()) != 0 }
     }
 
+    /// Loads the library from `path`, or `Err` on failure.
     pub fn load_lib(&self, path: &str) -> Result<()> {
         let cstr = CString::new(path).unwrap();
         let ret = unsafe { bind::SDL_GL_LoadLibrary(cstr.as_ptr()) };
@@ -74,10 +80,13 @@ impl<'window> GlContext<'window> {
         Ok(())
     }
 
+    /// Unloads all of loaded libraries.
     pub fn unload_lib_all(&self) {
         unsafe { bind::SDL_GL_UnloadLibrary() }
     }
 
+    /// Returns the raw address of the procedure.
+    ///
     /// # Safety
     ///
     /// This return value is valid only on supported the extension.

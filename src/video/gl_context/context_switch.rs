@@ -3,7 +3,9 @@ use crate::{bind, Result, SdlError};
 
 use super::GlContext;
 
+/// An extension for [`Window`] to set OpenGL context.
 pub trait ContextSwitchExt<'window> {
+    /// Sets context to the window, or `Err` on failure.
     fn set_context<'context: 'window>(&'window self, context: GlContext<'context>) -> Result<()>;
 }
 
