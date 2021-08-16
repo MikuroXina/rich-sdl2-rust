@@ -22,6 +22,7 @@ pub mod texture;
 pub mod vulkan;
 pub mod window;
 
+/// A video controller by SDL2.
 pub struct Video<'sdl> {
     _phantom: PhantomData<&'sdl Sdl>,
 }
@@ -29,6 +30,7 @@ pub struct Video<'sdl> {
 assert_not_impl_all!(Video: Send, Sync);
 
 impl<'sdl> Video<'sdl> {
+    /// Constructs a video controller from a root controller.
     pub fn new(_: &'sdl Sdl) -> Self {
         let ret = unsafe { bind::SDL_InitSubSystem(bind::SDL_INIT_VIDEO) };
         if ret != 0 {
@@ -39,6 +41,7 @@ impl<'sdl> Video<'sdl> {
         }
     }
 
+    /// Returns a list of displays.
     pub fn displays(&self) -> Vec<Display> {
         let ret = unsafe { bind::SDL_GetNumVideoDisplays() };
         if ret <= 0 {
@@ -47,6 +50,7 @@ impl<'sdl> Video<'sdl> {
         (0..ret).map(|idx| Display::new(idx, self)).collect()
     }
 
+    /// Returns the names of the video drivers.
     pub fn video_drivers(&self) -> Vec<&str> {
         let num_drivers = unsafe { bind::SDL_GetNumVideoDrivers() };
         if num_drivers <= 0 {
@@ -62,6 +66,7 @@ impl<'sdl> Video<'sdl> {
             .collect()
     }
 
+    /// Returns the name of the current video driver.
     pub fn current_driver(&self) -> &str {
         let raw_str = unsafe { bind::SDL_GetCurrentVideoDriver() };
         unsafe { CStr::from_ptr(raw_str) }
@@ -69,10 +74,12 @@ impl<'sdl> Video<'sdl> {
             .unwrap_or_default()
     }
 
+    /// Returns whether the screen keyboard is supported.
     pub fn has_screen_keyboard(&self) -> bool {
         unsafe { bind::SDL_HasScreenKeyboardSupport() != 0 }
     }
 
+    /// Resets all OpenGL attributes.
     pub fn reset_gl_attribute(&self) {
         unsafe { bind::SDL_GL_ResetAttributes() }
     }
