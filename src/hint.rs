@@ -1,3 +1,5 @@
+//! Getting/setting hints for SDL2 features working.
+
 use std::{
     ffi::{CStr, CString},
     os::raw::c_uint,

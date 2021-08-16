@@ -1,3 +1,5 @@
+//! Querying some system information.
+
 use crate::bind;
 
 /// Returns the size of the system RAM.
