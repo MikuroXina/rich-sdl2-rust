@@ -30,7 +30,7 @@ jobs:
           args: --all-features
 
       - name: Build SDL2 dependency
-        run: cd SDL2 && ./configure && make
+        run: cd SDL2 && ./configure && make -j4
 
       - name: Build
         run: cargo build --verbose
