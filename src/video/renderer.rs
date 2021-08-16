@@ -1,3 +1,5 @@
+//! Renderer for a window, to render some geometries or query driver information.
+
 use static_assertions::assert_not_impl_all;
 use std::mem::MaybeUninit;
 use std::ptr::NonNull;
