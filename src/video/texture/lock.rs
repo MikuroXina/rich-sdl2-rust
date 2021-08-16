@@ -1,3 +1,5 @@
+//! Locking the texture for read/write.
+
 use std::ffi::c_void;
 use std::ptr::NonNull;
 
@@ -6,6 +8,7 @@ use crate::{bind, Sdl};
 
 use super::Texture;
 
+/// A lock of the texture, ready to read/write as the raw pixels.
 pub struct Lock<'texture> {
     texture: &'texture mut Texture<'texture>,
     pixels: NonNull<c_void>,
@@ -45,10 +48,12 @@ impl<'texture> Lock<'texture> {
         }
     }
 
+    /// Returns bytes of the pixels.
     pub fn as_bytes(&self) -> &[u8] {
         unsafe { std::slice::from_raw_parts(self.pixels.as_ptr().cast(), self.len) }
     }
 
+    /// Returns mutable bytes of the pixels.
     pub fn as_bytes_mut(&mut self) -> &mut [u8] {
         unsafe { std::slice::from_raw_parts_mut(self.pixels.as_ptr().cast(), self.len) }
     }

@@ -4,9 +4,13 @@ use crate::{bind, Sdl};
 
 use super::{Texture, TextureAccess};
 
+/// An extension for [`Texture`] to query the texture information.
 pub trait QueryExt {
+    /// Returns the format of the texture.
     fn format(&self) -> PixelFormatKind;
+    /// Returns the access of the texture.
     fn access(&self) -> TextureAccess;
+    /// Returns the size of the texture.
     fn size(&self) -> Size;
 }
 
