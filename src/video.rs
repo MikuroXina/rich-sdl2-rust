@@ -15,6 +15,7 @@ pub mod display;
 pub mod gamma_ramp;
 pub mod geo;
 pub mod gl_context;
+pub mod metal;
 pub mod renderer;
 pub mod screen_saver;
 pub mod surface;
