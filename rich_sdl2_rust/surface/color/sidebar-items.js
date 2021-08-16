@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["ColorMod","A color modified [`Surface`]."]]});

@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["AlphaMod","An alpha modified [`Surface`]."]]});

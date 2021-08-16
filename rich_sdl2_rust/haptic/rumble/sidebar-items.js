@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["HapticRumble","A controller to rumble the haptic device."]]});

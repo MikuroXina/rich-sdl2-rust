@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["MessageBoxKind","A kind of [`MessageBox`]."]],"struct":[["Button","A button in a [`super::MessageBox`]."],["ColorScheme","A color scheme for a message box."],["MessageBox","A message box builder."]],"type":[["ButtonId","An id type for a button."]]});

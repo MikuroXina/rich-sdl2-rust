@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["ClippedRenderer","A renderer that clipped from another renderer."]]});

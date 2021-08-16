@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["GammaRamp","A gamma ramp for a display."]]});

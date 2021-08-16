@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["PowerLevel","A power level of a joystick."]]});

@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["KeyMod","A key modification flag."]]});

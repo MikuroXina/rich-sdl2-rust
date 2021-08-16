@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["Pen","A pen controls its color and renders geometries to the renderer."]]});

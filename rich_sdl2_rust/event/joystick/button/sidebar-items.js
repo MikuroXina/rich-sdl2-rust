@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["Button","A button for a physical joystick."],["Buttons","A set of `Button` for a physical joystick."]]});

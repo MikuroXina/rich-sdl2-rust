@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["AudioFormat","A format to represent how is stored samples in audio data."],["AudioFormatFlag","A flag to represent what type is used in audio data."]]});

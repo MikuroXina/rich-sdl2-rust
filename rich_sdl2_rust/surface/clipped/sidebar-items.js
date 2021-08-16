@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["Clipped","A clipped [`Surface`] with an area."]]});

@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["Direction","A direction and coordinate system of the haptic movements."]]});

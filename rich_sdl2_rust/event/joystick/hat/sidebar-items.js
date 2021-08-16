@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["Hat","A hat on a physical joystick."],["Hats","A set of `Hat` for a physical joystick."],["PovHat","A direction of pov hat, representing with a bit flag."]]});

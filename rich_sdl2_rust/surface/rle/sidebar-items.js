@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["Rle","A Run-length encoded [`Surface`]."],["RleLock","A locked RLE surface."]]});

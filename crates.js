@@ -1,0 +1,1 @@
+window.ALL_CRATES = ["rich_sdl2_rust"];

@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["TextEditingEvent","An event on editing conversion on a software input method."],["TextInput","A controller of inputting texts."],["TextInputEvent","An event on input the text directly or confirm the conversion on the window."]]});

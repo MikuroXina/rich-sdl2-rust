@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["ClipboardText","A text from the clipboard."]]});

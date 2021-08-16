@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["WindowSurface","A [`Surface`] made from the [`Window`]."]]});
