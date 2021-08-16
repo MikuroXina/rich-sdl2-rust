@@ -7,11 +7,11 @@
 pub const SDL_AUDIO_DRIVER_COREAUDIO: u32 = 1;
 pub const SDL_AUDIO_DRIVER_DISK: u32 = 1;
 pub const SDL_AUDIO_DRIVER_DUMMY: u32 = 1;
-pub const SDL_JOYSTICK_IOKIT: u32 = 1;
-pub const SDL_JOYSTICK_MFI: u32 = 1;
 pub const SDL_JOYSTICK_HIDAPI: u32 = 1;
+pub const SDL_JOYSTICK_IOKIT: u32 = 1;
 pub const SDL_JOYSTICK_VIRTUAL: u32 = 1;
 pub const SDL_HAPTIC_IOKIT: u32 = 1;
+pub const SDL_JOYSTICK_MFI: u32 = 1;
 pub const SDL_SENSOR_DUMMY: u32 = 1;
 pub const SDL_LOADSO_DLOPEN: u32 = 1;
 pub const SDL_THREAD_PTHREAD: u32 = 1;
@@ -19,12 +19,9 @@ pub const SDL_THREAD_PTHREAD_RECURSIVE_MUTEX: u32 = 1;
 pub const SDL_TIMER_UNIX: u32 = 1;
 pub const SDL_VIDEO_DRIVER_COCOA: u32 = 1;
 pub const SDL_VIDEO_DRIVER_DUMMY: u32 = 1;
-pub const SDL_VIDEO_DRIVER_X11: u32 = 1;
 pub const SDL_VIDEO_DRIVER_X11_DYNAMIC: &'static [u8; 28usize] = b"/opt/X11/lib/libX11.6.dylib\0";
 pub const SDL_VIDEO_DRIVER_X11_DYNAMIC_XEXT: &'static [u8; 29usize] =
     b"/opt/X11/lib/libXext.6.dylib\0";
-pub const SDL_VIDEO_DRIVER_X11_DYNAMIC_XCURSOR: &'static [u8; 32usize] =
-    b"/opt/X11/lib/libXcursor.1.dylib\0";
 pub const SDL_VIDEO_DRIVER_X11_DYNAMIC_XINERAMA: &'static [u8; 33usize] =
     b"/opt/X11/lib/libXinerama.1.dylib\0";
 pub const SDL_VIDEO_DRIVER_X11_DYNAMIC_XINPUT2: &'static [u8; 27usize] =
@@ -35,25 +32,24 @@ pub const SDL_VIDEO_DRIVER_X11_DYNAMIC_XSS: &'static [u8; 28usize] =
     b"/opt/X11/lib/libXss.1.dylib\0";
 pub const SDL_VIDEO_DRIVER_X11_DYNAMIC_XVIDMODE: &'static [u8; 32usize] =
     b"/opt/X11/lib/libXxf86vm.1.dylib\0";
-pub const SDL_VIDEO_DRIVER_X11_XCURSOR: u32 = 1;
 pub const SDL_VIDEO_DRIVER_X11_XDBE: u32 = 1;
 pub const SDL_VIDEO_DRIVER_X11_XINERAMA: u32 = 1;
-pub const SDL_VIDEO_DRIVER_X11_XINPUT2: u32 = 1;
-pub const SDL_VIDEO_DRIVER_X11_XINPUT2_SUPPORTS_MULTITOUCH: u32 = 1;
 pub const SDL_VIDEO_DRIVER_X11_XRANDR: u32 = 1;
 pub const SDL_VIDEO_DRIVER_X11_XSCRNSAVER: u32 = 1;
 pub const SDL_VIDEO_DRIVER_X11_XSHAPE: u32 = 1;
 pub const SDL_VIDEO_DRIVER_X11_XVIDMODE: u32 = 1;
+pub const SDL_VIDEO_DRIVER_X11_HAS_XKBKEYCODETOKEYSYM: u32 = 1;
+pub const SDL_VIDEO_DRIVER_X11_XINPUT2: u32 = 1;
 pub const SDL_VIDEO_DRIVER_X11_SUPPORTS_GENERIC_EVENTS: u32 = 1;
 pub const SDL_VIDEO_DRIVER_X11_CONST_PARAM_XEXTADDDISPLAY: u32 = 1;
-pub const SDL_VIDEO_DRIVER_X11_HAS_XKBKEYCODETOKEYSYM: u32 = 1;
 pub const SDL_VIDEO_RENDER_OGL: u32 = 1;
 pub const SDL_VIDEO_RENDER_OGL_ES2: u32 = 1;
+pub const SDL_PLATFORM_SUPPORTS_METAL: u32 = 1;
 pub const SDL_VIDEO_RENDER_METAL: u32 = 1;
 pub const SDL_VIDEO_OPENGL: u32 = 1;
 pub const SDL_VIDEO_OPENGL_ES2: u32 = 1;
-pub const SDL_VIDEO_OPENGL_CGL: u32 = 1;
 pub const SDL_VIDEO_OPENGL_EGL: u32 = 1;
+pub const SDL_VIDEO_OPENGL_CGL: u32 = 1;
 pub const SDL_VIDEO_OPENGL_GLX: u32 = 1;
 pub const SDL_VIDEO_VULKAN: u32 = 1;
 pub const SDL_VIDEO_METAL: u32 = 1;
