@@ -1,11 +1,17 @@
-use super::WindowFlags;
+use super::builder::WindowFlags;
 
+/// A format of a [`super::Window`].
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum WindowFormat {
+    /// A normal window.
     Normal,
+    /// A full screen window.
     FullScreen,
+    /// A full screen window on the current desktop.
     FullScreenWithCurrentDesktop,
+    /// A minimized window.
     Minimized,
+    /// A maximized window.
     Maximized,
 }
 
@@ -26,11 +32,16 @@ impl From<WindowFlags> for WindowFormat {
     }
 }
 
+/// A kind of a window's context.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum WindowContextKind {
+    /// Using software render context.
     Software,
+    /// Using OpenGL render context.
     OpenGl,
+    /// Using Vulkan render context.
     Vulkan,
+    /// Using Metal render context.
     Metal,
 }
 
@@ -49,18 +60,30 @@ impl From<WindowFlags> for WindowContextKind {
     }
 }
 
+/// A state of a [`super::Window`].
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub struct WindowState {
+    /// A format of the window.
     pub format: WindowFormat,
+    /// A kind of render context of the window.
     pub context_kind: WindowContextKind,
+    /// Whether the window is hidden.
     pub hidden: bool,
+    /// Whether the window is borderless.
     pub borderless: bool,
+    /// Whether the window is resizable.
     pub resizable: bool,
+    /// Whether the window is grabbed the input.
     pub input_grabbed: bool,
+    /// Whether the window is on focus.
     pub on_focus: bool,
+    /// Whether the window is on the mouse.
     pub on_mouse: bool,
+    /// Whether the window comes from the foreign.
     pub foreign: bool,
+    /// Whether the window allows high dpi.
     pub allow_high_dpi: bool,
+    /// Whether the window captures the mouse.
     pub mouse_capture: bool,
 }
 

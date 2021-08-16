@@ -1,7 +1,8 @@
+use bitflags::bitflags;
 use std::ffi::CString;
 use std::ptr::NonNull;
 
-use super::{Window, WindowContextKind, WindowFlags, WindowFormat};
+use super::{Window, WindowContextKind, WindowFormat};
 use crate::{bind, Sdl, Video};
 
 /// A coordinate value for the window position.
@@ -193,5 +194,28 @@ impl WindowBuilder {
             flags |= WindowFlags::BORDERLESS
         }
         flags.bits()
+    }
+}
+
+bitflags! {
+    /// A flag for [`Window`].
+    pub(super) struct WindowFlags: u32 {
+        const FULLSCREEN = bind::SDL_WindowFlags_SDL_WINDOW_FULLSCREEN;
+        const FULLSCREEN_DESKTOP = bind::SDL_WindowFlags_SDL_WINDOW_FULLSCREEN_DESKTOP;
+        const OPENGL = bind::SDL_WindowFlags_SDL_WINDOW_OPENGL;
+        const VULKAN = bind::SDL_WindowFlags_SDL_WINDOW_VULKAN;
+        const METAL = bind::SDL_WindowFlags_SDL_WINDOW_METAL;
+        const SHOWN = bind::SDL_WindowFlags_SDL_WINDOW_SHOWN;
+        const HIDDEN = bind::SDL_WindowFlags_SDL_WINDOW_HIDDEN;
+        const BORDERLESS = bind::SDL_WindowFlags_SDL_WINDOW_BORDERLESS;
+        const RESIZABLE = bind::SDL_WindowFlags_SDL_WINDOW_RESIZABLE;
+        const MINIMIZED = bind::SDL_WindowFlags_SDL_WINDOW_MINIMIZED;
+        const MAXIMIZED = bind::SDL_WindowFlags_SDL_WINDOW_MAXIMIZED;
+        const INPUT_GRABBED = bind::SDL_WindowFlags_SDL_WINDOW_INPUT_GRABBED;
+        const INPUT_FOCUS = bind::SDL_WindowFlags_SDL_WINDOW_INPUT_FOCUS;
+        const MOUSE_FOCUS = bind::SDL_WindowFlags_SDL_WINDOW_MOUSE_FOCUS;
+        const FOREIGN = bind::SDL_WindowFlags_SDL_WINDOW_FOREIGN;
+        const ALLOW_HIGHDPI = bind::SDL_WindowFlags_SDL_WINDOW_ALLOW_HIGHDPI;
+        const MOUSE_CAPTURE = bind::SDL_WindowFlags_SDL_WINDOW_MOUSE_CAPTURE;
     }
 }
