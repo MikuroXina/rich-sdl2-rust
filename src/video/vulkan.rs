@@ -1,5 +1,13 @@
+//! Vulkan support in SDL2. It accepts the instance from [`ash`] crate.
+
 use ash::vk::{Handle as _, Instance};
-use std::{ffi::CStr, marker::PhantomData, mem::MaybeUninit, os::raw::c_uint, ptr::NonNull};
+use std::{
+    ffi::{c_void, CStr},
+    marker::PhantomData,
+    mem::MaybeUninit,
+    os::raw::c_uint,
+    ptr::NonNull,
+};
 
 use crate::{
     bind,
@@ -8,6 +16,7 @@ use crate::{
     Result, SdlError,
 };
 
+/// A Vulkan instance from a window.
 #[derive(Debug)]
 pub struct VkInstance<'window> {
     window: &'window Window<'window>,
@@ -15,6 +24,7 @@ pub struct VkInstance<'window> {
 }
 
 impl<'window> VkInstance<'window> {
+    /// Constructs an instance from the window, or `Err` on failure.
     pub fn new(window: &'window Window<'window>) -> Result<Self> {
         if window.state().context_kind != WindowContextKind::Vulkan {
             return Err(SdlError::UnsupportedFeature);
@@ -45,10 +55,12 @@ impl<'window> VkInstance<'window> {
         Ok(Self { window, extensions })
     }
 
+    /// Returns the names of the supported extensions.
     pub fn extensions(&self) -> &[String] {
         &self.extensions
     }
 
+    /// Returns the drawable region size.
     pub fn drawable_size(&self) -> Size {
         let mut width = 0;
         let mut height = 0;
@@ -66,6 +78,7 @@ impl<'window> VkInstance<'window> {
     }
 }
 
+/// A Vulkan surface generated from SDL2.
 pub struct VkSurface<'vk> {
     ptr: NonNull<bind::VkSurfaceKHR_T>,
     _phantom: PhantomData<&'vk VkInstance<'vk>>,
@@ -78,6 +91,7 @@ impl std::fmt::Debug for VkSurface<'_> {
 }
 
 impl<'vk> VkSurface<'vk> {
+    /// Constructs a surface from instances, or `Err` on failure.
     pub fn new(vk: &'vk VkInstance<'vk>, instance: Instance) -> Result<Self> {
         let mut surface = MaybeUninit::uninit();
         let ret = unsafe {
@@ -95,5 +109,10 @@ impl<'vk> VkSurface<'vk> {
                 _phantom: PhantomData,
             })
         }
+    }
+
+    /// Returns the raw pointer to the surface.
+    pub fn as_raw_surface(&self) -> *mut c_void {
+        self.ptr.as_ptr().cast()
     }
 }
