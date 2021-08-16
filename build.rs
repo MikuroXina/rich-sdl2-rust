@@ -7,7 +7,7 @@ fn main() {
     println!("cargo:rustc-link-lib=SDL2");
     println!(
         "cargo:rustc-link-search={}",
-        root.join("SDL2/build").as_path().to_string_lossy()
+        root.join("SDL2/build/.libs").as_path().to_string_lossy()
     );
     println!("cargo:rerun-if-changed=wrapper.h");
 
