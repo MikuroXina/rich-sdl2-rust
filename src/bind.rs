@@ -7,11 +7,11 @@
 pub const SDL_AUDIO_DRIVER_COREAUDIO: u32 = 1;
 pub const SDL_AUDIO_DRIVER_DISK: u32 = 1;
 pub const SDL_AUDIO_DRIVER_DUMMY: u32 = 1;
-pub const SDL_JOYSTICK_HIDAPI: u32 = 1;
 pub const SDL_JOYSTICK_IOKIT: u32 = 1;
+pub const SDL_JOYSTICK_MFI: u32 = 1;
+pub const SDL_JOYSTICK_HIDAPI: u32 = 1;
 pub const SDL_JOYSTICK_VIRTUAL: u32 = 1;
 pub const SDL_HAPTIC_IOKIT: u32 = 1;
-pub const SDL_JOYSTICK_MFI: u32 = 1;
 pub const SDL_SENSOR_DUMMY: u32 = 1;
 pub const SDL_LOADSO_DLOPEN: u32 = 1;
 pub const SDL_THREAD_PTHREAD: u32 = 1;
@@ -19,9 +19,12 @@ pub const SDL_THREAD_PTHREAD_RECURSIVE_MUTEX: u32 = 1;
 pub const SDL_TIMER_UNIX: u32 = 1;
 pub const SDL_VIDEO_DRIVER_COCOA: u32 = 1;
 pub const SDL_VIDEO_DRIVER_DUMMY: u32 = 1;
+pub const SDL_VIDEO_DRIVER_X11: u32 = 1;
 pub const SDL_VIDEO_DRIVER_X11_DYNAMIC: &'static [u8; 28usize] = b"/opt/X11/lib/libX11.6.dylib\0";
 pub const SDL_VIDEO_DRIVER_X11_DYNAMIC_XEXT: &'static [u8; 29usize] =
     b"/opt/X11/lib/libXext.6.dylib\0";
+pub const SDL_VIDEO_DRIVER_X11_DYNAMIC_XCURSOR: &'static [u8; 32usize] =
+    b"/opt/X11/lib/libXcursor.1.dylib\0";
 pub const SDL_VIDEO_DRIVER_X11_DYNAMIC_XINERAMA: &'static [u8; 33usize] =
     b"/opt/X11/lib/libXinerama.1.dylib\0";
 pub const SDL_VIDEO_DRIVER_X11_DYNAMIC_XINPUT2: &'static [u8; 27usize] =
@@ -32,24 +35,25 @@ pub const SDL_VIDEO_DRIVER_X11_DYNAMIC_XSS: &'static [u8; 28usize] =
     b"/opt/X11/lib/libXss.1.dylib\0";
 pub const SDL_VIDEO_DRIVER_X11_DYNAMIC_XVIDMODE: &'static [u8; 32usize] =
     b"/opt/X11/lib/libXxf86vm.1.dylib\0";
+pub const SDL_VIDEO_DRIVER_X11_XCURSOR: u32 = 1;
 pub const SDL_VIDEO_DRIVER_X11_XDBE: u32 = 1;
 pub const SDL_VIDEO_DRIVER_X11_XINERAMA: u32 = 1;
+pub const SDL_VIDEO_DRIVER_X11_XINPUT2: u32 = 1;
+pub const SDL_VIDEO_DRIVER_X11_XINPUT2_SUPPORTS_MULTITOUCH: u32 = 1;
 pub const SDL_VIDEO_DRIVER_X11_XRANDR: u32 = 1;
 pub const SDL_VIDEO_DRIVER_X11_XSCRNSAVER: u32 = 1;
 pub const SDL_VIDEO_DRIVER_X11_XSHAPE: u32 = 1;
 pub const SDL_VIDEO_DRIVER_X11_XVIDMODE: u32 = 1;
-pub const SDL_VIDEO_DRIVER_X11_HAS_XKBKEYCODETOKEYSYM: u32 = 1;
-pub const SDL_VIDEO_DRIVER_X11_XINPUT2: u32 = 1;
 pub const SDL_VIDEO_DRIVER_X11_SUPPORTS_GENERIC_EVENTS: u32 = 1;
 pub const SDL_VIDEO_DRIVER_X11_CONST_PARAM_XEXTADDDISPLAY: u32 = 1;
+pub const SDL_VIDEO_DRIVER_X11_HAS_XKBKEYCODETOKEYSYM: u32 = 1;
 pub const SDL_VIDEO_RENDER_OGL: u32 = 1;
 pub const SDL_VIDEO_RENDER_OGL_ES2: u32 = 1;
-pub const SDL_PLATFORM_SUPPORTS_METAL: u32 = 1;
 pub const SDL_VIDEO_RENDER_METAL: u32 = 1;
 pub const SDL_VIDEO_OPENGL: u32 = 1;
 pub const SDL_VIDEO_OPENGL_ES2: u32 = 1;
-pub const SDL_VIDEO_OPENGL_EGL: u32 = 1;
 pub const SDL_VIDEO_OPENGL_CGL: u32 = 1;
+pub const SDL_VIDEO_OPENGL_EGL: u32 = 1;
 pub const SDL_VIDEO_OPENGL_GLX: u32 = 1;
 pub const SDL_VIDEO_VULKAN: u32 = 1;
 pub const SDL_VIDEO_METAL: u32 = 1;
@@ -343,18 +347,6 @@ pub const SDL_INIT_SENSOR: u32 = 32768;
 pub const SDL_INIT_NOPARACHUTE: u32 = 1048576;
 pub const SDL_INIT_EVERYTHING: u32 = 62001;
 extern "C" {
-    #[doc = " Get the name of the platform."]
-    #[doc = ""]
-    #[doc = " Here are the names returned for some (but not all) supported platforms:"]
-    #[doc = ""]
-    #[doc = " - \"Windows\""]
-    #[doc = " - \"Mac OS X\""]
-    #[doc = " - \"Linux\""]
-    #[doc = " - \"iOS\""]
-    #[doc = " - \"Android\""]
-    #[doc = ""]
-    #[doc = " \\returns the name of the platform. If the correct platform name is not"]
-    #[doc = "          available, returns a string beginning with the text \"Unknown\"."]
     pub fn SDL_GetPlatform() -> *const ::std::os::raw::c_char;
 }
 pub type __int64_t = ::std::os::raw::c_longlong;
@@ -718,7 +710,6 @@ pub type SDL_realloc_func = ::std::option::Option<
 pub type SDL_free_func =
     ::std::option::Option<unsafe extern "C" fn(mem: *mut ::std::os::raw::c_void)>;
 extern "C" {
-    #[doc = " Get the current set of SDL memory functions"]
     pub fn SDL_GetMemoryFunctions(
         malloc_func: *mut SDL_malloc_func,
         calloc_func: *mut SDL_calloc_func,
@@ -727,7 +718,6 @@ extern "C" {
     );
 }
 extern "C" {
-    #[doc = " Replace SDL's memory allocation functions with a custom set"]
     pub fn SDL_SetMemoryFunctions(
         malloc_func: SDL_malloc_func,
         calloc_func: SDL_calloc_func,
@@ -736,7 +726,6 @@ extern "C" {
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[doc = " Get the number of outstanding (unfreed) allocations"]
     pub fn SDL_GetNumAllocations() -> ::std::os::raw::c_int;
 }
 extern "C" {
@@ -1226,8 +1215,6 @@ extern "C" {
     ) -> size_t;
 }
 extern "C" {
-    #[doc = " This function converts a string between encodings in one pass, returning a"]
-    #[doc = " string that must be freed with SDL_free() or NULL on error."]
     pub fn SDL_iconv_string(
         tocode: *const ::std::os::raw::c_char,
         fromcode: *const ::std::os::raw::c_char,
@@ -1235,7 +1222,6 @@ extern "C" {
         inbytesleft: size_t,
     ) -> *mut ::std::os::raw::c_char;
 }
-#[doc = "  The prototype for the application's main() function"]
 pub type SDL_main_func = ::std::option::Option<
     unsafe extern "C" fn(
         argc: ::std::os::raw::c_int,
@@ -1249,26 +1235,12 @@ extern "C" {
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[doc = " Circumvent failure of SDL_Init() when not using SDL_main() as an entry"]
-    #[doc = " point."]
-    #[doc = ""]
-    #[doc = " This function is defined in SDL_main.h, along with the preprocessor rule to"]
-    #[doc = " redefine main() as SDL_main(). Thus to ensure that your main() function"]
-    #[doc = " will not be changed it is necessary to define SDL_MAIN_HANDLED before"]
-    #[doc = " including SDL.h."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_Init"]
     pub fn SDL_SetMainReady();
 }
-#[doc = "< Retry the assert immediately."]
 pub const SDL_AssertState_SDL_ASSERTION_RETRY: SDL_AssertState = 0;
-#[doc = "< Make the debugger trigger a breakpoint."]
 pub const SDL_AssertState_SDL_ASSERTION_BREAK: SDL_AssertState = 1;
-#[doc = "< Terminate the program."]
 pub const SDL_AssertState_SDL_ASSERTION_ABORT: SDL_AssertState = 2;
-#[doc = "< Ignore the assert."]
 pub const SDL_AssertState_SDL_ASSERTION_IGNORE: SDL_AssertState = 3;
-#[doc = "< Ignore the assert from now on."]
 pub const SDL_AssertState_SDL_ASSERTION_ALWAYS_IGNORE: SDL_AssertState = 4;
 pub type SDL_AssertState = ::std::os::raw::c_uint;
 #[repr(C)]
@@ -1373,12 +1345,6 @@ extern "C" {
         arg4: ::std::os::raw::c_int,
     ) -> SDL_AssertState;
 }
-#[doc = " A callback that fires when an SDL assertion fails."]
-#[doc = ""]
-#[doc = " \\param data a pointer to the SDL_AssertData structure corresponding to the"]
-#[doc = "             current assertion"]
-#[doc = " \\param userdata what was passed as `userdata` to SDL_SetAssertionHandler()"]
-#[doc = " \\returns an SDL_AssertState value indicating how to handle the failure."]
 pub type SDL_AssertionHandler = ::std::option::Option<
     unsafe extern "C" fn(
         data: *const SDL_AssertData,
@@ -1386,172 +1352,41 @@ pub type SDL_AssertionHandler = ::std::option::Option<
     ) -> SDL_AssertState,
 >;
 extern "C" {
-    #[doc = " Set an application-defined assertion handler."]
-    #[doc = ""]
-    #[doc = " This function allows an application to show its own assertion UI and/or"]
-    #[doc = " force the response to an assertion failure. If the application doesn't"]
-    #[doc = " provide this, SDL will try to do the right thing, popping up a"]
-    #[doc = " system-specific GUI dialog, and probably minimizing any fullscreen windows."]
-    #[doc = ""]
-    #[doc = " This callback may fire from any thread, but it runs wrapped in a mutex, so"]
-    #[doc = " it will only fire from one thread at a time."]
-    #[doc = ""]
-    #[doc = " This callback is NOT reset to SDL's internal handler upon SDL_Quit()!"]
-    #[doc = ""]
-    #[doc = " \\param handler the SDL_AssertionHandler function to call when an assertion"]
-    #[doc = "                fails or NULL for the default handler"]
-    #[doc = " \\param userdata a pointer that is passed to `handler`"]
-    #[doc = ""]
-    #[doc = " \\sa SDL_GetAssertionHandler"]
     pub fn SDL_SetAssertionHandler(
         handler: SDL_AssertionHandler,
         userdata: *mut ::std::os::raw::c_void,
     );
 }
 extern "C" {
-    #[doc = " Get the default assertion handler."]
-    #[doc = ""]
-    #[doc = " This returns the function pointer that is called by default when an"]
-    #[doc = " assertion is triggered. This is an internal function provided by SDL, that"]
-    #[doc = " is used for assertions when SDL_SetAssertionHandler() hasn't been used to"]
-    #[doc = " provide a different function."]
-    #[doc = ""]
-    #[doc = " \\returns the default SDL_AssertionHandler that is called when an assert"]
-    #[doc = "          triggers."]
-    #[doc = ""]
-    #[doc = " \\since This function is available since SDL 2.0.2."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_GetAssertionHandler"]
     pub fn SDL_GetDefaultAssertionHandler() -> SDL_AssertionHandler;
 }
 extern "C" {
-    #[doc = " Get the current assertion handler."]
-    #[doc = ""]
-    #[doc = " This returns the function pointer that is called when an assertion is"]
-    #[doc = " triggered. This is either the value last passed to"]
-    #[doc = " SDL_SetAssertionHandler(), or if no application-specified function is set,"]
-    #[doc = " is equivalent to calling SDL_GetDefaultAssertionHandler()."]
-    #[doc = ""]
-    #[doc = " The parameter `puserdata` is a pointer to a void*, which will store the"]
-    #[doc = " \"userdata\" pointer that was passed to SDL_SetAssertionHandler(). This value"]
-    #[doc = " will always be NULL for the default handler. If you don't care about this"]
-    #[doc = " data, it is safe to pass a NULL pointer to this function to ignore it."]
-    #[doc = ""]
-    #[doc = " \\param puserdata pointer which is filled with the \"userdata\" pointer that"]
-    #[doc = "                  was passed to SDL_SetAssertionHandler()"]
-    #[doc = " \\returns the SDL_AssertionHandler that is called when an assert triggers."]
-    #[doc = ""]
-    #[doc = " \\since This function is available since SDL 2.0.2."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_SetAssertionHandler"]
     pub fn SDL_GetAssertionHandler(
         puserdata: *mut *mut ::std::os::raw::c_void,
     ) -> SDL_AssertionHandler;
 }
 extern "C" {
-    #[doc = " Get a list of all assertion failures."]
-    #[doc = ""]
-    #[doc = " This function gets all assertions triggered since the last call to"]
-    #[doc = " SDL_ResetAssertionReport(), or the start of the program."]
-    #[doc = ""]
-    #[doc = " The proper way to examine this data looks something like this:"]
-    #[doc = ""]
-    #[doc = " ```c"]
-    #[doc = " const SDL_AssertData *item = SDL_GetAssertionReport();"]
-    #[doc = " while (item) {"]
-    #[doc = "    printf(\"'%s', %s (%s:%d), triggered %u times, always ignore: %s.\\\\n\","]
-    #[doc = "           item->condition, item->function, item->filename,"]
-    #[doc = "           item->linenum, item->trigger_count,"]
-    #[doc = "           item->always_ignore ? \"yes\" : \"no\");"]
-    #[doc = "    item = item->next;"]
-    #[doc = " }"]
-    #[doc = " ```"]
-    #[doc = ""]
-    #[doc = " \\returns a list of all failed assertions or NULL if the list is empty. This"]
-    #[doc = "          memory should not be modified or freed by the application."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_ResetAssertionReport"]
     pub fn SDL_GetAssertionReport() -> *const SDL_AssertData;
 }
 extern "C" {
-    #[doc = " Clear the list of all assertion failures."]
-    #[doc = ""]
-    #[doc = " This function will clear the list of all assertions triggered up to that"]
-    #[doc = " point. Immediately following this call, SDL_GetAssertionReport will return"]
-    #[doc = " no items. In addition, any previously-triggered assertions will be reset to"]
-    #[doc = " a trigger_count of zero, and their always_ignore state will be false."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_GetAssertionReport"]
     pub fn SDL_ResetAssertionReport();
 }
 pub type SDL_SpinLock = ::std::os::raw::c_int;
 extern "C" {
-    #[doc = " Try to lock a spin lock by setting it to a non-zero value."]
-    #[doc = ""]
-    #[doc = " ***Please note that spinlocks are dangerous if you don't know what you're"]
-    #[doc = " doing. Please be careful using any sort of spinlock!***"]
-    #[doc = ""]
-    #[doc = " \\param lock a pointer to a lock variable"]
-    #[doc = " \\returns SDL_TRUE if the lock succeeded, SDL_FALSE if the lock is already"]
-    #[doc = "          held."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_AtomicLock"]
-    #[doc = " \\sa SDL_AtomicUnlock"]
     pub fn SDL_AtomicTryLock(lock: *mut SDL_SpinLock) -> SDL_bool;
 }
 extern "C" {
-    #[doc = " Lock a spin lock by setting it to a non-zero value."]
-    #[doc = ""]
-    #[doc = " ***Please note that spinlocks are dangerous if you don't know what you're"]
-    #[doc = " doing. Please be careful using any sort of spinlock!***"]
-    #[doc = ""]
-    #[doc = " \\param lock a pointer to a lock variable"]
-    #[doc = ""]
-    #[doc = " \\sa SDL_AtomicTryLock"]
-    #[doc = " \\sa SDL_AtomicUnlock"]
     pub fn SDL_AtomicLock(lock: *mut SDL_SpinLock);
 }
 extern "C" {
-    #[doc = " Unlock a spin lock by setting it to 0."]
-    #[doc = ""]
-    #[doc = " Always returns immediately."]
-    #[doc = ""]
-    #[doc = " ***Please note that spinlocks are dangerous if you don't know what you're"]
-    #[doc = " doing. Please be careful using any sort of spinlock!***"]
-    #[doc = ""]
-    #[doc = " \\param lock a pointer to a lock variable"]
-    #[doc = ""]
-    #[doc = " \\since This function is available since SDL 2.0.0."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_AtomicLock"]
-    #[doc = " \\sa SDL_AtomicTryLock"]
     pub fn SDL_AtomicUnlock(lock: *mut SDL_SpinLock);
 }
 extern "C" {
-    #[doc = " Memory barriers are designed to prevent reads and writes from being"]
-    #[doc = " reordered by the compiler and being seen out of order on multi-core CPUs."]
-    #[doc = ""]
-    #[doc = " A typical pattern would be for thread A to write some data and a flag, and"]
-    #[doc = " for thread B to read the flag and get the data. In this case you would"]
-    #[doc = " insert a release barrier between writing the data and the flag,"]
-    #[doc = " guaranteeing that the data write completes no later than the flag is"]
-    #[doc = " written, and you would insert an acquire barrier between reading the flag"]
-    #[doc = " and reading the data, to ensure that all the reads associated with the flag"]
-    #[doc = " have completed."]
-    #[doc = ""]
-    #[doc = " In this pattern you should always see a release barrier paired with an"]
-    #[doc = " acquire barrier and you should gate the data reads/writes with a single"]
-    #[doc = " flag variable."]
-    #[doc = ""]
-    #[doc = " For more information on these semantics, take a look at the blog post:"]
-    #[doc = " http://preshing.com/20120913/acquire-and-release-semantics"]
     pub fn SDL_MemoryBarrierReleaseFunction();
 }
 extern "C" {
     pub fn SDL_MemoryBarrierAcquireFunction();
 }
-#[doc = " \\brief A type representing an atomic integer value.  It is a struct"]
-#[doc = "        so people don't accidentally use numeric operations on it."]
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
 pub struct SDL_atomic_t {
@@ -1581,21 +1416,6 @@ fn bindgen_test_layout_SDL_atomic_t() {
     );
 }
 extern "C" {
-    #[doc = " Set an atomic variable to a new value if it is currently an old value."]
-    #[doc = ""]
-    #[doc = " ***Note: If you don't know what this function is for, you shouldn't use"]
-    #[doc = " it!***"]
-    #[doc = ""]
-    #[doc = " \\param a a pointer to an SDL_atomic_t variable to be modified"]
-    #[doc = " \\param oldval the old value"]
-    #[doc = " \\param newval the new value"]
-    #[doc = " \\returns SDL_TRUE if the atomic variable was set, SDL_FALSE otherwise."]
-    #[doc = ""]
-    #[doc = " \\since This function is available since SDL 2.0.0."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_AtomicCASPtr"]
-    #[doc = " \\sa SDL_AtomicGet"]
-    #[doc = " \\sa SDL_AtomicSet"]
     pub fn SDL_AtomicCAS(
         a: *mut SDL_atomic_t,
         oldval: ::std::os::raw::c_int,
@@ -1603,64 +1423,15 @@ extern "C" {
     ) -> SDL_bool;
 }
 extern "C" {
-    #[doc = " Set an atomic variable to a value."]
-    #[doc = ""]
-    #[doc = " This function also acts as a full memory barrier."]
-    #[doc = ""]
-    #[doc = " ***Note: If you don't know what this function is for, you shouldn't use"]
-    #[doc = " it!***"]
-    #[doc = ""]
-    #[doc = " \\param a a pointer to an SDL_atomic_t variable to be modified"]
-    #[doc = " \\param v the desired value"]
-    #[doc = " \\returns the previous value of the atomic variable."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_AtomicGet"]
     pub fn SDL_AtomicSet(a: *mut SDL_atomic_t, v: ::std::os::raw::c_int) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[doc = " Get the value of an atomic variable."]
-    #[doc = ""]
-    #[doc = " ***Note: If you don't know what this function is for, you shouldn't use"]
-    #[doc = " it!***"]
-    #[doc = ""]
-    #[doc = " \\param a a pointer to an SDL_atomic_t variable"]
-    #[doc = " \\returns the current value of an atomic variable."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_AtomicSet"]
     pub fn SDL_AtomicGet(a: *mut SDL_atomic_t) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[doc = " Add to an atomic variable."]
-    #[doc = ""]
-    #[doc = " This function also acts as a full memory barrier."]
-    #[doc = ""]
-    #[doc = " ***Note: If you don't know what this function is for, you shouldn't use"]
-    #[doc = " it!***"]
-    #[doc = ""]
-    #[doc = " \\param a a pointer to an SDL_atomic_t variable to be modified"]
-    #[doc = " \\param v the desired value to add"]
-    #[doc = " \\returns the previous value of the atomic variable."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_AtomicDecRef"]
-    #[doc = " \\sa SDL_AtomicIncRef"]
     pub fn SDL_AtomicAdd(a: *mut SDL_atomic_t, v: ::std::os::raw::c_int) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[doc = " Set a pointer to a new value if it is currently an old value."]
-    #[doc = ""]
-    #[doc = " ***Note: If you don't know what this function is for, you shouldn't use"]
-    #[doc = " it!***"]
-    #[doc = ""]
-    #[doc = " \\param a a pointer to a pointer"]
-    #[doc = " \\param oldval the old pointer value"]
-    #[doc = " \\param newval the new pointer value"]
-    #[doc = " \\returns SDL_TRUE if the pointer was set, SDL_FALSE otherwise."]
-    #[doc = ""]
-    #[doc = " \\since This function is available since SDL 2.0.0."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_AtomicCAS"]
-    #[doc = " \\sa SDL_AtomicGetPtr"]
-    #[doc = " \\sa SDL_AtomicSetPtr"]
     pub fn SDL_AtomicCASPtr(
         a: *mut *mut ::std::os::raw::c_void,
         oldval: *mut ::std::os::raw::c_void,
@@ -1668,114 +1439,27 @@ extern "C" {
     ) -> SDL_bool;
 }
 extern "C" {
-    #[doc = " Set a pointer to a value atomically."]
-    #[doc = ""]
-    #[doc = " ***Note: If you don't know what this function is for, you shouldn't use"]
-    #[doc = " it!***"]
-    #[doc = ""]
-    #[doc = " \\param a a pointer to a pointer"]
-    #[doc = " \\param v the desired pointer value"]
-    #[doc = " \\returns the previous value of the pointer."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_AtomicCASPtr"]
-    #[doc = " \\sa SDL_AtomicGetPtr"]
     pub fn SDL_AtomicSetPtr(
         a: *mut *mut ::std::os::raw::c_void,
         v: *mut ::std::os::raw::c_void,
     ) -> *mut ::std::os::raw::c_void;
 }
 extern "C" {
-    #[doc = " Get the value of a pointer atomically."]
-    #[doc = ""]
-    #[doc = " ***Note: If you don't know what this function is for, you shouldn't use"]
-    #[doc = " it!***"]
-    #[doc = ""]
-    #[doc = " \\param a a pointer to a pointer"]
-    #[doc = " \\returns the current value of a pointer."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_AtomicCASPtr"]
-    #[doc = " \\sa SDL_AtomicSetPtr"]
     pub fn SDL_AtomicGetPtr(a: *mut *mut ::std::os::raw::c_void) -> *mut ::std::os::raw::c_void;
 }
 extern "C" {
-    #[doc = " Set the SDL error message for the current thread."]
-    #[doc = ""]
-    #[doc = " Calling this function will replace any previous error message that was set."]
-    #[doc = ""]
-    #[doc = " This function always returns -1, since SDL frequently uses -1 to signify an"]
-    #[doc = " failing result, leading to this idiom:"]
-    #[doc = ""]
-    #[doc = " ```c"]
-    #[doc = " if (error_code) {"]
-    #[doc = "     return SDL_SetError(\"This operation has failed: %d\", error_code);"]
-    #[doc = " }"]
-    #[doc = " ```"]
-    #[doc = ""]
-    #[doc = " \\param fmt a printf()-style message format string"]
-    #[doc = " \\param ... additional parameters matching % tokens in the `fmt` string, if"]
-    #[doc = "            any"]
-    #[doc = " \\returns always -1."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_ClearError"]
-    #[doc = " \\sa SDL_GetError"]
     pub fn SDL_SetError(fmt: *const ::std::os::raw::c_char, ...) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[doc = " Retrieve a message about the last error that occurred on the current"]
-    #[doc = " thread."]
-    #[doc = ""]
-    #[doc = " It is possible for multiple errors to occur before calling SDL_GetError()."]
-    #[doc = " Only the last error is returned."]
-    #[doc = ""]
-    #[doc = " The message is only applicable when an SDL function has signaled an error."]
-    #[doc = " You must check the return values of SDL function calls to determine when to"]
-    #[doc = " appropriately call SDL_GetError(). You should _not_ use the results of"]
-    #[doc = " SDL_GetError() to decide if an error has occurred! Sometimes SDL will set"]
-    #[doc = " an error string even when reporting success."]
-    #[doc = ""]
-    #[doc = " SDL will _not_ clear the error string for successful API calls. You _must_"]
-    #[doc = " check return values for failure cases before you can assume the error"]
-    #[doc = " string applies."]
-    #[doc = ""]
-    #[doc = " Error strings are set per-thread, so an error set in a different thread"]
-    #[doc = " will not interfere with the current thread's operation."]
-    #[doc = ""]
-    #[doc = " The returned string is internally allocated and must not be freed by the"]
-    #[doc = " application."]
-    #[doc = ""]
-    #[doc = " \\returns a message with information about the specific error that occurred,"]
-    #[doc = "          or an empty string if there hasn't been an error message set since"]
-    #[doc = "          the last call to SDL_ClearError(). The message is only applicable"]
-    #[doc = "          when an SDL function has signaled an error. You must check the"]
-    #[doc = "          return values of SDL function calls to determine when to"]
-    #[doc = "          appropriately call SDL_GetError()."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_ClearError"]
-    #[doc = " \\sa SDL_SetError"]
     pub fn SDL_GetError() -> *const ::std::os::raw::c_char;
 }
 extern "C" {
-    #[doc = " Get the last error message that was set for the current thread."]
-    #[doc = ""]
-    #[doc = " This allows the caller to copy the error string into a provided buffer, but"]
-    #[doc = " otherwise operates exactly the same as SDL_GetError()."]
-    #[doc = ""]
-    #[doc = " \\param errstr A buffer to fill with the last error message that was set for"]
-    #[doc = "               the current thread"]
-    #[doc = " \\param maxlen The size of the buffer pointed to by the errstr parameter"]
-    #[doc = " \\returns the pointer passed in as the `errstr` parameter."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_GetError"]
     pub fn SDL_GetErrorMsg(
         errstr: *mut ::std::os::raw::c_char,
         maxlen: ::std::os::raw::c_int,
     ) -> *mut ::std::os::raw::c_char;
 }
 extern "C" {
-    #[doc = " Clear any previous error message for this thread."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_GetError"]
-    #[doc = " \\sa SDL_SetError"]
     pub fn SDL_ClearError();
 }
 pub const SDL_errorcode_SDL_ENOMEM: SDL_errorcode = 0;
@@ -1794,89 +1478,18 @@ pub struct SDL_mutex {
     _unused: [u8; 0],
 }
 extern "C" {
-    #[doc = " Create a new mutex."]
-    #[doc = ""]
-    #[doc = " All newly-created mutexes begin in the _unlocked_ state."]
-    #[doc = ""]
-    #[doc = " Calls to SDL_LockMutex() will not return while the mutex is locked by"]
-    #[doc = " another thread. See SDL_TryLockMutex() to attempt to lock without blocking."]
-    #[doc = ""]
-    #[doc = " SDL mutexes are reentrant."]
-    #[doc = ""]
-    #[doc = " \\returns the initialized and unlocked mutex or NULL on failure; call"]
-    #[doc = "          SDL_GetError() for more information."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_DestroyMutex"]
-    #[doc = " \\sa SDL_LockMutex"]
-    #[doc = " \\sa SDL_TryLockMutex"]
-    #[doc = " \\sa SDL_UnlockMutex"]
     pub fn SDL_CreateMutex() -> *mut SDL_mutex;
 }
 extern "C" {
-    #[doc = " Lock the mutex."]
-    #[doc = ""]
-    #[doc = " This will block until the mutex is available, which is to say it is in the"]
-    #[doc = " unlocked state and the OS has chosen the caller as the next thread to lock"]
-    #[doc = " it. Of all threads waiting to lock the mutex, only one may do so at a time."]
-    #[doc = ""]
-    #[doc = " It is legal for the owning thread to lock an already-locked mutex. It must"]
-    #[doc = " unlock it the same number of times before it is actually made available for"]
-    #[doc = " other threads in the system (this is known as a \"recursive mutex\")."]
-    #[doc = ""]
-    #[doc = " \\param mutex the mutex to lock"]
-    #[doc = " \\return 0, or -1 on error."]
     pub fn SDL_LockMutex(mutex: *mut SDL_mutex) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[doc = " Try to lock a mutex without blocking."]
-    #[doc = ""]
-    #[doc = " This works just like SDL_LockMutex(), but if the mutex is not available,"]
-    #[doc = " this function returns `SDL_MUTEX_TIMEOUT` immediately."]
-    #[doc = ""]
-    #[doc = " This technique is useful if you need exclusive access to a resource but"]
-    #[doc = " don't want to wait for it, and will return to it to try again later."]
-    #[doc = ""]
-    #[doc = " \\param mutex the mutex to try to lock"]
-    #[doc = " \\returns 0, `SDL_MUTEX_TIMEDOUT`, or -1 on error; call SDL_GetError() for"]
-    #[doc = "          more information."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_CreateMutex"]
-    #[doc = " \\sa SDL_DestroyMutex"]
-    #[doc = " \\sa SDL_LockMutex"]
-    #[doc = " \\sa SDL_UnlockMutex"]
     pub fn SDL_TryLockMutex(mutex: *mut SDL_mutex) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[doc = " Unlock the mutex."]
-    #[doc = ""]
-    #[doc = " It is legal for the owning thread to lock an already-locked mutex. It must"]
-    #[doc = " unlock it the same number of times before it is actually made available for"]
-    #[doc = " other threads in the system (this is known as a \"recursive mutex\")."]
-    #[doc = ""]
-    #[doc = " It is an error to unlock a mutex that has not been locked by the current"]
-    #[doc = " thread, and doing so results in undefined behavior."]
-    #[doc = ""]
-    #[doc = " It is also an error to unlock a mutex that isn't locked at all."]
-    #[doc = ""]
-    #[doc = " \\param mutex the mutex to unlock."]
-    #[doc = " \\returns 0, or -1 on error."]
     pub fn SDL_UnlockMutex(mutex: *mut SDL_mutex) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[doc = " Destroy a mutex created with SDL_CreateMutex()."]
-    #[doc = ""]
-    #[doc = " This function must be called on any mutex that is no longer needed. Failure"]
-    #[doc = " to destroy a mutex will result in a system memory or resource leak. While"]
-    #[doc = " it is safe to destroy a mutex that is _unlocked_, it is not safe to attempt"]
-    #[doc = " to destroy a locked mutex, and may result in undefined behavior depending"]
-    #[doc = " on the platform."]
-    #[doc = ""]
-    #[doc = " \\param mutex the mutex to destroy"]
-    #[doc = ""]
-    #[doc = " \\sa SDL_CreateMutex"]
-    #[doc = " \\sa SDL_LockMutex"]
-    #[doc = " \\sa SDL_TryLockMutex"]
-    #[doc = " \\sa SDL_UnlockMutex"]
     pub fn SDL_DestroyMutex(mutex: *mut SDL_mutex);
 }
 #[repr(C)]
@@ -1886,131 +1499,24 @@ pub struct SDL_semaphore {
 }
 pub type SDL_sem = SDL_semaphore;
 extern "C" {
-    #[doc = " Create a semaphore."]
-    #[doc = ""]
-    #[doc = " This function creates a new semaphore and initializes it with the value"]
-    #[doc = " `initial_value`. Each wait operation on the semaphore will atomically"]
-    #[doc = " decrement the semaphore value and potentially block if the semaphore value"]
-    #[doc = " is 0. Each post operation will atomically increment the semaphore value and"]
-    #[doc = " wake waiting threads and allow them to retry the wait operation."]
-    #[doc = ""]
-    #[doc = " \\param initial_value the starting value of the semaphore"]
-    #[doc = " \\returns a new semaphore or NULL on failure; call SDL_GetError() for more"]
-    #[doc = "          information."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_DestroySemaphore"]
-    #[doc = " \\sa SDL_SemPost"]
-    #[doc = " \\sa SDL_SemTryWait"]
-    #[doc = " \\sa SDL_SemValue"]
-    #[doc = " \\sa SDL_SemWait"]
-    #[doc = " \\sa SDL_SemWaitTimeout"]
     pub fn SDL_CreateSemaphore(initial_value: Uint32) -> *mut SDL_sem;
 }
 extern "C" {
-    #[doc = " Destroy a semaphore."]
-    #[doc = ""]
-    #[doc = " It is not safe to destroy a semaphore if there are threads currently"]
-    #[doc = " waiting on it."]
-    #[doc = ""]
-    #[doc = " \\param sem the semaphore to destroy"]
-    #[doc = ""]
-    #[doc = " \\sa SDL_CreateSemaphore"]
-    #[doc = " \\sa SDL_SemPost"]
-    #[doc = " \\sa SDL_SemTryWait"]
-    #[doc = " \\sa SDL_SemValue"]
-    #[doc = " \\sa SDL_SemWait"]
-    #[doc = " \\sa SDL_SemWaitTimeout"]
     pub fn SDL_DestroySemaphore(sem: *mut SDL_sem);
 }
 extern "C" {
-    #[doc = " Wait until a semaphore has a positive value and then decrements it."]
-    #[doc = ""]
-    #[doc = " This function suspends the calling thread until either the semaphore"]
-    #[doc = " pointed to by `sem` has a positive value or the call is interrupted by a"]
-    #[doc = " signal or error. If the call is successful it will atomically decrement the"]
-    #[doc = " semaphore value."]
-    #[doc = ""]
-    #[doc = " This function is the equivalent of calling SDL_SemWaitTimeout() with a time"]
-    #[doc = " length of `SDL_MUTEX_MAXWAIT`."]
-    #[doc = ""]
-    #[doc = " \\param sem the semaphore wait on"]
-    #[doc = " \\returns 0 on success or a negative error code on failure; call"]
-    #[doc = "          SDL_GetError() for more information."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_CreateSemaphore"]
-    #[doc = " \\sa SDL_DestroySemaphore"]
-    #[doc = " \\sa SDL_SemPost"]
-    #[doc = " \\sa SDL_SemTryWait"]
-    #[doc = " \\sa SDL_SemValue"]
-    #[doc = " \\sa SDL_SemWait"]
-    #[doc = " \\sa SDL_SemWaitTimeout"]
     pub fn SDL_SemWait(sem: *mut SDL_sem) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[doc = " See if a semaphore has a positive value and decrement it if it does."]
-    #[doc = ""]
-    #[doc = " This function checks to see if the semaphore pointed to by `sem` has a"]
-    #[doc = " positive value and atomically decrements the semaphore value if it does. If"]
-    #[doc = " the semaphore doesn't have a positive value, the function immediately"]
-    #[doc = " returns SDL_MUTEX_TIMEDOUT."]
-    #[doc = ""]
-    #[doc = " \\param sem the semaphore to wait on"]
-    #[doc = " \\returns 0 if the wait succeeds, `SDL_MUTEX_TIMEDOUT` if the wait would"]
-    #[doc = "          block, or a negative error code on failure; call SDL_GetError()"]
-    #[doc = "          for more information."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_CreateSemaphore"]
-    #[doc = " \\sa SDL_DestroySemaphore"]
-    #[doc = " \\sa SDL_SemPost"]
-    #[doc = " \\sa SDL_SemValue"]
-    #[doc = " \\sa SDL_SemWait"]
-    #[doc = " \\sa SDL_SemWaitTimeout"]
     pub fn SDL_SemTryWait(sem: *mut SDL_sem) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[doc = " Wait until a semaphore has a positive value and then decrements it."]
-    #[doc = ""]
-    #[doc = " This function suspends the calling thread until either the semaphore"]
-    #[doc = " pointed to by `sem` has a positive value, the call is interrupted by a"]
-    #[doc = " signal or error, or the specified time has elapsed. If the call is"]
-    #[doc = " successful it will atomically decrement the semaphore value."]
-    #[doc = ""]
-    #[doc = " \\param sem the semaphore to wait on"]
-    #[doc = " \\param ms the length of the timeout, in milliseconds"]
-    #[doc = " \\returns 0 if the wait succeeds, `SDL_MUTEX_TIMEDOUT` if the wait does not"]
-    #[doc = "          succeed in the allotted time, or a negative error code on failure;"]
-    #[doc = "          call SDL_GetError() for more information."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_CreateSemaphore"]
-    #[doc = " \\sa SDL_DestroySemaphore"]
-    #[doc = " \\sa SDL_SemPost"]
-    #[doc = " \\sa SDL_SemTryWait"]
-    #[doc = " \\sa SDL_SemValue"]
-    #[doc = " \\sa SDL_SemWait"]
     pub fn SDL_SemWaitTimeout(sem: *mut SDL_sem, ms: Uint32) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[doc = " Atomically increment a semaphore's value and wake waiting threads."]
-    #[doc = ""]
-    #[doc = " \\param sem the semaphore to increment"]
-    #[doc = " \\returns 0 on success or a negative error code on failure; call"]
-    #[doc = "          SDL_GetError() for more information."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_CreateSemaphore"]
-    #[doc = " \\sa SDL_DestroySemaphore"]
-    #[doc = " \\sa SDL_SemTryWait"]
-    #[doc = " \\sa SDL_SemValue"]
-    #[doc = " \\sa SDL_SemWait"]
-    #[doc = " \\sa SDL_SemWaitTimeout"]
     pub fn SDL_SemPost(sem: *mut SDL_sem) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[doc = " Get the current value of a semaphore."]
-    #[doc = ""]
-    #[doc = " \\param sem the semaphore to query"]
-    #[doc = " \\returns the current value of the semaphore."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_CreateSemaphore"]
     pub fn SDL_SemValue(sem: *mut SDL_sem) -> Uint32;
 }
 #[repr(C)]
@@ -2019,107 +1525,21 @@ pub struct SDL_cond {
     _unused: [u8; 0],
 }
 extern "C" {
-    #[doc = " Create a condition variable."]
-    #[doc = ""]
-    #[doc = " \\returns a new condition variable or NULL on failure; call SDL_GetError()"]
-    #[doc = "          for more information."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_CondBroadcast"]
-    #[doc = " \\sa SDL_CondSignal"]
-    #[doc = " \\sa SDL_CondWait"]
-    #[doc = " \\sa SDL_CondWaitTimeout"]
-    #[doc = " \\sa SDL_DestroyCond"]
     pub fn SDL_CreateCond() -> *mut SDL_cond;
 }
 extern "C" {
-    #[doc = " Destroy a condition variable."]
-    #[doc = ""]
-    #[doc = " \\param cond the condition variable to destroy"]
-    #[doc = ""]
-    #[doc = " \\sa SDL_CondBroadcast"]
-    #[doc = " \\sa SDL_CondSignal"]
-    #[doc = " \\sa SDL_CondWait"]
-    #[doc = " \\sa SDL_CondWaitTimeout"]
-    #[doc = " \\sa SDL_CreateCond"]
     pub fn SDL_DestroyCond(cond: *mut SDL_cond);
 }
 extern "C" {
-    #[doc = " Restart one of the threads that are waiting on the condition variable."]
-    #[doc = ""]
-    #[doc = " \\param cond the condition variable to signal"]
-    #[doc = " \\returns 0 on success or a negative error code on failure; call"]
-    #[doc = "          SDL_GetError() for more information."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_CondBroadcast"]
-    #[doc = " \\sa SDL_CondWait"]
-    #[doc = " \\sa SDL_CondWaitTimeout"]
-    #[doc = " \\sa SDL_CreateCond"]
-    #[doc = " \\sa SDL_DestroyCond"]
     pub fn SDL_CondSignal(cond: *mut SDL_cond) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[doc = " Restart all threads that are waiting on the condition variable."]
-    #[doc = ""]
-    #[doc = " \\param cond the condition variable to signal"]
-    #[doc = " \\returns 0 on success or a negative error code on failure; call"]
-    #[doc = "          SDL_GetError() for more information."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_CondSignal"]
-    #[doc = " \\sa SDL_CondWait"]
-    #[doc = " \\sa SDL_CondWaitTimeout"]
-    #[doc = " \\sa SDL_CreateCond"]
-    #[doc = " \\sa SDL_DestroyCond"]
     pub fn SDL_CondBroadcast(cond: *mut SDL_cond) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[doc = " Wait until a condition variable is signaled."]
-    #[doc = ""]
-    #[doc = " This function unlocks the specified `mutex` and waits for another thread to"]
-    #[doc = " call SDL_CondSignal() or SDL_CondBroadcast() on the condition variable"]
-    #[doc = " `cond`. Once the condition variable is signaled, the mutex is re-locked and"]
-    #[doc = " the function returns."]
-    #[doc = ""]
-    #[doc = " The mutex must be locked before calling this function."]
-    #[doc = ""]
-    #[doc = " This function is the equivalent of calling SDL_CondWaitTimeout() with a"]
-    #[doc = " time length of `SDL_MUTEX_MAXWAIT`."]
-    #[doc = ""]
-    #[doc = " \\param cond the condition variable to wait on"]
-    #[doc = " \\param mutex the mutex used to coordinate thread access"]
-    #[doc = " \\returns 0 when it is signaled or a negative error code on failure; call"]
-    #[doc = "          SDL_GetError() for more information."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_CondBroadcast"]
-    #[doc = " \\sa SDL_CondSignal"]
-    #[doc = " \\sa SDL_CondWaitTimeout"]
-    #[doc = " \\sa SDL_CreateCond"]
-    #[doc = " \\sa SDL_DestroyCond"]
     pub fn SDL_CondWait(cond: *mut SDL_cond, mutex: *mut SDL_mutex) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[doc = " Wait until a condition variable is signaled or a certain time has passed."]
-    #[doc = ""]
-    #[doc = " This function unlocks the specified `mutex` and waits for another thread to"]
-    #[doc = " call SDL_CondSignal() or SDL_CondBroadcast() on the condition variable"]
-    #[doc = " `cond`, or for the specified time to elapse. Once the condition variable is"]
-    #[doc = " signaled or the time elapsed, the mutex is re-locked and the function"]
-    #[doc = " returns."]
-    #[doc = ""]
-    #[doc = " The mutex must be locked before calling this function."]
-    #[doc = ""]
-    #[doc = " \\param cond the condition variable to wait on"]
-    #[doc = " \\param mutex the mutex used to coordinate thread access"]
-    #[doc = " \\param ms the maximum time to wait, in milliseconds, or `SDL_MUTEX_MAXWAIT`"]
-    #[doc = "           to wait indefinitely"]
-    #[doc = " \\returns 0 if the condition variable is signaled, `SDL_MUTEX_TIMEDOUT` if"]
-    #[doc = "          the condition is not signaled in the allotted time, or a negative"]
-    #[doc = "          error code on failure; call SDL_GetError() for more information."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_CondBroadcast"]
-    #[doc = " \\sa SDL_CondSignal"]
-    #[doc = " \\sa SDL_CondWait"]
-    #[doc = " \\sa SDL_CreateCond"]
-    #[doc = " \\sa SDL_DestroyCond"]
     pub fn SDL_CondWaitTimeout(
         cond: *mut SDL_cond,
         mutex: *mut SDL_mutex,
@@ -2137,40 +1557,11 @@ pub const SDL_ThreadPriority_SDL_THREAD_PRIORITY_LOW: SDL_ThreadPriority = 0;
 pub const SDL_ThreadPriority_SDL_THREAD_PRIORITY_NORMAL: SDL_ThreadPriority = 1;
 pub const SDL_ThreadPriority_SDL_THREAD_PRIORITY_HIGH: SDL_ThreadPriority = 2;
 pub const SDL_ThreadPriority_SDL_THREAD_PRIORITY_TIME_CRITICAL: SDL_ThreadPriority = 3;
-#[doc = "  The SDL thread priority."]
-#[doc = ""]
-#[doc = "  SDL will make system changes as necessary in order to apply the thread priority."]
-#[doc = "  Code which attempts to control thread state related to priority should be aware"]
-#[doc = "  that calling SDL_SetThreadPriority may alter such state."]
-#[doc = "  SDL_HINT_THREAD_PRIORITY_POLICY can be used to control aspects of this behavior."]
-#[doc = ""]
-#[doc = "  \\note On many systems you require special privileges to set high or time critical priority."]
 pub type SDL_ThreadPriority = ::std::os::raw::c_uint;
-#[doc = " The function passed to SDL_CreateThread()."]
-#[doc = ""]
-#[doc = " \\param data what was passed as `data` to SDL_CreateThread()"]
-#[doc = " \\returns a value that can be reported through SDL_WaitThread()."]
 pub type SDL_ThreadFunction = ::std::option::Option<
     unsafe extern "C" fn(data: *mut ::std::os::raw::c_void) -> ::std::os::raw::c_int,
 >;
 extern "C" {
-    #[doc = " Create a new thread with a default stack size."]
-    #[doc = ""]
-    #[doc = " This is equivalent to calling:"]
-    #[doc = ""]
-    #[doc = " ```c"]
-    #[doc = " SDL_CreateThreadWithStackSize(fn, name, 0, data);"]
-    #[doc = " ```"]
-    #[doc = ""]
-    #[doc = " \\param fn the SDL_ThreadFunction function to call in the new thread"]
-    #[doc = " \\param name the name of the thread"]
-    #[doc = " \\param data a pointer that is passed to `fn`"]
-    #[doc = " \\returns an opaque pointer to the new thread object on success, NULL if the"]
-    #[doc = "          new thread could not be created; call SDL_GetError() for more"]
-    #[doc = "          information."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_CreateThreadWithStackSize"]
-    #[doc = " \\sa SDL_WaitThread"]
     pub fn SDL_CreateThread(
         fn_: SDL_ThreadFunction,
         name: *const ::std::os::raw::c_char,
@@ -2178,45 +1569,6 @@ extern "C" {
     ) -> *mut SDL_Thread;
 }
 extern "C" {
-    #[doc = " Create a new thread with a specific stack size."]
-    #[doc = ""]
-    #[doc = " SDL makes an attempt to report `name` to the system, so that debuggers can"]
-    #[doc = " display it. Not all platforms support this."]
-    #[doc = ""]
-    #[doc = " Thread naming is a little complicated: Most systems have very small limits"]
-    #[doc = " for the string length (Haiku has 32 bytes, Linux currently has 16, Visual"]
-    #[doc = " C++ 6.0 has _nine_!), and possibly other arbitrary rules. You'll have to"]
-    #[doc = " see what happens with your system's debugger. The name should be UTF-8 (but"]
-    #[doc = " using the naming limits of C identifiers is a better bet). There are no"]
-    #[doc = " requirements for thread naming conventions, so long as the string is"]
-    #[doc = " null-terminated UTF-8, but these guidelines are helpful in choosing a name:"]
-    #[doc = ""]
-    #[doc = " https://stackoverflow.com/questions/149932/naming-conventions-for-threads"]
-    #[doc = ""]
-    #[doc = " If a system imposes requirements, SDL will try to munge the string for it"]
-    #[doc = " (truncate, etc), but the original string contents will be available from"]
-    #[doc = " SDL_GetThreadName()."]
-    #[doc = ""]
-    #[doc = " The size (in bytes) of the new stack can be specified. Zero means \"use the"]
-    #[doc = " system default\" which might be wildly different between platforms. x86"]
-    #[doc = " Linux generally defaults to eight megabytes, an embedded device might be a"]
-    #[doc = " few kilobytes instead. You generally need to specify a stack that is a"]
-    #[doc = " multiple of the system's page size (in many cases, this is 4 kilobytes, but"]
-    #[doc = " check your system documentation)."]
-    #[doc = ""]
-    #[doc = " In SDL 2.1, stack size will be folded into the original SDL_CreateThread"]
-    #[doc = " function, but for backwards compatibility, this is currently a separate"]
-    #[doc = " function."]
-    #[doc = ""]
-    #[doc = " \\param fn the SDL_ThreadFunction function to call in the new thread"]
-    #[doc = " \\param name the name of the thread"]
-    #[doc = " \\param stacksize the size, in bytes, to allocate for the new thread stack."]
-    #[doc = " \\param data a pointer that is passed to `fn`"]
-    #[doc = " \\returns an opaque pointer to the new thread object on success, NULL if the"]
-    #[doc = "          new thread could not be created; call SDL_GetError() for more"]
-    #[doc = "          information."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_WaitThread"]
     pub fn SDL_CreateThreadWithStackSize(
         fn_: SDL_ThreadFunction,
         name: *const ::std::os::raw::c_char,
@@ -2225,175 +1577,30 @@ extern "C" {
     ) -> *mut SDL_Thread;
 }
 extern "C" {
-    #[doc = " Get the thread name as it was specified in SDL_CreateThread()."]
-    #[doc = ""]
-    #[doc = " This is internal memory, not to be freed by the caller, and remains valid"]
-    #[doc = " until the specified thread is cleaned up by SDL_WaitThread()."]
-    #[doc = ""]
-    #[doc = " \\param thread the thread to query"]
-    #[doc = " \\returns a pointer to a UTF-8 string that names the specified thread, or"]
-    #[doc = "          NULL if it doesn't have a name."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_CreateThread"]
     pub fn SDL_GetThreadName(thread: *mut SDL_Thread) -> *const ::std::os::raw::c_char;
 }
 extern "C" {
-    #[doc = " Get the thread identifier for the current thread."]
-    #[doc = ""]
-    #[doc = " This thread identifier is as reported by the underlying operating system."]
-    #[doc = " If SDL is running on a platform that does not support threads the return"]
-    #[doc = " value will always be zero."]
-    #[doc = ""]
-    #[doc = " This function also returns a valid thread ID when called from the main"]
-    #[doc = " thread."]
-    #[doc = ""]
-    #[doc = " \\returns the ID of the current thread."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_GetThreadID"]
     pub fn SDL_ThreadID() -> SDL_threadID;
 }
 extern "C" {
-    #[doc = " Get the thread identifier for the specified thread."]
-    #[doc = ""]
-    #[doc = " This thread identifier is as reported by the underlying operating system."]
-    #[doc = " If SDL is running on a platform that does not support threads the return"]
-    #[doc = " value will always be zero."]
-    #[doc = ""]
-    #[doc = " \\param thread the thread to query"]
-    #[doc = " \\returns the ID of the specified thread, or the ID of the current thread if"]
-    #[doc = "          `thread` is NULL."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_ThreadID"]
     pub fn SDL_GetThreadID(thread: *mut SDL_Thread) -> SDL_threadID;
 }
 extern "C" {
-    #[doc = " Set the priority for the current thread."]
-    #[doc = ""]
-    #[doc = " Note that some platforms will not let you alter the priority (or at least,"]
-    #[doc = " promote the thread to a higher priority) at all, and some require you to be"]
-    #[doc = " an administrator account. Be prepared for this to fail."]
-    #[doc = ""]
-    #[doc = " \\param priority the SDL_ThreadPriority to set"]
-    #[doc = " \\returns 0 on success or a negative error code on failure; call"]
-    #[doc = "          SDL_GetError() for more information."]
     pub fn SDL_SetThreadPriority(priority: SDL_ThreadPriority) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[doc = " Wait for a thread to finish."]
-    #[doc = ""]
-    #[doc = " Threads that haven't been detached will remain (as a \"zombie\") until this"]
-    #[doc = " function cleans them up. Not doing so is a resource leak."]
-    #[doc = ""]
-    #[doc = " Once a thread has been cleaned up through this function, the SDL_Thread"]
-    #[doc = " that references it becomes invalid and should not be referenced again. As"]
-    #[doc = " such, only one thread may call SDL_WaitThread() on another."]
-    #[doc = ""]
-    #[doc = " The return code for the thread function is placed in the area pointed to by"]
-    #[doc = " `status`, if `status` is not NULL."]
-    #[doc = ""]
-    #[doc = " You may not wait on a thread that has been used in a call to"]
-    #[doc = " SDL_DetachThread(). Use either that function or this one, but not both, or"]
-    #[doc = " behavior is undefined."]
-    #[doc = ""]
-    #[doc = " It is safe to pass a NULL thread to this function; it is a no-op."]
-    #[doc = ""]
-    #[doc = " Note that the thread pointer is freed by this function and is not valid"]
-    #[doc = " afterward."]
-    #[doc = ""]
-    #[doc = " \\param thread the SDL_Thread pointer that was returned from the"]
-    #[doc = "               SDL_CreateThread() call that started this thread"]
-    #[doc = " \\param status pointer to an integer that will receive the value returned"]
-    #[doc = "               from the thread function by its 'return', or NULL to not"]
-    #[doc = "               receive such value back."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_CreateThread"]
-    #[doc = " \\sa SDL_DetachThread"]
     pub fn SDL_WaitThread(thread: *mut SDL_Thread, status: *mut ::std::os::raw::c_int);
 }
 extern "C" {
-    #[doc = " Let a thread clean up on exit without intervention."]
-    #[doc = ""]
-    #[doc = " A thread may be \"detached\" to signify that it should not remain until"]
-    #[doc = " another thread has called SDL_WaitThread() on it. Detaching a thread is"]
-    #[doc = " useful for long-running threads that nothing needs to synchronize with or"]
-    #[doc = " further manage. When a detached thread is done, it simply goes away."]
-    #[doc = ""]
-    #[doc = " There is no way to recover the return code of a detached thread. If you"]
-    #[doc = " need this, don't detach the thread and instead use SDL_WaitThread()."]
-    #[doc = ""]
-    #[doc = " Once a thread is detached, you should usually assume the SDL_Thread isn't"]
-    #[doc = " safe to reference again, as it will become invalid immediately upon the"]
-    #[doc = " detached thread's exit, instead of remaining until someone has called"]
-    #[doc = " SDL_WaitThread() to finally clean it up. As such, don't detach the same"]
-    #[doc = " thread more than once."]
-    #[doc = ""]
-    #[doc = " If a thread has already exited when passed to SDL_DetachThread(), it will"]
-    #[doc = " stop waiting for a call to SDL_WaitThread() and clean up immediately. It is"]
-    #[doc = " not safe to detach a thread that might be used with SDL_WaitThread()."]
-    #[doc = ""]
-    #[doc = " You may not call SDL_WaitThread() on a thread that has been detached. Use"]
-    #[doc = " either that function or this one, but not both, or behavior is undefined."]
-    #[doc = ""]
-    #[doc = " It is safe to pass NULL to this function; it is a no-op."]
-    #[doc = ""]
-    #[doc = " \\param thread the SDL_Thread pointer that was returned from the"]
-    #[doc = "               SDL_CreateThread() call that started this thread"]
-    #[doc = ""]
-    #[doc = " \\since This function is available since SDL 2.0.2."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_CreateThread"]
-    #[doc = " \\sa SDL_WaitThread"]
     pub fn SDL_DetachThread(thread: *mut SDL_Thread);
 }
 extern "C" {
-    #[doc = " Create a piece of thread-local storage."]
-    #[doc = ""]
-    #[doc = " This creates an identifier that is globally visible to all threads but"]
-    #[doc = " refers to data that is thread-specific."]
-    #[doc = ""]
-    #[doc = " \\returns the newly created thread local storage identifier or 0 on error."]
-    #[doc = ""]
-    #[doc = " \\since This function is available since SDL 2.0.0."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_TLSGet"]
-    #[doc = " \\sa SDL_TLSSet"]
     pub fn SDL_TLSCreate() -> SDL_TLSID;
 }
 extern "C" {
-    #[doc = " Get the current thread's value associated with a thread local storage ID."]
-    #[doc = ""]
-    #[doc = " \\param id the thread local storage ID"]
-    #[doc = " \\returns the value associated with the ID for the current thread or NULL if"]
-    #[doc = "          no value has been set; call SDL_GetError() for more information."]
-    #[doc = ""]
-    #[doc = " \\since This function is available since SDL 2.0.0."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_TLSCreate"]
-    #[doc = " \\sa SDL_TLSSet"]
     pub fn SDL_TLSGet(id: SDL_TLSID) -> *mut ::std::os::raw::c_void;
 }
 extern "C" {
-    #[doc = " Set the current thread's value associated with a thread local storage ID."]
-    #[doc = ""]
-    #[doc = " The function prototype for `destructor` is:"]
-    #[doc = ""]
-    #[doc = " ```c"]
-    #[doc = " void destructor(void *value)"]
-    #[doc = " ```"]
-    #[doc = ""]
-    #[doc = " where its parameter `value` is what was passed as `value` to SDL_TLSSet()."]
-    #[doc = ""]
-    #[doc = " \\param id the thread local storage ID"]
-    #[doc = " \\param value the value to associate with the ID for the current thread"]
-    #[doc = " \\param destructor a function called when the thread exits, to free the"]
-    #[doc = "                   value"]
-    #[doc = " \\returns 0 on success or a negative error code on failure; call"]
-    #[doc = "          SDL_GetError() for more information."]
-    #[doc = ""]
-    #[doc = " \\since This function is available since SDL 2.0.0."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_TLSCreate"]
-    #[doc = " \\sa SDL_TLSGet"]
     pub fn SDL_TLSSet(
         id: SDL_TLSID,
         value: *const ::std::os::raw::c_void,
@@ -2401,19 +1608,12 @@ extern "C" {
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[doc = " Cleanup all TLS data for this thread."]
     pub fn SDL_TLSCleanup();
 }
-#[doc = " This is the read/write operation structure -- very basic."]
 #[repr(C)]
 #[derive(Copy, Clone)]
 pub struct SDL_RWops {
-    #[doc = "  Return the size of the file in this rwops, or -1 if unknown"]
     pub size: ::std::option::Option<unsafe extern "C" fn(context: *mut SDL_RWops) -> Sint64>,
-    #[doc = "  Seek to \\c offset relative to \\c whence, one of stdio's whence values:"]
-    #[doc = "  RW_SEEK_SET, RW_SEEK_CUR, RW_SEEK_END"]
-    #[doc = ""]
-    #[doc = "  \\return the final offset in the data stream, or -1 on error."]
     pub seek: ::std::option::Option<
         unsafe extern "C" fn(
             context: *mut SDL_RWops,
@@ -2421,10 +1621,6 @@ pub struct SDL_RWops {
             whence: ::std::os::raw::c_int,
         ) -> Sint64,
     >,
-    #[doc = "  Read up to \\c maxnum objects each of size \\c size from the data"]
-    #[doc = "  stream to the area pointed at by \\c ptr."]
-    #[doc = ""]
-    #[doc = "  \\return the number of objects read, or 0 at error or end of file."]
     pub read: ::std::option::Option<
         unsafe extern "C" fn(
             context: *mut SDL_RWops,
@@ -2433,10 +1629,6 @@ pub struct SDL_RWops {
             maxnum: size_t,
         ) -> size_t,
     >,
-    #[doc = "  Write exactly \\c num objects each of size \\c size from the area"]
-    #[doc = "  pointed at by \\c ptr to data stream."]
-    #[doc = ""]
-    #[doc = "  \\return the number of objects written, or 0 at error or end of file."]
     pub write: ::std::option::Option<
         unsafe extern "C" fn(
             context: *mut SDL_RWops,
@@ -2445,9 +1637,6 @@ pub struct SDL_RWops {
             num: size_t,
         ) -> size_t,
     >,
-    #[doc = "  Close and free an allocated SDL_RWops structure."]
-    #[doc = ""]
-    #[doc = "  \\return 0 if successful or -1 on write error when flushing data."]
     pub close: ::std::option::Option<
         unsafe extern "C" fn(context: *mut SDL_RWops) -> ::std::os::raw::c_int,
     >,
@@ -2783,46 +1972,9 @@ extern "C" {
     pub fn SDL_FreeRW(area: *mut SDL_RWops);
 }
 extern "C" {
-    #[doc = " Use this macro to get the size of the data stream in an SDL_RWops."]
-    #[doc = ""]
-    #[doc = " \\param context the SDL_RWops to get the size of the data stream from"]
-    #[doc = " \\returns the size of the data stream in the SDL_RWops on success, -1 if"]
-    #[doc = "          unknown or a negative error code on failure; call SDL_GetError()"]
-    #[doc = "          for more information."]
-    #[doc = ""]
-    #[doc = " \\since This function is available since SDL 2.0.0."]
     pub fn SDL_RWsize(context: *mut SDL_RWops) -> Sint64;
 }
 extern "C" {
-    #[doc = " Seek within an SDL_RWops data stream."]
-    #[doc = ""]
-    #[doc = " This function seeks to byte `offset`, relative to `whence`."]
-    #[doc = ""]
-    #[doc = " `whence` may be any of the following values:"]
-    #[doc = ""]
-    #[doc = " - `RW_SEEK_SET`: seek from the beginning of data"]
-    #[doc = " - `RW_SEEK_CUR`: seek relative to current read point"]
-    #[doc = " - `RW_SEEK_END`: seek relative to the end of data"]
-    #[doc = ""]
-    #[doc = " If this stream can not seek, it will return -1."]
-    #[doc = ""]
-    #[doc = " SDL_RWseek() is actually a wrapper function that calls the SDL_RWops's"]
-    #[doc = " `seek` method appropriately, to simplify application development."]
-    #[doc = ""]
-    #[doc = " \\param context a pointer to an SDL_RWops structure"]
-    #[doc = " \\param offset an offset in bytes, relative to **whence** location; can be"]
-    #[doc = "               negative"]
-    #[doc = " \\param whence any of `RW_SEEK_SET`, `RW_SEEK_CUR`, `RW_SEEK_END`"]
-    #[doc = " \\returns the final offset in the data stream after the seek or -1 on error."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_RWclose"]
-    #[doc = " \\sa SDL_RWFromConstMem"]
-    #[doc = " \\sa SDL_RWFromFile"]
-    #[doc = " \\sa SDL_RWFromFP"]
-    #[doc = " \\sa SDL_RWFromMem"]
-    #[doc = " \\sa SDL_RWread"]
-    #[doc = " \\sa SDL_RWtell"]
-    #[doc = " \\sa SDL_RWwrite"]
     pub fn SDL_RWseek(
         context: *mut SDL_RWops,
         offset: Sint64,
@@ -2830,52 +1982,9 @@ extern "C" {
     ) -> Sint64;
 }
 extern "C" {
-    #[doc = " Determine the current read/write offset in an SDL_RWops data stream."]
-    #[doc = ""]
-    #[doc = " SDL_RWtell is actually a wrapper function that calls the SDL_RWops's `seek`"]
-    #[doc = " method, with an offset of 0 bytes from `RW_SEEK_CUR`, to simplify"]
-    #[doc = " application development."]
-    #[doc = ""]
-    #[doc = " \\param context a SDL_RWops data stream object from which to get the current"]
-    #[doc = "                offset"]
-    #[doc = " \\returns the current offset in the stream, or -1 if the information can not"]
-    #[doc = "          be determined."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_RWclose"]
-    #[doc = " \\sa SDL_RWFromConstMem"]
-    #[doc = " \\sa SDL_RWFromFile"]
-    #[doc = " \\sa SDL_RWFromFP"]
-    #[doc = " \\sa SDL_RWFromMem"]
-    #[doc = " \\sa SDL_RWread"]
-    #[doc = " \\sa SDL_RWseek"]
-    #[doc = " \\sa SDL_RWwrite"]
     pub fn SDL_RWtell(context: *mut SDL_RWops) -> Sint64;
 }
 extern "C" {
-    #[doc = " Read from a data source."]
-    #[doc = ""]
-    #[doc = " This function reads up to `maxnum` objects each of size `size` from the"]
-    #[doc = " data source to the area pointed at by `ptr`. This function may read less"]
-    #[doc = " objects than requested. It will return zero when there has been an error or"]
-    #[doc = " the data stream is completely read."]
-    #[doc = ""]
-    #[doc = " SDL_RWread() is actually a function wrapper that calls the SDL_RWops's"]
-    #[doc = " `read` method appropriately, to simplify application development."]
-    #[doc = ""]
-    #[doc = " \\param context a pointer to an SDL_RWops structure"]
-    #[doc = " \\param ptr a pointer to a buffer to read data into"]
-    #[doc = " \\param size the size of each object to read, in bytes"]
-    #[doc = " \\param maxnum the maximum number of objects to be read"]
-    #[doc = " \\returns the number of objects read, or 0 at error or end of file; call"]
-    #[doc = "          SDL_GetError() for more information."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_RWclose"]
-    #[doc = " \\sa SDL_RWFromConstMem"]
-    #[doc = " \\sa SDL_RWFromFile"]
-    #[doc = " \\sa SDL_RWFromFP"]
-    #[doc = " \\sa SDL_RWFromMem"]
-    #[doc = " \\sa SDL_RWseek"]
-    #[doc = " \\sa SDL_RWwrite"]
     pub fn SDL_RWread(
         context: *mut SDL_RWops,
         ptr: *mut ::std::os::raw::c_void,
@@ -2884,30 +1993,6 @@ extern "C" {
     ) -> size_t;
 }
 extern "C" {
-    #[doc = " Write to an SDL_RWops data stream."]
-    #[doc = ""]
-    #[doc = " This function writes exactly `num` objects each of size `size` from the"]
-    #[doc = " area pointed at by `ptr` to the stream. If this fails for any reason, it'll"]
-    #[doc = " return less than `num` to demonstrate how far the write progressed. On"]
-    #[doc = " success, it returns `num`."]
-    #[doc = ""]
-    #[doc = " SDL_RWwrite is actually a function wrapper that calls the SDL_RWops's"]
-    #[doc = " `write` method appropriately, to simplify application development."]
-    #[doc = ""]
-    #[doc = " \\param context a pointer to an SDL_RWops structure"]
-    #[doc = " \\param ptr a pointer to a buffer containing data to write"]
-    #[doc = " \\param size the size of an object to write, in bytes"]
-    #[doc = " \\param num the number of objects to write"]
-    #[doc = " \\returns the number of objects written, which will be less than **num** on"]
-    #[doc = "          error; call SDL_GetError() for more information."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_RWclose"]
-    #[doc = " \\sa SDL_RWFromConstMem"]
-    #[doc = " \\sa SDL_RWFromFile"]
-    #[doc = " \\sa SDL_RWFromFP"]
-    #[doc = " \\sa SDL_RWFromMem"]
-    #[doc = " \\sa SDL_RWread"]
-    #[doc = " \\sa SDL_RWseek"]
     pub fn SDL_RWwrite(
         context: *mut SDL_RWops,
         ptr: *const ::std::os::raw::c_void,
@@ -2916,45 +2001,9 @@ extern "C" {
     ) -> size_t;
 }
 extern "C" {
-    #[doc = " Close and free an allocated SDL_RWops structure."]
-    #[doc = ""]
-    #[doc = " SDL_RWclose() closes and cleans up the SDL_RWops stream. It releases any"]
-    #[doc = " resources used by the stream and frees the SDL_RWops itself with"]
-    #[doc = " SDL_FreeRW(). This returns 0 on success, or -1 if the stream failed to"]
-    #[doc = " flush to its output (e.g. to disk)."]
-    #[doc = ""]
-    #[doc = " Note that if this fails to flush the stream to disk, this function reports"]
-    #[doc = " an error, but the SDL_RWops is still invalid once this function returns."]
-    #[doc = ""]
-    #[doc = " SDL_RWclose() is actually a macro that calls the SDL_RWops's `close` method"]
-    #[doc = " appropriately, to simplify application development."]
-    #[doc = ""]
-    #[doc = " \\param context SDL_RWops structure to close"]
-    #[doc = " \\returns 0 on success or a negative error code on failure; call"]
-    #[doc = "          SDL_GetError() for more information."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_RWFromConstMem"]
-    #[doc = " \\sa SDL_RWFromFile"]
-    #[doc = " \\sa SDL_RWFromFP"]
-    #[doc = " \\sa SDL_RWFromMem"]
-    #[doc = " \\sa SDL_RWread"]
-    #[doc = " \\sa SDL_RWseek"]
-    #[doc = " \\sa SDL_RWwrite"]
     pub fn SDL_RWclose(context: *mut SDL_RWops) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[doc = " Load all the data from an SDL data stream."]
-    #[doc = ""]
-    #[doc = " The data is allocated with a zero byte at the end (null terminated) for"]
-    #[doc = " convenience. This extra byte is not included in the value reported via"]
-    #[doc = " `datasize`."]
-    #[doc = ""]
-    #[doc = " The data should be freed with SDL_free()."]
-    #[doc = ""]
-    #[doc = " \\param src the SDL_RWops to read all available data from"]
-    #[doc = " \\param datasize if not NULL, will store the number of bytes read"]
-    #[doc = " \\param freesrc if non-zero, calls SDL_RWclose() on `src` before returning"]
-    #[doc = " \\returns the data, or NULL if there was an error."]
     pub fn SDL_LoadFile_RW(
         src: *mut SDL_RWops,
         datasize: *mut size_t,
@@ -2962,17 +2011,6 @@ extern "C" {
     ) -> *mut ::std::os::raw::c_void;
 }
 extern "C" {
-    #[doc = " Load all the data from a file path."]
-    #[doc = ""]
-    #[doc = " The data is allocated with a zero byte at the end (null terminated) for"]
-    #[doc = " convenience. This extra byte is not included in the value reported via"]
-    #[doc = " `datasize`."]
-    #[doc = ""]
-    #[doc = " The data should be freed with SDL_free()."]
-    #[doc = ""]
-    #[doc = " \\param file the path to read all available data from"]
-    #[doc = " \\param datasize if not NULL, will store the number of bytes read"]
-    #[doc = " \\returns the data, or NULL if there was an error."]
     pub fn SDL_LoadFile(
         file: *const ::std::os::raw::c_char,
         datasize: *mut size_t,
@@ -3020,37 +2058,7 @@ extern "C" {
 extern "C" {
     pub fn SDL_WriteBE64(dst: *mut SDL_RWops, value: Uint64) -> size_t;
 }
-#[doc = "  \\brief Audio format flags."]
-#[doc = ""]
-#[doc = "  These are what the 16 bits in SDL_AudioFormat currently mean..."]
-#[doc = "  (Unspecified bits are always zero)."]
-#[doc = ""]
-#[doc = "  \\verbatim"]
-#[doc = "++-----------------------sample is signed if set"]
-#[doc = "||"]
-#[doc = "||       ++-----------sample is bigendian if set"]
-#[doc = "||       ||"]
-#[doc = "||       ||          ++---sample is float if set"]
-#[doc = "||       ||          ||"]
-#[doc = "||       ||          || +---sample bit size---+"]
-#[doc = "||       ||          || |                     |"]
-#[doc = "15 14 13 12 11 10 09 08 07 06 05 04 03 02 01 00"]
-#[doc = "\\endverbatim"]
-#[doc = ""]
-#[doc = "  There are macros in SDL 2.0 and later to query these bits."]
 pub type SDL_AudioFormat = Uint16;
-#[doc = "  This function is called when the audio device needs more data."]
-#[doc = ""]
-#[doc = "  \\param userdata An application-specific parameter saved in"]
-#[doc = "                  the SDL_AudioSpec structure"]
-#[doc = "  \\param stream A pointer to the audio data buffer."]
-#[doc = "  \\param len    The length of that buffer in bytes."]
-#[doc = ""]
-#[doc = "  Once the callback returns, the buffer will no longer be valid."]
-#[doc = "  Stereo samples are stored in a LRLRLR ordering."]
-#[doc = ""]
-#[doc = "  You can choose to avoid callbacks and use SDL_QueueAudio() instead, if"]
-#[doc = "  you like. Just open your audio device with a NULL callback."]
 pub type SDL_AudioCallback = ::std::option::Option<
     unsafe extern "C" fn(
         userdata: *mut ::std::os::raw::c_void,
@@ -3058,36 +2066,17 @@ pub type SDL_AudioCallback = ::std::option::Option<
         len: ::std::os::raw::c_int,
     ),
 >;
-#[doc = "  The calculated values in this structure are calculated by SDL_OpenAudio()."]
-#[doc = ""]
-#[doc = "  For multi-channel audio, the default SDL channel mapping is:"]
-#[doc = "  2:  FL FR                       (stereo)"]
-#[doc = "  3:  FL FR LFE                   (2.1 surround)"]
-#[doc = "  4:  FL FR BL BR                 (quad)"]
-#[doc = "  5:  FL FR FC BL BR              (quad + center)"]
-#[doc = "  6:  FL FR FC LFE SL SR          (5.1 surround - last two can also be BL BR)"]
-#[doc = "  7:  FL FR FC LFE BC SL SR       (6.1 surround)"]
-#[doc = "  8:  FL FR FC LFE BL BR SL SR    (7.1 surround)"]
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
 pub struct SDL_AudioSpec {
-    #[doc = "< DSP frequency -- samples per second"]
     pub freq: ::std::os::raw::c_int,
-    #[doc = "< Audio data format"]
     pub format: SDL_AudioFormat,
-    #[doc = "< Number of channels: 1 mono, 2 stereo"]
     pub channels: Uint8,
-    #[doc = "< Audio buffer silence value (calculated)"]
     pub silence: Uint8,
-    #[doc = "< Audio buffer size in sample FRAMES (total samples divided by channel count)"]
     pub samples: Uint16,
-    #[doc = "< Necessary for some compile environments"]
     pub padding: Uint16,
-    #[doc = "< Audio buffer size in bytes (calculated)"]
     pub size: Uint32,
-    #[doc = "< Callback that feeds the audio device (NULL to use SDL_QueueAudio())."]
     pub callback: SDL_AudioCallback,
-    #[doc = "< Userdata passed to callback (ignored for NULL callbacks)."]
     pub userdata: *mut ::std::os::raw::c_void,
 }
 #[test]
@@ -3198,27 +2187,16 @@ pub type SDL_AudioFilter =
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct SDL_AudioCVT {
-    #[doc = "< Set to 1 if conversion possible"]
     pub needed: ::std::os::raw::c_int,
-    #[doc = "< Source audio format"]
     pub src_format: SDL_AudioFormat,
-    #[doc = "< Target audio format"]
     pub dst_format: SDL_AudioFormat,
-    #[doc = "< Rate conversion increment"]
     pub rate_incr: f64,
-    #[doc = "< Buffer to hold entire audio data"]
     pub buf: *mut Uint8,
-    #[doc = "< Length of original audio buffer"]
     pub len: ::std::os::raw::c_int,
-    #[doc = "< Length of converted audio buffer"]
     pub len_cvt: ::std::os::raw::c_int,
-    #[doc = "< buffer must be len*len_mult big"]
     pub len_mult: ::std::os::raw::c_int,
-    #[doc = "< Given len, final size is len*len_ratio"]
     pub len_ratio: f64,
-    #[doc = "< NULL-terminated list of filter functions"]
     pub filters: [SDL_AudioFilter; 10usize],
-    #[doc = "< Current audio conversion function"]
     pub filter_index: ::std::os::raw::c_int,
 }
 #[test]
@@ -3357,171 +2335,25 @@ extern "C" {
     pub fn SDL_AudioQuit();
 }
 extern "C" {
-    #[doc = " Get the name of the current audio driver."]
-    #[doc = ""]
-    #[doc = " The returned string points to internal static memory and thus never becomes"]
-    #[doc = " invalid, even if you quit the audio subsystem and initialize a new driver"]
-    #[doc = " (although such a case would return a different static string from another"]
-    #[doc = " call to this function, of course). As such, you should not modify or free"]
-    #[doc = " the returned string."]
-    #[doc = ""]
-    #[doc = " \\returns the name of the current audio driver or NULL if no driver has been"]
-    #[doc = "          initialized."]
-    #[doc = ""]
-    #[doc = " \\since This function is available since SDL 2.0.0."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_AudioInit"]
     pub fn SDL_GetCurrentAudioDriver() -> *const ::std::os::raw::c_char;
 }
 extern "C" {
-    #[doc = " This function is a legacy means of opening the audio device."]
-    #[doc = ""]
-    #[doc = " This function remains for compatibility with SDL 1.2, but also because it's"]
-    #[doc = " slightly easier to use than the new functions in SDL 2.0. The new, more"]
-    #[doc = " powerful, and preferred way to do this is SDL_OpenAudioDevice()."]
-    #[doc = ""]
-    #[doc = " This function is roughly equivalent to:"]
-    #[doc = ""]
-    #[doc = " ```c++"]
-    #[doc = " SDL_OpenAudioDevice(NULL, 0, desired, obtained, SDL_AUDIO_ALLOW_ANY_CHANGE);"]
-    #[doc = " ```"]
-    #[doc = ""]
-    #[doc = " With two notable exceptions:"]
-    #[doc = ""]
-    #[doc = " - If `obtained` is NULL, we use `desired` (and allow no changes), which"]
-    #[doc = "   means desired will be modified to have the correct values for silence,"]
-    #[doc = "   etc, and SDL will convert any differences between your app's specific"]
-    #[doc = "   request and the hardware behind the scenes."]
-    #[doc = " - The return value is always success or failure, and not a device ID, which"]
-    #[doc = "   means you can only have one device open at a time with this function."]
-    #[doc = ""]
-    #[doc = " \\param desired an SDL_AudioSpec structure representing the desired output"]
-    #[doc = "                format. Please refer to the SDL_OpenAudioDevice"]
-    #[doc = "                documentation for details on how to prepare this structure."]
-    #[doc = " \\param obtained an SDL_AudioSpec structure filled in with the actual"]
-    #[doc = "                 parameters, or NULL."]
-    #[doc = " \\returns 0 if successful, placing the actual hardware parameters in the"]
-    #[doc = "          structure pointed to by `obtained`."]
-    #[doc = ""]
-    #[doc = "          If `obtained` is NULL, the audio data passed to the callback"]
-    #[doc = "          function will be guaranteed to be in the requested format, and"]
-    #[doc = "          will be automatically converted to the actual hardware audio"]
-    #[doc = "          format if necessary. If `obtained` is NULL, `desired` will have"]
-    #[doc = "          fields modified."]
-    #[doc = ""]
-    #[doc = "          This function returns a negative error code on failure to open the"]
-    #[doc = "          audio device or failure to set up the audio thread; call"]
-    #[doc = "          SDL_GetError() for more information."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_CloseAudio"]
-    #[doc = " \\sa SDL_LockAudio"]
-    #[doc = " \\sa SDL_PauseAudio"]
-    #[doc = " \\sa SDL_UnlockAudio"]
     pub fn SDL_OpenAudio(
         desired: *mut SDL_AudioSpec,
         obtained: *mut SDL_AudioSpec,
     ) -> ::std::os::raw::c_int;
 }
-#[doc = "  SDL Audio Device IDs."]
-#[doc = ""]
-#[doc = "  A successful call to SDL_OpenAudio() is always device id 1, and legacy"]
-#[doc = "  SDL audio APIs assume you want this device ID. SDL_OpenAudioDevice() calls"]
-#[doc = "  always returns devices >= 2 on success. The legacy calls are good both"]
-#[doc = "  for backwards compatibility and when you don't care about multiple,"]
-#[doc = "  specific, or capture devices."]
 pub type SDL_AudioDeviceID = Uint32;
 extern "C" {
-    #[doc = " Get the number of built-in audio devices."]
-    #[doc = ""]
-    #[doc = " This function is only valid after successfully initializing the audio"]
-    #[doc = " subsystem."]
-    #[doc = ""]
-    #[doc = " Note that audio capture support is not implemented as of SDL 2.0.4, so the"]
-    #[doc = " `iscapture` parameter is for future expansion and should always be zero for"]
-    #[doc = " now."]
-    #[doc = ""]
-    #[doc = " This function will return -1 if an explicit list of devices can't be"]
-    #[doc = " determined. Returning -1 is not an error. For example, if SDL is set up to"]
-    #[doc = " talk to a remote audio server, it can't list every one available on the"]
-    #[doc = " Internet, but it will still allow a specific host to be specified in"]
-    #[doc = " SDL_OpenAudioDevice()."]
-    #[doc = ""]
-    #[doc = " In many common cases, when this function returns a value <= 0, it can still"]
-    #[doc = " successfully open the default device (NULL for first argument of"]
-    #[doc = " SDL_OpenAudioDevice())."]
-    #[doc = ""]
-    #[doc = " This function may trigger a complete redetect of available hardware. It"]
-    #[doc = " should not be called for each iteration of a loop, but rather once at the"]
-    #[doc = " start of a loop:"]
-    #[doc = ""]
-    #[doc = " ```c++"]
-    #[doc = " // Don't do this:"]
-    #[doc = " for (int i = 0; i < SDL_GetNumAudioDevices(0); i++)"]
-    #[doc = ""]
-    #[doc = " // do this instead:"]
-    #[doc = " const int count = SDL_GetNumAudioDevices(0);"]
-    #[doc = " for (int i = 0; i < count; ++i) { do_something_here(); }"]
-    #[doc = " ```"]
-    #[doc = ""]
-    #[doc = " \\param iscapture zero to request playback devices, non-zero to request"]
-    #[doc = "                  recording devices"]
-    #[doc = " \\returns the number of available devices exposed by the current driver or"]
-    #[doc = "          -1 if an explicit list of devices can't be determined. A return"]
-    #[doc = "          value of -1 does not necessarily mean an error condition."]
-    #[doc = ""]
-    #[doc = " \\since This function is available since SDL 2.0.0."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_GetAudioDeviceName"]
-    #[doc = " \\sa SDL_OpenAudioDevice"]
     pub fn SDL_GetNumAudioDevices(iscapture: ::std::os::raw::c_int) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[doc = " Get the human-readable name of a specific audio device."]
-    #[doc = ""]
-    #[doc = " This function is only valid after successfully initializing the audio"]
-    #[doc = " subsystem. The values returned by this function reflect the latest call to"]
-    #[doc = " SDL_GetNumAudioDevices(); re-call that function to redetect available"]
-    #[doc = " hardware."]
-    #[doc = ""]
-    #[doc = " The string returned by this function is UTF-8 encoded, read-only, and"]
-    #[doc = " managed internally. You are not to free it. If you need to keep the string"]
-    #[doc = " for any length of time, you should make your own copy of it, as it will be"]
-    #[doc = " invalid next time any of several other SDL functions are called."]
-    #[doc = ""]
-    #[doc = " \\param index the index of the audio device; valid values range from 0 to"]
-    #[doc = "              SDL_GetNumAudioDevices() - 1"]
-    #[doc = " \\param iscapture non-zero to query the list of recording devices, zero to"]
-    #[doc = "                  query the list of output devices."]
-    #[doc = " \\returns the name of the audio device at the requested index, or NULL on"]
-    #[doc = "          error."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_GetNumAudioDevices"]
     pub fn SDL_GetAudioDeviceName(
         index: ::std::os::raw::c_int,
         iscapture: ::std::os::raw::c_int,
     ) -> *const ::std::os::raw::c_char;
 }
 extern "C" {
-    #[doc = " Get the preferred audio format of a specific audio device."]
-    #[doc = ""]
-    #[doc = " This function is only valid after a successfully initializing the audio"]
-    #[doc = " subsystem. The values returned by this function reflect the latest call to"]
-    #[doc = " SDL_GetNumAudioDevices(); re-call that function to redetect available"]
-    #[doc = " hardware."]
-    #[doc = ""]
-    #[doc = " `spec` will be filled with the sample rate, sample format, and channel"]
-    #[doc = " count. All other values in the structure are filled with 0. When the"]
-    #[doc = " supported struct members are 0, SDL was unable to get the property from the"]
-    #[doc = " backend."]
-    #[doc = ""]
-    #[doc = " \\param index the index of the audio device; valid values range from 0 to"]
-    #[doc = "              SDL_GetNumAudioDevices() - 1"]
-    #[doc = " \\param iscapture non-zero to query the list of recording devices, zero to"]
-    #[doc = "                  query the list of output devices."]
-    #[doc = " \\param spec The SDL_AudioSpec to be initialized by this function."]
-    #[doc = " \\returns 0 on success, nonzero on error"]
-    #[doc = ""]
-    #[doc = " \\sa SDL_GetNumAudioDevices"]
     pub fn SDL_GetAudioDeviceSpec(
         index: ::std::os::raw::c_int,
         iscapture: ::std::os::raw::c_int,
@@ -3529,109 +2361,6 @@ extern "C" {
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[doc = " Open a specific audio device."]
-    #[doc = ""]
-    #[doc = " SDL_OpenAudio(), unlike this function, always acts on device ID 1. As such,"]
-    #[doc = " this function will never return a 1 so as not to conflict with the legacy"]
-    #[doc = " function."]
-    #[doc = ""]
-    #[doc = " Please note that SDL 2.0 before 2.0.5 did not support recording; as such,"]
-    #[doc = " this function would fail if `iscapture` was not zero. Starting with SDL"]
-    #[doc = " 2.0.5, recording is implemented and this value can be non-zero."]
-    #[doc = ""]
-    #[doc = " Passing in a `device` name of NULL requests the most reasonable default"]
-    #[doc = " (and is equivalent to what SDL_OpenAudio() does to choose a device). The"]
-    #[doc = " `device` name is a UTF-8 string reported by SDL_GetAudioDeviceName(), but"]
-    #[doc = " some drivers allow arbitrary and driver-specific strings, such as a"]
-    #[doc = " hostname/IP address for a remote audio server, or a filename in the"]
-    #[doc = " diskaudio driver."]
-    #[doc = ""]
-    #[doc = " When filling in the desired audio spec structure:"]
-    #[doc = ""]
-    #[doc = " - `desired->freq` should be the frequency in sample-frames-per-second (Hz)."]
-    #[doc = " - `desired->format` should be the audio format (`AUDIO_S16SYS`, etc)."]
-    #[doc = " - `desired->samples` is the desired size of the audio buffer, in _sample"]
-    #[doc = "   frames_ (with stereo output, two samples--left and right--would make a"]
-    #[doc = "   single sample frame). This number should be a power of two, and may be"]
-    #[doc = "   adjusted by the audio driver to a value more suitable for the hardware."]
-    #[doc = "   Good values seem to range between 512 and 8096 inclusive, depending on"]
-    #[doc = "   the application and CPU speed. Smaller values reduce latency, but can"]
-    #[doc = "   lead to underflow if the application is doing heavy processing and cannot"]
-    #[doc = "   fill the audio buffer in time. Note that the number of sample frames is"]
-    #[doc = "   directly related to time by the following formula: `ms ="]
-    #[doc = "   (sampleframes*1000)/freq`"]
-    #[doc = " - `desired->size` is the size in _bytes_ of the audio buffer, and is"]
-    #[doc = "   calculated by SDL_OpenAudioDevice(). You don't initialize this."]
-    #[doc = " - `desired->silence` is the value used to set the buffer to silence, and is"]
-    #[doc = "   calculated by SDL_OpenAudioDevice(). You don't initialize this."]
-    #[doc = " - `desired->callback` should be set to a function that will be called when"]
-    #[doc = "   the audio device is ready for more data. It is passed a pointer to the"]
-    #[doc = "   audio buffer, and the length in bytes of the audio buffer. This function"]
-    #[doc = "   usually runs in a separate thread, and so you should protect data"]
-    #[doc = "   structures that it accesses by calling SDL_LockAudioDevice() and"]
-    #[doc = "   SDL_UnlockAudioDevice() in your code. Alternately, you may pass a NULL"]
-    #[doc = "   pointer here, and call SDL_QueueAudio() with some frequency, to queue"]
-    #[doc = "   more audio samples to be played (or for capture devices, call"]
-    #[doc = "   SDL_DequeueAudio() with some frequency, to obtain audio samples)."]
-    #[doc = " - `desired->userdata` is passed as the first parameter to your callback"]
-    #[doc = "   function. If you passed a NULL callback, this value is ignored."]
-    #[doc = ""]
-    #[doc = " `allowed_changes` can have the following flags OR'd together:"]
-    #[doc = ""]
-    #[doc = " - `SDL_AUDIO_ALLOW_FREQUENCY_CHANGE`"]
-    #[doc = " - `SDL_AUDIO_ALLOW_FORMAT_CHANGE`"]
-    #[doc = " - `SDL_AUDIO_ALLOW_CHANNELS_CHANGE`"]
-    #[doc = " - `SDL_AUDIO_ALLOW_ANY_CHANGE`"]
-    #[doc = ""]
-    #[doc = " These flags specify how SDL should behave when a device cannot offer a"]
-    #[doc = " specific feature. If the application requests a feature that the hardware"]
-    #[doc = " doesn't offer, SDL will always try to get the closest equivalent."]
-    #[doc = ""]
-    #[doc = " For example, if you ask for float32 audio format, but the sound card only"]
-    #[doc = " supports int16, SDL will set the hardware to int16. If you had set"]
-    #[doc = " SDL_AUDIO_ALLOW_FORMAT_CHANGE, SDL will change the format in the `obtained`"]
-    #[doc = " structure. If that flag was *not* set, SDL will prepare to convert your"]
-    #[doc = " callback's float32 audio to int16 before feeding it to the hardware and"]
-    #[doc = " will keep the originally requested format in the `obtained` structure."]
-    #[doc = ""]
-    #[doc = " If your application can only handle one specific data format, pass a zero"]
-    #[doc = " for `allowed_changes` and let SDL transparently handle any differences."]
-    #[doc = ""]
-    #[doc = " An opened audio device starts out paused, and should be enabled for playing"]
-    #[doc = " by calling SDL_PauseAudioDevice(devid, 0) when you are ready for your audio"]
-    #[doc = " callback function to be called. Since the audio driver may modify the"]
-    #[doc = " requested size of the audio buffer, you should allocate any local mixing"]
-    #[doc = " buffers after you open the audio device."]
-    #[doc = ""]
-    #[doc = " The audio callback runs in a separate thread in most cases; you can prevent"]
-    #[doc = " race conditions between your callback and other threads without fully"]
-    #[doc = " pausing playback with SDL_LockAudioDevice(). For more information about the"]
-    #[doc = " callback, see SDL_AudioSpec."]
-    #[doc = ""]
-    #[doc = " \\param device a UTF-8 string reported by SDL_GetAudioDeviceName() or a"]
-    #[doc = "               driver-specific name as appropriate. NULL requests the most"]
-    #[doc = "               reasonable default device."]
-    #[doc = " \\param iscapture non-zero to specify a device should be opened for"]
-    #[doc = "                  recording, not playback"]
-    #[doc = " \\param desired an SDL_AudioSpec structure representing the desired output"]
-    #[doc = "                format; see SDL_OpenAudio() for more information"]
-    #[doc = " \\param obtained an SDL_AudioSpec structure filled in with the actual output"]
-    #[doc = "                 format; see SDL_OpenAudio() for more information"]
-    #[doc = " \\param allowed_changes 0, or one or more flags OR'd together"]
-    #[doc = " \\returns a valid device ID that is > 0 on success or 0 on failure; call"]
-    #[doc = "          SDL_GetError() for more information."]
-    #[doc = ""]
-    #[doc = "          For compatibility with SDL 1.2, this will never return 1, since"]
-    #[doc = "          SDL reserves that ID for the legacy SDL_OpenAudio() function."]
-    #[doc = ""]
-    #[doc = " \\since This function is available since SDL 2.0.0."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_CloseAudioDevice"]
-    #[doc = " \\sa SDL_GetAudioDeviceName"]
-    #[doc = " \\sa SDL_LockAudioDevice"]
-    #[doc = " \\sa SDL_OpenAudio"]
-    #[doc = " \\sa SDL_PauseAudioDevice"]
-    #[doc = " \\sa SDL_UnlockAudioDevice"]
     pub fn SDL_OpenAudioDevice(
         device: *const ::std::os::raw::c_char,
         iscapture: ::std::os::raw::c_int,
@@ -3657,83 +2386,6 @@ extern "C" {
     pub fn SDL_PauseAudioDevice(dev: SDL_AudioDeviceID, pause_on: ::std::os::raw::c_int);
 }
 extern "C" {
-    #[doc = " Load the audio data of a WAVE file into memory."]
-    #[doc = ""]
-    #[doc = " Loading a WAVE file requires `src`, `spec`, `audio_buf` and `audio_len` to"]
-    #[doc = " be valid pointers. The entire data portion of the file is then loaded into"]
-    #[doc = " memory and decoded if necessary."]
-    #[doc = ""]
-    #[doc = " If `freesrc` is non-zero, the data source gets automatically closed and"]
-    #[doc = " freed before the function returns."]
-    #[doc = ""]
-    #[doc = " Supported formats are RIFF WAVE files with the formats PCM (8, 16, 24, and"]
-    #[doc = " 32 bits), IEEE Float (32 bits), Microsoft ADPCM and IMA ADPCM (4 bits), and"]
-    #[doc = " A-law and mu-law (8 bits). Other formats are currently unsupported and"]
-    #[doc = " cause an error."]
-    #[doc = ""]
-    #[doc = " If this function succeeds, the pointer returned by it is equal to `spec`"]
-    #[doc = " and the pointer to the audio data allocated by the function is written to"]
-    #[doc = " `audio_buf` and its length in bytes to `audio_len`. The SDL_AudioSpec"]
-    #[doc = " members `freq`, `channels`, and `format` are set to the values of the audio"]
-    #[doc = " data in the buffer. The `samples` member is set to a sane default and all"]
-    #[doc = " others are set to zero."]
-    #[doc = ""]
-    #[doc = " It's necessary to use SDL_FreeWAV() to free the audio data returned in"]
-    #[doc = " `audio_buf` when it is no longer used."]
-    #[doc = ""]
-    #[doc = " Because of the underspecification of the .WAV format, there are many"]
-    #[doc = " problematic files in the wild that cause issues with strict decoders. To"]
-    #[doc = " provide compatibility with these files, this decoder is lenient in regards"]
-    #[doc = " to the truncation of the file, the fact chunk, and the size of the RIFF"]
-    #[doc = " chunk. The hints `SDL_HINT_WAVE_RIFF_CHUNK_SIZE`,"]
-    #[doc = " `SDL_HINT_WAVE_TRUNCATION`, and `SDL_HINT_WAVE_FACT_CHUNK` can be used to"]
-    #[doc = " tune the behavior of the loading process."]
-    #[doc = ""]
-    #[doc = " Any file that is invalid (due to truncation, corruption, or wrong values in"]
-    #[doc = " the headers), too big, or unsupported causes an error. Additionally, any"]
-    #[doc = " critical I/O error from the data source will terminate the loading process"]
-    #[doc = " with an error. The function returns NULL on error and in all cases (with"]
-    #[doc = " the exception of `src` being NULL), an appropriate error message will be"]
-    #[doc = " set."]
-    #[doc = ""]
-    #[doc = " It is required that the data source supports seeking."]
-    #[doc = ""]
-    #[doc = " Example:"]
-    #[doc = ""]
-    #[doc = " ```c++"]
-    #[doc = " SDL_LoadWAV_RW(SDL_RWFromFile(\"sample.wav\", \"rb\"), 1, &spec, &buf, &len);"]
-    #[doc = " ```"]
-    #[doc = ""]
-    #[doc = " Note that the SDL_LoadWAV macro does this same thing for you, but in a less"]
-    #[doc = " messy way:"]
-    #[doc = ""]
-    #[doc = " ```c++"]
-    #[doc = " SDL_LoadWAV(\"sample.wav\", &spec, &buf, &len);"]
-    #[doc = " ```"]
-    #[doc = ""]
-    #[doc = " \\param src The data source for the WAVE data"]
-    #[doc = " \\param freesrc If non-zero, SDL will _always_ free the data source"]
-    #[doc = " \\param spec An SDL_AudioSpec that will be filled in with the wave file's"]
-    #[doc = "             format details"]
-    #[doc = " \\param audio_buf A pointer filled with the audio data, allocated by the"]
-    #[doc = "                  function."]
-    #[doc = " \\param audio_len A pointer filled with the length of the audio data buffer"]
-    #[doc = "                  in bytes"]
-    #[doc = " \\returns This function, if successfully called, returns `spec`, which will"]
-    #[doc = "          be filled with the audio data format of the wave source data."]
-    #[doc = "          `audio_buf` will be filled with a pointer to an allocated buffer"]
-    #[doc = "          containing the audio data, and `audio_len` is filled with the"]
-    #[doc = "          length of that audio buffer in bytes."]
-    #[doc = ""]
-    #[doc = "          This function returns NULL if the .WAV file cannot be opened, uses"]
-    #[doc = "          an unknown data format, or is corrupt; call SDL_GetError() for"]
-    #[doc = "          more information."]
-    #[doc = ""]
-    #[doc = "          When the application is done with the data returned in"]
-    #[doc = "          `audio_buf`, it should call SDL_FreeWAV() to dispose of it."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_FreeWAV"]
-    #[doc = " \\sa SDL_LoadWAV"]
     pub fn SDL_LoadWAV_RW(
         src: *mut SDL_RWops,
         freesrc: ::std::os::raw::c_int,
@@ -3743,48 +2395,9 @@ extern "C" {
     ) -> *mut SDL_AudioSpec;
 }
 extern "C" {
-    #[doc = " Free data previously allocated with SDL_LoadWAV() or SDL_LoadWAV_RW()."]
-    #[doc = ""]
-    #[doc = " After a WAVE file has been opened with SDL_LoadWAV() or SDL_LoadWAV_RW()"]
-    #[doc = " its data can eventually be freed with SDL_FreeWAV(). It is safe to call"]
-    #[doc = " this function with a NULL pointer."]
-    #[doc = ""]
-    #[doc = " \\param audio_buf a pointer to the buffer created by SDL_LoadWAV() or"]
-    #[doc = "                  SDL_LoadWAV_RW()"]
-    #[doc = ""]
-    #[doc = " \\sa SDL_LoadWAV"]
-    #[doc = " \\sa SDL_LoadWAV_RW"]
     pub fn SDL_FreeWAV(audio_buf: *mut Uint8);
 }
 extern "C" {
-    #[doc = " Initialize an SDL_AudioCVT structure for conversion."]
-    #[doc = ""]
-    #[doc = " Before an SDL_AudioCVT structure can be used to convert audio data it must"]
-    #[doc = " be initialized with source and destination information."]
-    #[doc = ""]
-    #[doc = " This function will zero out every field of the SDL_AudioCVT, so it must be"]
-    #[doc = " called before the application fills in the final buffer information."]
-    #[doc = ""]
-    #[doc = " Once this function has returned successfully, and reported that a"]
-    #[doc = " conversion is necessary, the application fills in the rest of the fields in"]
-    #[doc = " SDL_AudioCVT, now that it knows how large a buffer it needs to allocate,"]
-    #[doc = " and then can call SDL_ConvertAudio() to complete the conversion."]
-    #[doc = ""]
-    #[doc = " \\param cvt an SDL_AudioCVT structure filled in with audio conversion"]
-    #[doc = "            information"]
-    #[doc = " \\param src_format the source format of the audio data; for more info see"]
-    #[doc = "                   SDL_AudioFormat"]
-    #[doc = " \\param src_channels the number of channels in the source"]
-    #[doc = " \\param src_rate the frequency (sample-frames-per-second) of the source"]
-    #[doc = " \\param dst_format the destination format of the audio data; for more info"]
-    #[doc = "                   see SDL_AudioFormat"]
-    #[doc = " \\param dst_channels the number of channels in the destination"]
-    #[doc = " \\param dst_rate the frequency (sample-frames-per-second) of the destination"]
-    #[doc = " \\returns 1 if the audio filter is prepared, 0 if no conversion is needed,"]
-    #[doc = "          or a negative error code on failure; call SDL_GetError() for more"]
-    #[doc = "          information."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_ConvertAudio"]
     pub fn SDL_BuildAudioCVT(
         cvt: *mut SDL_AudioCVT,
         src_format: SDL_AudioFormat,
@@ -3796,40 +2409,6 @@ extern "C" {
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[doc = " Convert audio data to a desired audio format."]
-    #[doc = ""]
-    #[doc = " This function does the actual audio data conversion, after the application"]
-    #[doc = " has called SDL_BuildAudioCVT() to prepare the conversion information and"]
-    #[doc = " then filled in the buffer details."]
-    #[doc = ""]
-    #[doc = " Once the application has initialized the `cvt` structure using"]
-    #[doc = " SDL_BuildAudioCVT(), allocated an audio buffer and filled it with audio"]
-    #[doc = " data in the source format, this function will convert the buffer, in-place,"]
-    #[doc = " to the desired format."]
-    #[doc = ""]
-    #[doc = " The data conversion may go through several passes; any given pass may"]
-    #[doc = " possibly temporarily increase the size of the data. For example, SDL might"]
-    #[doc = " expand 16-bit data to 32 bits before resampling to a lower frequency,"]
-    #[doc = " shrinking the data size after having grown it briefly. Since the supplied"]
-    #[doc = " buffer will be both the source and destination, converting as necessary"]
-    #[doc = " in-place, the application must allocate a buffer that will fully contain"]
-    #[doc = " the data during its largest conversion pass. After SDL_BuildAudioCVT()"]
-    #[doc = " returns, the application should set the `cvt->len` field to the size, in"]
-    #[doc = " bytes, of the source data, and allocate a buffer that is `cvt->len *"]
-    #[doc = " cvt->len_mult` bytes long for the `buf` field."]
-    #[doc = ""]
-    #[doc = " The source data should be copied into this buffer before the call to"]
-    #[doc = " SDL_ConvertAudio(). Upon successful return, this buffer will contain the"]
-    #[doc = " converted audio, and `cvt->len_cvt` will be the size of the converted data,"]
-    #[doc = " in bytes. Any bytes in the buffer past `cvt->len_cvt` are undefined once"]
-    #[doc = " this function returns."]
-    #[doc = ""]
-    #[doc = " \\param cvt an SDL_AudioCVT structure that was previously set up by"]
-    #[doc = "            SDL_BuildAudioCVT()."]
-    #[doc = " \\returns 0 if the conversion was completed successfully or a negative error"]
-    #[doc = "          code on failure; call SDL_GetError() for more information."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_BuildAudioCVT"]
     pub fn SDL_ConvertAudio(cvt: *mut SDL_AudioCVT) -> ::std::os::raw::c_int;
 }
 #[repr(C)]
@@ -3839,22 +2418,6 @@ pub struct _SDL_AudioStream {
 }
 pub type SDL_AudioStream = _SDL_AudioStream;
 extern "C" {
-    #[doc = " Create a new audio stream."]
-    #[doc = ""]
-    #[doc = " \\param src_format The format of the source audio"]
-    #[doc = " \\param src_channels The number of channels of the source audio"]
-    #[doc = " \\param src_rate The sampling rate of the source audio"]
-    #[doc = " \\param dst_format The format of the desired audio output"]
-    #[doc = " \\param dst_channels The number of channels of the desired audio output"]
-    #[doc = " \\param dst_rate The sampling rate of the desired audio output"]
-    #[doc = " \\returns 0 on success, or -1 on error."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_AudioStreamPut"]
-    #[doc = " \\sa SDL_AudioStreamGet"]
-    #[doc = " \\sa SDL_AudioStreamAvailable"]
-    #[doc = " \\sa SDL_AudioStreamFlush"]
-    #[doc = " \\sa SDL_AudioStreamClear"]
-    #[doc = " \\sa SDL_FreeAudioStream"]
     pub fn SDL_NewAudioStream(
         src_format: SDL_AudioFormat,
         src_channels: Uint8,
@@ -3865,19 +2428,6 @@ extern "C" {
     ) -> *mut SDL_AudioStream;
 }
 extern "C" {
-    #[doc = " Add data to be converted/resampled to the stream."]
-    #[doc = ""]
-    #[doc = " \\param stream The stream the audio data is being added to"]
-    #[doc = " \\param buf A pointer to the audio data to add"]
-    #[doc = " \\param len The number of bytes to write to the stream"]
-    #[doc = " \\returns 0 on success, or -1 on error."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_NewAudioStream"]
-    #[doc = " \\sa SDL_AudioStreamGet"]
-    #[doc = " \\sa SDL_AudioStreamAvailable"]
-    #[doc = " \\sa SDL_AudioStreamFlush"]
-    #[doc = " \\sa SDL_AudioStreamClear"]
-    #[doc = " \\sa SDL_FreeAudioStream"]
     pub fn SDL_AudioStreamPut(
         stream: *mut SDL_AudioStream,
         buf: *const ::std::os::raw::c_void,
@@ -3885,19 +2435,6 @@ extern "C" {
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[doc = " Get converted/resampled data from the stream"]
-    #[doc = ""]
-    #[doc = " \\param stream The stream the audio is being requested from"]
-    #[doc = " \\param buf A buffer to fill with audio data"]
-    #[doc = " \\param len The maximum number of bytes to fill"]
-    #[doc = " \\returns the number of bytes read from the stream, or -1 on error"]
-    #[doc = ""]
-    #[doc = " \\sa SDL_NewAudioStream"]
-    #[doc = " \\sa SDL_AudioStreamPut"]
-    #[doc = " \\sa SDL_AudioStreamAvailable"]
-    #[doc = " \\sa SDL_AudioStreamFlush"]
-    #[doc = " \\sa SDL_AudioStreamClear"]
-    #[doc = " \\sa SDL_FreeAudioStream"]
     pub fn SDL_AudioStreamGet(
         stream: *mut SDL_AudioStream,
         buf: *mut ::std::os::raw::c_void,
@@ -3905,77 +2442,18 @@ extern "C" {
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[doc = " Get the number of converted/resampled bytes available."]
-    #[doc = ""]
-    #[doc = " The stream may be buffering data behind the scenes until it has enough to"]
-    #[doc = " resample correctly, so this number might be lower than what you expect, or"]
-    #[doc = " even be zero. Add more data or flush the stream if you need the data now."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_NewAudioStream"]
-    #[doc = " \\sa SDL_AudioStreamPut"]
-    #[doc = " \\sa SDL_AudioStreamGet"]
-    #[doc = " \\sa SDL_AudioStreamFlush"]
-    #[doc = " \\sa SDL_AudioStreamClear"]
-    #[doc = " \\sa SDL_FreeAudioStream"]
     pub fn SDL_AudioStreamAvailable(stream: *mut SDL_AudioStream) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[doc = " Tell the stream that you're done sending data, and anything being buffered"]
-    #[doc = " should be converted/resampled and made available immediately."]
-    #[doc = ""]
-    #[doc = " It is legal to add more data to a stream after flushing, but there will be"]
-    #[doc = " audio gaps in the output. Generally this is intended to signal the end of"]
-    #[doc = " input, so the complete output becomes available."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_NewAudioStream"]
-    #[doc = " \\sa SDL_AudioStreamPut"]
-    #[doc = " \\sa SDL_AudioStreamGet"]
-    #[doc = " \\sa SDL_AudioStreamAvailable"]
-    #[doc = " \\sa SDL_AudioStreamClear"]
-    #[doc = " \\sa SDL_FreeAudioStream"]
     pub fn SDL_AudioStreamFlush(stream: *mut SDL_AudioStream) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[doc = " Clear any pending data in the stream without converting it"]
-    #[doc = ""]
-    #[doc = " \\sa SDL_NewAudioStream"]
-    #[doc = " \\sa SDL_AudioStreamPut"]
-    #[doc = " \\sa SDL_AudioStreamGet"]
-    #[doc = " \\sa SDL_AudioStreamAvailable"]
-    #[doc = " \\sa SDL_AudioStreamFlush"]
-    #[doc = " \\sa SDL_FreeAudioStream"]
     pub fn SDL_AudioStreamClear(stream: *mut SDL_AudioStream);
 }
 extern "C" {
-    #[doc = " Free an audio stream"]
-    #[doc = ""]
-    #[doc = " \\sa SDL_NewAudioStream"]
-    #[doc = " \\sa SDL_AudioStreamPut"]
-    #[doc = " \\sa SDL_AudioStreamGet"]
-    #[doc = " \\sa SDL_AudioStreamAvailable"]
-    #[doc = " \\sa SDL_AudioStreamFlush"]
-    #[doc = " \\sa SDL_AudioStreamClear"]
     pub fn SDL_FreeAudioStream(stream: *mut SDL_AudioStream);
 }
 extern "C" {
-    #[doc = " This function is a legacy means of mixing audio."]
-    #[doc = ""]
-    #[doc = " This function is equivalent to calling"]
-    #[doc = ""]
-    #[doc = " ```c++"]
-    #[doc = " SDL_MixAudioFormat(dst, src, format, len, volume);"]
-    #[doc = " ```"]
-    #[doc = ""]
-    #[doc = " where `format` is the obtained format of the audio device from the legacy"]
-    #[doc = " SDL_OpenAudio() function."]
-    #[doc = ""]
-    #[doc = " \\param dst the destination for the mixed audio"]
-    #[doc = " \\param src the source audio buffer to be mixed"]
-    #[doc = " \\param len the length of the audio buffer in bytes"]
-    #[doc = " \\param volume ranges from 0 - 128, and should be set to SDL_MIX_MAXVOLUME"]
-    #[doc = "               for full audio volume"]
-    #[doc = ""]
-    #[doc = " \\sa SDL_MixAudioFormat"]
     pub fn SDL_MixAudio(
         dst: *mut Uint8,
         src: *const Uint8,
@@ -3984,32 +2462,6 @@ extern "C" {
     );
 }
 extern "C" {
-    #[doc = " Mix audio data in a specified format."]
-    #[doc = ""]
-    #[doc = " This takes an audio buffer `src` of `len` bytes of `format` data and mixes"]
-    #[doc = " it into `dst`, performing addition, volume adjustment, and overflow"]
-    #[doc = " clipping. The buffer pointed to by `dst` must also be `len` bytes of"]
-    #[doc = " `format` data."]
-    #[doc = ""]
-    #[doc = " This is provided for convenience -- you can mix your own audio data."]
-    #[doc = ""]
-    #[doc = " Do not use this function for mixing together more than two streams of"]
-    #[doc = " sample data. The output from repeated application of this function may be"]
-    #[doc = " distorted by clipping, because there is no accumulator with greater range"]
-    #[doc = " than the input (not to mention this being an inefficient way of doing it)."]
-    #[doc = ""]
-    #[doc = " It is a common misconception that this function is required to write audio"]
-    #[doc = " data to an output stream in an audio callback. While you can do that,"]
-    #[doc = " SDL_MixAudioFormat() is really only needed when you're mixing a single"]
-    #[doc = " audio stream with a volume adjustment."]
-    #[doc = ""]
-    #[doc = " \\param dst the destination for the mixed audio"]
-    #[doc = " \\param src the source audio buffer to be mixed"]
-    #[doc = " \\param format the SDL_AudioFormat structure representing the desired audio"]
-    #[doc = "               format"]
-    #[doc = " \\param len the length of the audio buffer in bytes"]
-    #[doc = " \\param volume ranges from 0 - 128, and should be set to SDL_MIX_MAXVOLUME"]
-    #[doc = "               for full audio volume"]
     pub fn SDL_MixAudioFormat(
         dst: *mut Uint8,
         src: *const Uint8,
@@ -4019,51 +2471,6 @@ extern "C" {
     );
 }
 extern "C" {
-    #[doc = " Queue more audio on non-callback devices."]
-    #[doc = ""]
-    #[doc = " If you are looking to retrieve queued audio from a non-callback capture"]
-    #[doc = " device, you want SDL_DequeueAudio() instead. SDL_QueueAudio() will return"]
-    #[doc = " -1 to signify an error if you use it with capture devices."]
-    #[doc = ""]
-    #[doc = " SDL offers two ways to feed audio to the device: you can either supply a"]
-    #[doc = " callback that SDL triggers with some frequency to obtain more audio (pull"]
-    #[doc = " method), or you can supply no callback, and then SDL will expect you to"]
-    #[doc = " supply data at regular intervals (push method) with this function."]
-    #[doc = ""]
-    #[doc = " There are no limits on the amount of data you can queue, short of"]
-    #[doc = " exhaustion of address space. Queued data will drain to the device as"]
-    #[doc = " necessary without further intervention from you. If the device needs audio"]
-    #[doc = " but there is not enough queued, it will play silence to make up the"]
-    #[doc = " difference. This means you will have skips in your audio playback if you"]
-    #[doc = " aren't routinely queueing sufficient data."]
-    #[doc = ""]
-    #[doc = " This function copies the supplied data, so you are safe to free it when the"]
-    #[doc = " function returns. This function is thread-safe, but queueing to the same"]
-    #[doc = " device from two threads at once does not promise which buffer will be"]
-    #[doc = " queued first."]
-    #[doc = ""]
-    #[doc = " You may not queue audio on a device that is using an application-supplied"]
-    #[doc = " callback; doing so returns an error. You have to use the audio callback or"]
-    #[doc = " queue audio with this function, but not both."]
-    #[doc = ""]
-    #[doc = " You should not call SDL_LockAudio() on the device before queueing; SDL"]
-    #[doc = " handles locking internally for this function."]
-    #[doc = ""]
-    #[doc = " Note that SDL2"]
-    #[doc = " [https://discourse.libsdl.org/t/sdl2-support-for-planar-audio/31263/3 does"]
-    #[doc = " not support planar audio]. You will need to resample from planar audio"]
-    #[doc = " formats into a non-planar one (see SDL_AudioFormat) before queuing audio."]
-    #[doc = ""]
-    #[doc = " \\param dev the device ID to which we will queue audio"]
-    #[doc = " \\param data the data to queue to the device for later playback"]
-    #[doc = " \\param len the number of bytes (not samples!) to which `data` points"]
-    #[doc = " \\returns 0 on success or a negative error code on failure; call"]
-    #[doc = "          SDL_GetError() for more information."]
-    #[doc = ""]
-    #[doc = " \\since This function is available since SDL 2.0.4."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_ClearQueuedAudio"]
-    #[doc = " \\sa SDL_GetQueuedAudioSize"]
     pub fn SDL_QueueAudio(
         dev: SDL_AudioDeviceID,
         data: *const ::std::os::raw::c_void,
@@ -4071,50 +2478,6 @@ extern "C" {
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[doc = " Dequeue more audio on non-callback devices."]
-    #[doc = ""]
-    #[doc = " If you are looking to queue audio for output on a non-callback playback"]
-    #[doc = " device, you want SDL_QueueAudio() instead. SDL_DequeueAudio() will always"]
-    #[doc = " return 0 if you use it with playback devices."]
-    #[doc = ""]
-    #[doc = " SDL offers two ways to retrieve audio from a capture device: you can either"]
-    #[doc = " supply a callback that SDL triggers with some frequency as the device"]
-    #[doc = " records more audio data, (push method), or you can supply no callback, and"]
-    #[doc = " then SDL will expect you to retrieve data at regular intervals (pull"]
-    #[doc = " method) with this function."]
-    #[doc = ""]
-    #[doc = " There are no limits on the amount of data you can queue, short of"]
-    #[doc = " exhaustion of address space. Data from the device will keep queuing as"]
-    #[doc = " necessary without further intervention from you. This means you will"]
-    #[doc = " eventually run out of memory if you aren't routinely dequeueing data."]
-    #[doc = ""]
-    #[doc = " Capture devices will not queue data when paused; if you are expecting to"]
-    #[doc = " not need captured audio for some length of time, use SDL_PauseAudioDevice()"]
-    #[doc = " to stop the capture device from queueing more data. This can be useful"]
-    #[doc = " during, say, level loading times. When unpaused, capture devices will start"]
-    #[doc = " queueing data from that point, having flushed any capturable data available"]
-    #[doc = " while paused."]
-    #[doc = ""]
-    #[doc = " This function is thread-safe, but dequeueing from the same device from two"]
-    #[doc = " threads at once does not promise which thread will dequeue data first."]
-    #[doc = ""]
-    #[doc = " You may not dequeue audio from a device that is using an"]
-    #[doc = " application-supplied callback; doing so returns an error. You have to use"]
-    #[doc = " the audio callback, or dequeue audio with this function, but not both."]
-    #[doc = ""]
-    #[doc = " You should not call SDL_LockAudio() on the device before dequeueing; SDL"]
-    #[doc = " handles locking internally for this function."]
-    #[doc = ""]
-    #[doc = " \\param dev the device ID from which we will dequeue audio"]
-    #[doc = " \\param data a pointer into where audio data should be copied"]
-    #[doc = " \\param len the number of bytes (not samples!) to which (data) points"]
-    #[doc = " \\returns the number of bytes dequeued, which could be less than requested;"]
-    #[doc = "          call SDL_GetError() for more information."]
-    #[doc = ""]
-    #[doc = " \\since This function is available since SDL 2.0.5."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_ClearQueuedAudio"]
-    #[doc = " \\sa SDL_GetQueuedAudioSize"]
     pub fn SDL_DequeueAudio(
         dev: SDL_AudioDeviceID,
         data: *mut ::std::os::raw::c_void,
@@ -4122,69 +2485,9 @@ extern "C" {
     ) -> Uint32;
 }
 extern "C" {
-    #[doc = " Get the number of bytes of still-queued audio."]
-    #[doc = ""]
-    #[doc = " For playback devices: this is the number of bytes that have been queued for"]
-    #[doc = " playback with SDL_QueueAudio(), but have not yet been sent to the hardware."]
-    #[doc = ""]
-    #[doc = " Once we've sent it to the hardware, this function can not decide the exact"]
-    #[doc = " byte boundary of what has been played. It's possible that we just gave the"]
-    #[doc = " hardware several kilobytes right before you called this function, but it"]
-    #[doc = " hasn't played any of it yet, or maybe half of it, etc."]
-    #[doc = ""]
-    #[doc = " For capture devices, this is the number of bytes that have been captured by"]
-    #[doc = " the device and are waiting for you to dequeue. This number may grow at any"]
-    #[doc = " time, so this only informs of the lower-bound of available data."]
-    #[doc = ""]
-    #[doc = " You may not queue or dequeue audio on a device that is using an"]
-    #[doc = " application-supplied callback; calling this function on such a device"]
-    #[doc = " always returns 0. You have to use the audio callback or queue audio, but"]
-    #[doc = " not both."]
-    #[doc = ""]
-    #[doc = " You should not call SDL_LockAudio() on the device before querying; SDL"]
-    #[doc = " handles locking internally for this function."]
-    #[doc = ""]
-    #[doc = " \\param dev the device ID of which we will query queued audio size"]
-    #[doc = " \\returns the number of bytes (not samples!) of queued audio."]
-    #[doc = ""]
-    #[doc = " \\since This function is available since SDL 2.0.4."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_ClearQueuedAudio"]
-    #[doc = " \\sa SDL_QueueAudio"]
-    #[doc = " \\sa SDL_DequeueAudio"]
     pub fn SDL_GetQueuedAudioSize(dev: SDL_AudioDeviceID) -> Uint32;
 }
 extern "C" {
-    #[doc = " Drop any queued audio data waiting to be sent to the hardware."]
-    #[doc = ""]
-    #[doc = " Immediately after this call, SDL_GetQueuedAudioSize() will return 0. For"]
-    #[doc = " output devices, the hardware will start playing silence if more audio isn't"]
-    #[doc = " queued. For capture devices, the hardware will start filling the empty"]
-    #[doc = " queue with new data if the capture device isn't paused."]
-    #[doc = ""]
-    #[doc = " This will not prevent playback of queued audio that's already been sent to"]
-    #[doc = " the hardware, as we can not undo that, so expect there to be some fraction"]
-    #[doc = " of a second of audio that might still be heard. This can be useful if you"]
-    #[doc = " want to, say, drop any pending music or any unprocessed microphone input"]
-    #[doc = " during a level change in your game."]
-    #[doc = ""]
-    #[doc = " You may not queue or dequeue audio on a device that is using an"]
-    #[doc = " application-supplied callback; calling this function on such a device"]
-    #[doc = " always returns 0. You have to use the audio callback or queue audio, but"]
-    #[doc = " not both."]
-    #[doc = ""]
-    #[doc = " You should not call SDL_LockAudio() on the device before clearing the"]
-    #[doc = " queue; SDL handles locking internally for this function."]
-    #[doc = ""]
-    #[doc = " This function always succeeds and thus returns void."]
-    #[doc = ""]
-    #[doc = " \\param dev the device ID of which to clear the audio queue"]
-    #[doc = ""]
-    #[doc = " \\since This function is available since SDL 2.0.4."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_GetQueuedAudioSize"]
-    #[doc = " \\sa SDL_QueueAudio"]
-    #[doc = " \\sa SDL_DequeueAudio"]
     pub fn SDL_ClearQueuedAudio(dev: SDL_AudioDeviceID);
 }
 extern "C" {
@@ -4200,444 +2503,84 @@ extern "C" {
     pub fn SDL_UnlockAudioDevice(dev: SDL_AudioDeviceID);
 }
 extern "C" {
-    #[doc = " This function is a legacy means of closing the audio device."]
-    #[doc = ""]
-    #[doc = " This function is equivalent to calling"]
-    #[doc = ""]
-    #[doc = " ```c++"]
-    #[doc = " SDL_CloseAudioDevice(1);"]
-    #[doc = " ```"]
-    #[doc = ""]
-    #[doc = " and is only useful if you used the legacy SDL_OpenAudio() function."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_OpenAudio"]
     pub fn SDL_CloseAudio();
 }
 extern "C" {
-    #[doc = " Use this function to shut down audio processing and close the audio device."]
-    #[doc = ""]
-    #[doc = " The application should close open audio devices once they are no longer"]
-    #[doc = " needed. Calling this function will wait until the device's audio callback"]
-    #[doc = " is not running, release the audio hardware and then clean up internal"]
-    #[doc = " state. No further audio will play from this device once this function"]
-    #[doc = " returns."]
-    #[doc = ""]
-    #[doc = " This function may block briefly while pending audio data is played by the"]
-    #[doc = " hardware, so that applications don't drop the last buffer of data they"]
-    #[doc = " supplied."]
-    #[doc = ""]
-    #[doc = " The device ID is invalid as soon as the device is closed, and is eligible"]
-    #[doc = " for reuse in a new SDL_OpenAudioDevice() call immediately."]
-    #[doc = ""]
-    #[doc = " \\param dev an audio device previously opened with SDL_OpenAudioDevice()"]
-    #[doc = ""]
-    #[doc = " \\sa SDL_OpenAudioDevice"]
     pub fn SDL_CloseAudioDevice(dev: SDL_AudioDeviceID);
 }
 extern "C" {
-    #[doc = " Put UTF-8 text into the clipboard."]
-    #[doc = ""]
-    #[doc = " \\param text the text to store in the clipboard"]
-    #[doc = " \\returns 0 on success or a negative error code on failure; call"]
-    #[doc = "          SDL_GetError() for more information."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_GetClipboardText"]
-    #[doc = " \\sa SDL_HasClipboardText"]
     pub fn SDL_SetClipboardText(text: *const ::std::os::raw::c_char) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[doc = " Get UTF-8 text from the clipboard, which must be freed with SDL_free()."]
-    #[doc = ""]
-    #[doc = " This functions returns NULL if there was not enough memory left for a copy"]
-    #[doc = " of the clipboard's content."]
-    #[doc = ""]
-    #[doc = " \\returns the clipboard text on success or NULL on failure; call"]
-    #[doc = "          SDL_GetError() for more information. Caller must call SDL_free()"]
-    #[doc = "          on the returned pointer when done with it."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_HasClipboardText"]
-    #[doc = " \\sa SDL_SetClipboardText"]
     pub fn SDL_GetClipboardText() -> *mut ::std::os::raw::c_char;
 }
 extern "C" {
-    #[doc = " Query whether the clipboard exists and contains a non-empty text string."]
-    #[doc = ""]
-    #[doc = " \\returns SDL_TRUE if the clipboard has text, or SDL_FALSE if it does not."]
-    #[doc = ""]
-    #[doc = " \\since This function is available since SDL 2.0.0."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_GetClipboardText"]
-    #[doc = " \\sa SDL_SetClipboardText"]
     pub fn SDL_HasClipboardText() -> SDL_bool;
 }
 extern "C" {
-    #[doc = " Get the number of CPU cores available."]
-    #[doc = ""]
-    #[doc = " \\returns the total number of logical CPU cores. On CPUs that include"]
-    #[doc = "          technologies such as hyperthreading, the number of logical cores"]
-    #[doc = "          may be more than the number of physical cores."]
-    #[doc = ""]
-    #[doc = " \\since This function is available since SDL 2.0.0."]
     pub fn SDL_GetCPUCount() -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[doc = " Determine the L1 cache line size of the CPU."]
-    #[doc = ""]
-    #[doc = " This is useful for determining multi-threaded structure padding or SIMD"]
-    #[doc = " prefetch sizes."]
-    #[doc = ""]
-    #[doc = " \\returns the L1 cache line size of the CPU, in bytes."]
-    #[doc = ""]
-    #[doc = " \\since This function is available since SDL 2.0.0."]
     pub fn SDL_GetCPUCacheLineSize() -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[doc = " Determine whether the CPU has the RDTSC instruction."]
-    #[doc = ""]
-    #[doc = " This always returns false on CPUs that aren't using Intel instruction sets."]
-    #[doc = ""]
-    #[doc = " \\returns SDL_TRUE if the CPU has the RDTSC instruction or SDL_FALSE if not."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_Has3DNow"]
-    #[doc = " \\sa SDL_HasAltiVec"]
-    #[doc = " \\sa SDL_HasAVX"]
-    #[doc = " \\sa SDL_HasAVX2"]
-    #[doc = " \\sa SDL_HasMMX"]
-    #[doc = " \\sa SDL_HasSSE"]
-    #[doc = " \\sa SDL_HasSSE2"]
-    #[doc = " \\sa SDL_HasSSE3"]
-    #[doc = " \\sa SDL_HasSSE41"]
-    #[doc = " \\sa SDL_HasSSE42"]
     pub fn SDL_HasRDTSC() -> SDL_bool;
 }
 extern "C" {
-    #[doc = " Determine whether the CPU has AltiVec features."]
-    #[doc = ""]
-    #[doc = " This always returns false on CPUs that aren't using PowerPC instruction"]
-    #[doc = " sets."]
-    #[doc = ""]
-    #[doc = " \\returns SDL_TRUE if the CPU has AltiVec features or SDL_FALSE if not."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_Has3DNow"]
-    #[doc = " \\sa SDL_HasAVX"]
-    #[doc = " \\sa SDL_HasAVX2"]
-    #[doc = " \\sa SDL_HasMMX"]
-    #[doc = " \\sa SDL_HasRDTSC"]
-    #[doc = " \\sa SDL_HasSSE"]
-    #[doc = " \\sa SDL_HasSSE2"]
-    #[doc = " \\sa SDL_HasSSE3"]
-    #[doc = " \\sa SDL_HasSSE41"]
-    #[doc = " \\sa SDL_HasSSE42"]
     pub fn SDL_HasAltiVec() -> SDL_bool;
 }
 extern "C" {
-    #[doc = " Determine whether the CPU has MMX features."]
-    #[doc = ""]
-    #[doc = " This always returns false on CPUs that aren't using Intel instruction sets."]
-    #[doc = ""]
-    #[doc = " \\returns SDL_TRUE if the CPU has MMX features or SDL_FALSE if not."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_Has3DNow"]
-    #[doc = " \\sa SDL_HasAltiVec"]
-    #[doc = " \\sa SDL_HasAVX"]
-    #[doc = " \\sa SDL_HasAVX2"]
-    #[doc = " \\sa SDL_HasRDTSC"]
-    #[doc = " \\sa SDL_HasSSE"]
-    #[doc = " \\sa SDL_HasSSE2"]
-    #[doc = " \\sa SDL_HasSSE3"]
-    #[doc = " \\sa SDL_HasSSE41"]
-    #[doc = " \\sa SDL_HasSSE42"]
     pub fn SDL_HasMMX() -> SDL_bool;
 }
 extern "C" {
-    #[doc = " Determine whether the CPU has 3DNow! features."]
-    #[doc = ""]
-    #[doc = " This always returns false on CPUs that aren't using AMD instruction sets."]
-    #[doc = ""]
-    #[doc = " \\returns SDL_TRUE if the CPU has 3DNow! features or SDL_FALSE if not."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_HasAltiVec"]
-    #[doc = " \\sa SDL_HasAVX"]
-    #[doc = " \\sa SDL_HasAVX2"]
-    #[doc = " \\sa SDL_HasMMX"]
-    #[doc = " \\sa SDL_HasRDTSC"]
-    #[doc = " \\sa SDL_HasSSE"]
-    #[doc = " \\sa SDL_HasSSE2"]
-    #[doc = " \\sa SDL_HasSSE3"]
-    #[doc = " \\sa SDL_HasSSE41"]
-    #[doc = " \\sa SDL_HasSSE42"]
     pub fn SDL_Has3DNow() -> SDL_bool;
 }
 extern "C" {
-    #[doc = " Determine whether the CPU has SSE features."]
-    #[doc = ""]
-    #[doc = " This always returns false on CPUs that aren't using Intel instruction sets."]
-    #[doc = ""]
-    #[doc = " \\returns SDL_TRUE if the CPU has SSE features or SDL_FALSE if not."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_Has3DNow"]
-    #[doc = " \\sa SDL_HasAltiVec"]
-    #[doc = " \\sa SDL_HasAVX"]
-    #[doc = " \\sa SDL_HasAVX2"]
-    #[doc = " \\sa SDL_HasMMX"]
-    #[doc = " \\sa SDL_HasRDTSC"]
-    #[doc = " \\sa SDL_HasSSE2"]
-    #[doc = " \\sa SDL_HasSSE3"]
-    #[doc = " \\sa SDL_HasSSE41"]
-    #[doc = " \\sa SDL_HasSSE42"]
     pub fn SDL_HasSSE() -> SDL_bool;
 }
 extern "C" {
-    #[doc = " Determine whether the CPU has SSE2 features."]
-    #[doc = ""]
-    #[doc = " This always returns false on CPUs that aren't using Intel instruction sets."]
-    #[doc = ""]
-    #[doc = " \\returns SDL_TRUE if the CPU has SSE2 features or SDL_FALSE if not."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_Has3DNow"]
-    #[doc = " \\sa SDL_HasAltiVec"]
-    #[doc = " \\sa SDL_HasAVX"]
-    #[doc = " \\sa SDL_HasAVX2"]
-    #[doc = " \\sa SDL_HasMMX"]
-    #[doc = " \\sa SDL_HasRDTSC"]
-    #[doc = " \\sa SDL_HasSSE"]
-    #[doc = " \\sa SDL_HasSSE3"]
-    #[doc = " \\sa SDL_HasSSE41"]
-    #[doc = " \\sa SDL_HasSSE42"]
     pub fn SDL_HasSSE2() -> SDL_bool;
 }
 extern "C" {
-    #[doc = " Determine whether the CPU has SSE3 features."]
-    #[doc = ""]
-    #[doc = " This always returns false on CPUs that aren't using Intel instruction sets."]
-    #[doc = ""]
-    #[doc = " \\returns SDL_TRUE if the CPU has SSE3 features or SDL_FALSE if not."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_Has3DNow"]
-    #[doc = " \\sa SDL_HasAltiVec"]
-    #[doc = " \\sa SDL_HasAVX"]
-    #[doc = " \\sa SDL_HasAVX2"]
-    #[doc = " \\sa SDL_HasMMX"]
-    #[doc = " \\sa SDL_HasRDTSC"]
-    #[doc = " \\sa SDL_HasSSE"]
-    #[doc = " \\sa SDL_HasSSE2"]
-    #[doc = " \\sa SDL_HasSSE41"]
-    #[doc = " \\sa SDL_HasSSE42"]
     pub fn SDL_HasSSE3() -> SDL_bool;
 }
 extern "C" {
-    #[doc = " Determine whether the CPU has SSE4.1 features."]
-    #[doc = ""]
-    #[doc = " This always returns false on CPUs that aren't using Intel instruction sets."]
-    #[doc = ""]
-    #[doc = " \\returns SDL_TRUE if the CPU has SSE4.1 features or SDL_FALSE if not."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_Has3DNow"]
-    #[doc = " \\sa SDL_HasAltiVec"]
-    #[doc = " \\sa SDL_HasAVX"]
-    #[doc = " \\sa SDL_HasAVX2"]
-    #[doc = " \\sa SDL_HasMMX"]
-    #[doc = " \\sa SDL_HasRDTSC"]
-    #[doc = " \\sa SDL_HasSSE"]
-    #[doc = " \\sa SDL_HasSSE2"]
-    #[doc = " \\sa SDL_HasSSE3"]
-    #[doc = " \\sa SDL_HasSSE42"]
     pub fn SDL_HasSSE41() -> SDL_bool;
 }
 extern "C" {
-    #[doc = " Determine whether the CPU has SSE4.2 features."]
-    #[doc = ""]
-    #[doc = " This always returns false on CPUs that aren't using Intel instruction sets."]
-    #[doc = ""]
-    #[doc = " \\returns SDL_TRUE if the CPU has SSE4.2 features or SDL_FALSE if not."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_Has3DNow"]
-    #[doc = " \\sa SDL_HasAltiVec"]
-    #[doc = " \\sa SDL_HasAVX"]
-    #[doc = " \\sa SDL_HasAVX2"]
-    #[doc = " \\sa SDL_HasMMX"]
-    #[doc = " \\sa SDL_HasRDTSC"]
-    #[doc = " \\sa SDL_HasSSE"]
-    #[doc = " \\sa SDL_HasSSE2"]
-    #[doc = " \\sa SDL_HasSSE3"]
-    #[doc = " \\sa SDL_HasSSE41"]
     pub fn SDL_HasSSE42() -> SDL_bool;
 }
 extern "C" {
-    #[doc = " Determine whether the CPU has AVX features."]
-    #[doc = ""]
-    #[doc = " This always returns false on CPUs that aren't using Intel instruction sets."]
-    #[doc = ""]
-    #[doc = " \\returns SDL_TRUE if the CPU has AVX features or SDL_FALSE if not."]
-    #[doc = ""]
-    #[doc = " \\since This function is available since SDL 2.0.2."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_Has3DNow"]
-    #[doc = " \\sa SDL_HasAltiVec"]
-    #[doc = " \\sa SDL_HasAVX2"]
-    #[doc = " \\sa SDL_HasMMX"]
-    #[doc = " \\sa SDL_HasRDTSC"]
-    #[doc = " \\sa SDL_HasSSE"]
-    #[doc = " \\sa SDL_HasSSE2"]
-    #[doc = " \\sa SDL_HasSSE3"]
-    #[doc = " \\sa SDL_HasSSE41"]
-    #[doc = " \\sa SDL_HasSSE42"]
     pub fn SDL_HasAVX() -> SDL_bool;
 }
 extern "C" {
-    #[doc = " Determine whether the CPU has AVX2 features."]
-    #[doc = ""]
-    #[doc = " This always returns false on CPUs that aren't using Intel instruction sets."]
-    #[doc = ""]
-    #[doc = " \\returns SDL_TRUE if the CPU has AVX2 features or SDL_FALSE if not."]
-    #[doc = ""]
-    #[doc = " \\since This function is available since SDL 2.0.4."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_Has3DNow"]
-    #[doc = " \\sa SDL_HasAltiVec"]
-    #[doc = " \\sa SDL_HasAVX"]
-    #[doc = " \\sa SDL_HasMMX"]
-    #[doc = " \\sa SDL_HasRDTSC"]
-    #[doc = " \\sa SDL_HasSSE"]
-    #[doc = " \\sa SDL_HasSSE2"]
-    #[doc = " \\sa SDL_HasSSE3"]
-    #[doc = " \\sa SDL_HasSSE41"]
-    #[doc = " \\sa SDL_HasSSE42"]
     pub fn SDL_HasAVX2() -> SDL_bool;
 }
 extern "C" {
-    #[doc = " Determine whether the CPU has AVX-512F (foundation) features."]
-    #[doc = ""]
-    #[doc = " This always returns false on CPUs that aren't using Intel instruction sets."]
-    #[doc = ""]
-    #[doc = " \\returns SDL_TRUE if the CPU has AVX-512F features or SDL_FALSE if not."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_HasAVX"]
     pub fn SDL_HasAVX512F() -> SDL_bool;
 }
 extern "C" {
-    #[doc = " Determine whether the CPU has ARM SIMD (ARMv6) features."]
-    #[doc = ""]
-    #[doc = " This is different from ARM NEON, which is a different instruction set."]
-    #[doc = ""]
-    #[doc = " This always returns false on CPUs that aren't using ARM instruction sets."]
-    #[doc = ""]
-    #[doc = " \\returns SDL_TRUE if the CPU has ARM SIMD features or SDL_FALSE if not."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_HasNEON"]
     pub fn SDL_HasARMSIMD() -> SDL_bool;
 }
 extern "C" {
-    #[doc = " Determine whether the CPU has NEON (ARM SIMD) features."]
-    #[doc = ""]
-    #[doc = " This always returns false on CPUs that aren't using ARM instruction sets."]
-    #[doc = ""]
-    #[doc = " \\returns SDL_TRUE if the CPU has ARM NEON features or SDL_FALSE if not."]
     pub fn SDL_HasNEON() -> SDL_bool;
 }
 extern "C" {
-    #[doc = " Get the amount of RAM configured in the system."]
-    #[doc = ""]
-    #[doc = " \\returns the amount of RAM configured in the system in MB."]
-    #[doc = ""]
-    #[doc = " \\since This function is available since SDL 2.0.1."]
     pub fn SDL_GetSystemRAM() -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[doc = " Report the alignment this system needs for SIMD allocations."]
-    #[doc = ""]
-    #[doc = " This will return the minimum number of bytes to which a pointer must be"]
-    #[doc = " aligned to be compatible with SIMD instructions on the current machine. For"]
-    #[doc = " example, if the machine supports SSE only, it will return 16, but if it"]
-    #[doc = " supports AVX-512F, it'll return 64 (etc). This only reports values for"]
-    #[doc = " instruction sets SDL knows about, so if your SDL build doesn't have"]
-    #[doc = " SDL_HasAVX512F(), then it might return 16 for the SSE support it sees and"]
-    #[doc = " not 64 for the AVX-512 instructions that exist but SDL doesn't know about."]
-    #[doc = " Plan accordingly."]
-    #[doc = ""]
-    #[doc = " \\returns the alignment in bytes needed for available, known SIMD"]
-    #[doc = "          instructions."]
     pub fn SDL_SIMDGetAlignment() -> size_t;
 }
 extern "C" {
-    #[doc = " Allocate memory in a SIMD-friendly way."]
-    #[doc = ""]
-    #[doc = " This will allocate a block of memory that is suitable for use with SIMD"]
-    #[doc = " instructions. Specifically, it will be properly aligned and padded for the"]
-    #[doc = " system's supported vector instructions."]
-    #[doc = ""]
-    #[doc = " The memory returned will be padded such that it is safe to read or write an"]
-    #[doc = " incomplete vector at the end of the memory block. This can be useful so you"]
-    #[doc = " don't have to drop back to a scalar fallback at the end of your SIMD"]
-    #[doc = " processing loop to deal with the final elements without overflowing the"]
-    #[doc = " allocated buffer."]
-    #[doc = ""]
-    #[doc = " You must free this memory with SDL_FreeSIMD(), not free() or SDL_free() or"]
-    #[doc = " delete[], etc."]
-    #[doc = ""]
-    #[doc = " Note that SDL will only deal with SIMD instruction sets it is aware of; for"]
-    #[doc = " example, SDL 2.0.8 knows that SSE wants 16-byte vectors (SDL_HasSSE()), and"]
-    #[doc = " AVX2 wants 32 bytes (SDL_HasAVX2()), but doesn't know that AVX-512 wants"]
-    #[doc = " 64. To be clear: if you can't decide to use an instruction set with an"]
-    #[doc = " SDL_Has*() function, don't use that instruction set with memory allocated"]
-    #[doc = " through here."]
-    #[doc = ""]
-    #[doc = " SDL_AllocSIMD(0) will return a non-NULL pointer, assuming the system isn't"]
-    #[doc = " out of memory, but you are not allowed to dereference it (because you only"]
-    #[doc = " own zero bytes of that buffer)."]
-    #[doc = ""]
-    #[doc = " \\param len The length, in bytes, of the block to allocate. The actual"]
-    #[doc = "            allocated block might be larger due to padding, etc."]
-    #[doc = " \\returns a pointer to thenewly-allocated block, NULL if out of memory."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_SIMDAlignment"]
-    #[doc = " \\sa SDL_SIMDRealloc"]
-    #[doc = " \\sa SDL_SIMDFree"]
     pub fn SDL_SIMDAlloc(len: size_t) -> *mut ::std::os::raw::c_void;
 }
 extern "C" {
-    #[doc = " Reallocate memory obtained from SDL_SIMDAlloc"]
-    #[doc = ""]
-    #[doc = " It is not valid to use this function on a pointer from anything but"]
-    #[doc = " SDL_SIMDAlloc(). It can't be used on pointers from malloc, realloc,"]
-    #[doc = " SDL_malloc, memalign, new[], etc."]
-    #[doc = ""]
-    #[doc = " \\param mem The pointer obtained from SDL_SIMDAlloc. This function also"]
-    #[doc = "            accepts NULL, at which point this function is the same as"]
-    #[doc = "            calling SDL_SIMDAlloc with a NULL pointer."]
-    #[doc = " \\param len The length, in bytes, of the block to allocated. The actual"]
-    #[doc = "            allocated block might be larger due to padding, etc. Passing 0"]
-    #[doc = "            will return a non-NULL pointer, assuming the system isn't out of"]
-    #[doc = "            memory."]
-    #[doc = " \\returns a pointer to the newly-reallocated block, NULL if out of memory."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_SIMDAlignment"]
-    #[doc = " \\sa SDL_SIMDAlloc"]
-    #[doc = " \\sa SDL_SIMDFree"]
     pub fn SDL_SIMDRealloc(
         mem: *mut ::std::os::raw::c_void,
         len: size_t,
     ) -> *mut ::std::os::raw::c_void;
 }
 extern "C" {
-    #[doc = " Deallocate memory obtained from SDL_SIMDAlloc"]
-    #[doc = ""]
-    #[doc = " It is not valid to use this function on a pointer from anything but"]
-    #[doc = " SDL_SIMDAlloc() or SDL_SIMDRealloc(). It can't be used on pointers from"]
-    #[doc = " malloc, realloc, SDL_malloc, memalign, new[], etc."]
-    #[doc = ""]
-    #[doc = " However, SDL_SIMDFree(NULL) is a legal no-op."]
-    #[doc = ""]
-    #[doc = " The memory pointed to by `ptr` is no longer valid for access upon return,"]
-    #[doc = " and may be returned to the system or reused by a future allocation. The"]
-    #[doc = " pointer passed to this function is no longer safe to dereference once this"]
-    #[doc = " function returns, and should be discarded."]
-    #[doc = ""]
-    #[doc = " \\param ptr The pointer, returned from SDL_SIMDAlloc or SDL_SIMDRealloc, to"]
-    #[doc = "            deallocate. NULL is a legal no-op."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_SIMDAlloc"]
-    #[doc = " \\sa SDL_SIMDRealloc"]
     pub fn SDL_SIMDFree(ptr: *mut ::std::os::raw::c_void);
 }
 pub const SDL_PixelType_SDL_PIXELTYPE_UNKNOWN: SDL_PixelType = 0;
@@ -4652,12 +2595,10 @@ pub const SDL_PixelType_SDL_PIXELTYPE_ARRAYU16: SDL_PixelType = 8;
 pub const SDL_PixelType_SDL_PIXELTYPE_ARRAYU32: SDL_PixelType = 9;
 pub const SDL_PixelType_SDL_PIXELTYPE_ARRAYF16: SDL_PixelType = 10;
 pub const SDL_PixelType_SDL_PIXELTYPE_ARRAYF32: SDL_PixelType = 11;
-#[doc = " Pixel type."]
 pub type SDL_PixelType = ::std::os::raw::c_uint;
 pub const SDL_BitmapOrder_SDL_BITMAPORDER_NONE: SDL_BitmapOrder = 0;
 pub const SDL_BitmapOrder_SDL_BITMAPORDER_4321: SDL_BitmapOrder = 1;
 pub const SDL_BitmapOrder_SDL_BITMAPORDER_1234: SDL_BitmapOrder = 2;
-#[doc = " Bitmap pixel order, high bit -> low bit."]
 pub type SDL_BitmapOrder = ::std::os::raw::c_uint;
 pub const SDL_PackedOrder_SDL_PACKEDORDER_NONE: SDL_PackedOrder = 0;
 pub const SDL_PackedOrder_SDL_PACKEDORDER_XRGB: SDL_PackedOrder = 1;
@@ -4668,7 +2609,6 @@ pub const SDL_PackedOrder_SDL_PACKEDORDER_XBGR: SDL_PackedOrder = 5;
 pub const SDL_PackedOrder_SDL_PACKEDORDER_BGRX: SDL_PackedOrder = 6;
 pub const SDL_PackedOrder_SDL_PACKEDORDER_ABGR: SDL_PackedOrder = 7;
 pub const SDL_PackedOrder_SDL_PACKEDORDER_BGRA: SDL_PackedOrder = 8;
-#[doc = " Packed component order, high bit -> low bit."]
 pub type SDL_PackedOrder = ::std::os::raw::c_uint;
 pub const SDL_ArrayOrder_SDL_ARRAYORDER_NONE: SDL_ArrayOrder = 0;
 pub const SDL_ArrayOrder_SDL_ARRAYORDER_RGB: SDL_ArrayOrder = 1;
@@ -4677,7 +2617,6 @@ pub const SDL_ArrayOrder_SDL_ARRAYORDER_ARGB: SDL_ArrayOrder = 3;
 pub const SDL_ArrayOrder_SDL_ARRAYORDER_BGR: SDL_ArrayOrder = 4;
 pub const SDL_ArrayOrder_SDL_ARRAYORDER_BGRA: SDL_ArrayOrder = 5;
 pub const SDL_ArrayOrder_SDL_ARRAYORDER_ABGR: SDL_ArrayOrder = 6;
-#[doc = " Array component order, low byte -> high byte."]
 pub type SDL_ArrayOrder = ::std::os::raw::c_uint;
 pub const SDL_PackedLayout_SDL_PACKEDLAYOUT_NONE: SDL_PackedLayout = 0;
 pub const SDL_PackedLayout_SDL_PACKEDLAYOUT_332: SDL_PackedLayout = 1;
@@ -4688,7 +2627,6 @@ pub const SDL_PackedLayout_SDL_PACKEDLAYOUT_565: SDL_PackedLayout = 5;
 pub const SDL_PackedLayout_SDL_PACKEDLAYOUT_8888: SDL_PackedLayout = 6;
 pub const SDL_PackedLayout_SDL_PACKEDLAYOUT_2101010: SDL_PackedLayout = 7;
 pub const SDL_PackedLayout_SDL_PACKEDLAYOUT_1010102: SDL_PackedLayout = 8;
-#[doc = " Packed component layout."]
 pub type SDL_PackedLayout = ::std::os::raw::c_uint;
 pub const SDL_PixelFormatEnum_SDL_PIXELFORMAT_UNKNOWN: SDL_PixelFormatEnum = 0;
 pub const SDL_PixelFormatEnum_SDL_PIXELFORMAT_INDEX1LSB: SDL_PixelFormatEnum = 286261504;
@@ -4732,21 +2670,13 @@ pub const SDL_PixelFormatEnum_SDL_PIXELFORMAT_RGBA32: SDL_PixelFormatEnum = 3768
 pub const SDL_PixelFormatEnum_SDL_PIXELFORMAT_ARGB32: SDL_PixelFormatEnum = 377888772;
 pub const SDL_PixelFormatEnum_SDL_PIXELFORMAT_BGRA32: SDL_PixelFormatEnum = 372645892;
 pub const SDL_PixelFormatEnum_SDL_PIXELFORMAT_ABGR32: SDL_PixelFormatEnum = 373694468;
-#[doc = "< Planar mode: Y + V + U  (3 planes)"]
 pub const SDL_PixelFormatEnum_SDL_PIXELFORMAT_YV12: SDL_PixelFormatEnum = 842094169;
-#[doc = "< Planar mode: Y + U + V  (3 planes)"]
 pub const SDL_PixelFormatEnum_SDL_PIXELFORMAT_IYUV: SDL_PixelFormatEnum = 1448433993;
-#[doc = "< Packed mode: Y0+U0+Y1+V0 (1 plane)"]
 pub const SDL_PixelFormatEnum_SDL_PIXELFORMAT_YUY2: SDL_PixelFormatEnum = 844715353;
-#[doc = "< Packed mode: U0+Y0+V0+Y1 (1 plane)"]
 pub const SDL_PixelFormatEnum_SDL_PIXELFORMAT_UYVY: SDL_PixelFormatEnum = 1498831189;
-#[doc = "< Packed mode: Y0+V0+Y1+U0 (1 plane)"]
 pub const SDL_PixelFormatEnum_SDL_PIXELFORMAT_YVYU: SDL_PixelFormatEnum = 1431918169;
-#[doc = "< Planar mode: Y + U/V interleaved  (2 planes)"]
 pub const SDL_PixelFormatEnum_SDL_PIXELFORMAT_NV12: SDL_PixelFormatEnum = 842094158;
-#[doc = "< Planar mode: Y + V/U interleaved  (2 planes)"]
 pub const SDL_PixelFormatEnum_SDL_PIXELFORMAT_NV21: SDL_PixelFormatEnum = 825382478;
-#[doc = "< Android video texture format"]
 pub const SDL_PixelFormatEnum_SDL_PIXELFORMAT_EXTERNAL_OES: SDL_PixelFormatEnum = 542328143;
 pub type SDL_PixelFormatEnum = ::std::os::raw::c_uint;
 #[repr(C)]
@@ -4871,7 +2801,6 @@ fn bindgen_test_layout_SDL_Palette() {
         )
     );
 }
-#[doc = "  \\note Everything in the pixel format structure is read-only."]
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
 pub struct SDL_PixelFormat {
@@ -5099,28 +3028,9 @@ fn bindgen_test_layout_SDL_PixelFormat() {
     );
 }
 extern "C" {
-    #[doc = " Get the human readable name of a pixel format."]
-    #[doc = ""]
-    #[doc = " \\param format the pixel format to query"]
-    #[doc = " \\returns the human readable name of the specified pixel format or"]
-    #[doc = "          `SDL_PIXELFORMAT_UNKNOWN` if the format isn't recognized."]
-    #[doc = ""]
-    #[doc = " \\since This function is available since SDL 2.0.0."]
     pub fn SDL_GetPixelFormatName(format: Uint32) -> *const ::std::os::raw::c_char;
 }
 extern "C" {
-    #[doc = " Convert one of the enumerated pixel formats to a bpp value and RGBA masks."]
-    #[doc = ""]
-    #[doc = " \\param format one of the SDL_PixelFormatEnum values"]
-    #[doc = " \\param bpp a bits per pixel value; usually 15, 16, or 32"]
-    #[doc = " \\param Rmask a pointer filled in with the red mask for the format"]
-    #[doc = " \\param Gmask a pointer filled in with the green mask for the format"]
-    #[doc = " \\param Bmask a pointer filled in with the blue mask for the format"]
-    #[doc = " \\param Amask a pointer filled in with the alpha mask for the format"]
-    #[doc = " \\returns SDL_TRUE on success or SDL_FALSE if the conversion wasn't"]
-    #[doc = "          possible; call SDL_GetError() for more information."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_MasksToPixelFormatEnum"]
     pub fn SDL_PixelFormatEnumToMasks(
         format: Uint32,
         bpp: *mut ::std::os::raw::c_int,
@@ -5131,19 +3041,6 @@ extern "C" {
     ) -> SDL_bool;
 }
 extern "C" {
-    #[doc = " Convert a bpp value and RGBA masks to an enumerated pixel format."]
-    #[doc = ""]
-    #[doc = " This will return `SDL_PIXELFORMAT_UNKNOWN` if the conversion wasn't"]
-    #[doc = " possible."]
-    #[doc = ""]
-    #[doc = " \\param bpp a bits per pixel value; usually 15, 16, or 32"]
-    #[doc = " \\param Rmask the red mask for the format"]
-    #[doc = " \\param Gmask the green mask for the format"]
-    #[doc = " \\param Bmask the blue mask for the format"]
-    #[doc = " \\param Amask the alpha mask for the format"]
-    #[doc = " \\returns one of the SDL_PixelFormatEnum values"]
-    #[doc = ""]
-    #[doc = " \\sa SDL_PixelFormatEnumToMasks"]
     pub fn SDL_MasksToPixelFormatEnum(
         bpp: ::std::os::raw::c_int,
         Rmask: Uint32,
@@ -5153,67 +3050,21 @@ extern "C" {
     ) -> Uint32;
 }
 extern "C" {
-    #[doc = " Create an SDL_PixelFormat structure corresponding to a pixel format."]
-    #[doc = ""]
-    #[doc = " Returned structure may come from a shared global cache (i.e. not newly"]
-    #[doc = " allocated), and hence should not be modified, especially the palette. Weird"]
-    #[doc = " errors such as `Blit combination not supported` may occur."]
-    #[doc = ""]
-    #[doc = " \\param pixel_format one of the SDL_PixelFormatEnum values"]
-    #[doc = " \\returns the new SDL_PixelFormat structure or NULL on failure; call"]
-    #[doc = "          SDL_GetError() for more information."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_FreeFormat"]
     pub fn SDL_AllocFormat(pixel_format: Uint32) -> *mut SDL_PixelFormat;
 }
 extern "C" {
-    #[doc = " Free an SDL_PixelFormat structure allocated by SDL_AllocFormat()."]
-    #[doc = ""]
-    #[doc = " \\param format the SDL_PixelFormat structure to free"]
-    #[doc = ""]
-    #[doc = " \\sa SDL_AllocFormat"]
     pub fn SDL_FreeFormat(format: *mut SDL_PixelFormat);
 }
 extern "C" {
-    #[doc = " Create a palette structure with the specified number of color entries."]
-    #[doc = ""]
-    #[doc = " The palette entries are initialized to white."]
-    #[doc = ""]
-    #[doc = " \\param ncolors represents the number of color entries in the color palette"]
-    #[doc = " \\returns a new SDL_Palette structure on success or NULL on failure (e.g. if"]
-    #[doc = "          there wasn't enough memory); call SDL_GetError() for more"]
-    #[doc = "          information."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_FreePalette"]
     pub fn SDL_AllocPalette(ncolors: ::std::os::raw::c_int) -> *mut SDL_Palette;
 }
 extern "C" {
-    #[doc = " Set the palette for a pixel format structure."]
-    #[doc = ""]
-    #[doc = " \\param format the SDL_PixelFormat structure that will use the palette"]
-    #[doc = " \\param palette the SDL_Palette structure that will be used"]
-    #[doc = " \\returns 0 on success or a negative error code on failure; call"]
-    #[doc = "          SDL_GetError() for more information."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_AllocPalette"]
-    #[doc = " \\sa SDL_FreePalette"]
     pub fn SDL_SetPixelFormatPalette(
         format: *mut SDL_PixelFormat,
         palette: *mut SDL_Palette,
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[doc = " Set a range of colors in a palette."]
-    #[doc = ""]
-    #[doc = " \\param palette the SDL_Palette structure to modify"]
-    #[doc = " \\param colors an array of SDL_Color structures to copy into the palette"]
-    #[doc = " \\param firstcolor the index of the first palette entry to modify"]
-    #[doc = " \\param ncolors the number of entries to modify"]
-    #[doc = " \\returns 0 on success or a negative error code if not all of the colors"]
-    #[doc = "          could be set; call SDL_GetError() for more information."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_AllocPalette"]
-    #[doc = " \\sa SDL_CreateRGBSurface"]
     pub fn SDL_SetPaletteColors(
         palette: *mut SDL_Palette,
         colors: *const SDL_Color,
@@ -5222,71 +3073,12 @@ extern "C" {
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[doc = " Free a palette created with SDL_AllocPalette()."]
-    #[doc = ""]
-    #[doc = " \\param palette the SDL_Palette structure to be freed"]
-    #[doc = ""]
-    #[doc = " \\sa SDL_AllocPalette"]
     pub fn SDL_FreePalette(palette: *mut SDL_Palette);
 }
 extern "C" {
-    #[doc = " Map an RGB triple to an opaque pixel value for a given pixel format."]
-    #[doc = ""]
-    #[doc = " This function maps the RGB color value to the specified pixel format and"]
-    #[doc = " returns the pixel value best approximating the given RGB color value for"]
-    #[doc = " the given pixel format."]
-    #[doc = ""]
-    #[doc = " If the format has a palette (8-bit) the index of the closest matching color"]
-    #[doc = " in the palette will be returned."]
-    #[doc = ""]
-    #[doc = " If the specified pixel format has an alpha component it will be returned as"]
-    #[doc = " all 1 bits (fully opaque)."]
-    #[doc = ""]
-    #[doc = " If the pixel format bpp (color depth) is less than 32-bpp then the unused"]
-    #[doc = " upper bits of the return value can safely be ignored (e.g., with a 16-bpp"]
-    #[doc = " format the return value can be assigned to a Uint16, and similarly a Uint8"]
-    #[doc = " for an 8-bpp format)."]
-    #[doc = ""]
-    #[doc = " \\param format an SDL_PixelFormat structure describing the pixel format"]
-    #[doc = " \\param r the red component of the pixel in the range 0-255"]
-    #[doc = " \\param g the green component of the pixel in the range 0-255"]
-    #[doc = " \\param b the blue component of the pixel in the range 0-255"]
-    #[doc = " \\returns a pixel value"]
-    #[doc = ""]
-    #[doc = " \\sa SDL_GetRGB"]
-    #[doc = " \\sa SDL_GetRGBA"]
-    #[doc = " \\sa SDL_MapRGBA"]
     pub fn SDL_MapRGB(format: *const SDL_PixelFormat, r: Uint8, g: Uint8, b: Uint8) -> Uint32;
 }
 extern "C" {
-    #[doc = " Map an RGBA quadruple to a pixel value for a given pixel format."]
-    #[doc = ""]
-    #[doc = " This function maps the RGBA color value to the specified pixel format and"]
-    #[doc = " returns the pixel value best approximating the given RGBA color value for"]
-    #[doc = " the given pixel format."]
-    #[doc = ""]
-    #[doc = " If the specified pixel format has no alpha component the alpha value will"]
-    #[doc = " be ignored (as it will be in formats with a palette)."]
-    #[doc = ""]
-    #[doc = " If the format has a palette (8-bit) the index of the closest matching color"]
-    #[doc = " in the palette will be returned."]
-    #[doc = ""]
-    #[doc = " If the pixel format bpp (color depth) is less than 32-bpp then the unused"]
-    #[doc = " upper bits of the return value can safely be ignored (e.g., with a 16-bpp"]
-    #[doc = " format the return value can be assigned to a Uint16, and similarly a Uint8"]
-    #[doc = " for an 8-bpp format)."]
-    #[doc = ""]
-    #[doc = " \\param format an SDL_PixelFormat structure describing the format of the"]
-    #[doc = "               pixel"]
-    #[doc = " \\param r the red component of the pixel in the range 0-255"]
-    #[doc = " \\param g the green component of the pixel in the range 0-255"]
-    #[doc = " \\param b the blue component of the pixel in the range 0-255"]
-    #[doc = " \\param a the alpha component of the pixel in the range 0-255"]
-    #[doc = " \\returns a pixel value"]
-    #[doc = ""]
-    #[doc = " \\sa SDL_GetRGB"]
-    #[doc = " \\sa SDL_GetRGBA"]
-    #[doc = " \\sa SDL_MapRGB"]
     pub fn SDL_MapRGBA(
         format: *const SDL_PixelFormat,
         r: Uint8,
@@ -5296,23 +3088,6 @@ extern "C" {
     ) -> Uint32;
 }
 extern "C" {
-    #[doc = " Get RGB values from a pixel in the specified format."]
-    #[doc = ""]
-    #[doc = " This function uses the entire 8-bit [0..255] range when converting color"]
-    #[doc = " components from pixel formats with less than 8-bits per RGB component"]
-    #[doc = " (e.g., a completely white pixel in 16-bit RGB565 format would return [0xff,"]
-    #[doc = " 0xff, 0xff] not [0xf8, 0xfc, 0xf8])."]
-    #[doc = ""]
-    #[doc = " \\param pixel a pixel value"]
-    #[doc = " \\param format an SDL_PixelFormat structure describing the format of the"]
-    #[doc = "               pixel"]
-    #[doc = " \\param r a pointer filled in with the red component"]
-    #[doc = " \\param g a pointer filled in with the green component"]
-    #[doc = " \\param b a pointer filled in with the blue component"]
-    #[doc = ""]
-    #[doc = " \\sa SDL_GetRGBA"]
-    #[doc = " \\sa SDL_MapRGB"]
-    #[doc = " \\sa SDL_MapRGBA"]
     pub fn SDL_GetRGB(
         pixel: Uint32,
         format: *const SDL_PixelFormat,
@@ -5322,27 +3097,6 @@ extern "C" {
     );
 }
 extern "C" {
-    #[doc = " Get RGBA values from a pixel in the specified format."]
-    #[doc = ""]
-    #[doc = " This function uses the entire 8-bit [0..255] range when converting color"]
-    #[doc = " components from pixel formats with less than 8-bits per RGB component"]
-    #[doc = " (e.g., a completely white pixel in 16-bit RGB565 format would return [0xff,"]
-    #[doc = " 0xff, 0xff] not [0xf8, 0xfc, 0xf8])."]
-    #[doc = ""]
-    #[doc = " If the surface has no alpha component, the alpha will be returned as 0xff"]
-    #[doc = " (100% opaque)."]
-    #[doc = ""]
-    #[doc = " \\param pixel a pixel value"]
-    #[doc = " \\param format an SDL_PixelFormat structure describing the format of the"]
-    #[doc = "               pixel"]
-    #[doc = " \\param r a pointer filled in with the red component"]
-    #[doc = " \\param g a pointer filled in with the green component"]
-    #[doc = " \\param b a pointer filled in with the blue component"]
-    #[doc = " \\param a a pointer filled in with the alpha component"]
-    #[doc = ""]
-    #[doc = " \\sa SDL_GetRGB"]
-    #[doc = " \\sa SDL_MapRGB"]
-    #[doc = " \\sa SDL_MapRGBA"]
     pub fn SDL_GetRGBA(
         pixel: Uint32,
         format: *const SDL_PixelFormat,
@@ -5353,18 +3107,8 @@ extern "C" {
     );
 }
 extern "C" {
-    #[doc = " Calculate a 256 entry gamma ramp for a gamma value."]
-    #[doc = ""]
-    #[doc = " \\param gamma a gamma value where 0.0 is black and 1.0 is identity"]
-    #[doc = " \\param ramp an array of 256 values filled in with the gamma ramp"]
-    #[doc = ""]
-    #[doc = " \\sa SDL_SetWindowGammaRamp"]
     pub fn SDL_CalculateGammaRamp(gamma: f32, ramp: *mut Uint16);
 }
-#[doc = " The structure that defines a point (integer)"]
-#[doc = ""]
-#[doc = " \\sa SDL_EnclosePoints"]
-#[doc = " \\sa SDL_PointInRect"]
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
 pub struct SDL_Point {
@@ -5404,10 +3148,6 @@ fn bindgen_test_layout_SDL_Point() {
         )
     );
 }
-#[doc = " The structure that defines a point (floating point)"]
-#[doc = ""]
-#[doc = " \\sa SDL_EnclosePoints"]
-#[doc = " \\sa SDL_PointInRect"]
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
 pub struct SDL_FPoint {
@@ -5447,14 +3187,6 @@ fn bindgen_test_layout_SDL_FPoint() {
         )
     );
 }
-#[doc = " A rectangle, with the origin at the upper left (integer)."]
-#[doc = ""]
-#[doc = " \\sa SDL_RectEmpty"]
-#[doc = " \\sa SDL_RectEquals"]
-#[doc = " \\sa SDL_HasIntersection"]
-#[doc = " \\sa SDL_IntersectRect"]
-#[doc = " \\sa SDL_UnionRect"]
-#[doc = " \\sa SDL_EnclosePoints"]
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
 pub struct SDL_Rect {
@@ -5516,7 +3248,6 @@ fn bindgen_test_layout_SDL_Rect() {
         )
     );
 }
-#[doc = " A rectangle, with the origin at the upper left (floating point)."]
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
 pub struct SDL_FRect {
@@ -5579,33 +3310,9 @@ fn bindgen_test_layout_SDL_FRect() {
     );
 }
 extern "C" {
-    #[doc = " Determine whether two rectangles intersect."]
-    #[doc = ""]
-    #[doc = " If either pointer is NULL the function will return SDL_FALSE."]
-    #[doc = ""]
-    #[doc = " \\param A an SDL_Rect structure representing the first rectangle"]
-    #[doc = " \\param B an SDL_Rect structure representing the second rectangle"]
-    #[doc = " \\returns SDL_TRUE if there is an intersection, SDL_FALSE otherwise."]
-    #[doc = ""]
-    #[doc = " \\since This function is available since SDL 2.0.0."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_IntersectRect"]
     pub fn SDL_HasIntersection(A: *const SDL_Rect, B: *const SDL_Rect) -> SDL_bool;
 }
 extern "C" {
-    #[doc = " Calculate the intersection of two rectangles."]
-    #[doc = ""]
-    #[doc = " If `result` is NULL then this function will return SDL_FALSE."]
-    #[doc = ""]
-    #[doc = " \\param A an SDL_Rect structure representing the first rectangle"]
-    #[doc = " \\param B an SDL_Rect structure representing the second rectangle"]
-    #[doc = " \\param result an SDL_Rect structure filled in with the intersection of"]
-    #[doc = "               rectangles `A` and `B`"]
-    #[doc = " \\returns SDL_TRUE if there is an intersection, SDL_FALSE otherwise."]
-    #[doc = ""]
-    #[doc = " \\since This function is available since SDL 2.0.0."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_HasIntersection"]
     pub fn SDL_IntersectRect(
         A: *const SDL_Rect,
         B: *const SDL_Rect,
@@ -5613,28 +3320,9 @@ extern "C" {
     ) -> SDL_bool;
 }
 extern "C" {
-    #[doc = " Calculate the union of two rectangles."]
-    #[doc = ""]
-    #[doc = " \\param A an SDL_Rect structure representing the first rectangle"]
-    #[doc = " \\param B an SDL_Rect structure representing the second rectangle"]
-    #[doc = " \\param result an SDL_Rect structure filled in with the union of rectangles"]
-    #[doc = "               `A` and `B`"]
     pub fn SDL_UnionRect(A: *const SDL_Rect, B: *const SDL_Rect, result: *mut SDL_Rect);
 }
 extern "C" {
-    #[doc = " Calculate a minimal rectangle enclosing a set of points."]
-    #[doc = ""]
-    #[doc = " If `clip` is not NULL then only points inside of the clipping rectangle are"]
-    #[doc = " considered."]
-    #[doc = ""]
-    #[doc = " \\param points an array of SDL_Point structures representing points to be"]
-    #[doc = "               enclosed"]
-    #[doc = " \\param count the number of structures in the `points` array"]
-    #[doc = " \\param clip an SDL_Rect used for clipping or NULL to enclose all points"]
-    #[doc = " \\param result an SDL_Rect structure filled in with the minimal enclosing"]
-    #[doc = "               rectangle"]
-    #[doc = " \\returns SDL_TRUE if any points were enclosed or SDL_FALSE if all the"]
-    #[doc = "          points were outside of the clipping rectangle."]
     pub fn SDL_EnclosePoints(
         points: *const SDL_Point,
         count: ::std::os::raw::c_int,
@@ -5643,20 +3331,6 @@ extern "C" {
     ) -> SDL_bool;
 }
 extern "C" {
-    #[doc = " Calculate the intersection of a rectangle and line segment."]
-    #[doc = ""]
-    #[doc = " This function is used to clip a line segment to a rectangle. A line segment"]
-    #[doc = " contained entirely within the rectangle or that does not intersect will"]
-    #[doc = " remain unchanged. A line segment that crosses the rectangle at either or"]
-    #[doc = " both ends will be clipped to the boundary of the rectangle and the new"]
-    #[doc = " coordinates saved in `X1`, `Y1`, `X2`, and/or `Y2` as necessary."]
-    #[doc = ""]
-    #[doc = " \\param rect an SDL_Rect structure representing the rectangle to intersect"]
-    #[doc = " \\param X1 a pointer to the starting X-coordinate of the line"]
-    #[doc = " \\param Y1 a pointer to the starting Y-coordinate of the line"]
-    #[doc = " \\param X2 a pointer to the ending X-coordinate of the line"]
-    #[doc = " \\param Y2 a pointer to the ending Y-coordinate of the line"]
-    #[doc = " \\returns SDL_TRUE if there is an intersection, SDL_FALSE otherwise."]
     pub fn SDL_IntersectRectAndLine(
         rect: *const SDL_Rect,
         X1: *mut ::std::os::raw::c_int,
@@ -5665,153 +3339,31 @@ extern "C" {
         Y2: *mut ::std::os::raw::c_int,
     ) -> SDL_bool;
 }
-#[doc = "< no blending"]
-#[doc = "dstRGBA = srcRGBA"]
 pub const SDL_BlendMode_SDL_BLENDMODE_NONE: SDL_BlendMode = 0;
-#[doc = "< alpha blending"]
-#[doc = "dstRGB = (srcRGB * srcA) + (dstRGB * (1-srcA))"]
-#[doc = "dstA = srcA + (dstA * (1-srcA))"]
 pub const SDL_BlendMode_SDL_BLENDMODE_BLEND: SDL_BlendMode = 1;
-#[doc = "< additive blending"]
-#[doc = "dstRGB = (srcRGB * srcA) + dstRGB"]
-#[doc = "dstA = dstA"]
 pub const SDL_BlendMode_SDL_BLENDMODE_ADD: SDL_BlendMode = 2;
-#[doc = "< color modulate"]
-#[doc = "dstRGB = srcRGB * dstRGB"]
-#[doc = "dstA = dstA"]
 pub const SDL_BlendMode_SDL_BLENDMODE_MOD: SDL_BlendMode = 4;
-#[doc = "< color multiply"]
-#[doc = "dstRGB = (srcRGB * dstRGB) + (dstRGB * (1-srcA))"]
-#[doc = "dstA = (srcA * dstA) + (dstA * (1-srcA))"]
 pub const SDL_BlendMode_SDL_BLENDMODE_MUL: SDL_BlendMode = 8;
 pub const SDL_BlendMode_SDL_BLENDMODE_INVALID: SDL_BlendMode = 2147483647;
-#[doc = "  \\brief The blend mode used in SDL_RenderCopy() and drawing operations."]
 pub type SDL_BlendMode = ::std::os::raw::c_uint;
-#[doc = "< dst + src: supported by all renderers"]
 pub const SDL_BlendOperation_SDL_BLENDOPERATION_ADD: SDL_BlendOperation = 1;
-#[doc = "< dst - src : supported by D3D9, D3D11, OpenGL, OpenGLES"]
 pub const SDL_BlendOperation_SDL_BLENDOPERATION_SUBTRACT: SDL_BlendOperation = 2;
-#[doc = "< src - dst : supported by D3D9, D3D11, OpenGL, OpenGLES"]
 pub const SDL_BlendOperation_SDL_BLENDOPERATION_REV_SUBTRACT: SDL_BlendOperation = 3;
-#[doc = "< min(dst, src) : supported by D3D11"]
 pub const SDL_BlendOperation_SDL_BLENDOPERATION_MINIMUM: SDL_BlendOperation = 4;
-#[doc = "< max(dst, src) : supported by D3D11"]
 pub const SDL_BlendOperation_SDL_BLENDOPERATION_MAXIMUM: SDL_BlendOperation = 5;
-#[doc = "  \\brief The blend operation used when combining source and destination pixel components"]
 pub type SDL_BlendOperation = ::std::os::raw::c_uint;
-#[doc = "< 0, 0, 0, 0"]
 pub const SDL_BlendFactor_SDL_BLENDFACTOR_ZERO: SDL_BlendFactor = 1;
-#[doc = "< 1, 1, 1, 1"]
 pub const SDL_BlendFactor_SDL_BLENDFACTOR_ONE: SDL_BlendFactor = 2;
-#[doc = "< srcR, srcG, srcB, srcA"]
 pub const SDL_BlendFactor_SDL_BLENDFACTOR_SRC_COLOR: SDL_BlendFactor = 3;
-#[doc = "< 1-srcR, 1-srcG, 1-srcB, 1-srcA"]
 pub const SDL_BlendFactor_SDL_BLENDFACTOR_ONE_MINUS_SRC_COLOR: SDL_BlendFactor = 4;
-#[doc = "< srcA, srcA, srcA, srcA"]
 pub const SDL_BlendFactor_SDL_BLENDFACTOR_SRC_ALPHA: SDL_BlendFactor = 5;
-#[doc = "< 1-srcA, 1-srcA, 1-srcA, 1-srcA"]
 pub const SDL_BlendFactor_SDL_BLENDFACTOR_ONE_MINUS_SRC_ALPHA: SDL_BlendFactor = 6;
-#[doc = "< dstR, dstG, dstB, dstA"]
 pub const SDL_BlendFactor_SDL_BLENDFACTOR_DST_COLOR: SDL_BlendFactor = 7;
-#[doc = "< 1-dstR, 1-dstG, 1-dstB, 1-dstA"]
 pub const SDL_BlendFactor_SDL_BLENDFACTOR_ONE_MINUS_DST_COLOR: SDL_BlendFactor = 8;
-#[doc = "< dstA, dstA, dstA, dstA"]
 pub const SDL_BlendFactor_SDL_BLENDFACTOR_DST_ALPHA: SDL_BlendFactor = 9;
-#[doc = "< 1-dstA, 1-dstA, 1-dstA, 1-dstA"]
 pub const SDL_BlendFactor_SDL_BLENDFACTOR_ONE_MINUS_DST_ALPHA: SDL_BlendFactor = 10;
-#[doc = "  \\brief The normalized factor used to multiply pixel components"]
 pub type SDL_BlendFactor = ::std::os::raw::c_uint;
 extern "C" {
-    #[doc = " Compose a custom blend mode for renderers."]
-    #[doc = ""]
-    #[doc = " The functions SDL_SetRenderDrawBlendMode and SDL_SetTextureBlendMode accept"]
-    #[doc = " the SDL_BlendMode returned by this function if the renderer supports it."]
-    #[doc = ""]
-    #[doc = " A blend mode controls how the pixels from a drawing operation (source) get"]
-    #[doc = " combined with the pixels from the render target (destination). First, the"]
-    #[doc = " components of the source and destination pixels get multiplied with their"]
-    #[doc = " blend factors. Then, the blend operation takes the two products and"]
-    #[doc = " calculates the result that will get stored in the render target."]
-    #[doc = ""]
-    #[doc = " Expressed in pseudocode, it would look like this:"]
-    #[doc = ""]
-    #[doc = " ```c"]
-    #[doc = " dstRGB = colorOperation(srcRGB * srcColorFactor, dstRGB * dstColorFactor);"]
-    #[doc = " dstA = alphaOperation(srcA * srcAlphaFactor, dstA * dstAlphaFactor);"]
-    #[doc = " ```"]
-    #[doc = ""]
-    #[doc = " Where the functions `colorOperation(src, dst)` and `alphaOperation(src,"]
-    #[doc = " dst)` can return one of the following:"]
-    #[doc = ""]
-    #[doc = " - `src + dst`"]
-    #[doc = " - `src - dst`"]
-    #[doc = " - `dst - src`"]
-    #[doc = " - `min(src, dst)`"]
-    #[doc = " - `max(src, dst)`"]
-    #[doc = ""]
-    #[doc = " The red, green, and blue components are always multiplied with the first,"]
-    #[doc = " second, and third components of the SDL_BlendFactor, respectively. The"]
-    #[doc = " fourth component is not used."]
-    #[doc = ""]
-    #[doc = " The alpha component is always multiplied with the fourth component of the"]
-    #[doc = " SDL_BlendFactor. The other components are not used in the alpha"]
-    #[doc = " calculation."]
-    #[doc = ""]
-    #[doc = " Support for these blend modes varies for each renderer. To check if a"]
-    #[doc = " specific SDL_BlendMode is supported, create a renderer and pass it to"]
-    #[doc = " either SDL_SetRenderDrawBlendMode or SDL_SetTextureBlendMode. They will"]
-    #[doc = " return with an error if the blend mode is not supported."]
-    #[doc = ""]
-    #[doc = " This list describes the support of custom blend modes for each renderer in"]
-    #[doc = " SDL 2.0.6. All renderers support the four blend modes listed in the"]
-    #[doc = " SDL_BlendMode enumeration."]
-    #[doc = ""]
-    #[doc = " - **direct3d**: Supports `SDL_BLENDOPERATION_ADD` with all factors."]
-    #[doc = " - **direct3d11**: Supports all operations with all factors. However, some"]
-    #[doc = "   factors produce unexpected results with `SDL_BLENDOPERATION_MINIMUM` and"]
-    #[doc = "   `SDL_BLENDOPERATION_MAXIMUM`."]
-    #[doc = " - **opengl**: Supports the `SDL_BLENDOPERATION_ADD` operation with all"]
-    #[doc = "   factors. OpenGL versions 1.1, 1.2, and 1.3 do not work correctly with SDL"]
-    #[doc = "   2.0.6."]
-    #[doc = " - **opengles**: Supports the `SDL_BLENDOPERATION_ADD` operation with all"]
-    #[doc = "   factors. Color and alpha factors need to be the same. OpenGL ES 1"]
-    #[doc = "   implementation specific: May also support `SDL_BLENDOPERATION_SUBTRACT`"]
-    #[doc = "   and `SDL_BLENDOPERATION_REV_SUBTRACT`. May support color and alpha"]
-    #[doc = "   operations being different from each other. May support color and alpha"]
-    #[doc = "   factors being different from each other."]
-    #[doc = " - **opengles2**: Supports the `SDL_BLENDOPERATION_ADD`,"]
-    #[doc = "   `SDL_BLENDOPERATION_SUBTRACT`, `SDL_BLENDOPERATION_REV_SUBTRACT`"]
-    #[doc = "   operations with all factors."]
-    #[doc = " - **psp**: No custom blend mode support."]
-    #[doc = " - **software**: No custom blend mode support."]
-    #[doc = ""]
-    #[doc = " Some renderers do not provide an alpha component for the default render"]
-    #[doc = " target. The `SDL_BLENDFACTOR_DST_ALPHA` and"]
-    #[doc = " `SDL_BLENDFACTOR_ONE_MINUS_DST_ALPHA` factors do not have an effect in this"]
-    #[doc = " case."]
-    #[doc = ""]
-    #[doc = " \\param srcColorFactor the SDL_BlendFactor applied to the red, green, and"]
-    #[doc = "                       blue components of the source pixels"]
-    #[doc = " \\param dstColorFactor the SDL_BlendFactor applied to the red, green, and"]
-    #[doc = "                       blue components of the destination pixels"]
-    #[doc = " \\param colorOperation the SDL_BlendOperation used to combine the red,"]
-    #[doc = "                       green, and blue components of the source and"]
-    #[doc = "                       destination pixels"]
-    #[doc = " \\param srcAlphaFactor the SDL_BlendFactor applied to the alpha component of"]
-    #[doc = "                       the source pixels"]
-    #[doc = " \\param dstAlphaFactor the SDL_BlendFactor applied to the alpha component of"]
-    #[doc = "                       the destination pixels"]
-    #[doc = " \\param alphaOperation the SDL_BlendOperation used to combine the alpha"]
-    #[doc = "                       component of the source and destination pixels"]
-    #[doc = " \\returns an SDL_BlendMode that represents the chosen factors and"]
-    #[doc = "          operations."]
-    #[doc = ""]
-    #[doc = " \\since This function is available in SDL 2.0.6."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_SetRenderDrawBlendMode"]
-    #[doc = " \\sa SDL_GetRenderDrawBlendMode"]
-    #[doc = " \\sa SDL_SetTextureBlendMode"]
-    #[doc = " \\sa SDL_GetTextureBlendMode"]
     pub fn SDL_ComposeCustomBlendMode(
         srcColorFactor: SDL_BlendFactor,
         dstColorFactor: SDL_BlendFactor,
@@ -5821,36 +3373,20 @@ extern "C" {
         alphaOperation: SDL_BlendOperation,
     ) -> SDL_BlendMode;
 }
-#[doc = " \\brief A collection of pixels used in software blitting."]
-#[doc = ""]
-#[doc = " \\note  This structure should be treated as read-only, except for \\c pixels,"]
-#[doc = "        which, if not NULL, contains the raw pixel data for the surface."]
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
 pub struct SDL_Surface {
-    #[doc = "< Read-only"]
     pub flags: Uint32,
-    #[doc = "< Read-only"]
     pub format: *mut SDL_PixelFormat,
-    #[doc = "< Read-only"]
     pub w: ::std::os::raw::c_int,
-    #[doc = "< Read-only"]
     pub h: ::std::os::raw::c_int,
-    #[doc = "< Read-only"]
     pub pitch: ::std::os::raw::c_int,
-    #[doc = "< Read-write"]
     pub pixels: *mut ::std::os::raw::c_void,
-    #[doc = "< Read-write"]
     pub userdata: *mut ::std::os::raw::c_void,
-    #[doc = "< Read-only"]
     pub locked: ::std::os::raw::c_int,
-    #[doc = "< Private"]
     pub list_blitmap: *mut ::std::os::raw::c_void,
-    #[doc = "< Read-only"]
     pub clip_rect: SDL_Rect,
-    #[doc = "< Private"]
     pub map: *mut SDL_BlitMap,
-    #[doc = "< Read-mostly"]
     pub refcount: ::std::os::raw::c_int,
 }
 #[test]
@@ -5986,7 +3522,6 @@ fn bindgen_test_layout_SDL_Surface() {
         )
     );
 }
-#[doc = " \\brief The type of function used for surface blitting functions."]
 pub type SDL_blit = ::std::option::Option<
     unsafe extern "C" fn(
         src: *mut SDL_Surface,
@@ -5995,57 +3530,12 @@ pub type SDL_blit = ::std::option::Option<
         dstrect: *mut SDL_Rect,
     ) -> ::std::os::raw::c_int,
 >;
-#[doc = "< Full range JPEG"]
 pub const SDL_YUV_CONVERSION_MODE_SDL_YUV_CONVERSION_JPEG: SDL_YUV_CONVERSION_MODE = 0;
-#[doc = "< BT.601 (the default)"]
 pub const SDL_YUV_CONVERSION_MODE_SDL_YUV_CONVERSION_BT601: SDL_YUV_CONVERSION_MODE = 1;
-#[doc = "< BT.709"]
 pub const SDL_YUV_CONVERSION_MODE_SDL_YUV_CONVERSION_BT709: SDL_YUV_CONVERSION_MODE = 2;
-#[doc = "< BT.601 for SD content, BT.709 for HD content"]
 pub const SDL_YUV_CONVERSION_MODE_SDL_YUV_CONVERSION_AUTOMATIC: SDL_YUV_CONVERSION_MODE = 3;
-#[doc = " \\brief The formula used for converting between YUV and RGB"]
 pub type SDL_YUV_CONVERSION_MODE = ::std::os::raw::c_uint;
 extern "C" {
-    #[doc = " Allocate a new RGB surface."]
-    #[doc = ""]
-    #[doc = " If `depth` is 4 or 8 bits, an empty palette is allocated for the surface."]
-    #[doc = " If `depth` is greater than 8 bits, the pixel format is set using the"]
-    #[doc = " [RGBA]mask parameters."]
-    #[doc = ""]
-    #[doc = " The [RGBA]mask parameters are the bitmasks used to extract that color from"]
-    #[doc = " a pixel. For instance, `Rmask` being 0xFF000000 means the red data is"]
-    #[doc = " stored in the most significant byte. Using zeros for the RGB masks sets a"]
-    #[doc = " default value, based on the depth. For example:"]
-    #[doc = ""]
-    #[doc = " ```c++"]
-    #[doc = " SDL_CreateRGBSurface(0,w,h,32,0,0,0,0);"]
-    #[doc = " ```"]
-    #[doc = ""]
-    #[doc = " However, using zero for the Amask results in an Amask of 0."]
-    #[doc = ""]
-    #[doc = " By default surfaces with an alpha mask are set up for blending as with:"]
-    #[doc = ""]
-    #[doc = " ```c++"]
-    #[doc = " SDL_SetSurfaceBlendMode(surface, SDL_BLENDMODE_BLEND)"]
-    #[doc = " ```"]
-    #[doc = ""]
-    #[doc = " You can change this by calling SDL_SetSurfaceBlendMode() and selecting a"]
-    #[doc = " different `blendMode`."]
-    #[doc = ""]
-    #[doc = " \\param flags the flags are unused and should be set to 0"]
-    #[doc = " \\param width the width of the surface"]
-    #[doc = " \\param height the height of the surface"]
-    #[doc = " \\param depth the depth of the surface in bits"]
-    #[doc = " \\param Rmask the red mask for the pixels"]
-    #[doc = " \\param Gmask the green mask for the pixels"]
-    #[doc = " \\param Bmask the blue mask for the pixels"]
-    #[doc = " \\param Amask the alpha mask for the pixels"]
-    #[doc = " \\returns the new SDL_Surface structure that is created or NULL if it fails;"]
-    #[doc = "          call SDL_GetError() for more information."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_CreateRGBSurfaceFrom"]
-    #[doc = " \\sa SDL_CreateRGBSurfaceWithFormat"]
-    #[doc = " \\sa SDL_FreeSurface"]
     pub fn SDL_CreateRGBSurface(
         flags: Uint32,
         width: ::std::os::raw::c_int,
@@ -6058,23 +3548,6 @@ extern "C" {
     ) -> *mut SDL_Surface;
 }
 extern "C" {
-    #[doc = " Allocate a new RGB surface with a specific pixel format."]
-    #[doc = ""]
-    #[doc = " This function operates mostly like SDL_CreateRGBSurface(), except instead"]
-    #[doc = " of providing pixel color masks, you provide it with a predefined format"]
-    #[doc = " from SDL_PixelFormatEnum."]
-    #[doc = ""]
-    #[doc = " \\param flags the flags are unused and should be set to 0"]
-    #[doc = " \\param width the width of the surface"]
-    #[doc = " \\param height the height of the surface"]
-    #[doc = " \\param depth the depth of the surface in bits"]
-    #[doc = " \\param format the SDL_PixelFormatEnum for the new surface's pixel format."]
-    #[doc = " \\returns the new SDL_Surface structure that is created or NULL if it fails;"]
-    #[doc = "          call SDL_GetError() for more information."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_CreateRGBSurface"]
-    #[doc = " \\sa SDL_CreateRGBSurfaceFrom"]
-    #[doc = " \\sa SDL_FreeSurface"]
     pub fn SDL_CreateRGBSurfaceWithFormat(
         flags: Uint32,
         width: ::std::os::raw::c_int,
@@ -6084,30 +3557,6 @@ extern "C" {
     ) -> *mut SDL_Surface;
 }
 extern "C" {
-    #[doc = " Allocate a new RGB surface with existing pixel data."]
-    #[doc = ""]
-    #[doc = " This function operates mostly like SDL_CreateRGBSurface(), except it does"]
-    #[doc = " not allocate memory for the pixel data, instead the caller provides an"]
-    #[doc = " existing buffer of data for the surface to use."]
-    #[doc = ""]
-    #[doc = " No copy is made of the pixel data. Pixel data is not managed automatically;"]
-    #[doc = " you must free the surface before you free the pixel data."]
-    #[doc = ""]
-    #[doc = " \\param pixels a pointer to existing pixel data"]
-    #[doc = " \\param width the width of the surface"]
-    #[doc = " \\param height the height of the surface"]
-    #[doc = " \\param depth the depth of the surface in bits"]
-    #[doc = " \\param pitch the pitch of the surface in bytes"]
-    #[doc = " \\param Rmask the red mask for the pixels"]
-    #[doc = " \\param Gmask the green mask for the pixels"]
-    #[doc = " \\param Bmask the blue mask for the pixels"]
-    #[doc = " \\param Amask the alpha mask for the pixels"]
-    #[doc = " \\returns the new SDL_Surface structure that is created or NULL if it fails;"]
-    #[doc = "          call SDL_GetError() for more information."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_CreateRGBSurface"]
-    #[doc = " \\sa SDL_CreateRGBSurfaceWithFormat"]
-    #[doc = " \\sa SDL_FreeSurface"]
     pub fn SDL_CreateRGBSurfaceFrom(
         pixels: *mut ::std::os::raw::c_void,
         width: ::std::os::raw::c_int,
@@ -6121,28 +3570,6 @@ extern "C" {
     ) -> *mut SDL_Surface;
 }
 extern "C" {
-    #[doc = " Allocate a new RGB surface with with a specific pixel format and existing"]
-    #[doc = " pixel data."]
-    #[doc = ""]
-    #[doc = " This function operates mostly like SDL_CreateRGBSurfaceFrom(), except"]
-    #[doc = " instead of providing pixel color masks, you provide it with a predefined"]
-    #[doc = " format from SDL_PixelFormatEnum."]
-    #[doc = ""]
-    #[doc = " No copy is made of the pixel data. Pixel data is not managed automatically;"]
-    #[doc = " you must free the surface before you free the pixel data."]
-    #[doc = ""]
-    #[doc = " \\param pixels a pointer to existing pixel data"]
-    #[doc = " \\param width the width of the surface"]
-    #[doc = " \\param height the height of the surface"]
-    #[doc = " \\param depth the depth of the surface in bits"]
-    #[doc = " \\param pitch the pitch of the surface in bytes"]
-    #[doc = " \\param format the SDL_PixelFormatEnum for the new surface's pixel format."]
-    #[doc = " \\returns the new SDL_Surface structure that is created or NULL if it fails;"]
-    #[doc = "          call SDL_GetError() for more information."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_CreateRGBSurfaceFrom"]
-    #[doc = " \\sa SDL_CreateRGBSurfaceWithFormat"]
-    #[doc = " \\sa SDL_FreeSurface"]
     pub fn SDL_CreateRGBSurfaceWithFormatFrom(
         pixels: *mut ::std::os::raw::c_void,
         width: ::std::os::raw::c_int,
@@ -6153,92 +3580,24 @@ extern "C" {
     ) -> *mut SDL_Surface;
 }
 extern "C" {
-    #[doc = " Free an RGB surface."]
-    #[doc = ""]
-    #[doc = " It is safe to pass NULL to this function."]
-    #[doc = ""]
-    #[doc = " \\param surface the SDL_Surface to free."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_CreateRGBSurface"]
-    #[doc = " \\sa SDL_CreateRGBSurfaceFrom"]
-    #[doc = " \\sa SDL_LoadBMP"]
-    #[doc = " \\sa SDL_LoadBMP_RW"]
     pub fn SDL_FreeSurface(surface: *mut SDL_Surface);
 }
 extern "C" {
-    #[doc = " Set the palette used by a surface."]
-    #[doc = ""]
-    #[doc = " A single palette can be shared with many surfaces."]
-    #[doc = ""]
-    #[doc = " \\param surface the SDL_Surface structure to update"]
-    #[doc = " \\param palette the SDL_Palette structure to use"]
-    #[doc = " \\returns 0 on success or a negative error code on failure; call"]
-    #[doc = "          SDL_GetError() for more information."]
     pub fn SDL_SetSurfacePalette(
         surface: *mut SDL_Surface,
         palette: *mut SDL_Palette,
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[doc = " Set up a surface for directly accessing the pixels."]
-    #[doc = ""]
-    #[doc = " Between calls to SDL_LockSurface() / SDL_UnlockSurface(), you can write to"]
-    #[doc = " and read from `surface->pixels`, using the pixel format stored in"]
-    #[doc = " `surface->format`. Once you are done accessing the surface, you should use"]
-    #[doc = " SDL_UnlockSurface() to release it."]
-    #[doc = ""]
-    #[doc = " Not all surfaces require locking. If `SDL_MUSTLOCK(surface)` evaluates to"]
-    #[doc = " 0, then you can read and write to the surface at any time, and the pixel"]
-    #[doc = " format of the surface will not change."]
-    #[doc = ""]
-    #[doc = " \\param surface the SDL_Surface structure to be locked"]
-    #[doc = " \\returns 0 on success or a negative error code on failure; call"]
-    #[doc = "          SDL_GetError() for more information."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_MUSTLOCK"]
-    #[doc = " \\sa SDL_UnlockSurface"]
     pub fn SDL_LockSurface(surface: *mut SDL_Surface) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[doc = " Release a surface after directly accessing the pixels."]
-    #[doc = ""]
-    #[doc = " \\param surface the SDL_Surface structure to be unlocked"]
-    #[doc = ""]
-    #[doc = " \\sa SDL_LockSurface"]
     pub fn SDL_UnlockSurface(surface: *mut SDL_Surface);
 }
 extern "C" {
-    #[doc = " Load a BMP image from a seekable SDL data stream."]
-    #[doc = ""]
-    #[doc = " The new surface should be freed with SDL_FreeSurface()."]
-    #[doc = ""]
-    #[doc = " \\param src the data stream for the surface"]
-    #[doc = " \\param freesrc non-zero to close the stream after being read"]
-    #[doc = " \\returns a pointer to a new SDL_Surface structure or NULL if there was an"]
-    #[doc = "          error; call SDL_GetError() for more information."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_FreeSurface"]
-    #[doc = " \\sa SDL_LoadBMP"]
-    #[doc = " \\sa SDL_SaveBMP_RW"]
     pub fn SDL_LoadBMP_RW(src: *mut SDL_RWops, freesrc: ::std::os::raw::c_int) -> *mut SDL_Surface;
 }
 extern "C" {
-    #[doc = " Save a surface to a seekable SDL data stream in BMP format."]
-    #[doc = ""]
-    #[doc = " Surfaces with a 24-bit, 32-bit and paletted 8-bit format get saved in the"]
-    #[doc = " BMP directly. Other RGB formats with 8-bit or higher get converted to a"]
-    #[doc = " 24-bit surface or, if they have an alpha mask or a colorkey, to a 32-bit"]
-    #[doc = " surface before they are saved. YUV and paletted 1-bit and 4-bit formats are"]
-    #[doc = " not supported."]
-    #[doc = ""]
-    #[doc = " \\param surface the SDL_Surface structure containing the image to be saved"]
-    #[doc = " \\param dst a data stream to save to"]
-    #[doc = " \\param freedst non-zero to close the stream after being written"]
-    #[doc = " \\returns 0 on success or a negative error code on failure; call"]
-    #[doc = "          SDL_GetError() for more information."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_LoadBMP_RW"]
-    #[doc = " \\sa SDL_SaveBMP"]
     pub fn SDL_SaveBMP_RW(
         surface: *mut SDL_Surface,
         dst: *mut SDL_RWops,
@@ -6246,56 +3605,15 @@ extern "C" {
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[doc = " Set the RLE acceleration hint for a surface."]
-    #[doc = ""]
-    #[doc = " If RLE is enabled, color key and alpha blending blits are much faster, but"]
-    #[doc = " the surface must be locked before directly accessing the pixels."]
-    #[doc = ""]
-    #[doc = " \\param surface the SDL_Surface structure to optimize"]
-    #[doc = " \\param flag 0 to disable, non-zero to enable RLE acceleration"]
-    #[doc = " \\returns 0 on success or a negative error code on failure; call"]
-    #[doc = "          SDL_GetError() for more information."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_BlitSurface"]
-    #[doc = " \\sa SDL_LockSurface"]
-    #[doc = " \\sa SDL_UnlockSurface"]
     pub fn SDL_SetSurfaceRLE(
         surface: *mut SDL_Surface,
         flag: ::std::os::raw::c_int,
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[doc = " Returns whether the surface is RLE enabled"]
-    #[doc = ""]
-    #[doc = " It is safe to pass a NULL `surface` here; it will return SDL_FALSE."]
-    #[doc = ""]
-    #[doc = " \\param surface the SDL_Surface structure to query"]
-    #[doc = " \\returns SDL_TRUE if the surface is RLE enabled, SDL_FALSE otherwise."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_SetSurfaceRLE"]
     pub fn SDL_HasSurfaceRLE(surface: *mut SDL_Surface) -> SDL_bool;
 }
 extern "C" {
-    #[doc = " Set the color key (transparent pixel) in a surface."]
-    #[doc = ""]
-    #[doc = " The color key defines a pixel value that will be treated as transparent in"]
-    #[doc = " a blit. For example, one can use this to specify that cyan pixels should be"]
-    #[doc = " considered transparent, and therefore not rendered."]
-    #[doc = ""]
-    #[doc = " It is a pixel of the format used by the surface, as generated by"]
-    #[doc = " SDL_MapRGB()."]
-    #[doc = ""]
-    #[doc = " RLE acceleration can substantially speed up blitting of images with large"]
-    #[doc = " horizontal runs of transparent pixels. See SDL_SetSurfaceRLE() for details."]
-    #[doc = ""]
-    #[doc = " \\param surface the SDL_Surface structure to update"]
-    #[doc = " \\param flag SDL_TRUE to enable color key, SDL_FALSE to disable color key"]
-    #[doc = " \\param key the transparent pixel"]
-    #[doc = " \\returns 0 on success or a negative error code on failure; call"]
-    #[doc = "          SDL_GetError() for more information."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_BlitSurface"]
-    #[doc = " \\sa SDL_GetColorKey"]
     pub fn SDL_SetColorKey(
         surface: *mut SDL_Surface,
         flag: ::std::os::raw::c_int,
@@ -6303,52 +3621,12 @@ extern "C" {
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[doc = " Returns whether the surface has a color key"]
-    #[doc = ""]
-    #[doc = " It is safe to pass a NULL `surface` here; it will return SDL_FALSE."]
-    #[doc = ""]
-    #[doc = " \\param surface the SDL_Surface structure to query"]
-    #[doc = " \\return SDL_TRUE if the surface has a color key, SDL_FALSE otherwise."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_SetColorKey"]
-    #[doc = " \\sa SDL_GetColorKey"]
     pub fn SDL_HasColorKey(surface: *mut SDL_Surface) -> SDL_bool;
 }
 extern "C" {
-    #[doc = " Get the color key (transparent pixel) for a surface."]
-    #[doc = ""]
-    #[doc = " The color key is a pixel of the format used by the surface, as generated by"]
-    #[doc = " SDL_MapRGB()."]
-    #[doc = ""]
-    #[doc = " If the surface doesn't have color key enabled this function returns -1."]
-    #[doc = ""]
-    #[doc = " \\param surface the SDL_Surface structure to query"]
-    #[doc = " \\param key a pointer filled in with the transparent pixel"]
-    #[doc = " \\returns 0 on success or a negative error code on failure; call"]
-    #[doc = "          SDL_GetError() for more information."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_BlitSurface"]
-    #[doc = " \\sa SDL_SetColorKey"]
     pub fn SDL_GetColorKey(surface: *mut SDL_Surface, key: *mut Uint32) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[doc = " Set an additional color value multiplied into blit operations."]
-    #[doc = ""]
-    #[doc = " When this surface is blitted, during the blit operation each source color"]
-    #[doc = " channel is modulated by the appropriate color value according to the"]
-    #[doc = " following formula:"]
-    #[doc = ""]
-    #[doc = " `srcC = srcC * (color / 255)`"]
-    #[doc = ""]
-    #[doc = " \\param surface the SDL_Surface structure to update"]
-    #[doc = " \\param r the red color value multiplied into blit operations"]
-    #[doc = " \\param g the green color value multiplied into blit operations"]
-    #[doc = " \\param b the blue color value multiplied into blit operations"]
-    #[doc = " \\returns 0 on success or a negative error code on failure; call"]
-    #[doc = "          SDL_GetError() for more information."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_GetSurfaceColorMod"]
-    #[doc = " \\sa SDL_SetSurfaceAlphaMod"]
     pub fn SDL_SetSurfaceColorMod(
         surface: *mut SDL_Surface,
         r: Uint8,
@@ -6357,17 +3635,6 @@ extern "C" {
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[doc = " Get the additional color value multiplied into blit operations."]
-    #[doc = ""]
-    #[doc = " \\param surface the SDL_Surface structure to query"]
-    #[doc = " \\param r a pointer filled in with the current red color value"]
-    #[doc = " \\param g a pointer filled in with the current green color value"]
-    #[doc = " \\param b a pointer filled in with the current blue color value"]
-    #[doc = " \\returns 0 on success or a negative error code on failure; call"]
-    #[doc = "          SDL_GetError() for more information."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_GetSurfaceAlphaMod"]
-    #[doc = " \\sa SDL_SetSurfaceColorMod"]
     pub fn SDL_GetSurfaceColorMod(
         surface: *mut SDL_Surface,
         r: *mut Uint8,
@@ -6376,126 +3643,37 @@ extern "C" {
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[doc = " Set an additional alpha value used in blit operations."]
-    #[doc = ""]
-    #[doc = " When this surface is blitted, during the blit operation the source alpha"]
-    #[doc = " value is modulated by this alpha value according to the following formula:"]
-    #[doc = ""]
-    #[doc = " `srcA = srcA * (alpha / 255)`"]
-    #[doc = ""]
-    #[doc = " \\param surface the SDL_Surface structure to update"]
-    #[doc = " \\param alpha the alpha value multiplied into blit operations"]
-    #[doc = " \\returns 0 on success or a negative error code on failure; call"]
-    #[doc = "          SDL_GetError() for more information."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_GetSurfaceAlphaMod"]
-    #[doc = " \\sa SDL_SetSurfaceColorMod"]
     pub fn SDL_SetSurfaceAlphaMod(surface: *mut SDL_Surface, alpha: Uint8)
         -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[doc = " Get the additional alpha value used in blit operations."]
-    #[doc = ""]
-    #[doc = " \\param surface the SDL_Surface structure to query"]
-    #[doc = " \\param alpha a pointer filled in with the current alpha value"]
-    #[doc = " \\returns 0 on success or a negative error code on failure; call"]
-    #[doc = "          SDL_GetError() for more information."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_GetSurfaceColorMod"]
-    #[doc = " \\sa SDL_SetSurfaceAlphaMod"]
     pub fn SDL_GetSurfaceAlphaMod(
         surface: *mut SDL_Surface,
         alpha: *mut Uint8,
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[doc = " Set the blend mode used for blit operations."]
-    #[doc = ""]
-    #[doc = " To copy a surface to another surface (or texture) without blending with the"]
-    #[doc = " existing data, the blendmode of the SOURCE surface should be set to"]
-    #[doc = " `SDL_BLENDMODE_NONE`."]
-    #[doc = ""]
-    #[doc = " \\param surface the SDL_Surface structure to update"]
-    #[doc = " \\param blendMode the SDL_BlendMode to use for blit blending"]
-    #[doc = " \\returns 0 on success or a negative error code on failure; call"]
-    #[doc = "          SDL_GetError() for more information."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_GetSurfaceBlendMode"]
     pub fn SDL_SetSurfaceBlendMode(
         surface: *mut SDL_Surface,
         blendMode: SDL_BlendMode,
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[doc = " Get the blend mode used for blit operations."]
-    #[doc = ""]
-    #[doc = " \\param surface the SDL_Surface structure to query"]
-    #[doc = " \\param blendMode a pointer filled in with the current SDL_BlendMode"]
-    #[doc = " \\returns 0 on success or a negative error code on failure; call"]
-    #[doc = "          SDL_GetError() for more information."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_SetSurfaceBlendMode"]
     pub fn SDL_GetSurfaceBlendMode(
         surface: *mut SDL_Surface,
         blendMode: *mut SDL_BlendMode,
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[doc = " Set the clipping rectangle for a surface."]
-    #[doc = ""]
-    #[doc = " When `surface` is the destination of a blit, only the area within the clip"]
-    #[doc = " rectangle is drawn into."]
-    #[doc = ""]
-    #[doc = " Note that blits are automatically clipped to the edges of the source and"]
-    #[doc = " destination surfaces."]
-    #[doc = ""]
-    #[doc = " \\param surface the SDL_Surface structure to be clipped"]
-    #[doc = " \\param rect the SDL_Rect structure representing the clipping rectangle, or"]
-    #[doc = "             NULL to disable clipping"]
-    #[doc = " \\returns SDL_TRUE if the rectangle intersects the surface, otherwise"]
-    #[doc = "          SDL_FALSE and blits will be completely clipped."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_BlitSurface"]
-    #[doc = " \\sa SDL_GetClipRect"]
     pub fn SDL_SetClipRect(surface: *mut SDL_Surface, rect: *const SDL_Rect) -> SDL_bool;
 }
 extern "C" {
-    #[doc = " Get the clipping rectangle for a surface."]
-    #[doc = ""]
-    #[doc = " When `surface` is the destination of a blit, only the area within the clip"]
-    #[doc = " rectangle is drawn into."]
-    #[doc = ""]
-    #[doc = " \\param surface the SDL_Surface structure representing the surface to be"]
-    #[doc = "                clipped"]
-    #[doc = " \\param rect an SDL_Rect structure filled in with the clipping rectangle for"]
-    #[doc = "             the surface"]
-    #[doc = ""]
-    #[doc = " \\sa SDL_BlitSurface"]
-    #[doc = " \\sa SDL_SetClipRect"]
     pub fn SDL_GetClipRect(surface: *mut SDL_Surface, rect: *mut SDL_Rect);
 }
 extern "C" {
     pub fn SDL_DuplicateSurface(surface: *mut SDL_Surface) -> *mut SDL_Surface;
 }
 extern "C" {
-    #[doc = " Copy an existing surface to a new surface of the specified format."]
-    #[doc = ""]
-    #[doc = " This function is used to optimize images for faster *repeat* blitting. This"]
-    #[doc = " is accomplished by converting the original and storing the result as a new"]
-    #[doc = " surface. The new, optimized surface can then be used as the source for"]
-    #[doc = " future blits, making them faster."]
-    #[doc = ""]
-    #[doc = " \\param src the existing SDL_Surface structure to convert"]
-    #[doc = " \\param fmt the SDL_PixelFormat structure that the new surface is optimized"]
-    #[doc = "            for"]
-    #[doc = " \\param flags the flags are unused and should be set to 0; this is a"]
-    #[doc = "              leftover from SDL 1.2's API"]
-    #[doc = " \\returns the new SDL_Surface structure that is created or NULL if it fails;"]
-    #[doc = "          call SDL_GetError() for more information."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_AllocFormat"]
-    #[doc = " \\sa SDL_ConvertSurfaceFormat"]
-    #[doc = " \\sa SDL_CreateRGBSurface"]
     pub fn SDL_ConvertSurface(
         src: *mut SDL_Surface,
         fmt: *const SDL_PixelFormat,
@@ -6503,24 +3681,6 @@ extern "C" {
     ) -> *mut SDL_Surface;
 }
 extern "C" {
-    #[doc = " Copy an existing surface to a new surface of the specified format enum."]
-    #[doc = ""]
-    #[doc = " This function operates just like SDL_ConvertSurface(), but accepts an"]
-    #[doc = " SDL_PixelFormatEnum value instead of an SDL_PixelFormat structure. As such,"]
-    #[doc = " it might be easier to call but it doesn't have access to palette"]
-    #[doc = " information for the destination surface, in case that would be important."]
-    #[doc = ""]
-    #[doc = " \\param src the existing SDL_Surface structure to convert"]
-    #[doc = " \\param pixel_format the SDL_PixelFormatEnum that the new surface is"]
-    #[doc = "                     optimized for"]
-    #[doc = " \\param flags the flags are unused and should be set to 0; this is a"]
-    #[doc = "              leftover from SDL 1.2's API"]
-    #[doc = " \\returns the new SDL_Surface structure that is created or NULL if it fails;"]
-    #[doc = "          call SDL_GetError() for more information."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_AllocFormat"]
-    #[doc = " \\sa SDL_ConvertSurfaceFormat"]
-    #[doc = " \\sa SDL_CreateRGBSurface"]
     pub fn SDL_ConvertSurfaceFormat(
         src: *mut SDL_Surface,
         pixel_format: Uint32,
@@ -6528,18 +3688,6 @@ extern "C" {
     ) -> *mut SDL_Surface;
 }
 extern "C" {
-    #[doc = " Copy a block of pixels of one format to another format."]
-    #[doc = ""]
-    #[doc = " \\param width the width of the block to copy, in pixels"]
-    #[doc = " \\param height the height of the block to copy, in pixels"]
-    #[doc = " \\param src_format an SDL_PixelFormatEnum value of the `src` pixels format"]
-    #[doc = " \\param src a pointer to the source pixels"]
-    #[doc = " \\param src_pitch the pitch of the block to copy, in bytes"]
-    #[doc = " \\param dst_format an SDL_PixelFormatEnum value of the `dst` pixels format"]
-    #[doc = " \\param dst a pointer to be filled in with new pixel data"]
-    #[doc = " \\param dst_pitch the pitch of the destination pixels, in bytes"]
-    #[doc = " \\returns 0 on success or a negative error code on failure; call"]
-    #[doc = "          SDL_GetError() for more information."]
     pub fn SDL_ConvertPixels(
         width: ::std::os::raw::c_int,
         height: ::std::os::raw::c_int,
@@ -6552,25 +3700,6 @@ extern "C" {
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[doc = " Perform a fast fill of a rectangle with a specific color."]
-    #[doc = ""]
-    #[doc = " `color` should be a pixel of the format used by the surface, and can be"]
-    #[doc = " generated by SDL_MapRGB() or SDL_MapRGBA(). If the color value contains an"]
-    #[doc = " alpha component then the destination is simply filled with that alpha"]
-    #[doc = " information, no blending takes place."]
-    #[doc = ""]
-    #[doc = " If there is a clip rectangle set on the destination (set via"]
-    #[doc = " SDL_SetClipRect()), then this function will fill based on the intersection"]
-    #[doc = " of the clip rectangle and `rect`."]
-    #[doc = ""]
-    #[doc = " \\param dst the SDL_Surface structure that is the drawing target"]
-    #[doc = " \\param rect the SDL_Rect structure representing the rectangle to fill, or"]
-    #[doc = "             NULL to fill the entire surface"]
-    #[doc = " \\param color the color to fill with"]
-    #[doc = " \\returns 0 on success or a negative error code on failure; call"]
-    #[doc = "          SDL_GetError() for more information."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_FillRects"]
     pub fn SDL_FillRect(
         dst: *mut SDL_Surface,
         rect: *const SDL_Rect,
@@ -6578,25 +3707,6 @@ extern "C" {
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[doc = " Perform a fast fill of a set of rectangles with a specific color."]
-    #[doc = ""]
-    #[doc = " `color` should be a pixel of the format used by the surface, and can be"]
-    #[doc = " generated by SDL_MapRGB() or SDL_MapRGBA(). If the color value contains an"]
-    #[doc = " alpha component then the destination is simply filled with that alpha"]
-    #[doc = " information, no blending takes place."]
-    #[doc = ""]
-    #[doc = " If there is a clip rectangle set on the destination (set via"]
-    #[doc = " SDL_SetClipRect()), then this function will fill based on the intersection"]
-    #[doc = " of the clip rectangle and `rect`."]
-    #[doc = ""]
-    #[doc = " \\param dst the SDL_Surface structure that is the drawing target"]
-    #[doc = " \\param rects an array of SDL_Rects representing the rectangles to fill."]
-    #[doc = " \\param count the number of rectangles in the array"]
-    #[doc = " \\param color the color to fill with"]
-    #[doc = " \\returns 0 on success or a negative error code on failure; call"]
-    #[doc = "          SDL_GetError() for more information."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_FillRect"]
     pub fn SDL_FillRects(
         dst: *mut SDL_Surface,
         rects: *const SDL_Rect,
@@ -6605,12 +3715,6 @@ extern "C" {
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[doc = " Perform a fast blit from the source surface to the destination surface."]
-    #[doc = ""]
-    #[doc = " SDL_UpperBlit() has been replaced by SDL_BlitSurface(), which is merely a"]
-    #[doc = " macro for this function with a less confusing name."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_BlitSurface"]
     pub fn SDL_UpperBlit(
         src: *mut SDL_Surface,
         srcrect: *const SDL_Rect,
@@ -6619,24 +3723,6 @@ extern "C" {
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[doc = " Perform low-level surface blitting only."]
-    #[doc = ""]
-    #[doc = " This is a semi-private blit function and it performs low-level surface"]
-    #[doc = " blitting, assuming the input rectangles have already been clipped."]
-    #[doc = ""]
-    #[doc = " Unless you know what you're doing, you should be using SDL_BlitSurface()"]
-    #[doc = " instead."]
-    #[doc = ""]
-    #[doc = " \\param src the SDL_Surface structure to be copied from"]
-    #[doc = " \\param srcrect the SDL_Rect structure representing the rectangle to be"]
-    #[doc = "                copied, or NULL to copy the entire surface"]
-    #[doc = " \\param dst the SDL_Surface structure that is the blit target"]
-    #[doc = " \\param dstrect the SDL_Rect structure representing the rectangle that is"]
-    #[doc = "                copied into"]
-    #[doc = " \\returns 0 on success or a negative error code on failure; call"]
-    #[doc = "          SDL_GetError() for more information."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_BlitSurface"]
     pub fn SDL_LowerBlit(
         src: *mut SDL_Surface,
         srcrect: *mut SDL_Rect,
@@ -6645,10 +3731,6 @@ extern "C" {
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[doc = " Perform a fast, low quality, stretch blit between two surfaces of the"]
-    #[doc = " same format."]
-    #[doc = ""]
-    #[doc = " Please use SDL_BlitScaled() instead."]
     pub fn SDL_SoftStretch(
         src: *mut SDL_Surface,
         srcrect: *const SDL_Rect,
@@ -6657,7 +3739,6 @@ extern "C" {
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[doc = " Perform bilinear scaling between two surfaces of the same format, 32BPP."]
     pub fn SDL_SoftStretchLinear(
         src: *mut SDL_Surface,
         srcrect: *const SDL_Rect,
@@ -6666,12 +3747,6 @@ extern "C" {
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[doc = " Perform a scaled surface copy to a destination surface."]
-    #[doc = ""]
-    #[doc = " SDL_UpperBlitScaled() has been replaced by SDL_BlitScaled(), which is"]
-    #[doc = " merely a macro for this function with a less confusing name."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_BlitScaled"]
     pub fn SDL_UpperBlitScaled(
         src: *mut SDL_Surface,
         srcrect: *const SDL_Rect,
@@ -6680,21 +3755,6 @@ extern "C" {
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[doc = " Perform low-level surface scaled blitting only."]
-    #[doc = ""]
-    #[doc = " This is a semi-private function and it performs low-level surface blitting,"]
-    #[doc = " assuming the input rectangles have already been clipped."]
-    #[doc = ""]
-    #[doc = " \\param src the SDL_Surface structure to be copied from"]
-    #[doc = " \\param srcrect the SDL_Rect structure representing the rectangle to be"]
-    #[doc = "                copied"]
-    #[doc = " \\param dst the SDL_Surface structure that is the blit target"]
-    #[doc = " \\param dstrect the SDL_Rect structure representing the rectangle that is"]
-    #[doc = "                copied into"]
-    #[doc = " \\returns 0 on success or a negative error code on failure; call"]
-    #[doc = "          SDL_GetError() for more information."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_BlitScaled"]
     pub fn SDL_LowerBlitScaled(
         src: *mut SDL_Surface,
         srcrect: *mut SDL_Rect,
@@ -6703,42 +3763,24 @@ extern "C" {
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[doc = " Set the YUV conversion mode"]
     pub fn SDL_SetYUVConversionMode(mode: SDL_YUV_CONVERSION_MODE);
 }
 extern "C" {
-    #[doc = " Get the YUV conversion mode"]
     pub fn SDL_GetYUVConversionMode() -> SDL_YUV_CONVERSION_MODE;
 }
 extern "C" {
-    #[doc = " Get the YUV conversion mode, returning the correct mode for the resolution"]
-    #[doc = " when the current conversion mode is SDL_YUV_CONVERSION_AUTOMATIC"]
     pub fn SDL_GetYUVConversionModeForResolution(
         width: ::std::os::raw::c_int,
         height: ::std::os::raw::c_int,
     ) -> SDL_YUV_CONVERSION_MODE;
 }
-#[doc = "  \\brief  The structure that defines a display mode"]
-#[doc = ""]
-#[doc = "  \\sa SDL_GetNumDisplayModes()"]
-#[doc = "  \\sa SDL_GetDisplayMode()"]
-#[doc = "  \\sa SDL_GetDesktopDisplayMode()"]
-#[doc = "  \\sa SDL_GetCurrentDisplayMode()"]
-#[doc = "  \\sa SDL_GetClosestDisplayMode()"]
-#[doc = "  \\sa SDL_SetWindowDisplayMode()"]
-#[doc = "  \\sa SDL_GetWindowDisplayMode()"]
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
 pub struct SDL_DisplayMode {
-    #[doc = "< pixel format"]
     pub format: Uint32,
-    #[doc = "< width, in screen coordinates"]
     pub w: ::std::os::raw::c_int,
-    #[doc = "< height, in screen coordinates"]
     pub h: ::std::os::raw::c_int,
-    #[doc = "< refresh rate (or zero for unspecified)"]
     pub refresh_rate: ::std::os::raw::c_int,
-    #[doc = "< driver-specific data, initialize to 0"]
     pub driverdata: *mut ::std::os::raw::c_void,
 }
 #[test]
@@ -6809,130 +3851,64 @@ fn bindgen_test_layout_SDL_DisplayMode() {
 pub struct SDL_Window {
     _unused: [u8; 0],
 }
-#[doc = "< fullscreen window"]
 pub const SDL_WindowFlags_SDL_WINDOW_FULLSCREEN: SDL_WindowFlags = 1;
-#[doc = "< window usable with OpenGL context"]
 pub const SDL_WindowFlags_SDL_WINDOW_OPENGL: SDL_WindowFlags = 2;
-#[doc = "< window is visible"]
 pub const SDL_WindowFlags_SDL_WINDOW_SHOWN: SDL_WindowFlags = 4;
-#[doc = "< window is not visible"]
 pub const SDL_WindowFlags_SDL_WINDOW_HIDDEN: SDL_WindowFlags = 8;
-#[doc = "< no window decoration"]
 pub const SDL_WindowFlags_SDL_WINDOW_BORDERLESS: SDL_WindowFlags = 16;
-#[doc = "< window can be resized"]
 pub const SDL_WindowFlags_SDL_WINDOW_RESIZABLE: SDL_WindowFlags = 32;
-#[doc = "< window is minimized"]
 pub const SDL_WindowFlags_SDL_WINDOW_MINIMIZED: SDL_WindowFlags = 64;
-#[doc = "< window is maximized"]
 pub const SDL_WindowFlags_SDL_WINDOW_MAXIMIZED: SDL_WindowFlags = 128;
-#[doc = "< window has grabbed mouse input"]
 pub const SDL_WindowFlags_SDL_WINDOW_MOUSE_GRABBED: SDL_WindowFlags = 256;
-#[doc = "< window has input focus"]
 pub const SDL_WindowFlags_SDL_WINDOW_INPUT_FOCUS: SDL_WindowFlags = 512;
-#[doc = "< window has mouse focus"]
 pub const SDL_WindowFlags_SDL_WINDOW_MOUSE_FOCUS: SDL_WindowFlags = 1024;
 pub const SDL_WindowFlags_SDL_WINDOW_FULLSCREEN_DESKTOP: SDL_WindowFlags = 4097;
-#[doc = "< window not created by SDL"]
 pub const SDL_WindowFlags_SDL_WINDOW_FOREIGN: SDL_WindowFlags = 2048;
-#[doc = "< window should be created in high-DPI mode if supported."]
-#[doc = "On macOS NSHighResolutionCapable must be set true in the"]
-#[doc = "application's Info.plist for this to have any effect."]
 pub const SDL_WindowFlags_SDL_WINDOW_ALLOW_HIGHDPI: SDL_WindowFlags = 8192;
-#[doc = "< window has mouse captured (unrelated to MOUSE_GRABBED)"]
 pub const SDL_WindowFlags_SDL_WINDOW_MOUSE_CAPTURE: SDL_WindowFlags = 16384;
-#[doc = "< window should always be above others"]
 pub const SDL_WindowFlags_SDL_WINDOW_ALWAYS_ON_TOP: SDL_WindowFlags = 32768;
-#[doc = "< window should not be added to the taskbar"]
 pub const SDL_WindowFlags_SDL_WINDOW_SKIP_TASKBAR: SDL_WindowFlags = 65536;
-#[doc = "< window should be treated as a utility window"]
 pub const SDL_WindowFlags_SDL_WINDOW_UTILITY: SDL_WindowFlags = 131072;
-#[doc = "< window should be treated as a tooltip"]
 pub const SDL_WindowFlags_SDL_WINDOW_TOOLTIP: SDL_WindowFlags = 262144;
-#[doc = "< window should be treated as a popup menu"]
 pub const SDL_WindowFlags_SDL_WINDOW_POPUP_MENU: SDL_WindowFlags = 524288;
-#[doc = "< window has grabbed keyboard input"]
 pub const SDL_WindowFlags_SDL_WINDOW_KEYBOARD_GRABBED: SDL_WindowFlags = 1048576;
-#[doc = "< window usable for Vulkan surface"]
 pub const SDL_WindowFlags_SDL_WINDOW_VULKAN: SDL_WindowFlags = 268435456;
-#[doc = "< window usable for Metal view"]
 pub const SDL_WindowFlags_SDL_WINDOW_METAL: SDL_WindowFlags = 536870912;
-#[doc = "< equivalent to SDL_WINDOW_MOUSE_GRABBED for compatibility"]
 pub const SDL_WindowFlags_SDL_WINDOW_INPUT_GRABBED: SDL_WindowFlags = 256;
-#[doc = "  \\brief The flags on a window"]
-#[doc = ""]
-#[doc = "  \\sa SDL_GetWindowFlags()"]
 pub type SDL_WindowFlags = ::std::os::raw::c_uint;
-#[doc = "< Never used"]
 pub const SDL_WindowEventID_SDL_WINDOWEVENT_NONE: SDL_WindowEventID = 0;
-#[doc = "< Window has been shown"]
 pub const SDL_WindowEventID_SDL_WINDOWEVENT_SHOWN: SDL_WindowEventID = 1;
-#[doc = "< Window has been hidden"]
 pub const SDL_WindowEventID_SDL_WINDOWEVENT_HIDDEN: SDL_WindowEventID = 2;
-#[doc = "< Window has been exposed and should be"]
-#[doc = "redrawn"]
 pub const SDL_WindowEventID_SDL_WINDOWEVENT_EXPOSED: SDL_WindowEventID = 3;
-#[doc = "< Window has been moved to data1, data2"]
 pub const SDL_WindowEventID_SDL_WINDOWEVENT_MOVED: SDL_WindowEventID = 4;
-#[doc = "< Window has been resized to data1xdata2"]
 pub const SDL_WindowEventID_SDL_WINDOWEVENT_RESIZED: SDL_WindowEventID = 5;
-#[doc = "< The window size has changed, either as"]
-#[doc = "a result of an API call or through the"]
-#[doc = "system or user changing the window size."]
 pub const SDL_WindowEventID_SDL_WINDOWEVENT_SIZE_CHANGED: SDL_WindowEventID = 6;
-#[doc = "< Window has been minimized"]
 pub const SDL_WindowEventID_SDL_WINDOWEVENT_MINIMIZED: SDL_WindowEventID = 7;
-#[doc = "< Window has been maximized"]
 pub const SDL_WindowEventID_SDL_WINDOWEVENT_MAXIMIZED: SDL_WindowEventID = 8;
-#[doc = "< Window has been restored to normal size"]
-#[doc = "and position"]
 pub const SDL_WindowEventID_SDL_WINDOWEVENT_RESTORED: SDL_WindowEventID = 9;
-#[doc = "< Window has gained mouse focus"]
 pub const SDL_WindowEventID_SDL_WINDOWEVENT_ENTER: SDL_WindowEventID = 10;
-#[doc = "< Window has lost mouse focus"]
 pub const SDL_WindowEventID_SDL_WINDOWEVENT_LEAVE: SDL_WindowEventID = 11;
-#[doc = "< Window has gained keyboard focus"]
 pub const SDL_WindowEventID_SDL_WINDOWEVENT_FOCUS_GAINED: SDL_WindowEventID = 12;
-#[doc = "< Window has lost keyboard focus"]
 pub const SDL_WindowEventID_SDL_WINDOWEVENT_FOCUS_LOST: SDL_WindowEventID = 13;
-#[doc = "< The window manager requests that the window be closed"]
 pub const SDL_WindowEventID_SDL_WINDOWEVENT_CLOSE: SDL_WindowEventID = 14;
-#[doc = "< Window is being offered a focus (should SetWindowInputFocus() on itself or a subwindow, or ignore)"]
 pub const SDL_WindowEventID_SDL_WINDOWEVENT_TAKE_FOCUS: SDL_WindowEventID = 15;
-#[doc = "< Window had a hit test that wasn't SDL_HITTEST_NORMAL."]
 pub const SDL_WindowEventID_SDL_WINDOWEVENT_HIT_TEST: SDL_WindowEventID = 16;
-#[doc = "  \\brief Event subtype for window events"]
 pub type SDL_WindowEventID = ::std::os::raw::c_uint;
-#[doc = "< Never used"]
 pub const SDL_DisplayEventID_SDL_DISPLAYEVENT_NONE: SDL_DisplayEventID = 0;
-#[doc = "< Display orientation has changed to data1"]
 pub const SDL_DisplayEventID_SDL_DISPLAYEVENT_ORIENTATION: SDL_DisplayEventID = 1;
-#[doc = "< Display has been added to the system"]
 pub const SDL_DisplayEventID_SDL_DISPLAYEVENT_CONNECTED: SDL_DisplayEventID = 2;
-#[doc = "< Display has been removed from the system"]
 pub const SDL_DisplayEventID_SDL_DISPLAYEVENT_DISCONNECTED: SDL_DisplayEventID = 3;
-#[doc = "  \\brief Event subtype for display events"]
 pub type SDL_DisplayEventID = ::std::os::raw::c_uint;
-#[doc = "< The display orientation can't be determined"]
 pub const SDL_DisplayOrientation_SDL_ORIENTATION_UNKNOWN: SDL_DisplayOrientation = 0;
-#[doc = "< The display is in landscape mode, with the right side up, relative to portrait mode"]
 pub const SDL_DisplayOrientation_SDL_ORIENTATION_LANDSCAPE: SDL_DisplayOrientation = 1;
-#[doc = "< The display is in landscape mode, with the left side up, relative to portrait mode"]
 pub const SDL_DisplayOrientation_SDL_ORIENTATION_LANDSCAPE_FLIPPED: SDL_DisplayOrientation = 2;
-#[doc = "< The display is in portrait mode"]
 pub const SDL_DisplayOrientation_SDL_ORIENTATION_PORTRAIT: SDL_DisplayOrientation = 3;
-#[doc = "< The display is in portrait mode, upside down"]
 pub const SDL_DisplayOrientation_SDL_ORIENTATION_PORTRAIT_FLIPPED: SDL_DisplayOrientation = 4;
-#[doc = "  \\brief Display orientation"]
 pub type SDL_DisplayOrientation = ::std::os::raw::c_uint;
-#[doc = "< Cancel any window flash state"]
 pub const SDL_FlashOperation_SDL_FLASH_CANCEL: SDL_FlashOperation = 0;
-#[doc = "< Flash the window briefly to get attention"]
 pub const SDL_FlashOperation_SDL_FLASH_BRIEFLY: SDL_FlashOperation = 1;
-#[doc = "< Flash the window until it gets focus"]
 pub const SDL_FlashOperation_SDL_FLASH_UNTIL_FOCUSED: SDL_FlashOperation = 2;
-#[doc = "  \\brief Window flash operation"]
 pub type SDL_FlashOperation = ::std::os::raw::c_uint;
-#[doc = "  \\brief An opaque handle to an OpenGL context."]
 pub type SDL_GLContext = *mut ::std::os::raw::c_void;
 pub const SDL_GLattr_SDL_GL_RED_SIZE: SDL_GLattr = 0;
 pub const SDL_GLattr_SDL_GL_GREEN_SIZE: SDL_GLattr = 1;
@@ -6961,11 +3937,9 @@ pub const SDL_GLattr_SDL_GL_FRAMEBUFFER_SRGB_CAPABLE: SDL_GLattr = 23;
 pub const SDL_GLattr_SDL_GL_CONTEXT_RELEASE_BEHAVIOR: SDL_GLattr = 24;
 pub const SDL_GLattr_SDL_GL_CONTEXT_RESET_NOTIFICATION: SDL_GLattr = 25;
 pub const SDL_GLattr_SDL_GL_CONTEXT_NO_ERROR: SDL_GLattr = 26;
-#[doc = "  \\brief OpenGL configuration attributes"]
 pub type SDL_GLattr = ::std::os::raw::c_uint;
 pub const SDL_GLprofile_SDL_GL_CONTEXT_PROFILE_CORE: SDL_GLprofile = 1;
 pub const SDL_GLprofile_SDL_GL_CONTEXT_PROFILE_COMPATIBILITY: SDL_GLprofile = 2;
-#[doc = "< GLX_CONTEXT_ES2_PROFILE_BIT_EXT"]
 pub const SDL_GLprofile_SDL_GL_CONTEXT_PROFILE_ES: SDL_GLprofile = 4;
 pub type SDL_GLprofile = ::std::os::raw::c_uint;
 pub const SDL_GLcontextFlag_SDL_GL_CONTEXT_DEBUG_FLAG: SDL_GLcontextFlag = 1;
@@ -6984,171 +3958,40 @@ pub const SDL_GLContextResetNotification_SDL_GL_CONTEXT_RESET_LOSE_CONTEXT:
     SDL_GLContextResetNotification = 1;
 pub type SDL_GLContextResetNotification = ::std::os::raw::c_uint;
 extern "C" {
-    #[doc = " Get the number of video drivers compiled into SDL."]
-    #[doc = ""]
-    #[doc = " \\returns a number >= 1 on success or a negative error code on failure; call"]
-    #[doc = "          SDL_GetError() for more information."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_GetVideoDriver"]
     pub fn SDL_GetNumVideoDrivers() -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[doc = " Get the name of a built in video driver."]
-    #[doc = ""]
-    #[doc = " The video drivers are presented in the order in which they are normally"]
-    #[doc = " checked during initialization."]
-    #[doc = ""]
-    #[doc = " \\param index the index of a video driver"]
-    #[doc = " \\returns the name of the video driver with the given **index**."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_GetNumVideoDrivers"]
     pub fn SDL_GetVideoDriver(index: ::std::os::raw::c_int) -> *const ::std::os::raw::c_char;
 }
 extern "C" {
-    #[doc = " Initialize the video subsystem, optionally specifying a video driver."]
-    #[doc = ""]
-    #[doc = " This function initializes the video subsystem, setting up a connection to"]
-    #[doc = " the window manager, etc, and determines the available display modes and"]
-    #[doc = " pixel formats, but does not initialize a window or graphics mode."]
-    #[doc = ""]
-    #[doc = " If you use this function and you haven't used the SDL_INIT_VIDEO flag with"]
-    #[doc = " either SDL_Init() or SDL_InitSubSystem(), you should call SDL_VideoQuit()"]
-    #[doc = " before calling SDL_Quit()."]
-    #[doc = ""]
-    #[doc = " It is safe to call this function multiple times. SDL_VideoInit() will call"]
-    #[doc = " SDL_VideoQuit() itself if the video subsystem has already been initialized."]
-    #[doc = ""]
-    #[doc = " You can use SDL_GetNumVideoDrivers() and SDL_GetVideoDriver() to find a"]
-    #[doc = " specific `driver_name`."]
-    #[doc = ""]
-    #[doc = " \\param driver_name the name of a video driver to initialize, or NULL for"]
-    #[doc = "                    the default driver"]
-    #[doc = " \\returns 0 on success or a negative error code on failure; call"]
-    #[doc = "          SDL_GetError() for more information."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_GetNumVideoDrivers"]
-    #[doc = " \\sa SDL_GetVideoDriver"]
-    #[doc = " \\sa SDL_InitSubSystem"]
-    #[doc = " \\sa SDL_VideoQuit"]
     pub fn SDL_VideoInit(driver_name: *const ::std::os::raw::c_char) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[doc = " Shut down the video subsystem, if initialized with SDL_VideoInit()."]
-    #[doc = ""]
-    #[doc = " This function closes all windows, and restores the original video mode."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_VideoInit"]
     pub fn SDL_VideoQuit();
 }
 extern "C" {
-    #[doc = " Get the name of the currently initialized video driver."]
-    #[doc = ""]
-    #[doc = " \\returns the name of the current video driver or NULL if no driver has been"]
-    #[doc = "          initialized."]
-    #[doc = ""]
-    #[doc = " \\since This function is available since SDL 2.0.0."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_GetNumVideoDrivers"]
-    #[doc = " \\sa SDL_GetVideoDriver"]
     pub fn SDL_GetCurrentVideoDriver() -> *const ::std::os::raw::c_char;
 }
 extern "C" {
-    #[doc = " Get the number of available video displays."]
-    #[doc = ""]
-    #[doc = " \\returns a number >= 1 or a negative error code on failure; call"]
-    #[doc = "          SDL_GetError() for more information."]
-    #[doc = ""]
-    #[doc = " \\since This function is available since SDL 2.0.0."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_GetDisplayBounds"]
     pub fn SDL_GetNumVideoDisplays() -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[doc = " Get the name of a display in UTF-8 encoding."]
-    #[doc = ""]
-    #[doc = " \\param displayIndex the index of display from which the name should be"]
-    #[doc = "                     queried"]
-    #[doc = " \\returns the name of a display or NULL for an invalid display index or"]
-    #[doc = "          failure; call SDL_GetError() for more information."]
-    #[doc = ""]
-    #[doc = " \\since This function is available since SDL 2.0.0."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_GetNumVideoDisplays"]
     pub fn SDL_GetDisplayName(displayIndex: ::std::os::raw::c_int)
         -> *const ::std::os::raw::c_char;
 }
 extern "C" {
-    #[doc = " Get the desktop area represented by a display."]
-    #[doc = ""]
-    #[doc = " The primary display (`displayIndex` zero) is always located at 0,0."]
-    #[doc = ""]
-    #[doc = " \\param displayIndex the index of the display to query"]
-    #[doc = " \\param rect the SDL_Rect structure filled in with the display bounds"]
-    #[doc = " \\returns 0 on success or a negative error code on failure; call"]
-    #[doc = "          SDL_GetError() for more information."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_GetNumVideoDisplays"]
     pub fn SDL_GetDisplayBounds(
         displayIndex: ::std::os::raw::c_int,
         rect: *mut SDL_Rect,
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[doc = " Get the usable desktop area represented by a display."]
-    #[doc = ""]
-    #[doc = " The primary display (`displayIndex` zero) is always located at 0,0."]
-    #[doc = ""]
-    #[doc = " This is the same area as SDL_GetDisplayBounds() reports, but with portions"]
-    #[doc = " reserved by the system removed. For example, on Apple's macOS, this"]
-    #[doc = " subtracts the area occupied by the menu bar and dock."]
-    #[doc = ""]
-    #[doc = " Setting a window to be fullscreen generally bypasses these unusable areas,"]
-    #[doc = " so these are good guidelines for the maximum space available to a"]
-    #[doc = " non-fullscreen window."]
-    #[doc = ""]
-    #[doc = " The parameter `rect` is ignored if it is NULL."]
-    #[doc = ""]
-    #[doc = " This function also returns -1 if the parameter `displayIndex` is out of"]
-    #[doc = " range."]
-    #[doc = ""]
-    #[doc = " \\param displayIndex the index of the display to query the usable bounds"]
-    #[doc = "                     from"]
-    #[doc = " \\param rect the SDL_Rect structure filled in with the display bounds"]
-    #[doc = " \\returns 0 on success or a negative error code on failure; call"]
-    #[doc = "          SDL_GetError() for more information."]
-    #[doc = ""]
-    #[doc = " \\since This function is available since SDL 2.0.5."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_GetDisplayBounds"]
-    #[doc = " \\sa SDL_GetNumVideoDisplays"]
     pub fn SDL_GetDisplayUsableBounds(
         displayIndex: ::std::os::raw::c_int,
         rect: *mut SDL_Rect,
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[doc = " Get the dots/pixels-per-inch for a display."]
-    #[doc = ""]
-    #[doc = " Diagonal, horizontal and vertical DPI can all be optionally returned if the"]
-    #[doc = " appropriate parameter is non-NULL."]
-    #[doc = ""]
-    #[doc = " A failure of this function usually means that either no DPI information is"]
-    #[doc = " available or the `displayIndex` is out of range."]
-    #[doc = ""]
-    #[doc = " \\param displayIndex the index of the display from which DPI information"]
-    #[doc = "                     should be queried"]
-    #[doc = " \\param ddpi a pointer filled in with the diagonal DPI of the display; may"]
-    #[doc = "             be NULL"]
-    #[doc = " \\param hdpi a pointer filled in with the horizontal DPI of the display; may"]
-    #[doc = "             be NULL"]
-    #[doc = " \\param vdpi a pointer filled in with the vertical DPI of the display; may"]
-    #[doc = "             be NULL"]
-    #[doc = " \\returns 0 on success or a negative error code on failure; call"]
-    #[doc = "          SDL_GetError() for more information."]
-    #[doc = ""]
-    #[doc = " \\since This function is available since SDL 2.0.4."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_GetNumVideoDisplays"]
     pub fn SDL_GetDisplayDPI(
         displayIndex: ::std::os::raw::c_int,
         ddpi: *mut f32,
@@ -7157,51 +4000,13 @@ extern "C" {
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[doc = " Get the orientation of a display."]
-    #[doc = ""]
-    #[doc = " \\param displayIndex the index of the display to query"]
-    #[doc = " \\returns The SDL_DisplayOrientation enum value of the display, or"]
-    #[doc = "          `SDL_ORIENTATION_UNKNOWN` if it isn't available."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_GetNumVideoDisplays"]
     pub fn SDL_GetDisplayOrientation(displayIndex: ::std::os::raw::c_int)
         -> SDL_DisplayOrientation;
 }
 extern "C" {
-    #[doc = " Get the number of available display modes."]
-    #[doc = ""]
-    #[doc = " The `displayIndex` needs to be in the range from 0 to"]
-    #[doc = " SDL_GetNumVideoDisplays() - 1."]
-    #[doc = ""]
-    #[doc = " \\param displayIndex the index of the display to query"]
-    #[doc = " \\returns a number >= 1 on success or a negative error code on failure; call"]
-    #[doc = "          SDL_GetError() for more information."]
-    #[doc = ""]
-    #[doc = " \\since This function is available since SDL 2.0.0."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_GetDisplayMode"]
-    #[doc = " \\sa SDL_GetNumVideoDisplays"]
     pub fn SDL_GetNumDisplayModes(displayIndex: ::std::os::raw::c_int) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[doc = " Get information about a specific display mode."]
-    #[doc = ""]
-    #[doc = " The display modes are sorted in this priority:"]
-    #[doc = ""]
-    #[doc = " - width -> largest to smallest"]
-    #[doc = " - height -> largest to smallest"]
-    #[doc = " - bits per pixel -> more colors to fewer colors"]
-    #[doc = " - packed pixel layout -> largest to smallest"]
-    #[doc = " - refresh rate -> highest to lowest"]
-    #[doc = ""]
-    #[doc = " \\param displayIndex the index of the display to query"]
-    #[doc = " \\param modeIndex the index of the display mode to query"]
-    #[doc = " \\param mode an SDL_DisplayMode structure filled in with the mode at"]
-    #[doc = "             `modeIndex`"]
-    #[doc = " \\returns 0 on success or a negative error code on failure; call"]
-    #[doc = "          SDL_GetError() for more information."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_GetNumDisplayModes"]
     pub fn SDL_GetDisplayMode(
         displayIndex: ::std::os::raw::c_int,
         modeIndex: ::std::os::raw::c_int,
@@ -7209,70 +4014,18 @@ extern "C" {
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[doc = " Get information about the desktop's display mode."]
-    #[doc = ""]
-    #[doc = " There's a difference between this function and SDL_GetCurrentDisplayMode()"]
-    #[doc = " when SDL runs fullscreen and has changed the resolution. In that case this"]
-    #[doc = " function will return the previous native display mode, and not the current"]
-    #[doc = " display mode."]
-    #[doc = ""]
-    #[doc = " \\param displayIndex the index of the display to query"]
-    #[doc = " \\param mode an SDL_DisplayMode structure filled in with the current display"]
-    #[doc = "             mode"]
-    #[doc = " \\returns 0 on success or a negative error code on failure; call"]
-    #[doc = "          SDL_GetError() for more information."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_GetCurrentDisplayMode"]
-    #[doc = " \\sa SDL_GetDisplayMode"]
-    #[doc = " \\sa SDL_SetWindowDisplayMode"]
     pub fn SDL_GetDesktopDisplayMode(
         displayIndex: ::std::os::raw::c_int,
         mode: *mut SDL_DisplayMode,
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[doc = " Get information about the current display mode."]
-    #[doc = ""]
-    #[doc = " There's a difference between this function and SDL_GetDesktopDisplayMode()"]
-    #[doc = " when SDL runs fullscreen and has changed the resolution. In that case this"]
-    #[doc = " function will return the current display mode, and not the previous native"]
-    #[doc = " display mode."]
-    #[doc = ""]
-    #[doc = " \\param displayIndex the index of the display to query"]
-    #[doc = " \\param mode an SDL_DisplayMode structure filled in with the current display"]
-    #[doc = "             mode"]
-    #[doc = " \\returns 0 on success or a negative error code on failure; call"]
-    #[doc = "          SDL_GetError() for more information."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_GetDesktopDisplayMode"]
-    #[doc = " \\sa SDL_GetDisplayMode"]
-    #[doc = " \\sa SDL_GetNumVideoDisplays"]
-    #[doc = " \\sa SDL_SetWindowDisplayMode"]
     pub fn SDL_GetCurrentDisplayMode(
         displayIndex: ::std::os::raw::c_int,
         mode: *mut SDL_DisplayMode,
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[doc = " Get the closest match to the requested display mode."]
-    #[doc = ""]
-    #[doc = " The available display modes are scanned and `closest` is filled in with the"]
-    #[doc = " closest mode matching the requested mode and returned. The mode format and"]
-    #[doc = " refresh rate default to the desktop mode if they are set to 0. The modes"]
-    #[doc = " are scanned with size being first priority, format being second priority,"]
-    #[doc = " and finally checking the refresh rate. If all the available modes are too"]
-    #[doc = " small, then NULL is returned."]
-    #[doc = ""]
-    #[doc = " \\param displayIndex the index of the display to query"]
-    #[doc = " \\param mode an SDL_DisplayMode structure containing the desired display"]
-    #[doc = "             mode"]
-    #[doc = " \\param closest an SDL_DisplayMode structure filled in with the closest"]
-    #[doc = "                match of the available display modes"]
-    #[doc = " \\returns the passed in value `closest` or NULL if no matching video mode"]
-    #[doc = "          was available; call SDL_GetError() for more information."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_GetDisplayMode"]
-    #[doc = " \\sa SDL_GetNumDisplayModes"]
     pub fn SDL_GetClosestDisplayMode(
         displayIndex: ::std::os::raw::c_int,
         mode: *const SDL_DisplayMode,
@@ -7280,130 +4033,24 @@ extern "C" {
     ) -> *mut SDL_DisplayMode;
 }
 extern "C" {
-    #[doc = " Get the index of the display associated with a window."]
-    #[doc = ""]
-    #[doc = " \\param window the window to query"]
-    #[doc = " \\returns the index of the display containing the center of the window on"]
-    #[doc = "          success or a negative error code on failure; call SDL_GetError()"]
-    #[doc = "          for more information."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_GetDisplayBounds"]
-    #[doc = " \\sa SDL_GetNumVideoDisplays"]
     pub fn SDL_GetWindowDisplayIndex(window: *mut SDL_Window) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[doc = " Set the display mode to use when a window is visible at fullscreen."]
-    #[doc = ""]
-    #[doc = " This only affects the display mode used when the window is fullscreen. To"]
-    #[doc = " change the window size when the window is not fullscreen, use"]
-    #[doc = " SDL_SetWindowSize()."]
-    #[doc = ""]
-    #[doc = " \\param window the window to affect"]
-    #[doc = " \\param mode the SDL_DisplayMode structure representing the mode to use, or"]
-    #[doc = "             NULL to use the window's dimensions and the desktop's format"]
-    #[doc = "             and refresh rate"]
-    #[doc = " \\returns 0 on success or a negative error code on failure; call"]
-    #[doc = "          SDL_GetError() for more information."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_GetWindowDisplayMode"]
-    #[doc = " \\sa SDL_SetWindowFullscreen"]
     pub fn SDL_SetWindowDisplayMode(
         window: *mut SDL_Window,
         mode: *const SDL_DisplayMode,
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[doc = " Query the display mode to use when a window is visible at fullscreen."]
-    #[doc = ""]
-    #[doc = " \\param window the window to query"]
-    #[doc = " \\param mode an SDL_DisplayMode structure filled in with the fullscreen"]
-    #[doc = "             display mode"]
-    #[doc = " \\returns 0 on success or a negative error code on failure; call"]
-    #[doc = "          SDL_GetError() for more information."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_SetWindowDisplayMode"]
-    #[doc = " \\sa SDL_SetWindowFullscreen"]
     pub fn SDL_GetWindowDisplayMode(
         window: *mut SDL_Window,
         mode: *mut SDL_DisplayMode,
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[doc = " Get the pixel format associated with the window."]
-    #[doc = ""]
-    #[doc = " \\param window the window to query"]
-    #[doc = " \\returns the pixel format of the window on success or"]
-    #[doc = "          SDL_PIXELFORMAT_UNKNOWN on failure; call SDL_GetError() for more"]
-    #[doc = "          information."]
     pub fn SDL_GetWindowPixelFormat(window: *mut SDL_Window) -> Uint32;
 }
 extern "C" {
-    #[doc = " Create a window with the specified position, dimensions, and flags."]
-    #[doc = ""]
-    #[doc = " `flags` may be any of the following OR'd together:"]
-    #[doc = ""]
-    #[doc = " - `SDL_WINDOW_FULLSCREEN`: fullscreen window"]
-    #[doc = " - `SDL_WINDOW_FULLSCREEN_DESKTOP`: fullscreen window at desktop resolution"]
-    #[doc = " - `SDL_WINDOW_OPENGL`: window usable with an OpenGL context"]
-    #[doc = " - `SDL_WINDOW_VULKAN`: window usable with a Vulkan instance"]
-    #[doc = " - `SDL_WINDOW_METAL`: window usable with a Metal instance"]
-    #[doc = " - `SDL_WINDOW_HIDDEN`: window is not visible"]
-    #[doc = " - `SDL_WINDOW_BORDERLESS`: no window decoration"]
-    #[doc = " - `SDL_WINDOW_RESIZABLE`: window can be resized"]
-    #[doc = " - `SDL_WINDOW_MINIMIZED`: window is minimized"]
-    #[doc = " - `SDL_WINDOW_MAXIMIZED`: window is maximized"]
-    #[doc = " - `SDL_WINDOW_INPUT_GRABBED`: window has grabbed input focus"]
-    #[doc = " - `SDL_WINDOW_ALLOW_HIGHDPI`: window should be created in high-DPI mode if"]
-    #[doc = "   supported (>= SDL 2.0.1)"]
-    #[doc = ""]
-    #[doc = " `SDL_WINDOW_SHOWN` is ignored by SDL_CreateWindow(). The SDL_Window is"]
-    #[doc = " implicitly shown if SDL_WINDOW_HIDDEN is not set. `SDL_WINDOW_SHOWN` may be"]
-    #[doc = " queried later using SDL_GetWindowFlags()."]
-    #[doc = ""]
-    #[doc = " On Apple's macOS, you **must** set the NSHighResolutionCapable Info.plist"]
-    #[doc = " property to YES, otherwise you will not receive a High-DPI OpenGL canvas."]
-    #[doc = ""]
-    #[doc = " If the window is created with the `SDL_WINDOW_ALLOW_HIGHDPI` flag, its size"]
-    #[doc = " in pixels may differ from its size in screen coordinates on platforms with"]
-    #[doc = " high-DPI support (e.g. iOS and macOS). Use SDL_GetWindowSize() to query the"]
-    #[doc = " client area's size in screen coordinates, and SDL_GL_GetDrawableSize() or"]
-    #[doc = " SDL_GetRendererOutputSize() to query the drawable size in pixels."]
-    #[doc = ""]
-    #[doc = " If the window is set fullscreen, the width and height parameters `w` and"]
-    #[doc = " `h` will not be used. However, invalid size parameters (e.g. too large) may"]
-    #[doc = " still fail. Window size is actually limited to 16384 x 16384 for all"]
-    #[doc = " platforms at window creation."]
-    #[doc = ""]
-    #[doc = " If the window is created with any of the SDL_WINDOW_OPENGL or"]
-    #[doc = " SDL_WINDOW_VULKAN flags, then the corresponding LoadLibrary function"]
-    #[doc = " (SDL_GL_LoadLibrary or SDL_Vulkan_LoadLibrary) is called and the"]
-    #[doc = " corresponding UnloadLibrary function is called by SDL_DestroyWindow()."]
-    #[doc = ""]
-    #[doc = " If SDL_WINDOW_VULKAN is specified and there isn't a working Vulkan driver,"]
-    #[doc = " SDL_CreateWindow() will fail because SDL_Vulkan_LoadLibrary() will fail."]
-    #[doc = ""]
-    #[doc = " If SDL_WINDOW_METAL is specified on an OS that does not support Metal,"]
-    #[doc = " SDL_CreateWindow() will fail."]
-    #[doc = ""]
-    #[doc = " On non-Apple devices, SDL requires you to either not link to the Vulkan"]
-    #[doc = " loader or link to a dynamic library version. This limitation may be removed"]
-    #[doc = " in a future version of SDL."]
-    #[doc = ""]
-    #[doc = " \\param title the title of the window, in UTF-8 encoding"]
-    #[doc = " \\param x the x position of the window, `SDL_WINDOWPOS_CENTERED`, or"]
-    #[doc = "          `SDL_WINDOWPOS_UNDEFINED`"]
-    #[doc = " \\param y the y position of the window, `SDL_WINDOWPOS_CENTERED`, or"]
-    #[doc = "          `SDL_WINDOWPOS_UNDEFINED`"]
-    #[doc = " \\param w the width of the window, in screen coordinates"]
-    #[doc = " \\param h the height of the window, in screen coordinates"]
-    #[doc = " \\param flags 0, or one or more SDL_WindowFlags OR'd together"]
-    #[doc = " \\returns the window that was created or NULL on failure; call"]
-    #[doc = "          SDL_GetError() for more information."]
-    #[doc = ""]
-    #[doc = " \\since This function is available since SDL 2.0.0."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_CreateWindowFrom"]
-    #[doc = " \\sa SDL_DestroyWindow"]
     pub fn SDL_CreateWindow(
         title: *const ::std::os::raw::c_char,
         x: ::std::os::raw::c_int,
@@ -7414,103 +4061,27 @@ extern "C" {
     ) -> *mut SDL_Window;
 }
 extern "C" {
-    #[doc = " Create an SDL window from an existing native window."]
-    #[doc = ""]
-    #[doc = " In some cases (e.g. OpenGL) and on some platforms (e.g. Microsoft Windows)"]
-    #[doc = " the hint `SDL_HINT_VIDEO_WINDOW_SHARE_PIXEL_FORMAT` needs to be configured"]
-    #[doc = " before using SDL_CreateWindowFrom()."]
-    #[doc = ""]
-    #[doc = " \\param data a pointer to driver-dependent window creation data, typically"]
-    #[doc = "             your native window cast to a void*"]
-    #[doc = " \\returns the window that was created or NULL on failure; call"]
-    #[doc = "          SDL_GetError() for more information."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_CreateWindow"]
-    #[doc = " \\sa SDL_DestroyWindow"]
     pub fn SDL_CreateWindowFrom(data: *const ::std::os::raw::c_void) -> *mut SDL_Window;
 }
 extern "C" {
-    #[doc = " Get the numeric ID of a window."]
-    #[doc = ""]
-    #[doc = " The numeric ID is what SDL_WindowEvent references, and is necessary to map"]
-    #[doc = " these events to specific SDL_Window objects."]
-    #[doc = ""]
-    #[doc = " \\param window the window to query"]
-    #[doc = " \\returns the ID of the window on success or 0 on failure; call"]
-    #[doc = "          SDL_GetError() for more information."]
-    #[doc = ""]
-    #[doc = " \\since This function is available since SDL 2.0.0."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_GetWindowFromID"]
     pub fn SDL_GetWindowID(window: *mut SDL_Window) -> Uint32;
 }
 extern "C" {
-    #[doc = " Get a window from a stored ID."]
-    #[doc = ""]
-    #[doc = " The numeric ID is what SDL_WindowEvent references, and is necessary to map"]
-    #[doc = " these events to specific SDL_Window objects."]
-    #[doc = ""]
-    #[doc = " \\param id the ID of the window"]
-    #[doc = " \\returns the window associated with `id` or NULL if it doesn't exist; call"]
-    #[doc = "          SDL_GetError() for more information."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_GetWindowID"]
     pub fn SDL_GetWindowFromID(id: Uint32) -> *mut SDL_Window;
 }
 extern "C" {
-    #[doc = " Get the window flags."]
-    #[doc = ""]
-    #[doc = " \\param window the window to query"]
-    #[doc = " \\returns a mask of the SDL_WindowFlags associated with `window`"]
-    #[doc = ""]
-    #[doc = " \\sa SDL_CreateWindow"]
-    #[doc = " \\sa SDL_HideWindow"]
-    #[doc = " \\sa SDL_MaximizeWindow"]
-    #[doc = " \\sa SDL_MinimizeWindow"]
-    #[doc = " \\sa SDL_SetWindowFullscreen"]
-    #[doc = " \\sa SDL_SetWindowGrab"]
-    #[doc = " \\sa SDL_ShowWindow"]
     pub fn SDL_GetWindowFlags(window: *mut SDL_Window) -> Uint32;
 }
 extern "C" {
-    #[doc = " Set the title of a window."]
-    #[doc = ""]
-    #[doc = " This string is expected to be in UTF-8 encoding."]
-    #[doc = ""]
-    #[doc = " \\param window the window to change"]
-    #[doc = " \\param title the desired window title in UTF-8 format"]
-    #[doc = ""]
-    #[doc = " \\sa SDL_GetWindowTitle"]
     pub fn SDL_SetWindowTitle(window: *mut SDL_Window, title: *const ::std::os::raw::c_char);
 }
 extern "C" {
-    #[doc = " Get the title of a window."]
-    #[doc = ""]
-    #[doc = " \\param window the window to query"]
-    #[doc = " \\returns the title of the window in UTF-8 format or \"\" if there is no"]
-    #[doc = "          title."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_SetWindowTitle"]
     pub fn SDL_GetWindowTitle(window: *mut SDL_Window) -> *const ::std::os::raw::c_char;
 }
 extern "C" {
-    #[doc = " Set the icon for a window."]
-    #[doc = ""]
-    #[doc = " \\param window the window to change"]
-    #[doc = " \\param icon an SDL_Surface structure containing the icon for the window"]
     pub fn SDL_SetWindowIcon(window: *mut SDL_Window, icon: *mut SDL_Surface);
 }
 extern "C" {
-    #[doc = " Associate an arbitrary named pointer with a window."]
-    #[doc = ""]
-    #[doc = " `name` is case-sensitive."]
-    #[doc = ""]
-    #[doc = " \\param window the window to associate with the pointer"]
-    #[doc = " \\param name the name of the pointer"]
-    #[doc = " \\param userdata the associated pointer"]
-    #[doc = " \\returns the previous value associated with `name`."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_GetWindowData"]
     pub fn SDL_SetWindowData(
         window: *mut SDL_Window,
         name: *const ::std::os::raw::c_char,
@@ -7518,30 +4089,12 @@ extern "C" {
     ) -> *mut ::std::os::raw::c_void;
 }
 extern "C" {
-    #[doc = " Retrieve the data pointer associated with a window."]
-    #[doc = ""]
-    #[doc = " \\param window the window to query"]
-    #[doc = " \\param name the name of the pointer"]
-    #[doc = " \\returns the value associated with `name`."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_SetWindowData"]
     pub fn SDL_GetWindowData(
         window: *mut SDL_Window,
         name: *const ::std::os::raw::c_char,
     ) -> *mut ::std::os::raw::c_void;
 }
 extern "C" {
-    #[doc = " Set the position of a window."]
-    #[doc = ""]
-    #[doc = " The window coordinate origin is the upper left of the display."]
-    #[doc = ""]
-    #[doc = " \\param window the window to reposition"]
-    #[doc = " \\param x the x coordinate of the window in screen coordinates, or"]
-    #[doc = "          `SDL_WINDOWPOS_CENTERED` or `SDL_WINDOWPOS_UNDEFINED`"]
-    #[doc = " \\param y the y coordinate of the window in screen coordinates, or"]
-    #[doc = "          `SDL_WINDOWPOS_CENTERED` or `SDL_WINDOWPOS_UNDEFINED`"]
-    #[doc = ""]
-    #[doc = " \\sa SDL_GetWindowPosition"]
     pub fn SDL_SetWindowPosition(
         window: *mut SDL_Window,
         x: ::std::os::raw::c_int,
@@ -7549,18 +4102,6 @@ extern "C" {
     );
 }
 extern "C" {
-    #[doc = " Get the position of a window."]
-    #[doc = ""]
-    #[doc = " If you do not need the value for one of the positions a NULL may be passed"]
-    #[doc = " in the `x` or `y` parameter."]
-    #[doc = ""]
-    #[doc = " \\param window the window to query"]
-    #[doc = " \\param x a pointer filled in with the x position of the window, in screen"]
-    #[doc = "          coordinates, may be NULL"]
-    #[doc = " \\param y a pointer filled in with the y position of the window, in screen"]
-    #[doc = "          coordinates, may be NULL"]
-    #[doc = ""]
-    #[doc = " \\sa SDL_SetWindowPosition"]
     pub fn SDL_GetWindowPosition(
         window: *mut SDL_Window,
         x: *mut ::std::os::raw::c_int,
@@ -7568,24 +4109,6 @@ extern "C" {
     );
 }
 extern "C" {
-    #[doc = " Set the size of a window's client area."]
-    #[doc = ""]
-    #[doc = " The window size in screen coordinates may differ from the size in pixels,"]
-    #[doc = " if the window was created with `SDL_WINDOW_ALLOW_HIGHDPI` on a platform"]
-    #[doc = " with high-dpi support (e.g. iOS or macOS). Use SDL_GL_GetDrawableSize() or"]
-    #[doc = " SDL_GetRendererOutputSize() to get the real client area size in pixels."]
-    #[doc = ""]
-    #[doc = " Fullscreen windows automatically match the size of the display mode, and"]
-    #[doc = " you should use SDL_SetWindowDisplayMode() to change their size."]
-    #[doc = ""]
-    #[doc = " \\param window the window to change"]
-    #[doc = " \\param w the width of the window in pixels, in screen coordinates, must be"]
-    #[doc = "          > 0"]
-    #[doc = " \\param h the height of the window in pixels, in screen coordinates, must be"]
-    #[doc = "          > 0"]
-    #[doc = ""]
-    #[doc = " \\sa SDL_GetWindowSize"]
-    #[doc = " \\sa SDL_SetWindowDisplayMode"]
     pub fn SDL_SetWindowSize(
         window: *mut SDL_Window,
         w: ::std::os::raw::c_int,
@@ -7593,26 +4116,6 @@ extern "C" {
     );
 }
 extern "C" {
-    #[doc = " Get the size of a window's client area."]
-    #[doc = ""]
-    #[doc = " NULL can safely be passed as the `w` or `h` parameter if the width or"]
-    #[doc = " height value is not desired."]
-    #[doc = ""]
-    #[doc = " The window size in screen coordinates may differ from the size in pixels,"]
-    #[doc = " if the window was created with `SDL_WINDOW_ALLOW_HIGHDPI` on a platform"]
-    #[doc = " with high-dpi support (e.g. iOS or macOS). Use SDL_GL_GetDrawableSize(),"]
-    #[doc = " SDL_Vulkan_GetDrawableSize(), or SDL_GetRendererOutputSize() to get the"]
-    #[doc = " real client area size in pixels."]
-    #[doc = ""]
-    #[doc = " \\param window the window to query the width and height from"]
-    #[doc = " \\param w a pointer filled in with the width of the window, in screen"]
-    #[doc = "          coordinates, may be NULL"]
-    #[doc = " \\param h a pointer filled in with the height of the window, in screen"]
-    #[doc = "          coordinates, may be NULL"]
-    #[doc = ""]
-    #[doc = " \\sa SDL_GL_GetDrawableSize"]
-    #[doc = " \\sa SDL_Vulkan_GetDrawableSize"]
-    #[doc = " \\sa SDL_SetWindowSize"]
     pub fn SDL_GetWindowSize(
         window: *mut SDL_Window,
         w: *mut ::std::os::raw::c_int,
@@ -7620,36 +4123,6 @@ extern "C" {
     );
 }
 extern "C" {
-    #[doc = " Get the size of a window's borders (decorations) around the client area."]
-    #[doc = ""]
-    #[doc = " Note: If this function fails (returns -1), the size values will be"]
-    #[doc = " initialized to 0, 0, 0, 0 (if a non-NULL pointer is provided), as if the"]
-    #[doc = " window in question was borderless."]
-    #[doc = ""]
-    #[doc = " Note: This function may fail on systems where the window has not yet been"]
-    #[doc = " decorated by the display server (for example, immediately after calling"]
-    #[doc = " SDL_CreateWindow). It is recommended that you wait at least until the"]
-    #[doc = " window has been presented and composited, so that the window system has a"]
-    #[doc = " chance to decorate the window and provide the border dimensions to SDL."]
-    #[doc = ""]
-    #[doc = " This function also returns -1 if getting the information is not supported."]
-    #[doc = ""]
-    #[doc = " \\param window the window to query the size values of the border"]
-    #[doc = "               (decorations) from"]
-    #[doc = " \\param top pointer to variable for storing the size of the top border; NULL"]
-    #[doc = "            is permitted"]
-    #[doc = " \\param left pointer to variable for storing the size of the left border;"]
-    #[doc = "             NULL is permitted"]
-    #[doc = " \\param bottom pointer to variable for storing the size of the bottom"]
-    #[doc = "               border; NULL is permitted"]
-    #[doc = " \\param right pointer to variable for storing the size of the right border;"]
-    #[doc = "              NULL is permitted"]
-    #[doc = " \\returns 0 on success or a negative error code on failure; call"]
-    #[doc = "          SDL_GetError() for more information."]
-    #[doc = ""]
-    #[doc = " \\since This function is available since SDL 2.0.5."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_GetWindowSize"]
     pub fn SDL_GetWindowBordersSize(
         window: *mut SDL_Window,
         top: *mut ::std::os::raw::c_int,
@@ -7659,14 +4132,6 @@ extern "C" {
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[doc = " Set the minimum size of a window's client area."]
-    #[doc = ""]
-    #[doc = " \\param window the window to change"]
-    #[doc = " \\param min_w the minimum width of the window in pixels"]
-    #[doc = " \\param min_h the minimum height of the window in pixels"]
-    #[doc = ""]
-    #[doc = " \\sa SDL_GetWindowMinimumSize"]
-    #[doc = " \\sa SDL_SetWindowMaximumSize"]
     pub fn SDL_SetWindowMinimumSize(
         window: *mut SDL_Window,
         min_w: ::std::os::raw::c_int,
@@ -7674,16 +4139,6 @@ extern "C" {
     );
 }
 extern "C" {
-    #[doc = " Get the minimum size of a window's client area."]
-    #[doc = ""]
-    #[doc = " \\param window the window to query"]
-    #[doc = " \\param w a pointer filled in with the minimum width of the window, may be"]
-    #[doc = "          NULL"]
-    #[doc = " \\param h a pointer filled in with the minimum height of the window, may be"]
-    #[doc = "          NULL"]
-    #[doc = ""]
-    #[doc = " \\sa SDL_GetWindowMaximumSize"]
-    #[doc = " \\sa SDL_SetWindowMinimumSize"]
     pub fn SDL_GetWindowMinimumSize(
         window: *mut SDL_Window,
         w: *mut ::std::os::raw::c_int,
@@ -7691,14 +4146,6 @@ extern "C" {
     );
 }
 extern "C" {
-    #[doc = " Set the maximum size of a window's client area."]
-    #[doc = ""]
-    #[doc = " \\param window the window to change"]
-    #[doc = " \\param max_w the maximum width of the window in pixels"]
-    #[doc = " \\param max_h the maximum height of the window in pixels"]
-    #[doc = ""]
-    #[doc = " \\sa SDL_GetWindowMaximumSize"]
-    #[doc = " \\sa SDL_SetWindowMinimumSize"]
     pub fn SDL_SetWindowMaximumSize(
         window: *mut SDL_Window,
         max_w: ::std::os::raw::c_int,
@@ -7706,16 +4153,6 @@ extern "C" {
     );
 }
 extern "C" {
-    #[doc = " Get the maximum size of a window's client area."]
-    #[doc = ""]
-    #[doc = " \\param window the window to query"]
-    #[doc = " \\param w a pointer filled in with the maximum width of the window, may be"]
-    #[doc = "          NULL"]
-    #[doc = " \\param h a pointer filled in with the maximum height of the window, may be"]
-    #[doc = "          NULL"]
-    #[doc = ""]
-    #[doc = " \\sa SDL_GetWindowMinimumSize"]
-    #[doc = " \\sa SDL_SetWindowMaximumSize"]
     pub fn SDL_GetWindowMaximumSize(
         window: *mut SDL_Window,
         w: *mut ::std::os::raw::c_int,
@@ -7723,176 +4160,43 @@ extern "C" {
     );
 }
 extern "C" {
-    #[doc = " Set the border state of a window."]
-    #[doc = ""]
-    #[doc = " This will add or remove the window's `SDL_WINDOW_BORDERLESS` flag and add"]
-    #[doc = " or remove the border from the actual window. This is a no-op if the"]
-    #[doc = " window's border already matches the requested state."]
-    #[doc = ""]
-    #[doc = " You can't change the border state of a fullscreen window."]
-    #[doc = ""]
-    #[doc = " \\param window the window of which to change the border state"]
-    #[doc = " \\param bordered SDL_FALSE to remove border, SDL_TRUE to add border"]
-    #[doc = ""]
-    #[doc = " \\since This function is available since SDL 2.0.0."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_GetWindowFlags"]
     pub fn SDL_SetWindowBordered(window: *mut SDL_Window, bordered: SDL_bool);
 }
 extern "C" {
-    #[doc = " Set the user-resizable state of a window."]
-    #[doc = ""]
-    #[doc = " This will add or remove the window's `SDL_WINDOW_RESIZABLE` flag and"]
-    #[doc = " allow/disallow user resizing of the window. This is a no-op if the window's"]
-    #[doc = " resizable state already matches the requested state."]
-    #[doc = ""]
-    #[doc = " You can't change the resizable state of a fullscreen window."]
-    #[doc = ""]
-    #[doc = " \\param window the window of which to change the resizable state"]
-    #[doc = " \\param resizable SDL_TRUE to allow resizing, SDL_FALSE to disallow"]
-    #[doc = ""]
-    #[doc = " \\since This function is available since SDL 2.0.5."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_GetWindowFlags"]
     pub fn SDL_SetWindowResizable(window: *mut SDL_Window, resizable: SDL_bool);
 }
 extern "C" {
-    #[doc = "  \\brief Set the window to always be above the others."]
-    #[doc = ""]
-    #[doc = "  This will add or remove the window's `SDL_WINDOW_ALWAYS_ON_TOP`"]
-    #[doc = "  flag. This will bring the window to the front and keep the window above"]
-    #[doc = "  the rest."]
-    #[doc = ""]
-    #[doc = "  \\param window The window of which to change the always on top state."]
-    #[doc = "  \\param on_top  SDL_TRUE to set the window always on top, SDL_FALSE to disable."]
-    #[doc = ""]
-    #[doc = "  \\sa SDL_SetWindowAlwaysOnTop"]
     pub fn SDL_SetWindowAlwaysOnTop(window: *mut SDL_Window, on_top: SDL_bool);
 }
 extern "C" {
-    #[doc = " Show a window."]
-    #[doc = ""]
-    #[doc = " \\param window the window to show"]
-    #[doc = ""]
-    #[doc = " \\sa SDL_HideWindow"]
-    #[doc = " \\sa SDL_RaiseWindow"]
     pub fn SDL_ShowWindow(window: *mut SDL_Window);
 }
 extern "C" {
-    #[doc = " Hide a window."]
-    #[doc = ""]
-    #[doc = " \\param window the window to hide"]
-    #[doc = ""]
-    #[doc = " \\sa SDL_ShowWindow"]
     pub fn SDL_HideWindow(window: *mut SDL_Window);
 }
 extern "C" {
-    #[doc = " Raise a window above other windows and set the input focus."]
-    #[doc = ""]
-    #[doc = " \\param window the window to raise"]
     pub fn SDL_RaiseWindow(window: *mut SDL_Window);
 }
 extern "C" {
-    #[doc = " Make a window as large as possible."]
-    #[doc = ""]
-    #[doc = " \\param window the window to maximize"]
-    #[doc = ""]
-    #[doc = " \\sa SDL_MinimizeWindow"]
-    #[doc = " \\sa SDL_RestoreWindow"]
     pub fn SDL_MaximizeWindow(window: *mut SDL_Window);
 }
 extern "C" {
-    #[doc = " Minimize a window to an iconic representation."]
-    #[doc = ""]
-    #[doc = " \\param window the window to minimize"]
-    #[doc = ""]
-    #[doc = " \\sa SDL_MaximizeWindow"]
-    #[doc = " \\sa SDL_RestoreWindow"]
     pub fn SDL_MinimizeWindow(window: *mut SDL_Window);
 }
 extern "C" {
-    #[doc = " Restore the size and position of a minimized or maximized window."]
-    #[doc = ""]
-    #[doc = " \\param window the window to restore"]
-    #[doc = ""]
-    #[doc = " \\sa SDL_MaximizeWindow"]
-    #[doc = " \\sa SDL_MinimizeWindow"]
     pub fn SDL_RestoreWindow(window: *mut SDL_Window);
 }
 extern "C" {
-    #[doc = " Set a window's fullscreen state."]
-    #[doc = ""]
-    #[doc = " `flags` may be `SDL_WINDOW_FULLSCREEN`, for \"real\" fullscreen with a"]
-    #[doc = " videomode change; `SDL_WINDOW_FULLSCREEN_DESKTOP` for \"fake\" fullscreen"]
-    #[doc = " that takes the size of the desktop; and 0 for windowed mode."]
-    #[doc = ""]
-    #[doc = " \\param window the window to change"]
-    #[doc = " \\param flags `SDL_WINDOW_FULLSCREEN`, `SDL_WINDOW_FULLSCREEN_DESKTOP` or 0"]
-    #[doc = " \\returns 0 on success or a negative error code on failure; call"]
-    #[doc = "          SDL_GetError() for more information."]
-    #[doc = ""]
-    #[doc = " \\since This function is available since SDL 2.0.0."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_GetWindowDisplayMode"]
-    #[doc = " \\sa SDL_SetWindowDisplayMode"]
     pub fn SDL_SetWindowFullscreen(window: *mut SDL_Window, flags: Uint32)
         -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[doc = " Get the SDL surface associated with the window."]
-    #[doc = ""]
-    #[doc = " A new surface will be created with the optimal format for the window, if"]
-    #[doc = " necessary. This surface will be freed when the window is destroyed. Do not"]
-    #[doc = " free this surface."]
-    #[doc = ""]
-    #[doc = " This surface will be invalidated if the window is resized. After resizing a"]
-    #[doc = " window this function must be called again to return a valid surface."]
-    #[doc = ""]
-    #[doc = " You may not combine this with 3D or the rendering API on this window."]
-    #[doc = ""]
-    #[doc = " This function is affected by `SDL_HINT_FRAMEBUFFER_ACCELERATION`."]
-    #[doc = ""]
-    #[doc = " \\param window the window to query"]
-    #[doc = " \\returns the surface associated with the window, or NULL on failure; call"]
-    #[doc = "          SDL_GetError() for more information."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_UpdateWindowSurface"]
-    #[doc = " \\sa SDL_UpdateWindowSurfaceRects"]
     pub fn SDL_GetWindowSurface(window: *mut SDL_Window) -> *mut SDL_Surface;
 }
 extern "C" {
-    #[doc = " Copy the window surface to the screen."]
-    #[doc = ""]
-    #[doc = " This is the function you use to reflect any changes to the surface on the"]
-    #[doc = " screen."]
-    #[doc = ""]
-    #[doc = " This function is equivalent to the SDL 1.2 API SDL_Flip()."]
-    #[doc = ""]
-    #[doc = " \\param window the window to update"]
-    #[doc = " \\returns 0 on success or a negative error code on failure; call"]
-    #[doc = "          SDL_GetError() for more information."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_GetWindowSurface"]
-    #[doc = " \\sa SDL_UpdateWindowSurfaceRects"]
     pub fn SDL_UpdateWindowSurface(window: *mut SDL_Window) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[doc = " Copy areas of the window surface to the screen."]
-    #[doc = ""]
-    #[doc = " This is the function you use to reflect changes to portions of the surface"]
-    #[doc = " on the screen."]
-    #[doc = ""]
-    #[doc = " This function is equivalent to the SDL 1.2 API SDL_UpdateRects()."]
-    #[doc = ""]
-    #[doc = " \\param window the window to update"]
-    #[doc = " \\param rects an array of SDL_Rect structures representing areas of the"]
-    #[doc = "              surface to copy"]
-    #[doc = " \\param numrects the number of rectangles"]
-    #[doc = " \\returns 0 on success or a negative error code on failure; call"]
-    #[doc = "          SDL_GetError() for more information."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_GetWindowSurface"]
-    #[doc = " \\sa SDL_UpdateWindowSurface"]
     pub fn SDL_UpdateWindowSurfaceRects(
         window: *mut SDL_Window,
         rects: *const SDL_Rect,
@@ -7900,226 +4204,54 @@ extern "C" {
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[doc = " Set a window's input grab mode."]
-    #[doc = ""]
-    #[doc = " When input is grabbed the mouse is confined to the window."]
-    #[doc = ""]
-    #[doc = " If the caller enables a grab while another window is currently grabbed, the"]
-    #[doc = " other window loses its grab in favor of the caller's window."]
-    #[doc = ""]
-    #[doc = " \\param window the window for which the input grab mode should be set"]
-    #[doc = " \\param grabbed SDL_TRUE to grab input or SDL_FALSE to release input"]
-    #[doc = ""]
-    #[doc = " \\sa SDL_GetGrabbedWindow"]
-    #[doc = " \\sa SDL_GetWindowGrab"]
     pub fn SDL_SetWindowGrab(window: *mut SDL_Window, grabbed: SDL_bool);
 }
 extern "C" {
-    #[doc = " Set a window's keyboard grab mode."]
-    #[doc = ""]
-    #[doc = " If the caller enables a grab while another window is currently grabbed, the"]
-    #[doc = " other window loses its grab in favor of the caller's window."]
-    #[doc = ""]
-    #[doc = " \\param window The window for which the keyboard grab mode should be set."]
-    #[doc = " \\param grabbed This is SDL_TRUE to grab keyboard, and SDL_FALSE to release."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_GetWindowKeyboardGrab"]
-    #[doc = " \\sa SDL_SetWindowMouseGrab"]
-    #[doc = " \\sa SDL_SetWindowGrab"]
     pub fn SDL_SetWindowKeyboardGrab(window: *mut SDL_Window, grabbed: SDL_bool);
 }
 extern "C" {
-    #[doc = " Set a window's mouse grab mode."]
-    #[doc = ""]
-    #[doc = " \\param window The window for which the mouse grab mode should be set."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_GetWindowMouseGrab"]
-    #[doc = " \\sa SDL_SetWindowKeyboardGrab"]
-    #[doc = " \\sa SDL_SetWindowGrab"]
     pub fn SDL_SetWindowMouseGrab(window: *mut SDL_Window, grabbed: SDL_bool);
 }
 extern "C" {
-    #[doc = " Get a window's input grab mode."]
-    #[doc = ""]
-    #[doc = " \\param window the window to query"]
-    #[doc = " \\returns SDL_TRUE if input is grabbed, SDL_FALSE otherwise."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_SetWindowGrab"]
     pub fn SDL_GetWindowGrab(window: *mut SDL_Window) -> SDL_bool;
 }
 extern "C" {
-    #[doc = " Get a window's keyboard grab mode."]
-    #[doc = ""]
-    #[doc = " \\param window the window to query"]
-    #[doc = " \\returns SDL_TRUE if keyboard is grabbed, and SDL_FALSE otherwise."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_SetWindowKeyboardGrab"]
-    #[doc = " \\sa SDL_GetWindowGrab"]
     pub fn SDL_GetWindowKeyboardGrab(window: *mut SDL_Window) -> SDL_bool;
 }
 extern "C" {
-    #[doc = " Get a window's mouse grab mode."]
-    #[doc = ""]
-    #[doc = " \\param window the window to query"]
-    #[doc = " \\returns SDL_TRUE if mouse is grabbed, and SDL_FALSE otherwise."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_SetWindowKeyboardGrab"]
-    #[doc = " \\sa SDL_GetWindowGrab"]
     pub fn SDL_GetWindowMouseGrab(window: *mut SDL_Window) -> SDL_bool;
 }
 extern "C" {
-    #[doc = " Get the window that currently has an input grab enabled."]
-    #[doc = ""]
-    #[doc = " \\returns the window if input is grabbed or NULL otherwise."]
-    #[doc = ""]
-    #[doc = " \\since This function is available since SDL 2.0.4."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_GetWindowGrab"]
-    #[doc = " \\sa SDL_SetWindowGrab"]
     pub fn SDL_GetGrabbedWindow() -> *mut SDL_Window;
 }
 extern "C" {
-    #[doc = " Set the brightness (gamma multiplier) for a given window's display."]
-    #[doc = ""]
-    #[doc = " Despite the name and signature, this method sets the brightness of the"]
-    #[doc = " entire display, not an individual window. A window is considered to be"]
-    #[doc = " owned by the display that contains the window's center pixel. (The index of"]
-    #[doc = " this display can be retrieved using SDL_GetWindowDisplayIndex().) The"]
-    #[doc = " brightness set will not follow the window if it is moved to another"]
-    #[doc = " display."]
-    #[doc = ""]
-    #[doc = " Many platforms will refuse to set the display brightness in modern times."]
-    #[doc = " You are better off using a shader to adjust gamma during rendering, or"]
-    #[doc = " something similar."]
-    #[doc = ""]
-    #[doc = " \\param window the window used to select the display whose brightness will"]
-    #[doc = "               be changed"]
-    #[doc = " \\param brightness the brightness (gamma multiplier) value to set where 0.0"]
-    #[doc = "                   is completely dark and 1.0 is normal brightness"]
-    #[doc = " \\returns 0 on success or a negative error code on failure; call"]
-    #[doc = "          SDL_GetError() for more information."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_GetWindowBrightness"]
-    #[doc = " \\sa SDL_SetWindowGammaRamp"]
     pub fn SDL_SetWindowBrightness(
         window: *mut SDL_Window,
         brightness: f32,
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[doc = " Get the brightness (gamma multiplier) for a given window's display."]
-    #[doc = ""]
-    #[doc = " Despite the name and signature, this method retrieves the brightness of the"]
-    #[doc = " entire display, not an individual window. A window is considered to be"]
-    #[doc = " owned by the display that contains the window's center pixel. (The index of"]
-    #[doc = " this display can be retrieved using SDL_GetWindowDisplayIndex().)"]
-    #[doc = ""]
-    #[doc = " \\param window the window used to select the display whose brightness will"]
-    #[doc = "               be queried"]
-    #[doc = " \\returns the brightness for the display where 0.0 is completely dark and"]
-    #[doc = "          1.0 is normal brightness."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_SetWindowBrightness"]
     pub fn SDL_GetWindowBrightness(window: *mut SDL_Window) -> f32;
 }
 extern "C" {
-    #[doc = " Set the opacity for a window."]
-    #[doc = ""]
-    #[doc = " The parameter `opacity` will be clamped internally between 0.0f"]
-    #[doc = " (transparent) and 1.0f (opaque)."]
-    #[doc = ""]
-    #[doc = " This function also returns -1 if setting the opacity isn't supported."]
-    #[doc = ""]
-    #[doc = " \\param window the window which will be made transparent or opaque"]
-    #[doc = " \\param opacity the opacity value (0.0f - transparent, 1.0f - opaque)"]
-    #[doc = " \\returns 0 on success or a negative error code on failure; call"]
-    #[doc = "          SDL_GetError() for more information."]
-    #[doc = ""]
-    #[doc = " \\since This function is available since SDL 2.0.5."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_GetWindowOpacity"]
     pub fn SDL_SetWindowOpacity(window: *mut SDL_Window, opacity: f32) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[doc = " Get the opacity of a window."]
-    #[doc = ""]
-    #[doc = " If transparency isn't supported on this platform, opacity will be reported"]
-    #[doc = " as 1.0f without error."]
-    #[doc = ""]
-    #[doc = " The parameter `opacity` is ignored if it is NULL."]
-    #[doc = ""]
-    #[doc = " This function also returns -1 if an invalid window was provided."]
-    #[doc = ""]
-    #[doc = " \\param window the window to get the current opacity value from"]
-    #[doc = " \\param out_opacity the float filled in (0.0f - transparent, 1.0f - opaque)"]
-    #[doc = " \\returns 0 on success or a negative error code on failure; call"]
-    #[doc = "          SDL_GetError() for more information."]
-    #[doc = ""]
-    #[doc = " \\since This function is available since SDL 2.0.5."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_SetWindowOpacity"]
     pub fn SDL_GetWindowOpacity(
         window: *mut SDL_Window,
         out_opacity: *mut f32,
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[doc = " Set the window as a modal for another window."]
-    #[doc = ""]
-    #[doc = " \\param modal_window the window that should be set modal"]
-    #[doc = " \\param parent_window the parent window for the modal window"]
-    #[doc = " \\returns 0 on success or a negative error code on failure; call"]
-    #[doc = "          SDL_GetError() for more information."]
-    #[doc = ""]
-    #[doc = " \\since This function is available since SDL 2.0.5."]
     pub fn SDL_SetWindowModalFor(
         modal_window: *mut SDL_Window,
         parent_window: *mut SDL_Window,
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[doc = " Explicitly set input focus to the window."]
-    #[doc = ""]
-    #[doc = " You almost certainly want SDL_RaiseWindow() instead of this function. Use"]
-    #[doc = " this with caution, as you might give focus to a window that is completely"]
-    #[doc = " obscured by other windows."]
-    #[doc = ""]
-    #[doc = " \\param window the window that should get the input focus"]
-    #[doc = " \\returns 0 on success or a negative error code on failure; call"]
-    #[doc = "          SDL_GetError() for more information."]
-    #[doc = ""]
-    #[doc = " \\since This function is available since SDL 2.0.5."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_RaiseWindow"]
     pub fn SDL_SetWindowInputFocus(window: *mut SDL_Window) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[doc = " Set the gamma ramp for the display that owns a given window."]
-    #[doc = ""]
-    #[doc = " Set the gamma translation table for the red, green, and blue channels of"]
-    #[doc = " the video hardware. Each table is an array of 256 16-bit quantities,"]
-    #[doc = " representing a mapping between the input and output for that channel. The"]
-    #[doc = " input is the index into the array, and the output is the 16-bit gamma value"]
-    #[doc = " at that index, scaled to the output color precision."]
-    #[doc = ""]
-    #[doc = " Despite the name and signature, this method sets the gamma ramp of the"]
-    #[doc = " entire display, not an individual window. A window is considered to be"]
-    #[doc = " owned by the display that contains the window's center pixel. (The index of"]
-    #[doc = " this display can be retrieved using SDL_GetWindowDisplayIndex().) The gamma"]
-    #[doc = " ramp set will not follow the window if it is moved to another display."]
-    #[doc = ""]
-    #[doc = " \\param window the window used to select the display whose gamma ramp will"]
-    #[doc = "               be changed"]
-    #[doc = " \\param red a 256 element array of 16-bit quantities representing the"]
-    #[doc = "            translation table for the red channel, or NULL"]
-    #[doc = " \\param green a 256 element array of 16-bit quantities representing the"]
-    #[doc = "              translation table for the green channel, or NULL"]
-    #[doc = " \\param blue a 256 element array of 16-bit quantities representing the"]
-    #[doc = "             translation table for the blue channel, or NULL"]
-    #[doc = " \\returns 0 on success or a negative error code on failure; call"]
-    #[doc = "          SDL_GetError() for more information."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_GetWindowGammaRamp"]
     pub fn SDL_SetWindowGammaRamp(
         window: *mut SDL_Window,
         red: *const Uint16,
@@ -8128,25 +4260,6 @@ extern "C" {
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[doc = " Get the gamma ramp for a given window's display."]
-    #[doc = ""]
-    #[doc = " Despite the name and signature, this method retrieves the gamma ramp of the"]
-    #[doc = " entire display, not an individual window. A window is considered to be"]
-    #[doc = " owned by the display that contains the window's center pixel. (The index of"]
-    #[doc = " this display can be retrieved using SDL_GetWindowDisplayIndex().)"]
-    #[doc = ""]
-    #[doc = " \\param window the window used to select the display whose gamma ramp will"]
-    #[doc = "               be queried"]
-    #[doc = " \\param red a 256 element array of 16-bit quantities filled in with the"]
-    #[doc = "            translation table for the red channel, or NULL"]
-    #[doc = " \\param green a 256 element array of 16-bit quantities filled in with the"]
-    #[doc = "              translation table for the green channel, or NULL"]
-    #[doc = " \\param blue a 256 element array of 16-bit quantities filled in with the"]
-    #[doc = "             translation table for the blue channel, or NULL"]
-    #[doc = " \\returns 0 on success or a negative error code on failure; call"]
-    #[doc = "          SDL_GetError() for more information."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_SetWindowGammaRamp"]
     pub fn SDL_GetWindowGammaRamp(
         window: *mut SDL_Window,
         red: *mut Uint16,
@@ -8154,9 +4267,7 @@ extern "C" {
         blue: *mut Uint16,
     ) -> ::std::os::raw::c_int;
 }
-#[doc = "< Region is normal. No special properties."]
 pub const SDL_HitTestResult_SDL_HITTEST_NORMAL: SDL_HitTestResult = 0;
-#[doc = "< Region can drag entire window."]
 pub const SDL_HitTestResult_SDL_HITTEST_DRAGGABLE: SDL_HitTestResult = 1;
 pub const SDL_HitTestResult_SDL_HITTEST_RESIZE_TOPLEFT: SDL_HitTestResult = 2;
 pub const SDL_HitTestResult_SDL_HITTEST_RESIZE_TOP: SDL_HitTestResult = 3;
@@ -8166,18 +4277,7 @@ pub const SDL_HitTestResult_SDL_HITTEST_RESIZE_BOTTOMRIGHT: SDL_HitTestResult = 
 pub const SDL_HitTestResult_SDL_HITTEST_RESIZE_BOTTOM: SDL_HitTestResult = 7;
 pub const SDL_HitTestResult_SDL_HITTEST_RESIZE_BOTTOMLEFT: SDL_HitTestResult = 8;
 pub const SDL_HitTestResult_SDL_HITTEST_RESIZE_LEFT: SDL_HitTestResult = 9;
-#[doc = " Possible return values from the SDL_HitTest callback."]
-#[doc = ""]
-#[doc = " \\sa SDL_HitTest"]
 pub type SDL_HitTestResult = ::std::os::raw::c_uint;
-#[doc = " Callback used for hit-testing."]
-#[doc = ""]
-#[doc = " \\param win the SDL_Window where hit-testing was set on"]
-#[doc = " \\param area an SDL_Point which should be hit-tested"]
-#[doc = " \\param data what was passed as `callback_data` to SDL_SetWindowHitTest()"]
-#[doc = " \\return an SDL_HitTestResult value."]
-#[doc = ""]
-#[doc = " \\sa SDL_SetWindowHitTest"]
 pub type SDL_HitTest = ::std::option::Option<
     unsafe extern "C" fn(
         win: *mut SDL_Window,
@@ -8186,44 +4286,6 @@ pub type SDL_HitTest = ::std::option::Option<
     ) -> SDL_HitTestResult,
 >;
 extern "C" {
-    #[doc = " Provide a callback that decides if a window region has special properties."]
-    #[doc = ""]
-    #[doc = " Normally windows are dragged and resized by decorations provided by the"]
-    #[doc = " system window manager (a title bar, borders, etc), but for some apps, it"]
-    #[doc = " makes sense to drag them from somewhere else inside the window itself; for"]
-    #[doc = " example, one might have a borderless window that wants to be draggable from"]
-    #[doc = " any part, or simulate its own title bar, etc."]
-    #[doc = ""]
-    #[doc = " This function lets the app provide a callback that designates pieces of a"]
-    #[doc = " given window as special. This callback is run during event processing if we"]
-    #[doc = " need to tell the OS to treat a region of the window specially; the use of"]
-    #[doc = " this callback is known as \"hit testing.\""]
-    #[doc = ""]
-    #[doc = " Mouse input may not be delivered to your application if it is within a"]
-    #[doc = " special area; the OS will often apply that input to moving the window or"]
-    #[doc = " resizing the window and not deliver it to the application."]
-    #[doc = ""]
-    #[doc = " Specifying NULL for a callback disables hit-testing. Hit-testing is"]
-    #[doc = " disabled by default."]
-    #[doc = ""]
-    #[doc = " Platforms that don't support this functionality will return -1"]
-    #[doc = " unconditionally, even if you're attempting to disable hit-testing."]
-    #[doc = ""]
-    #[doc = " Your callback may fire at any time, and its firing does not indicate any"]
-    #[doc = " specific behavior (for example, on Windows, this certainly might fire when"]
-    #[doc = " the OS is deciding whether to drag your window, but it fires for lots of"]
-    #[doc = " other reasons, too, some unrelated to anything you probably care about _and"]
-    #[doc = " when the mouse isn't actually at the location it is testing_). Since this"]
-    #[doc = " can fire at any time, you should try to keep your callback efficient,"]
-    #[doc = " devoid of allocations, etc."]
-    #[doc = ""]
-    #[doc = " \\param window the window to set hit-testing on"]
-    #[doc = " \\param callback the function to call when doing a hit-test"]
-    #[doc = " \\param callback_data an app-defined void pointer passed to **callback**"]
-    #[doc = " \\returns 0 on success or -1 on error (including unsupported); call"]
-    #[doc = "          SDL_GetError() for more information."]
-    #[doc = ""]
-    #[doc = " \\since This function is available since SDL 2.0.4."]
     pub fn SDL_SetWindowHitTest(
         window: *mut SDL_Window,
         callback: SDL_HitTest,
@@ -8231,282 +4293,68 @@ extern "C" {
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[doc = " Request a window to demand attention from the user."]
-    #[doc = ""]
-    #[doc = " \\param window the window to be flashed"]
-    #[doc = " \\param operation the flash operation"]
-    #[doc = " \\returns 0 on success or a negative error code on failure; call"]
-    #[doc = "          SDL_GetError() for more information."]
     pub fn SDL_FlashWindow(
         window: *mut SDL_Window,
         operation: SDL_FlashOperation,
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[doc = " Destroy a window."]
-    #[doc = ""]
-    #[doc = " If `window` is NULL, this function will return immediately after setting"]
-    #[doc = " the SDL error message to \"Invalid window\". See SDL_GetError()."]
-    #[doc = ""]
-    #[doc = " \\param window the window to destroy"]
-    #[doc = ""]
-    #[doc = " \\sa SDL_CreateWindow"]
-    #[doc = " \\sa SDL_CreateWindowFrom"]
     pub fn SDL_DestroyWindow(window: *mut SDL_Window);
 }
 extern "C" {
-    #[doc = " Check whether the screensaver is currently enabled."]
-    #[doc = ""]
-    #[doc = " The screensaver is disabled by default since SDL 2.0.2. Before SDL 2.0.2"]
-    #[doc = " the screensaver was enabled by default."]
-    #[doc = ""]
-    #[doc = " The default can also be changed using `SDL_HINT_VIDEO_ALLOW_SCREENSAVER`."]
-    #[doc = ""]
-    #[doc = " \\returns SDL_TRUE if the screensaver is enabled, SDL_FALSE if it is"]
-    #[doc = "          disabled."]
-    #[doc = ""]
-    #[doc = " \\since This function is available since SDL 2.0.0."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_DisableScreenSaver"]
-    #[doc = " \\sa SDL_EnableScreenSaver"]
     pub fn SDL_IsScreenSaverEnabled() -> SDL_bool;
 }
 extern "C" {
-    #[doc = " Allow the screen to be blanked by a screen saver."]
-    #[doc = ""]
-    #[doc = " \\since This function is available since SDL 2.0.0."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_DisableScreenSaver"]
-    #[doc = " \\sa SDL_IsScreenSaverEnabled"]
     pub fn SDL_EnableScreenSaver();
 }
 extern "C" {
-    #[doc = " Prevent the screen from being blanked by a screen saver."]
-    #[doc = ""]
-    #[doc = " If you disable the screensaver, it is automatically re-enabled when SDL"]
-    #[doc = " quits."]
-    #[doc = ""]
-    #[doc = " \\since This function is available since SDL 2.0.0."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_EnableScreenSaver"]
-    #[doc = " \\sa SDL_IsScreenSaverEnabled"]
     pub fn SDL_DisableScreenSaver();
 }
 extern "C" {
-    #[doc = " Dynamically load an OpenGL library."]
-    #[doc = ""]
-    #[doc = " This should be done after initializing the video driver, but before"]
-    #[doc = " creating any OpenGL windows. If no OpenGL library is loaded, the default"]
-    #[doc = " library will be loaded upon creation of the first OpenGL window."]
-    #[doc = ""]
-    #[doc = " If you do this, you need to retrieve all of the GL functions used in your"]
-    #[doc = " program from the dynamic library using SDL_GL_GetProcAddress()."]
-    #[doc = ""]
-    #[doc = " \\param path the platform dependent OpenGL library name, or NULL to open the"]
-    #[doc = "             default OpenGL library"]
-    #[doc = " \\returns 0 on success or a negative error code on failure; call"]
-    #[doc = "          SDL_GetError() for more information."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_GL_GetProcAddress"]
-    #[doc = " \\sa SDL_GL_UnloadLibrary"]
     pub fn SDL_GL_LoadLibrary(path: *const ::std::os::raw::c_char) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[doc = " Get an OpenGL function by name."]
-    #[doc = ""]
-    #[doc = " If the GL library is loaded at runtime with SDL_GL_LoadLibrary(), then all"]
-    #[doc = " GL functions must be retrieved this way. Usually this is used to retrieve"]
-    #[doc = " function pointers to OpenGL extensions."]
-    #[doc = ""]
-    #[doc = " There are some quirks to looking up OpenGL functions that require some"]
-    #[doc = " extra care from the application. If you code carefully, you can handle"]
-    #[doc = " these quirks without any platform-specific code, though:"]
-    #[doc = ""]
-    #[doc = " - On Windows, function pointers are specific to the current GL context;"]
-    #[doc = "   this means you need to have created a GL context and made it current"]
-    #[doc = "   before calling SDL_GL_GetProcAddress(). If you recreate your context or"]
-    #[doc = "   create a second context, you should assume that any existing function"]
-    #[doc = "   pointers aren't valid to use with it. This is (currently) a"]
-    #[doc = "   Windows-specific limitation, and in practice lots of drivers don't suffer"]
-    #[doc = "   this limitation, but it is still the way the wgl API is documented to"]
-    #[doc = "   work and you should expect crashes if you don't respect it. Store a copy"]
-    #[doc = "   of the function pointers that comes and goes with context lifespan."]
-    #[doc = " - On X11, function pointers returned by this function are valid for any"]
-    #[doc = "   context, and can even be looked up before a context is created at all."]
-    #[doc = "   This means that, for at least some common OpenGL implementations, if you"]
-    #[doc = "   look up a function that doesn't exist, you'll get a non-NULL result that"]
-    #[doc = "   is _NOT_ safe to call. You must always make sure the function is actually"]
-    #[doc = "   available for a given GL context before calling it, by checking for the"]
-    #[doc = "   existence of the appropriate extension with SDL_GL_ExtensionSupported(),"]
-    #[doc = "   or verifying that the version of OpenGL you're using offers the function"]
-    #[doc = "   as core functionality."]
-    #[doc = " - Some OpenGL drivers, on all platforms, *will* return NULL if a function"]
-    #[doc = "   isn't supported, but you can't count on this behavior. Check for"]
-    #[doc = "   extensions you use, and if you get a NULL anyway, act as if that"]
-    #[doc = "   extension wasn't available. This is probably a bug in the driver, but you"]
-    #[doc = "   can code defensively for this scenario anyhow."]
-    #[doc = " - Just because you're on Linux/Unix, don't assume you'll be using X11."]
-    #[doc = "   Next-gen display servers are waiting to replace it, and may or may not"]
-    #[doc = "   make the same promises about function pointers."]
-    #[doc = " - OpenGL function pointers must be declared `APIENTRY` as in the example"]
-    #[doc = "   code. This will ensure the proper calling convention is followed on"]
-    #[doc = "   platforms where this matters (Win32) thereby avoiding stack corruption."]
-    #[doc = ""]
-    #[doc = " \\param proc the name of an OpenGL function"]
-    #[doc = " \\returns a pointer to the named OpenGL function. The returned pointer"]
-    #[doc = "          should be cast to the appropriate function signature."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_GL_ExtensionSupported"]
-    #[doc = " \\sa SDL_GL_LoadLibrary"]
-    #[doc = " \\sa SDL_GL_UnloadLibrary"]
     pub fn SDL_GL_GetProcAddress(
         proc_: *const ::std::os::raw::c_char,
     ) -> *mut ::std::os::raw::c_void;
 }
 extern "C" {
-    #[doc = " Unload the OpenGL library previously loaded by SDL_GL_LoadLibrary()."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_GL_LoadLibrary"]
     pub fn SDL_GL_UnloadLibrary();
 }
 extern "C" {
-    #[doc = " Check if an OpenGL extension is supported for the current context."]
-    #[doc = ""]
-    #[doc = " This function operates on the current GL context; you must have created a"]
-    #[doc = " context and it must be current before calling this function. Do not assume"]
-    #[doc = " that all contexts you create will have the same set of extensions"]
-    #[doc = " available, or that recreating an existing context will offer the same"]
-    #[doc = " extensions again."]
-    #[doc = ""]
-    #[doc = " While it's probably not a massive overhead, this function is not an O(1)"]
-    #[doc = " operation. Check the extensions you care about after creating the GL"]
-    #[doc = " context and save that information somewhere instead of calling the function"]
-    #[doc = " every time you need to know."]
-    #[doc = ""]
-    #[doc = " \\param extension the name of the extension to check"]
-    #[doc = " \\returns SDL_TRUE if the extension is supported, SDL_FALSE otherwise."]
-    #[doc = ""]
-    #[doc = " \\since This function is available since SDL 2.0.0."]
     pub fn SDL_GL_ExtensionSupported(extension: *const ::std::os::raw::c_char) -> SDL_bool;
 }
 extern "C" {
-    #[doc = " Reset all previously set OpenGL context attributes to their default values."]
-    #[doc = ""]
-    #[doc = " \\since This function is available since SDL 2.0.2."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_GL_GetAttribute"]
-    #[doc = " \\sa SDL_GL_SetAttribute"]
     pub fn SDL_GL_ResetAttributes();
 }
 extern "C" {
-    #[doc = " Set an OpenGL window attribute before window creation."]
-    #[doc = ""]
-    #[doc = " This function sets the OpenGL attribute `attr` to `value`. The requested"]
-    #[doc = " attributes should be set before creating an OpenGL window. You should use"]
-    #[doc = " SDL_GL_GetAttribute() to check the values after creating the OpenGL"]
-    #[doc = " context, since the values obtained can differ from the requested ones."]
-    #[doc = ""]
-    #[doc = " \\param attr an SDL_GLattr enum value specifying the OpenGL attribute to set"]
-    #[doc = " \\param value the desired value for the attribute"]
-    #[doc = " \\returns 0 on success or a negative error code on failure; call"]
-    #[doc = "          SDL_GetError() for more information."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_GL_GetAttribute"]
-    #[doc = " \\sa SDL_GL_ResetAttributes"]
     pub fn SDL_GL_SetAttribute(
         attr: SDL_GLattr,
         value: ::std::os::raw::c_int,
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[doc = " Get the actual value for an attribute from the current context."]
-    #[doc = ""]
-    #[doc = " \\param attr an SDL_GLattr enum value specifying the OpenGL attribute to get"]
-    #[doc = " \\param value a pointer filled in with the current value of `attr`"]
-    #[doc = " \\returns 0 on success or a negative error code on failure; call"]
-    #[doc = "          SDL_GetError() for more information."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_GL_ResetAttributes"]
-    #[doc = " \\sa SDL_GL_SetAttribute"]
     pub fn SDL_GL_GetAttribute(
         attr: SDL_GLattr,
         value: *mut ::std::os::raw::c_int,
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[doc = " Create an OpenGL context for an OpenGL window, and make it current."]
-    #[doc = ""]
-    #[doc = " Windows users new to OpenGL should note that, for historical reasons, GL"]
-    #[doc = " functions added after OpenGL version 1.1 are not available by default."]
-    #[doc = " Those functions must be loaded at run-time, either with an OpenGL"]
-    #[doc = " extension-handling library or with SDL_GL_GetProcAddress() and its related"]
-    #[doc = " functions."]
-    #[doc = ""]
-    #[doc = " SDL_GLContext is an alias for `void *`. It's opaque to the application."]
-    #[doc = ""]
-    #[doc = " \\param window the window to associate with the context"]
-    #[doc = " \\returns the OpenGL context associated with `window` or NULL on error; call"]
-    #[doc = "          SDL_GetError() for more details."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_GL_DeleteContext"]
-    #[doc = " \\sa SDL_GL_MakeCurrent"]
     pub fn SDL_GL_CreateContext(window: *mut SDL_Window) -> SDL_GLContext;
 }
 extern "C" {
-    #[doc = " Set up an OpenGL context for rendering into an OpenGL window."]
-    #[doc = ""]
-    #[doc = " The context must have been created with a compatible window."]
-    #[doc = ""]
-    #[doc = " \\param window the window to associate with the context"]
-    #[doc = " \\param context the OpenGL context to associate with the window"]
-    #[doc = " \\returns 0 on success or a negative error code on failure; call"]
-    #[doc = "          SDL_GetError() for more information."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_GL_CreateContext"]
     pub fn SDL_GL_MakeCurrent(
         window: *mut SDL_Window,
         context: SDL_GLContext,
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[doc = " Get the currently active OpenGL window."]
-    #[doc = ""]
-    #[doc = " \\returns the currently active OpenGL window on success or NULL on failure;"]
-    #[doc = "          call SDL_GetError() for more information."]
-    #[doc = ""]
-    #[doc = " \\since This function is available since SDL 2.0.0."]
     pub fn SDL_GL_GetCurrentWindow() -> *mut SDL_Window;
 }
 extern "C" {
-    #[doc = " Get the currently active OpenGL context."]
-    #[doc = ""]
-    #[doc = " \\returns the currently active OpenGL context or NULL on failure; call"]
-    #[doc = "          SDL_GetError() for more information."]
-    #[doc = ""]
-    #[doc = " \\since This function is available since SDL 2.0.0."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_GL_MakeCurrent"]
     pub fn SDL_GL_GetCurrentContext() -> SDL_GLContext;
 }
 extern "C" {
-    #[doc = " Get the size of a window's underlying drawable in pixels."]
-    #[doc = ""]
-    #[doc = " This returns info useful for calling glViewport()."]
-    #[doc = ""]
-    #[doc = " This may differ from SDL_GetWindowSize() if we're rendering to a high-DPI"]
-    #[doc = " drawable, i.e. the window was created with `SDL_WINDOW_ALLOW_HIGHDPI` on a"]
-    #[doc = " platform with high-DPI support (Apple calls this \"Retina\"), and not"]
-    #[doc = " disabled by the `SDL_HINT_VIDEO_HIGHDPI_DISABLED` hint."]
-    #[doc = ""]
-    #[doc = " \\param window the window from which the drawable size should be queried"]
-    #[doc = " \\param w a pointer to variable for storing the width in pixels, may be NULL"]
-    #[doc = " \\param h a pointer to variable for storing the height in pixels, may be"]
-    #[doc = "          NULL"]
-    #[doc = ""]
-    #[doc = " \\since This function is available since SDL 2.0.1."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_CreateWindow"]
-    #[doc = " \\sa SDL_GetWindowSize"]
     pub fn SDL_GL_GetDrawableSize(
         window: *mut SDL_Window,
         w: *mut ::std::os::raw::c_int,
@@ -8514,73 +4362,15 @@ extern "C" {
     );
 }
 extern "C" {
-    #[doc = " Set the swap interval for the current OpenGL context."]
-    #[doc = ""]
-    #[doc = " Some systems allow specifying -1 for the interval, to enable adaptive"]
-    #[doc = " vsync. Adaptive vsync works the same as vsync, but if you've already missed"]
-    #[doc = " the vertical retrace for a given frame, it swaps buffers immediately, which"]
-    #[doc = " might be less jarring for the user during occasional framerate drops. If an"]
-    #[doc = " application requests adaptive vsync and the system does not support it,"]
-    #[doc = " this function will fail and return -1. In such a case, you should probably"]
-    #[doc = " retry the call with 1 for the interval."]
-    #[doc = ""]
-    #[doc = " Adaptive vsync is implemented for some glX drivers with"]
-    #[doc = " GLX_EXT_swap_control_tear:"]
-    #[doc = ""]
-    #[doc = " https://www.opengl.org/registry/specs/EXT/glx_swap_control_tear.txt"]
-    #[doc = ""]
-    #[doc = " and for some Windows drivers with WGL_EXT_swap_control_tear:"]
-    #[doc = ""]
-    #[doc = " https://www.opengl.org/registry/specs/EXT/wgl_swap_control_tear.txt"]
-    #[doc = ""]
-    #[doc = " Read more on the Khronos wiki:"]
-    #[doc = " https://www.khronos.org/opengl/wiki/Swap_Interval#Adaptive_Vsync"]
-    #[doc = ""]
-    #[doc = " \\param interval 0 for immediate updates, 1 for updates synchronized with"]
-    #[doc = "                 the vertical retrace, -1 for adaptive vsync"]
-    #[doc = " \\returns 0 on success or -1 if setting the swap interval is not supported;"]
-    #[doc = "          call SDL_GetError() for more information."]
-    #[doc = ""]
-    #[doc = " \\since This function is available since SDL 2.0.0."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_GL_GetSwapInterval"]
     pub fn SDL_GL_SetSwapInterval(interval: ::std::os::raw::c_int) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[doc = " Get the swap interval for the current OpenGL context."]
-    #[doc = ""]
-    #[doc = " If the system can't determine the swap interval, or there isn't a valid"]
-    #[doc = " current context, this function will return 0 as a safe default."]
-    #[doc = ""]
-    #[doc = " \\returns 0 if there is no vertical retrace synchronization, 1 if the buffer"]
-    #[doc = "          swap is synchronized with the vertical retrace, and -1 if late"]
-    #[doc = "          swaps happen immediately instead of waiting for the next retrace;"]
-    #[doc = "          call SDL_GetError() for more information."]
-    #[doc = ""]
-    #[doc = " \\since This function is available since SDL 2.0.0."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_GL_SetSwapInterval"]
     pub fn SDL_GL_GetSwapInterval() -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[doc = " Update a window with OpenGL rendering."]
-    #[doc = ""]
-    #[doc = " This is used with double-buffered OpenGL contexts, which are the default."]
-    #[doc = ""]
-    #[doc = " On macOS, make sure you bind 0 to the draw framebuffer before swapping the"]
-    #[doc = " window, otherwise nothing will happen. If you aren't using"]
-    #[doc = " glBindFramebuffer(), this is the default and you won't have to do anything"]
-    #[doc = " extra."]
-    #[doc = ""]
-    #[doc = " \\param window the window to change"]
     pub fn SDL_GL_SwapWindow(window: *mut SDL_Window);
 }
 extern "C" {
-    #[doc = " Delete an OpenGL context."]
-    #[doc = ""]
-    #[doc = " \\param context the OpenGL context to be deleted"]
-    #[doc = ""]
-    #[doc = " \\sa SDL_GL_CreateContext"]
     pub fn SDL_GL_DeleteContext(context: SDL_GLContext);
 }
 pub const SDL_Scancode_SDL_SCANCODE_UNKNOWN: SDL_Scancode = 0;
@@ -8629,50 +4419,10 @@ pub const SDL_Scancode_SDL_SCANCODE_MINUS: SDL_Scancode = 45;
 pub const SDL_Scancode_SDL_SCANCODE_EQUALS: SDL_Scancode = 46;
 pub const SDL_Scancode_SDL_SCANCODE_LEFTBRACKET: SDL_Scancode = 47;
 pub const SDL_Scancode_SDL_SCANCODE_RIGHTBRACKET: SDL_Scancode = 48;
-#[doc = "< Located at the lower left of the return"]
-#[doc = "   key on ISO keyboards and at the right end"]
-#[doc = "   of the QWERTY row on ANSI keyboards."]
-#[doc = "   Produces REVERSE SOLIDUS (backslash) and"]
-#[doc = "   VERTICAL LINE in a US layout, REVERSE"]
-#[doc = "   SOLIDUS and VERTICAL LINE in a UK Mac"]
-#[doc = "   layout, NUMBER SIGN and TILDE in a UK"]
-#[doc = "   Windows layout, DOLLAR SIGN and POUND SIGN"]
-#[doc = "   in a Swiss German layout, NUMBER SIGN and"]
-#[doc = "   APOSTROPHE in a German layout, GRAVE"]
-#[doc = "   ACCENT and POUND SIGN in a French Mac"]
-#[doc = "   layout, and ASTERISK and MICRO SIGN in a"]
-#[doc = "   French Windows layout."]
 pub const SDL_Scancode_SDL_SCANCODE_BACKSLASH: SDL_Scancode = 49;
-#[doc = "< ISO USB keyboards actually use this code"]
-#[doc = "   instead of 49 for the same key, but all"]
-#[doc = "   OSes I've seen treat the two codes"]
-#[doc = "   identically. So, as an implementor, unless"]
-#[doc = "   your keyboard generates both of those"]
-#[doc = "   codes and your OS treats them differently,"]
-#[doc = "   you should generate SDL_SCANCODE_BACKSLASH"]
-#[doc = "   instead of this code. As a user, you"]
-#[doc = "   should not rely on this code because SDL"]
-#[doc = "   will never generate it with most (all?)"]
-#[doc = "   keyboards."]
 pub const SDL_Scancode_SDL_SCANCODE_NONUSHASH: SDL_Scancode = 50;
 pub const SDL_Scancode_SDL_SCANCODE_SEMICOLON: SDL_Scancode = 51;
 pub const SDL_Scancode_SDL_SCANCODE_APOSTROPHE: SDL_Scancode = 52;
-#[doc = "< Located in the top left corner (on both ANSI"]
-#[doc = "   and ISO keyboards). Produces GRAVE ACCENT and"]
-#[doc = "   TILDE in a US Windows layout and in US and UK"]
-#[doc = "   Mac layouts on ANSI keyboards, GRAVE ACCENT"]
-#[doc = "   and NOT SIGN in a UK Windows layout, SECTION"]
-#[doc = "   SIGN and PLUS-MINUS SIGN in US and UK Mac"]
-#[doc = "   layouts on ISO keyboards, SECTION SIGN and"]
-#[doc = "   DEGREE SIGN in a Swiss German layout (Mac:"]
-#[doc = "   only on ISO keyboards), CIRCUMFLEX ACCENT and"]
-#[doc = "   DEGREE SIGN in a German layout (Mac: only on"]
-#[doc = "   ISO keyboards), SUPERSCRIPT TWO and TILDE in a"]
-#[doc = "   French Windows layout, COMMERCIAL AT and"]
-#[doc = "   NUMBER SIGN in a French Mac layout on ISO"]
-#[doc = "   keyboards, and LESS-THAN SIGN and GREATER-THAN"]
-#[doc = "   SIGN in a Swiss German, German, or French Mac"]
-#[doc = "   layout on ANSI keyboards."]
 pub const SDL_Scancode_SDL_SCANCODE_GRAVE: SDL_Scancode = 53;
 pub const SDL_Scancode_SDL_SCANCODE_COMMA: SDL_Scancode = 54;
 pub const SDL_Scancode_SDL_SCANCODE_PERIOD: SDL_Scancode = 55;
@@ -8693,8 +4443,6 @@ pub const SDL_Scancode_SDL_SCANCODE_F12: SDL_Scancode = 69;
 pub const SDL_Scancode_SDL_SCANCODE_PRINTSCREEN: SDL_Scancode = 70;
 pub const SDL_Scancode_SDL_SCANCODE_SCROLLLOCK: SDL_Scancode = 71;
 pub const SDL_Scancode_SDL_SCANCODE_PAUSE: SDL_Scancode = 72;
-#[doc = "< insert on PC, help on some Mac keyboards (but"]
-#[doc = "does send code 73, not 117)"]
 pub const SDL_Scancode_SDL_SCANCODE_INSERT: SDL_Scancode = 73;
 pub const SDL_Scancode_SDL_SCANCODE_HOME: SDL_Scancode = 74;
 pub const SDL_Scancode_SDL_SCANCODE_PAGEUP: SDL_Scancode = 75;
@@ -8705,7 +4453,6 @@ pub const SDL_Scancode_SDL_SCANCODE_RIGHT: SDL_Scancode = 79;
 pub const SDL_Scancode_SDL_SCANCODE_LEFT: SDL_Scancode = 80;
 pub const SDL_Scancode_SDL_SCANCODE_DOWN: SDL_Scancode = 81;
 pub const SDL_Scancode_SDL_SCANCODE_UP: SDL_Scancode = 82;
-#[doc = "< num lock on PC, clear on Mac keyboards"]
 pub const SDL_Scancode_SDL_SCANCODE_NUMLOCKCLEAR: SDL_Scancode = 83;
 pub const SDL_Scancode_SDL_SCANCODE_KP_DIVIDE: SDL_Scancode = 84;
 pub const SDL_Scancode_SDL_SCANCODE_KP_MULTIPLY: SDL_Scancode = 85;
@@ -8723,22 +4470,8 @@ pub const SDL_Scancode_SDL_SCANCODE_KP_8: SDL_Scancode = 96;
 pub const SDL_Scancode_SDL_SCANCODE_KP_9: SDL_Scancode = 97;
 pub const SDL_Scancode_SDL_SCANCODE_KP_0: SDL_Scancode = 98;
 pub const SDL_Scancode_SDL_SCANCODE_KP_PERIOD: SDL_Scancode = 99;
-#[doc = "< This is the additional key that ISO"]
-#[doc = "   keyboards have over ANSI ones,"]
-#[doc = "   located between left shift and Y."]
-#[doc = "   Produces GRAVE ACCENT and TILDE in a"]
-#[doc = "   US or UK Mac layout, REVERSE SOLIDUS"]
-#[doc = "   (backslash) and VERTICAL LINE in a"]
-#[doc = "   US or UK Windows layout, and"]
-#[doc = "   LESS-THAN SIGN and GREATER-THAN SIGN"]
-#[doc = "   in a Swiss German, German, or French"]
-#[doc = "   layout."]
 pub const SDL_Scancode_SDL_SCANCODE_NONUSBACKSLASH: SDL_Scancode = 100;
-#[doc = "< windows contextual menu, compose"]
 pub const SDL_Scancode_SDL_SCANCODE_APPLICATION: SDL_Scancode = 101;
-#[doc = "< The USB document says this is a status flag,"]
-#[doc = "   not a physical key - but some Mac keyboards"]
-#[doc = "   do have a power key."]
 pub const SDL_Scancode_SDL_SCANCODE_POWER: SDL_Scancode = 102;
 pub const SDL_Scancode_SDL_SCANCODE_KP_EQUALS: SDL_Scancode = 103;
 pub const SDL_Scancode_SDL_SCANCODE_F13: SDL_Scancode = 104;
@@ -8758,7 +4491,6 @@ pub const SDL_Scancode_SDL_SCANCODE_HELP: SDL_Scancode = 117;
 pub const SDL_Scancode_SDL_SCANCODE_MENU: SDL_Scancode = 118;
 pub const SDL_Scancode_SDL_SCANCODE_SELECT: SDL_Scancode = 119;
 pub const SDL_Scancode_SDL_SCANCODE_STOP: SDL_Scancode = 120;
-#[doc = "< redo"]
 pub const SDL_Scancode_SDL_SCANCODE_AGAIN: SDL_Scancode = 121;
 pub const SDL_Scancode_SDL_SCANCODE_UNDO: SDL_Scancode = 122;
 pub const SDL_Scancode_SDL_SCANCODE_CUT: SDL_Scancode = 123;
@@ -8770,11 +4502,8 @@ pub const SDL_Scancode_SDL_SCANCODE_VOLUMEUP: SDL_Scancode = 128;
 pub const SDL_Scancode_SDL_SCANCODE_VOLUMEDOWN: SDL_Scancode = 129;
 pub const SDL_Scancode_SDL_SCANCODE_KP_COMMA: SDL_Scancode = 133;
 pub const SDL_Scancode_SDL_SCANCODE_KP_EQUALSAS400: SDL_Scancode = 134;
-#[doc = "< used on Asian keyboards, see"]
-#[doc = "footnotes in USB doc"]
 pub const SDL_Scancode_SDL_SCANCODE_INTERNATIONAL1: SDL_Scancode = 135;
 pub const SDL_Scancode_SDL_SCANCODE_INTERNATIONAL2: SDL_Scancode = 136;
-#[doc = "< Yen"]
 pub const SDL_Scancode_SDL_SCANCODE_INTERNATIONAL3: SDL_Scancode = 137;
 pub const SDL_Scancode_SDL_SCANCODE_INTERNATIONAL4: SDL_Scancode = 138;
 pub const SDL_Scancode_SDL_SCANCODE_INTERNATIONAL5: SDL_Scancode = 139;
@@ -8782,25 +4511,15 @@ pub const SDL_Scancode_SDL_SCANCODE_INTERNATIONAL6: SDL_Scancode = 140;
 pub const SDL_Scancode_SDL_SCANCODE_INTERNATIONAL7: SDL_Scancode = 141;
 pub const SDL_Scancode_SDL_SCANCODE_INTERNATIONAL8: SDL_Scancode = 142;
 pub const SDL_Scancode_SDL_SCANCODE_INTERNATIONAL9: SDL_Scancode = 143;
-#[doc = "< Hangul/English toggle"]
 pub const SDL_Scancode_SDL_SCANCODE_LANG1: SDL_Scancode = 144;
-#[doc = "< Hanja conversion"]
 pub const SDL_Scancode_SDL_SCANCODE_LANG2: SDL_Scancode = 145;
-#[doc = "< Katakana"]
 pub const SDL_Scancode_SDL_SCANCODE_LANG3: SDL_Scancode = 146;
-#[doc = "< Hiragana"]
 pub const SDL_Scancode_SDL_SCANCODE_LANG4: SDL_Scancode = 147;
-#[doc = "< Zenkaku/Hankaku"]
 pub const SDL_Scancode_SDL_SCANCODE_LANG5: SDL_Scancode = 148;
-#[doc = "< reserved"]
 pub const SDL_Scancode_SDL_SCANCODE_LANG6: SDL_Scancode = 149;
-#[doc = "< reserved"]
 pub const SDL_Scancode_SDL_SCANCODE_LANG7: SDL_Scancode = 150;
-#[doc = "< reserved"]
 pub const SDL_Scancode_SDL_SCANCODE_LANG8: SDL_Scancode = 151;
-#[doc = "< reserved"]
 pub const SDL_Scancode_SDL_SCANCODE_LANG9: SDL_Scancode = 152;
-#[doc = "< Erase-Eaze"]
 pub const SDL_Scancode_SDL_SCANCODE_ALTERASE: SDL_Scancode = 153;
 pub const SDL_Scancode_SDL_SCANCODE_SYSREQ: SDL_Scancode = 154;
 pub const SDL_Scancode_SDL_SCANCODE_CANCEL: SDL_Scancode = 155;
@@ -8861,19 +4580,12 @@ pub const SDL_Scancode_SDL_SCANCODE_KP_DECIMAL: SDL_Scancode = 220;
 pub const SDL_Scancode_SDL_SCANCODE_KP_HEXADECIMAL: SDL_Scancode = 221;
 pub const SDL_Scancode_SDL_SCANCODE_LCTRL: SDL_Scancode = 224;
 pub const SDL_Scancode_SDL_SCANCODE_LSHIFT: SDL_Scancode = 225;
-#[doc = "< alt, option"]
 pub const SDL_Scancode_SDL_SCANCODE_LALT: SDL_Scancode = 226;
-#[doc = "< windows, command (apple), meta"]
 pub const SDL_Scancode_SDL_SCANCODE_LGUI: SDL_Scancode = 227;
 pub const SDL_Scancode_SDL_SCANCODE_RCTRL: SDL_Scancode = 228;
 pub const SDL_Scancode_SDL_SCANCODE_RSHIFT: SDL_Scancode = 229;
-#[doc = "< alt gr, option"]
 pub const SDL_Scancode_SDL_SCANCODE_RALT: SDL_Scancode = 230;
-#[doc = "< windows, command (apple), meta"]
 pub const SDL_Scancode_SDL_SCANCODE_RGUI: SDL_Scancode = 231;
-#[doc = "< I'm not sure if this is really not covered"]
-#[doc = "   by any of the above, but since there's a"]
-#[doc = "   special KMOD_MODE for it I'm adding it here"]
 pub const SDL_Scancode_SDL_SCANCODE_MODE: SDL_Scancode = 257;
 pub const SDL_Scancode_SDL_SCANCODE_AUDIONEXT: SDL_Scancode = 258;
 pub const SDL_Scancode_SDL_SCANCODE_AUDIOPREV: SDL_Scancode = 259;
@@ -8894,8 +4606,6 @@ pub const SDL_Scancode_SDL_SCANCODE_AC_REFRESH: SDL_Scancode = 273;
 pub const SDL_Scancode_SDL_SCANCODE_AC_BOOKMARKS: SDL_Scancode = 274;
 pub const SDL_Scancode_SDL_SCANCODE_BRIGHTNESSDOWN: SDL_Scancode = 275;
 pub const SDL_Scancode_SDL_SCANCODE_BRIGHTNESSUP: SDL_Scancode = 276;
-#[doc = "< display mirroring/dual display"]
-#[doc = "switch, video mode switch"]
 pub const SDL_Scancode_SDL_SCANCODE_DISPLAYSWITCH: SDL_Scancode = 277;
 pub const SDL_Scancode_SDL_SCANCODE_KBDILLUMTOGGLE: SDL_Scancode = 278;
 pub const SDL_Scancode_SDL_SCANCODE_KBDILLUMDOWN: SDL_Scancode = 279;
@@ -8906,27 +4616,8 @@ pub const SDL_Scancode_SDL_SCANCODE_APP1: SDL_Scancode = 283;
 pub const SDL_Scancode_SDL_SCANCODE_APP2: SDL_Scancode = 284;
 pub const SDL_Scancode_SDL_SCANCODE_AUDIOREWIND: SDL_Scancode = 285;
 pub const SDL_Scancode_SDL_SCANCODE_AUDIOFASTFORWARD: SDL_Scancode = 286;
-#[doc = "< not a key, just marks the number of scancodes"]
-#[doc = "for array bounds"]
 pub const SDL_Scancode_SDL_NUM_SCANCODES: SDL_Scancode = 512;
-#[doc = "  \\brief The SDL keyboard scancode representation."]
-#[doc = ""]
-#[doc = "  Values of this type are used to represent keyboard keys, among other places"]
-#[doc = "  in the \\link SDL_Keysym::scancode key.keysym.scancode \\endlink field of the"]
-#[doc = "  SDL_Event structure."]
-#[doc = ""]
-#[doc = "  The values in this enumeration are based on the USB usage page standard:"]
-#[doc = "  https://www.usb.org/sites/default/files/documents/hut1_12v2.pdf"]
 pub type SDL_Scancode = ::std::os::raw::c_uint;
-#[doc = "  \\brief The SDL virtual key representation."]
-#[doc = ""]
-#[doc = "  Values of this type are used to represent keyboard keys using the current"]
-#[doc = "  layout of the keyboard.  These values include Unicode values representing"]
-#[doc = "  the unmodified character that would be generated by pressing the key, or"]
-#[doc = "  an SDLK_* constant for those keys that do not generate characters."]
-#[doc = ""]
-#[doc = "  A special exception is the number keys at the top of the keyboard which"]
-#[doc = "  always map to SDLK_0...SDLK_9, regardless of layout."]
 pub type SDL_Keycode = Sint32;
 pub const SDL_KeyCode_SDLK_UNKNOWN: SDL_KeyCode = 0;
 pub const SDL_KeyCode_SDLK_RETURN: SDL_KeyCode = 13;
@@ -9186,19 +4877,12 @@ pub const SDL_Keymod_KMOD_CTRL: SDL_Keymod = 192;
 pub const SDL_Keymod_KMOD_SHIFT: SDL_Keymod = 3;
 pub const SDL_Keymod_KMOD_ALT: SDL_Keymod = 768;
 pub const SDL_Keymod_KMOD_GUI: SDL_Keymod = 3072;
-#[doc = " \\brief Enumeration of valid key mods (possibly OR'd together)."]
 pub type SDL_Keymod = ::std::os::raw::c_uint;
-#[doc = "  \\brief The SDL keysym structure, used in key events."]
-#[doc = ""]
-#[doc = "  \\note  If you are looking for translated character input, see the ::SDL_TEXTINPUT event."]
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
 pub struct SDL_Keysym {
-    #[doc = "< SDL physical key code - see ::SDL_Scancode for details"]
     pub scancode: SDL_Scancode,
-    #[doc = "< SDL virtual key code - see ::SDL_Keycode for details"]
     pub sym: SDL_Keycode,
-    #[doc = "< current key modifiers"]
     pub mod_: Uint16,
     pub unused: Uint32,
 }
@@ -9256,216 +4940,51 @@ fn bindgen_test_layout_SDL_Keysym() {
     );
 }
 extern "C" {
-    #[doc = " Query the window which currently has keyboard focus."]
-    #[doc = ""]
-    #[doc = " \\returns the window with keyboard focus."]
     pub fn SDL_GetKeyboardFocus() -> *mut SDL_Window;
 }
 extern "C" {
-    #[doc = " Get a snapshot of the current state of the keyboard."]
-    #[doc = ""]
-    #[doc = " The pointer returned is a pointer to an internal SDL array. It will be"]
-    #[doc = " valid for the whole lifetime of the application and should not be freed by"]
-    #[doc = " the caller."]
-    #[doc = ""]
-    #[doc = " A array element with a value of 1 means that the key is pressed and a value"]
-    #[doc = " of 0 means that it is not. Indexes into this array are obtained by using"]
-    #[doc = " SDL_Scancode values."]
-    #[doc = ""]
-    #[doc = " Use SDL_PumpEvents() to update the state array."]
-    #[doc = ""]
-    #[doc = " This function gives you the current state after all events have been"]
-    #[doc = " processed, so if a key or button has been pressed and released before you"]
-    #[doc = " process events, then the pressed state will never show up in the"]
-    #[doc = " SDL_GetKeyboardState() calls."]
-    #[doc = ""]
-    #[doc = " Note: This function doesn't take into account whether shift has been"]
-    #[doc = " pressed or not."]
-    #[doc = ""]
-    #[doc = " \\param numkeys if non-NULL, receives the length of the returned array"]
-    #[doc = " \\returns a pointer to an array of key states."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_PumpEvents"]
     pub fn SDL_GetKeyboardState(numkeys: *mut ::std::os::raw::c_int) -> *const Uint8;
 }
 extern "C" {
-    #[doc = " Get the current key modifier state for the keyboard."]
-    #[doc = ""]
-    #[doc = " \\returns an OR'd combination of the modifier keys for the keyboard. See"]
-    #[doc = "          SDL_Keymod for details."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_GetKeyboardState"]
-    #[doc = " \\sa SDL_SetModState"]
     pub fn SDL_GetModState() -> SDL_Keymod;
 }
 extern "C" {
-    #[doc = " Set the current key modifier state for the keyboard."]
-    #[doc = ""]
-    #[doc = " The inverse of SDL_GetModState(), SDL_SetModState() allows you to impose"]
-    #[doc = " modifier key states on your application. Simply pass your desired modifier"]
-    #[doc = " states into `modstate`. This value may be a bitwise, OR'd combination of"]
-    #[doc = " SDL_Keymod values."]
-    #[doc = ""]
-    #[doc = " This does not change the keyboard state, only the key modifier flags that"]
-    #[doc = " SDL reports."]
-    #[doc = ""]
-    #[doc = " \\param modstate the desired SDL_Keymod for the keyboard"]
-    #[doc = ""]
-    #[doc = " \\sa SDL_GetModState"]
     pub fn SDL_SetModState(modstate: SDL_Keymod);
 }
 extern "C" {
-    #[doc = " Get the key code corresponding to the given scancode according to the"]
-    #[doc = " current keyboard layout."]
-    #[doc = ""]
-    #[doc = " See SDL_Keycode for details."]
-    #[doc = ""]
-    #[doc = " \\param scancode the desired SDL_Scancode to query"]
-    #[doc = " \\returns the SDL_Keycode that corresponds to the given SDL_Scancode."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_GetKeyName"]
-    #[doc = " \\sa SDL_GetScancodeFromKey"]
     pub fn SDL_GetKeyFromScancode(scancode: SDL_Scancode) -> SDL_Keycode;
 }
 extern "C" {
-    #[doc = " Get the scancode corresponding to the given key code according to the"]
-    #[doc = " current keyboard layout."]
-    #[doc = ""]
-    #[doc = " See SDL_Scancode for details."]
-    #[doc = ""]
-    #[doc = " \\param key the desired SDL_Keycode to query"]
-    #[doc = " \\returns the SDL_Scancode that corresponds to the given SDL_Keycode."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_GetKeyFromScancode"]
-    #[doc = " \\sa SDL_GetScancodeName"]
     pub fn SDL_GetScancodeFromKey(key: SDL_Keycode) -> SDL_Scancode;
 }
 extern "C" {
-    #[doc = " Get a human-readable name for a scancode."]
-    #[doc = ""]
-    #[doc = " See SDL_Scancode for details."]
-    #[doc = ""]
-    #[doc = " **Warning**: The returned name is by design not stable across platforms,"]
-    #[doc = " e.g. the name for `SDL_SCANCODE_LGUI` is \"Left GUI\" under Linux but \"Left"]
-    #[doc = " Windows\" under Microsoft Windows, and some scancodes like"]
-    #[doc = " `SDL_SCANCODE_NONUSBACKSLASH` don't have any name at all. There are even"]
-    #[doc = " scancodes that share names, e.g. `SDL_SCANCODE_RETURN` and"]
-    #[doc = " `SDL_SCANCODE_RETURN2` (both called \"Return\"). This function is therefore"]
-    #[doc = " unsuitable for creating a stable cross-platform two-way mapping between"]
-    #[doc = " strings and scancodes."]
-    #[doc = ""]
-    #[doc = " \\param scancode the desired SDL_Scancode to query"]
-    #[doc = " \\returns a pointer to the name for the scancode. If the scancode doesn't"]
-    #[doc = "          have a name this function returns an empty string (\"\")."]
-    #[doc = ""]
-    #[doc = " \\since This function is available since SDL 2.0.0."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_GetScancodeFromKey"]
-    #[doc = " \\sa SDL_GetScancodeFromName"]
     pub fn SDL_GetScancodeName(scancode: SDL_Scancode) -> *const ::std::os::raw::c_char;
 }
 extern "C" {
-    #[doc = " Get a scancode from a human-readable name."]
-    #[doc = ""]
-    #[doc = " \\param name the human-readable scancode name"]
-    #[doc = " \\returns the SDL_Scancode, or `SDL_SCANCODE_UNKNOWN` if the name wasn't"]
-    #[doc = "          recognized; call SDL_GetError() for more information."]
-    #[doc = ""]
-    #[doc = " \\since This function is available since SDL 2.0.0."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_GetKeyFromName"]
-    #[doc = " \\sa SDL_GetScancodeFromKey"]
-    #[doc = " \\sa SDL_GetScancodeName"]
     pub fn SDL_GetScancodeFromName(name: *const ::std::os::raw::c_char) -> SDL_Scancode;
 }
 extern "C" {
-    #[doc = " Get a human-readable name for a key."]
-    #[doc = ""]
-    #[doc = " See SDL_Scancode and SDL_Keycode for details."]
-    #[doc = ""]
-    #[doc = " \\param key the desired SDL_Keycode to query"]
-    #[doc = " \\returns a pointer to a UTF-8 string that stays valid at least until the"]
-    #[doc = "          next call to this function. If you need it around any longer, you"]
-    #[doc = "          must copy it. If the key doesn't have a name, this function"]
-    #[doc = "          returns an empty string (\"\")."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_GetKeyFromName"]
-    #[doc = " \\sa SDL_GetKeyFromScancode"]
-    #[doc = " \\sa SDL_GetScancodeFromKey"]
     pub fn SDL_GetKeyName(key: SDL_Keycode) -> *const ::std::os::raw::c_char;
 }
 extern "C" {
-    #[doc = " Get a key code from a human-readable name."]
-    #[doc = ""]
-    #[doc = " \\param name the human-readable key name"]
-    #[doc = " \\returns key code, or `SDLK_UNKNOWN` if the name wasn't recognized; call"]
-    #[doc = "          SDL_GetError() for more information."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_GetKeyFromScancode"]
-    #[doc = " \\sa SDL_GetKeyName"]
-    #[doc = " \\sa SDL_GetScancodeFromName"]
     pub fn SDL_GetKeyFromName(name: *const ::std::os::raw::c_char) -> SDL_Keycode;
 }
 extern "C" {
-    #[doc = " Start accepting Unicode text input events."]
-    #[doc = ""]
-    #[doc = " This function will start accepting Unicode text input events in the focused"]
-    #[doc = " SDL window, and start emitting SDL_TextInputEvent (SDL_TEXTINPUT) and"]
-    #[doc = " SDL_TextEditingEvent (SDL_TEXTEDITING) events. Please use this function in"]
-    #[doc = " pair with SDL_StopTextInput()."]
-    #[doc = ""]
-    #[doc = " On some platforms using this function activates the screen keyboard."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_SetTextInputRect"]
-    #[doc = " \\sa SDL_StopTextInput"]
     pub fn SDL_StartTextInput();
 }
 extern "C" {
-    #[doc = " Check whether or not Unicode text input events are enabled."]
-    #[doc = ""]
-    #[doc = " \\returns SDL_TRUE if text input events are enabled else SDL_FALSE."]
-    #[doc = ""]
-    #[doc = " \\since This function is available since SDL 2.0.0."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_StartTextInput"]
     pub fn SDL_IsTextInputActive() -> SDL_bool;
 }
 extern "C" {
-    #[doc = " Stop receiving any text input events."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_StartTextInput"]
     pub fn SDL_StopTextInput();
 }
 extern "C" {
-    #[doc = " Set the rectangle used to type Unicode text inputs."]
-    #[doc = ""]
-    #[doc = " \\param rect the SDL_Rect structure representing the rectangle to receive"]
-    #[doc = "             text (ignored if NULL)"]
-    #[doc = ""]
-    #[doc = " \\sa SDL_StartTextInput"]
     pub fn SDL_SetTextInputRect(rect: *mut SDL_Rect);
 }
 extern "C" {
-    #[doc = " Check whether the platform has screen keyboard support."]
-    #[doc = ""]
-    #[doc = " \\returns SDL_TRUE if the platform has some screen keyboard support or"]
-    #[doc = "          SDL_FALSE if not."]
-    #[doc = ""]
-    #[doc = " \\since This function is available since SDL 2.0.0."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_StartTextInput"]
-    #[doc = " \\sa SDL_IsScreenKeyboardShown"]
     pub fn SDL_HasScreenKeyboardSupport() -> SDL_bool;
 }
 extern "C" {
-    #[doc = " Check whether the screen keyboard is shown for given window."]
-    #[doc = ""]
-    #[doc = " \\param window the window for which screen keyboard should be queried"]
-    #[doc = " \\returns SDL_TRUE if screen keyboard is shown or SDL_FALSE if not."]
-    #[doc = ""]
-    #[doc = " \\since This function is available since SDL 2.0.0."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_HasScreenKeyboardSupport"]
     pub fn SDL_IsScreenKeyboardShown(window: *mut SDL_Window) -> SDL_bool;
 }
 #[repr(C)]
@@ -9473,132 +4992,45 @@ extern "C" {
 pub struct SDL_Cursor {
     _unused: [u8; 0],
 }
-#[doc = "< Arrow"]
 pub const SDL_SystemCursor_SDL_SYSTEM_CURSOR_ARROW: SDL_SystemCursor = 0;
-#[doc = "< I-beam"]
 pub const SDL_SystemCursor_SDL_SYSTEM_CURSOR_IBEAM: SDL_SystemCursor = 1;
-#[doc = "< Wait"]
 pub const SDL_SystemCursor_SDL_SYSTEM_CURSOR_WAIT: SDL_SystemCursor = 2;
-#[doc = "< Crosshair"]
 pub const SDL_SystemCursor_SDL_SYSTEM_CURSOR_CROSSHAIR: SDL_SystemCursor = 3;
-#[doc = "< Small wait cursor (or Wait if not available)"]
 pub const SDL_SystemCursor_SDL_SYSTEM_CURSOR_WAITARROW: SDL_SystemCursor = 4;
-#[doc = "< Double arrow pointing northwest and southeast"]
 pub const SDL_SystemCursor_SDL_SYSTEM_CURSOR_SIZENWSE: SDL_SystemCursor = 5;
-#[doc = "< Double arrow pointing northeast and southwest"]
 pub const SDL_SystemCursor_SDL_SYSTEM_CURSOR_SIZENESW: SDL_SystemCursor = 6;
-#[doc = "< Double arrow pointing west and east"]
 pub const SDL_SystemCursor_SDL_SYSTEM_CURSOR_SIZEWE: SDL_SystemCursor = 7;
-#[doc = "< Double arrow pointing north and south"]
 pub const SDL_SystemCursor_SDL_SYSTEM_CURSOR_SIZENS: SDL_SystemCursor = 8;
-#[doc = "< Four pointed arrow pointing north, south, east, and west"]
 pub const SDL_SystemCursor_SDL_SYSTEM_CURSOR_SIZEALL: SDL_SystemCursor = 9;
-#[doc = "< Slashed circle or crossbones"]
 pub const SDL_SystemCursor_SDL_SYSTEM_CURSOR_NO: SDL_SystemCursor = 10;
-#[doc = "< Hand"]
 pub const SDL_SystemCursor_SDL_SYSTEM_CURSOR_HAND: SDL_SystemCursor = 11;
 pub const SDL_SystemCursor_SDL_NUM_SYSTEM_CURSORS: SDL_SystemCursor = 12;
-#[doc = " \\brief Cursor types for SDL_CreateSystemCursor()."]
 pub type SDL_SystemCursor = ::std::os::raw::c_uint;
-#[doc = "< The scroll direction is normal"]
 pub const SDL_MouseWheelDirection_SDL_MOUSEWHEEL_NORMAL: SDL_MouseWheelDirection = 0;
-#[doc = "< The scroll direction is flipped / natural"]
 pub const SDL_MouseWheelDirection_SDL_MOUSEWHEEL_FLIPPED: SDL_MouseWheelDirection = 1;
-#[doc = " \\brief Scroll direction types for the Scroll event"]
 pub type SDL_MouseWheelDirection = ::std::os::raw::c_uint;
 extern "C" {
-    #[doc = " Get the window which currently has mouse focus."]
-    #[doc = ""]
-    #[doc = " \\returns the window with mouse focus."]
     pub fn SDL_GetMouseFocus() -> *mut SDL_Window;
 }
 extern "C" {
-    #[doc = " Retrieve the current state of the mouse."]
-    #[doc = ""]
-    #[doc = " The current button state is returned as a button bitmask, which can be"]
-    #[doc = " tested using the `SDL_BUTTON(X)` macros (where `X` is generally 1 for the"]
-    #[doc = " left, 2 for middle, 3 for the right button), and `x` and `y` are set to the"]
-    #[doc = " mouse cursor position relative to the focus window. You can pass NULL for"]
-    #[doc = " either `x` or `y`."]
-    #[doc = ""]
-    #[doc = " \\param x the x coordinate of the mouse cursor position relative to the"]
-    #[doc = "          focus window"]
-    #[doc = " \\param y the y coordinate of the mouse cursor position relative to the"]
-    #[doc = "          focus window"]
-    #[doc = " \\returns a 32-bit button bitmask of the current button state."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_GetGlobalMouseState"]
-    #[doc = " \\sa SDL_GetRelativeMouseState"]
-    #[doc = " \\sa SDL_PumpEvents"]
     pub fn SDL_GetMouseState(
         x: *mut ::std::os::raw::c_int,
         y: *mut ::std::os::raw::c_int,
     ) -> Uint32;
 }
 extern "C" {
-    #[doc = " Get the current state of the mouse in relation to the desktop."]
-    #[doc = ""]
-    #[doc = " This works similarly to SDL_GetMouseState(), but the coordinates will be"]
-    #[doc = " reported relative to the top-left of the desktop. This can be useful if you"]
-    #[doc = " need to track the mouse outside of a specific window and SDL_CaptureMouse()"]
-    #[doc = " doesn't fit your needs. For example, it could be useful if you need to"]
-    #[doc = " track the mouse while dragging a window, where coordinates relative to a"]
-    #[doc = " window might not be in sync at all times."]
-    #[doc = ""]
-    #[doc = " Note: SDL_GetMouseState() returns the mouse position as SDL understands it"]
-    #[doc = " from the last pump of the event queue. This function, however, queries the"]
-    #[doc = " OS for the current mouse position, and as such, might be a slightly less"]
-    #[doc = " efficient function. Unless you know what you're doing and have a good"]
-    #[doc = " reason to use this function, you probably want SDL_GetMouseState() instead."]
-    #[doc = ""]
-    #[doc = " \\param x filled in with the current X coord relative to the desktop; can be"]
-    #[doc = "          NULL"]
-    #[doc = " \\param y filled in with the current Y coord relative to the desktop; can be"]
-    #[doc = "          NULL"]
-    #[doc = " \\returns the current button state as a bitmask which can be tested using"]
-    #[doc = "          the SDL_BUTTON(X) macros."]
-    #[doc = ""]
-    #[doc = " \\since This function is available since SDL 2.0.4."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_CaptureMouse"]
     pub fn SDL_GetGlobalMouseState(
         x: *mut ::std::os::raw::c_int,
         y: *mut ::std::os::raw::c_int,
     ) -> Uint32;
 }
 extern "C" {
-    #[doc = " Retrieve the relative state of the mouse."]
-    #[doc = ""]
-    #[doc = " The current button state is returned as a button bitmask, which can be"]
-    #[doc = " tested using the `SDL_BUTTON(X)` macros (where `X` is generally 1 for the"]
-    #[doc = " left, 2 for middle, 3 for the right button), and `x` and `y` are set to the"]
-    #[doc = " mouse deltas since the last call to SDL_GetRelativeMouseState() or since"]
-    #[doc = " event initialization. You can pass NULL for either `x` or `y`."]
-    #[doc = ""]
-    #[doc = " \\param x a pointer filled with the last recorded x coordinate of the mouse"]
-    #[doc = " \\param y a pointer filled with the last recorded y coordinate of the mouse"]
-    #[doc = " \\returns a 32-bit button bitmask of the relative button state."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_GetMouseState"]
     pub fn SDL_GetRelativeMouseState(
         x: *mut ::std::os::raw::c_int,
         y: *mut ::std::os::raw::c_int,
     ) -> Uint32;
 }
 extern "C" {
-    #[doc = " Move the mouse cursor to the given position within the window."]
-    #[doc = ""]
-    #[doc = " This function generates a mouse motion event."]
-    #[doc = ""]
-    #[doc = " Note that this function will appear to succeed, but not actually move the"]
-    #[doc = " mouse when used over Microsoft Remote Desktop."]
-    #[doc = ""]
-    #[doc = " \\param window the window to move the mouse into, or NULL for the current"]
-    #[doc = "               mouse focus"]
-    #[doc = " \\param x the x coordinate within the window"]
-    #[doc = " \\param y the y coordinate within the window"]
-    #[doc = ""]
-    #[doc = " \\sa SDL_WarpMouseGlobal"]
     pub fn SDL_WarpMouseInWindow(
         window: *mut SDL_Window,
         x: ::std::os::raw::c_int,
@@ -9606,133 +5038,21 @@ extern "C" {
     );
 }
 extern "C" {
-    #[doc = " Move the mouse to the given position in global screen space."]
-    #[doc = ""]
-    #[doc = " This function generates a mouse motion event."]
-    #[doc = ""]
-    #[doc = " A failure of this function usually means that it is unsupported by a"]
-    #[doc = " platform."]
-    #[doc = ""]
-    #[doc = " Note that this function will appear to succeed, but not actually move the"]
-    #[doc = " mouse when used over Microsoft Remote Desktop."]
-    #[doc = ""]
-    #[doc = " \\param x the x coordinate"]
-    #[doc = " \\param y the y coordinate"]
-    #[doc = " \\returns 0 on success or a negative error code on failure; call"]
-    #[doc = "          SDL_GetError() for more information."]
-    #[doc = ""]
-    #[doc = " \\since This function is available since SDL 2.0.4."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_WarpMouseInWindow"]
     pub fn SDL_WarpMouseGlobal(
         x: ::std::os::raw::c_int,
         y: ::std::os::raw::c_int,
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[doc = " Set relative mouse mode."]
-    #[doc = ""]
-    #[doc = " While the mouse is in relative mode, the cursor is hidden, and the driver"]
-    #[doc = " will try to report continuous motion in the current window. Only relative"]
-    #[doc = " motion events will be delivered, the mouse position will not change."]
-    #[doc = ""]
-    #[doc = " Note that this function will not be able to provide continuous relative"]
-    #[doc = " motion when used over Microsoft Remote Desktop, instead motion is limited"]
-    #[doc = " to the bounds of the screen."]
-    #[doc = ""]
-    #[doc = " This function will flush any pending mouse motion."]
-    #[doc = ""]
-    #[doc = " \\param enabled SDL_TRUE to enable relative mode, SDL_FALSE to disable."]
-    #[doc = " \\returns 0 on success or a negative error code on failure; call"]
-    #[doc = "          SDL_GetError() for more information."]
-    #[doc = ""]
-    #[doc = "          If relative mode is not supported, this returns -1."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_GetRelativeMouseMode"]
     pub fn SDL_SetRelativeMouseMode(enabled: SDL_bool) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[doc = " Capture the mouse and to track input outside an SDL window."]
-    #[doc = ""]
-    #[doc = " Capturing enables your app to obtain mouse events globally, instead of just"]
-    #[doc = " within your window. Not all video targets support this function. When"]
-    #[doc = " capturing is enabled, the current window will get all mouse events, but"]
-    #[doc = " unlike relative mode, no change is made to the cursor and it is not"]
-    #[doc = " restrained to your window."]
-    #[doc = ""]
-    #[doc = " This function may also deny mouse input to other windows--both those in"]
-    #[doc = " your application and others on the system--so you should use this function"]
-    #[doc = " sparingly, and in small bursts. For example, you might want to track the"]
-    #[doc = " mouse while the user is dragging something, until the user releases a mouse"]
-    #[doc = " button. It is not recommended that you capture the mouse for long periods"]
-    #[doc = " of time, such as the entire time your app is running. For that, you should"]
-    #[doc = " probably use SDL_SetRelativeMouseMode() or SDL_SetWindowGrab(), depending"]
-    #[doc = " on your goals."]
-    #[doc = ""]
-    #[doc = " While captured, mouse events still report coordinates relative to the"]
-    #[doc = " current (foreground) window, but those coordinates may be outside the"]
-    #[doc = " bounds of the window (including negative values). Capturing is only allowed"]
-    #[doc = " for the foreground window. If the window loses focus while capturing, the"]
-    #[doc = " capture will be disabled automatically."]
-    #[doc = ""]
-    #[doc = " While capturing is enabled, the current window will have the"]
-    #[doc = " `SDL_WINDOW_MOUSE_CAPTURE` flag set."]
-    #[doc = ""]
-    #[doc = " \\param enabled SDL_TRUE to enable capturing, SDL_FALSE to disable."]
-    #[doc = " \\returns 0 on success or -1 if not supported; call SDL_GetError() for more"]
-    #[doc = "          information."]
-    #[doc = ""]
-    #[doc = " \\since This function is available since SDL 2.0.4."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_GetGlobalMouseState"]
     pub fn SDL_CaptureMouse(enabled: SDL_bool) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[doc = " Query whether relative mouse mode is enabled."]
-    #[doc = ""]
-    #[doc = " \\returns SDL_TRUE if relative mode is enabled or SDL_FALSE otherwise."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_SetRelativeMouseMode"]
     pub fn SDL_GetRelativeMouseMode() -> SDL_bool;
 }
 extern "C" {
-    #[doc = " Create a cursor using the specified bitmap data and mask (in MSB format)."]
-    #[doc = ""]
-    #[doc = " `mask` has to be in MSB (Most Significant Bit) format."]
-    #[doc = ""]
-    #[doc = " The cursor width (`w`) must be a multiple of 8 bits."]
-    #[doc = ""]
-    #[doc = " The cursor is created in black and white according to the following:"]
-    #[doc = ""]
-    #[doc = " - data=0, mask=1: white"]
-    #[doc = " - data=1, mask=1: black"]
-    #[doc = " - data=0, mask=0: transparent"]
-    #[doc = " - data=1, mask=0: inverted color if possible, black if not."]
-    #[doc = ""]
-    #[doc = " Cursors created with this function must be freed with SDL_FreeCursor()."]
-    #[doc = ""]
-    #[doc = " If you want to have a color cursor, or create your cursor from an"]
-    #[doc = " SDL_Surface, you should use SDL_CreateColorCursor(). Alternately, you can"]
-    #[doc = " hide the cursor and draw your own as part of your game's rendering, but it"]
-    #[doc = " will be bound to the framerate."]
-    #[doc = ""]
-    #[doc = " Also, since SDL 2.0.0, SDL_CreateSystemCursor() is available, which"]
-    #[doc = " provides twelve readily available system cursors to pick from."]
-    #[doc = ""]
-    #[doc = " \\param data the color value for each pixel of the cursor"]
-    #[doc = " \\param mask the mask value for each pixel of the cursor"]
-    #[doc = " \\param w the width of the cursor"]
-    #[doc = " \\param h the height of the cursor"]
-    #[doc = " \\param hot_x the X-axis location of the upper left corner of the cursor"]
-    #[doc = "              relative to the actual mouse position"]
-    #[doc = " \\param hot_y the Y-axis location of the upper left corner of the cursor"]
-    #[doc = "              relative to the actual mouse position"]
-    #[doc = " \\returns a new cursor with the specified parameters on success or NULL on"]
-    #[doc = "          failure; call SDL_GetError() for more information."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_FreeCursor"]
-    #[doc = " \\sa SDL_SetCursor"]
-    #[doc = " \\sa SDL_ShowCursor"]
     pub fn SDL_CreateCursor(
         data: *const Uint8,
         mask: *const Uint8,
@@ -9743,18 +5063,6 @@ extern "C" {
     ) -> *mut SDL_Cursor;
 }
 extern "C" {
-    #[doc = " Create a color cursor."]
-    #[doc = ""]
-    #[doc = " \\param surface an SDL_Surface structure representing the cursor image"]
-    #[doc = " \\param hot_x the x position of the cursor hot spot"]
-    #[doc = " \\param hot_y the y position of the cursor hot spot"]
-    #[doc = " \\returns the new cursor on success or NULL on failure; call SDL_GetError()"]
-    #[doc = "          for more information."]
-    #[doc = ""]
-    #[doc = " \\since This function is available since SDL 2.0.0."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_CreateCursor"]
-    #[doc = " \\sa SDL_FreeCursor"]
     pub fn SDL_CreateColorCursor(
         surface: *mut SDL_Surface,
         hot_x: ::std::os::raw::c_int,
@@ -9762,86 +5070,23 @@ extern "C" {
     ) -> *mut SDL_Cursor;
 }
 extern "C" {
-    #[doc = " Create a system cursor."]
-    #[doc = ""]
-    #[doc = " \\param id an SDL_SystemCursor enum value"]
-    #[doc = " \\returns a cursor on success or NULL on failure; call SDL_GetError() for"]
-    #[doc = "          more information."]
-    #[doc = ""]
-    #[doc = " \\since This function is available since SDL 2.0.0."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_FreeCursor"]
     pub fn SDL_CreateSystemCursor(id: SDL_SystemCursor) -> *mut SDL_Cursor;
 }
 extern "C" {
-    #[doc = " Set the active cursor."]
-    #[doc = ""]
-    #[doc = " This function sets the currently active cursor to the specified one. If the"]
-    #[doc = " cursor is currently visible, the change will be immediately represented on"]
-    #[doc = " the display. SDL_SetCursor(NULL) can be used to force cursor redraw, if"]
-    #[doc = " this is desired for any reason."]
-    #[doc = ""]
-    #[doc = " \\param cursor a cursor to make active"]
-    #[doc = ""]
-    #[doc = " \\sa SDL_CreateCursor"]
-    #[doc = " \\sa SDL_GetCursor"]
-    #[doc = " \\sa SDL_ShowCursor"]
     pub fn SDL_SetCursor(cursor: *mut SDL_Cursor);
 }
 extern "C" {
-    #[doc = " Get the active cursor."]
-    #[doc = ""]
-    #[doc = " This function returns a pointer to the current cursor which is owned by the"]
-    #[doc = " library. It is not necessary to free the cursor with SDL_FreeCursor()."]
-    #[doc = ""]
-    #[doc = " \\returns the active cursor or NULL if there is no mouse."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_SetCursor"]
     pub fn SDL_GetCursor() -> *mut SDL_Cursor;
 }
 extern "C" {
-    #[doc = " Get the default cursor."]
-    #[doc = ""]
-    #[doc = " \\returns the default cursor on success or NULL on failure."]
-    #[doc = ""]
-    #[doc = " \\since This function is available since SDL 2.0.0."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_CreateSystemCursor"]
     pub fn SDL_GetDefaultCursor() -> *mut SDL_Cursor;
 }
 extern "C" {
-    #[doc = " Free a previously-created cursor."]
-    #[doc = ""]
-    #[doc = " Use this function to free cursor resources created with SDL_CreateCursor(),"]
-    #[doc = " SDL_CreateColorCursor() or SDL_CreateSystemCursor()."]
-    #[doc = ""]
-    #[doc = " \\param cursor the cursor to free"]
-    #[doc = ""]
-    #[doc = " \\sa SDL_CreateColorCursor"]
-    #[doc = " \\sa SDL_CreateCursor"]
-    #[doc = " \\sa SDL_CreateSystemCursor"]
     pub fn SDL_FreeCursor(cursor: *mut SDL_Cursor);
 }
 extern "C" {
-    #[doc = " Toggle whether or not the cursor is shown."]
-    #[doc = ""]
-    #[doc = " The cursor starts off displayed but can be turned off. Passing `SDL_ENABLE`"]
-    #[doc = " displays the cursor and passing `SDL_DISABLE` hides it."]
-    #[doc = ""]
-    #[doc = " The current state of the mouse cursor can be queried by passing"]
-    #[doc = " `SDL_QUERY`; either `SDL_DISABLE` or `SDL_ENABLE` will be returned."]
-    #[doc = ""]
-    #[doc = " \\param toggle `SDL_ENABLE` to show the cursor, `SDL_DISABLE` to hide it,"]
-    #[doc = "               `SDL_QUERY` to query the current state without changing it."]
-    #[doc = " \\returns `SDL_ENABLE` if the cursor is shown, or `SDL_DISABLE` if the"]
-    #[doc = "          cursor is hidden, or a negative error code on failure; call"]
-    #[doc = "          SDL_GetError() for more information."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_CreateCursor"]
-    #[doc = " \\sa SDL_SetCursor"]
     pub fn SDL_ShowCursor(toggle: ::std::os::raw::c_int) -> ::std::os::raw::c_int;
 }
-#[doc = " The joystick structure used to identify an SDL joystick"]
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
 pub struct _SDL_Joystick {
@@ -9876,11 +5121,6 @@ fn bindgen_test_layout_SDL_JoystickGUID() {
         )
     );
 }
-#[doc = " This is a unique ID for a joystick for the time it is connected to the system,"]
-#[doc = " and is never reused for the lifetime of the application. If the joystick is"]
-#[doc = " disconnected and reconnected, it will get a new ID."]
-#[doc = ""]
-#[doc = " The ID value starts at 0 and increments from there. The value -1 is an invalid ID."]
 pub type SDL_JoystickID = Sint32;
 pub const SDL_JoystickType_SDL_JOYSTICK_TYPE_UNKNOWN: SDL_JoystickType = 0;
 pub const SDL_JoystickType_SDL_JOYSTICK_TYPE_GAMECONTROLLER: SDL_JoystickType = 1;
@@ -9902,175 +5142,52 @@ pub const SDL_JoystickPowerLevel_SDL_JOYSTICK_POWER_WIRED: SDL_JoystickPowerLeve
 pub const SDL_JoystickPowerLevel_SDL_JOYSTICK_POWER_MAX: SDL_JoystickPowerLevel = 5;
 pub type SDL_JoystickPowerLevel = ::std::os::raw::c_int;
 extern "C" {
-    #[doc = " Locking for multi-threaded access to the joystick API"]
-    #[doc = ""]
-    #[doc = " If you are using the joystick API or handling events from multiple threads"]
-    #[doc = " you should use these locking functions to protect access to the joysticks."]
-    #[doc = ""]
-    #[doc = " In particular, you are guaranteed that the joystick list won't change, so"]
-    #[doc = " the API functions that take a joystick index will be valid, and joystick"]
-    #[doc = " and game controller events will not be delivered."]
     pub fn SDL_LockJoysticks();
 }
 extern "C" {
-    #[doc = " Unlocking for multi-threaded access to the joystick API"]
-    #[doc = ""]
-    #[doc = " If you are using the joystick API or handling events from multiple threads"]
-    #[doc = " you should use these locking functions to protect access to the joysticks."]
-    #[doc = ""]
-    #[doc = " In particular, you are guaranteed that the joystick list won't change, so"]
-    #[doc = " the API functions that take a joystick index will be valid, and joystick"]
-    #[doc = " and game controller events will not be delivered."]
     pub fn SDL_UnlockJoysticks();
 }
 extern "C" {
-    #[doc = " Count the number of joysticks attached to the system."]
-    #[doc = ""]
-    #[doc = " \\returns the number of attached joysticks on success or a negative error"]
-    #[doc = "          code on failure; call SDL_GetError() for more information."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_JoystickName"]
-    #[doc = " \\sa SDL_JoystickOpen"]
     pub fn SDL_NumJoysticks() -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[doc = " Get the implementation dependent name of a joystick."]
-    #[doc = ""]
-    #[doc = " This can be called before any joysticks are opened."]
-    #[doc = ""]
-    #[doc = " \\param device_index the index of the joystick to query (the N'th joystick"]
-    #[doc = "                     on the system)"]
-    #[doc = " \\returns the name of the selected joystick. If no name can be found, this"]
-    #[doc = "          function returns NULL; call SDL_GetError() for more information."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_JoystickName"]
-    #[doc = " \\sa SDL_JoystickOpen"]
     pub fn SDL_JoystickNameForIndex(
         device_index: ::std::os::raw::c_int,
     ) -> *const ::std::os::raw::c_char;
 }
 extern "C" {
-    #[doc = " Get the player index of a joystick, or -1 if it's not available This can be"]
-    #[doc = " called before any joysticks are opened."]
     pub fn SDL_JoystickGetDevicePlayerIndex(
         device_index: ::std::os::raw::c_int,
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[doc = " Get the implementation-dependent GUID for the joystick at a given device"]
-    #[doc = " index."]
-    #[doc = ""]
-    #[doc = " This function can be called before any joysticks are opened."]
-    #[doc = ""]
-    #[doc = " \\param device_index the index of the joystick to query (the N'th joystick"]
-    #[doc = "                     on the system"]
-    #[doc = " \\returns the GUID of the selected joystick. If called on an invalid index,"]
-    #[doc = "          this function returns a zero GUID"]
-    #[doc = ""]
-    #[doc = " \\sa SDL_JoystickGetGUID"]
-    #[doc = " \\sa SDL_JoystickGetGUIDString"]
     pub fn SDL_JoystickGetDeviceGUID(device_index: ::std::os::raw::c_int) -> SDL_JoystickGUID;
 }
 extern "C" {
-    #[doc = " Get the USB vendor ID of a joystick, if available."]
-    #[doc = ""]
-    #[doc = " This can be called before any joysticks are opened. If the vendor ID isn't"]
-    #[doc = " available this function returns 0."]
-    #[doc = ""]
-    #[doc = " \\param device_index the index of the joystick to query (the N'th joystick"]
-    #[doc = "                     on the system"]
-    #[doc = " \\returns the USB vendor ID of the selected joystick. If called on an"]
-    #[doc = "          invalid index, this function returns zero"]
     pub fn SDL_JoystickGetDeviceVendor(device_index: ::std::os::raw::c_int) -> Uint16;
 }
 extern "C" {
-    #[doc = " Get the USB product ID of a joystick, if available."]
-    #[doc = ""]
-    #[doc = " This can be called before any joysticks are opened. If the product ID isn't"]
-    #[doc = " available this function returns 0."]
-    #[doc = ""]
-    #[doc = " \\param device_index the index of the joystick to query (the N'th joystick"]
-    #[doc = "                     on the system"]
-    #[doc = " \\returns the USB product ID of the selected joystick. If called on an"]
-    #[doc = "          invalid index, this function returns zero"]
     pub fn SDL_JoystickGetDeviceProduct(device_index: ::std::os::raw::c_int) -> Uint16;
 }
 extern "C" {
-    #[doc = " Get the product version of a joystick, if available."]
-    #[doc = ""]
-    #[doc = " This can be called before any joysticks are opened. If the product version"]
-    #[doc = " isn't available this function returns 0."]
-    #[doc = ""]
-    #[doc = " \\param device_index the index of the joystick to query (the N'th joystick"]
-    #[doc = "                     on the system"]
-    #[doc = " \\returns the product version of the selected joystick. If called on an"]
-    #[doc = "          invalid index, this function returns zero"]
     pub fn SDL_JoystickGetDeviceProductVersion(device_index: ::std::os::raw::c_int) -> Uint16;
 }
 extern "C" {
-    #[doc = " Get the type of a joystick, if available."]
-    #[doc = ""]
-    #[doc = " This can be called before any joysticks are opened."]
-    #[doc = ""]
-    #[doc = " \\param device_index the index of the joystick to query (the N'th joystick"]
-    #[doc = "                     on the system"]
-    #[doc = " \\returns the SDL_JoystickType of the selected joystick. If called on an"]
-    #[doc = "          invalid index, this function returns `SDL_JOYSTICK_TYPE_UNKNOWN`"]
     pub fn SDL_JoystickGetDeviceType(device_index: ::std::os::raw::c_int) -> SDL_JoystickType;
 }
 extern "C" {
-    #[doc = " Get the instance ID of a joystick."]
-    #[doc = ""]
-    #[doc = " This can be called before any joysticks are opened. If the index is out of"]
-    #[doc = " range, this function will return -1."]
-    #[doc = ""]
-    #[doc = " \\param device_index the index of the joystick to query (the N'th joystick"]
-    #[doc = "                     on the system"]
-    #[doc = " \\returns the instance id of the selected joystick. If called on an invalid"]
-    #[doc = "          index, this function returns zero"]
     pub fn SDL_JoystickGetDeviceInstanceID(device_index: ::std::os::raw::c_int) -> SDL_JoystickID;
 }
 extern "C" {
-    #[doc = " Open a joystick for use."]
-    #[doc = ""]
-    #[doc = " The `device_index` argument refers to the N'th joystick presently"]
-    #[doc = " recognized by SDL on the system. It is **NOT** the same as the instance ID"]
-    #[doc = " used to identify the joystick in future events. See"]
-    #[doc = " SDL_JoystickInstanceID() for more details about instance IDs."]
-    #[doc = ""]
-    #[doc = " The joystick subsystem must be initialized before a joystick can be opened"]
-    #[doc = " for use."]
-    #[doc = ""]
-    #[doc = " \\param device_index the index of the joystick to query"]
-    #[doc = " \\returns a joystick identifier or NULL if an error occurred; call"]
-    #[doc = "          SDL_GetError() for more information."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_JoystickClose"]
-    #[doc = " \\sa SDL_JoystickInstanceID"]
     pub fn SDL_JoystickOpen(device_index: ::std::os::raw::c_int) -> *mut SDL_Joystick;
 }
 extern "C" {
-    #[doc = " Get the SDL_Joystick associated with an instance id."]
-    #[doc = ""]
-    #[doc = " \\param instance_id the instance id to get the SDL_Joystick for"]
-    #[doc = " \\returns an SDL_Joystick on success or NULL on failure; call SDL_GetError()"]
-    #[doc = "          for more information."]
-    #[doc = ""]
-    #[doc = " \\since This function is available since SDL 2.0.4."]
     pub fn SDL_JoystickFromInstanceID(instance_id: SDL_JoystickID) -> *mut SDL_Joystick;
 }
 extern "C" {
-    #[doc = " Get the SDL_Joystick associated with a player index."]
-    #[doc = ""]
-    #[doc = " \\param player_index the player index to get the SDL_Joystick for"]
-    #[doc = " \\returns an SDL_Joystick on success or NULL on failure; call SDL_GetError()"]
-    #[doc = "          for more information."]
     pub fn SDL_JoystickFromPlayerIndex(player_index: ::std::os::raw::c_int) -> *mut SDL_Joystick;
 }
 extern "C" {
-    #[doc = " Attach a new virtual joystick."]
-    #[doc = ""]
-    #[doc = " \\returns the joystick's device index, or -1 if an error occurred."]
     pub fn SDL_JoystickAttachVirtual(
         type_: SDL_JoystickType,
         naxes: ::std::os::raw::c_int,
@@ -10079,33 +5196,12 @@ extern "C" {
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[doc = " Detach a virtual joystick."]
-    #[doc = ""]
-    #[doc = " \\param device_index a value previously returned from"]
-    #[doc = "                     SDL_JoystickAttachVirtual()"]
-    #[doc = " \\returns 0 on success, or -1 if an error occurred."]
     pub fn SDL_JoystickDetachVirtual(device_index: ::std::os::raw::c_int) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[doc = " Query whether or not the joystick at a given device index is virtual."]
-    #[doc = ""]
-    #[doc = " \\param device_index a joystick device index."]
-    #[doc = " \\returns SDL_TRUE if the joystick is virtual, SDL_FALSE otherwise."]
     pub fn SDL_JoystickIsVirtual(device_index: ::std::os::raw::c_int) -> SDL_bool;
 }
 extern "C" {
-    #[doc = " Set values on an opened, virtual-joystick's axis."]
-    #[doc = ""]
-    #[doc = " Please note that values set here will not be applied until the next call to"]
-    #[doc = " SDL_JoystickUpdate, which can either be called directly, or can be called"]
-    #[doc = " indirectly through various other SDL APIs, including, but not limited to"]
-    #[doc = " the following: SDL_PollEvent, SDL_PumpEvents, SDL_WaitEventTimeout,"]
-    #[doc = " SDL_WaitEvent."]
-    #[doc = ""]
-    #[doc = " \\param joystick the virtual joystick on which to set state."]
-    #[doc = " \\param axis the specific axis on the virtual joystick to set."]
-    #[doc = " \\param value the new value for the specified axis."]
-    #[doc = " \\returns 0 on success, -1 on error."]
     pub fn SDL_JoystickSetVirtualAxis(
         joystick: *mut SDL_Joystick,
         axis: ::std::os::raw::c_int,
@@ -10113,18 +5209,6 @@ extern "C" {
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[doc = " Set values on an opened, virtual-joystick's button."]
-    #[doc = ""]
-    #[doc = " Please note that values set here will not be applied until the next call to"]
-    #[doc = " SDL_JoystickUpdate, which can either be called directly, or can be called"]
-    #[doc = " indirectly through various other SDL APIs, including, but not limited to"]
-    #[doc = " the following: SDL_PollEvent, SDL_PumpEvents, SDL_WaitEventTimeout,"]
-    #[doc = " SDL_WaitEvent."]
-    #[doc = ""]
-    #[doc = " \\param joystick the virtual joystick on which to set state."]
-    #[doc = " \\param button the specific button on the virtual joystick to set."]
-    #[doc = " \\param value the new value for the specified button."]
-    #[doc = " \\returns 0 on success, -1 on error."]
     pub fn SDL_JoystickSetVirtualButton(
         joystick: *mut SDL_Joystick,
         button: ::std::os::raw::c_int,
@@ -10132,18 +5216,6 @@ extern "C" {
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[doc = " Set values on an opened, virtual-joystick's hat."]
-    #[doc = ""]
-    #[doc = " Please note that values set here will not be applied until the next call to"]
-    #[doc = " SDL_JoystickUpdate, which can either be called directly, or can be called"]
-    #[doc = " indirectly through various other SDL APIs, including, but not limited to"]
-    #[doc = " the following: SDL_PollEvent, SDL_PumpEvents, SDL_WaitEventTimeout,"]
-    #[doc = " SDL_WaitEvent."]
-    #[doc = ""]
-    #[doc = " \\param joystick the virtual joystick on which to set state."]
-    #[doc = " \\param hat the specific hat on the virtual joystick to set."]
-    #[doc = " \\param value the new value for the specified hat."]
-    #[doc = " \\returns 0 on success, -1 on error."]
     pub fn SDL_JoystickSetVirtualHat(
         joystick: *mut SDL_Joystick,
         hat: ::std::os::raw::c_int,
@@ -10151,108 +5223,36 @@ extern "C" {
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[doc = " Get the implementation dependent name of a joystick."]
-    #[doc = ""]
-    #[doc = " \\param joystick the SDL_Joystick obtained from SDL_JoystickOpen()"]
-    #[doc = " \\returns the name of the selected joystick. If no name can be found, this"]
-    #[doc = "          function returns NULL; call SDL_GetError() for more information."]
-    #[doc = ""]
-    #[doc = " \\since This function is available since SDL 2.0.0."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_JoystickNameForIndex"]
-    #[doc = " \\sa SDL_JoystickOpen"]
     pub fn SDL_JoystickName(joystick: *mut SDL_Joystick) -> *const ::std::os::raw::c_char;
 }
 extern "C" {
-    #[doc = " Get the player index of an opened joystick."]
-    #[doc = ""]
-    #[doc = " For XInput controllers this returns the XInput user index. Many joysticks"]
-    #[doc = " will not be able to supply this information."]
-    #[doc = ""]
-    #[doc = " \\param joystick the SDL_Joystick obtained from SDL_JoystickOpen()"]
-    #[doc = " \\returns the player index, or -1 if it's not available."]
     pub fn SDL_JoystickGetPlayerIndex(joystick: *mut SDL_Joystick) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[doc = " Set the player index of an opened joystick."]
-    #[doc = ""]
-    #[doc = " \\param joystick the SDL_Joystick obtained from SDL_JoystickOpen()"]
-    #[doc = " \\param player_index the player index to set."]
     pub fn SDL_JoystickSetPlayerIndex(
         joystick: *mut SDL_Joystick,
         player_index: ::std::os::raw::c_int,
     );
 }
 extern "C" {
-    #[doc = " Get the implementation-dependent GUID for the joystick."]
-    #[doc = ""]
-    #[doc = " This function requires an open joystick."]
-    #[doc = ""]
-    #[doc = " \\param joystick the SDL_Joystick obtained from SDL_JoystickOpen()"]
-    #[doc = " \\returns the GUID of the given joystick. If called on an invalid index,"]
-    #[doc = "          this function returns a zero GUID; call SDL_GetError() for more"]
-    #[doc = "          information."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_JoystickGetDeviceGUID"]
-    #[doc = " \\sa SDL_JoystickGetGUIDString"]
     pub fn SDL_JoystickGetGUID(joystick: *mut SDL_Joystick) -> SDL_JoystickGUID;
 }
 extern "C" {
-    #[doc = " Get the USB vendor ID of an opened joystick, if available."]
-    #[doc = ""]
-    #[doc = " If the vendor ID isn't available this function returns 0."]
-    #[doc = ""]
-    #[doc = " \\param joystick the SDL_Joystick obtained from SDL_JoystickOpen()"]
-    #[doc = " \\returns the USB vendor ID of the selected joystick, or 0 if unavailable."]
     pub fn SDL_JoystickGetVendor(joystick: *mut SDL_Joystick) -> Uint16;
 }
 extern "C" {
-    #[doc = " Get the USB product ID of an opened joystick, if available."]
-    #[doc = ""]
-    #[doc = " If the product ID isn't available this function returns 0."]
-    #[doc = ""]
-    #[doc = " \\param joystick the SDL_Joystick obtained from SDL_JoystickOpen()"]
-    #[doc = " \\returns the USB product ID of the selected joystick, or 0 if unavailable."]
     pub fn SDL_JoystickGetProduct(joystick: *mut SDL_Joystick) -> Uint16;
 }
 extern "C" {
-    #[doc = " Get the product version of an opened joystick, if available."]
-    #[doc = ""]
-    #[doc = " If the product version isn't available this function returns 0."]
-    #[doc = ""]
-    #[doc = " \\param joystick the SDL_Joystick obtained from SDL_JoystickOpen()"]
-    #[doc = " \\returns the product version of the selected joystick, or 0 if unavailable."]
     pub fn SDL_JoystickGetProductVersion(joystick: *mut SDL_Joystick) -> Uint16;
 }
 extern "C" {
-    #[doc = " Get the serial number of an opened joystick, if available."]
-    #[doc = ""]
-    #[doc = " Returns the serial number of the joystick, or NULL if it is not available."]
-    #[doc = ""]
-    #[doc = " \\param joystick the SDL_Joystick obtained from SDL_JoystickOpen()"]
-    #[doc = " \\returns the serial number of the selected joystick, or NULL if"]
-    #[doc = "          unavailable."]
     pub fn SDL_JoystickGetSerial(joystick: *mut SDL_Joystick) -> *const ::std::os::raw::c_char;
 }
 extern "C" {
-    #[doc = " Get the type of an opened joystick."]
-    #[doc = ""]
-    #[doc = " \\param joystick the SDL_Joystick obtained from SDL_JoystickOpen()"]
-    #[doc = " \\returns the SDL_JoystickType of the selected joystick."]
     pub fn SDL_JoystickGetType(joystick: *mut SDL_Joystick) -> SDL_JoystickType;
 }
 extern "C" {
-    #[doc = " Get an ASCII string representation for a given SDL_JoystickGUID."]
-    #[doc = ""]
-    #[doc = " You should supply at least 33 bytes for pszGUID."]
-    #[doc = ""]
-    #[doc = " \\param guid the SDL_JoystickGUID you wish to convert to string"]
-    #[doc = " \\param pszGUID buffer in which to write the ASCII string"]
-    #[doc = " \\param cbGUID the size of pszGUID"]
-    #[doc = ""]
-    #[doc = " \\sa SDL_JoystickGetDeviceGUID"]
-    #[doc = " \\sa SDL_JoystickGetGUID"]
-    #[doc = " \\sa SDL_JoystickGetGUIDFromString"]
     pub fn SDL_JoystickGetGUIDString(
         guid: SDL_JoystickGUID,
         pszGUID: *mut ::std::os::raw::c_char,
@@ -10260,157 +5260,38 @@ extern "C" {
     );
 }
 extern "C" {
-    #[doc = " Convert a GUID string into a SDL_JoystickGUID structure."]
-    #[doc = ""]
-    #[doc = " Performs no error checking. If this function is given a string containing"]
-    #[doc = " an invalid GUID, the function will silently succeed, but the GUID generated"]
-    #[doc = " will not be useful."]
-    #[doc = ""]
-    #[doc = " \\param pchGUID string containing an ASCII representation of a GUID"]
-    #[doc = " \\returns a SDL_JoystickGUID structure."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_JoystickGetGUIDString"]
     pub fn SDL_JoystickGetGUIDFromString(
         pchGUID: *const ::std::os::raw::c_char,
     ) -> SDL_JoystickGUID;
 }
 extern "C" {
-    #[doc = " Get the status of a specified joystick."]
-    #[doc = ""]
-    #[doc = " \\param joystick the joystick to query"]
-    #[doc = " \\returns SDL_TRUE if the joystick has been opened, SDL_FALSE if it has not;"]
-    #[doc = "          call SDL_GetError() for more information."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_JoystickClose"]
-    #[doc = " \\sa SDL_JoystickOpen"]
     pub fn SDL_JoystickGetAttached(joystick: *mut SDL_Joystick) -> SDL_bool;
 }
 extern "C" {
-    #[doc = " Get the instance ID of an opened joystick."]
-    #[doc = ""]
-    #[doc = " \\param joystick an SDL_Joystick structure containing joystick information"]
-    #[doc = " \\returns the instance ID of the specified joystick on success or a negative"]
-    #[doc = "          error code on failure; call SDL_GetError() for more information."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_JoystickOpen"]
     pub fn SDL_JoystickInstanceID(joystick: *mut SDL_Joystick) -> SDL_JoystickID;
 }
 extern "C" {
-    #[doc = " Get the number of general axis controls on a joystick."]
-    #[doc = ""]
-    #[doc = " Often, the directional pad on a game controller will either look like 4"]
-    #[doc = " separate buttons or a POV hat, and not axes, but all of this is up to the"]
-    #[doc = " device and platform."]
-    #[doc = ""]
-    #[doc = " \\param joystick an SDL_Joystick structure containing joystick information"]
-    #[doc = " \\returns the number of axis controls/number of axes on success or a"]
-    #[doc = "          negative error code on failure; call SDL_GetError() for more"]
-    #[doc = "          information."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_JoystickGetAxis"]
-    #[doc = " \\sa SDL_JoystickOpen"]
     pub fn SDL_JoystickNumAxes(joystick: *mut SDL_Joystick) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[doc = " Get the number of trackballs on a joystick."]
-    #[doc = ""]
-    #[doc = " Joystick trackballs have only relative motion events associated with them"]
-    #[doc = " and their state cannot be polled."]
-    #[doc = ""]
-    #[doc = " Most joysticks do not have trackballs."]
-    #[doc = ""]
-    #[doc = " \\param joystick an SDL_Joystick structure containing joystick information"]
-    #[doc = " \\returns the number of trackballs on success or a negative error code on"]
-    #[doc = "          failure; call SDL_GetError() for more information."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_JoystickGetBall"]
     pub fn SDL_JoystickNumBalls(joystick: *mut SDL_Joystick) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[doc = " Get the number of POV hats on a joystick."]
-    #[doc = ""]
-    #[doc = " \\param joystick an SDL_Joystick structure containing joystick information"]
-    #[doc = " \\returns the number of POV hats on success or a negative error code on"]
-    #[doc = "          failure; call SDL_GetError() for more information."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_JoystickGetHat"]
-    #[doc = " \\sa SDL_JoystickOpen"]
     pub fn SDL_JoystickNumHats(joystick: *mut SDL_Joystick) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[doc = " Get the number of buttons on a joystick."]
-    #[doc = ""]
-    #[doc = " \\param joystick an SDL_Joystick structure containing joystick information"]
-    #[doc = " \\returns the number of buttons on success or a negative error code on"]
-    #[doc = "          failure; call SDL_GetError() for more information."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_JoystickGetButton"]
-    #[doc = " \\sa SDL_JoystickOpen"]
     pub fn SDL_JoystickNumButtons(joystick: *mut SDL_Joystick) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[doc = " Update the current state of the open joysticks."]
-    #[doc = ""]
-    #[doc = " This is called automatically by the event loop if any joystick events are"]
-    #[doc = " enabled."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_JoystickEventState"]
     pub fn SDL_JoystickUpdate();
 }
 extern "C" {
-    #[doc = " Enable/disable joystick event polling."]
-    #[doc = ""]
-    #[doc = " If joystick events are disabled, you must call SDL_JoystickUpdate()"]
-    #[doc = " yourself and manually check the state of the joystick when you want"]
-    #[doc = " joystick information."]
-    #[doc = ""]
-    #[doc = " It is recommended that you leave joystick event handling enabled."]
-    #[doc = ""]
-    #[doc = " **WARNING**: Calling this function may delete all events currently in SDL's"]
-    #[doc = " event queue."]
-    #[doc = ""]
-    #[doc = " \\param state can be one of `SDL_QUERY`, `SDL_IGNORE`, or `SDL_ENABLE`"]
-    #[doc = " \\returns 1 if enabled, 0 if disabled, or a negative error code on failure;"]
-    #[doc = "          call SDL_GetError() for more information."]
-    #[doc = ""]
-    #[doc = "          If `state` is `SDL_QUERY` then the current state is returned,"]
-    #[doc = "          otherwise the new processing state is returned."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_GameControllerEventState"]
     pub fn SDL_JoystickEventState(state: ::std::os::raw::c_int) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[doc = " Get the current state of an axis control on a joystick."]
-    #[doc = ""]
-    #[doc = " SDL makes no promises about what part of the joystick any given axis refers"]
-    #[doc = " to. Your game should have some sort of configuration UI to let users"]
-    #[doc = " specify what each axis should be bound to. Alternately, SDL's higher-level"]
-    #[doc = " Game Controller API makes a great effort to apply order to this lower-level"]
-    #[doc = " interface, so you know that a specific axis is the \"left thumb stick,\" etc."]
-    #[doc = ""]
-    #[doc = " The value returned by SDL_JoystickGetAxis() is a signed integer (-32768 to"]
-    #[doc = " 32767) representing the current position of the axis. It may be necessary"]
-    #[doc = " to impose certain tolerances on these values to account for jitter."]
-    #[doc = ""]
-    #[doc = " \\param joystick an SDL_Joystick structure containing joystick information"]
-    #[doc = " \\param axis the axis to query; the axis indices start at index 0"]
-    #[doc = " \\returns a 16-bit signed integer representing the current position of the"]
-    #[doc = "          axis or 0 on failure; call SDL_GetError() for more information."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_JoystickNumAxes"]
     pub fn SDL_JoystickGetAxis(joystick: *mut SDL_Joystick, axis: ::std::os::raw::c_int) -> Sint16;
 }
 extern "C" {
-    #[doc = " Get the initial state of an axis control on a joystick."]
-    #[doc = ""]
-    #[doc = " The state is a value ranging from -32768 to 32767."]
-    #[doc = ""]
-    #[doc = " The axis indices start at index 0."]
-    #[doc = ""]
-    #[doc = " \\param joystick an SDL_Joystick structure containing joystick information"]
-    #[doc = " \\param axis the axis to query; the axis indices start at index 0"]
-    #[doc = " \\param state Upon return, the initial value is supplied here."]
-    #[doc = " \\return SDL_TRUE if this axis has any initial value, or SDL_FALSE if not."]
     pub fn SDL_JoystickGetAxisInitialState(
         joystick: *mut SDL_Joystick,
         axis: ::std::os::raw::c_int,
@@ -10418,43 +5299,9 @@ extern "C" {
     ) -> SDL_bool;
 }
 extern "C" {
-    #[doc = " Get the current state of a POV hat on a joystick."]
-    #[doc = ""]
-    #[doc = " The returned value will be one of the following positions:"]
-    #[doc = ""]
-    #[doc = " - `SDL_HAT_CENTERED`"]
-    #[doc = " - `SDL_HAT_UP`"]
-    #[doc = " - `SDL_HAT_RIGHT`"]
-    #[doc = " - `SDL_HAT_DOWN`"]
-    #[doc = " - `SDL_HAT_LEFT`"]
-    #[doc = " - `SDL_HAT_RIGHTUP`"]
-    #[doc = " - `SDL_HAT_RIGHTDOWN`"]
-    #[doc = " - `SDL_HAT_LEFTUP`"]
-    #[doc = " - `SDL_HAT_LEFTDOWN`"]
-    #[doc = ""]
-    #[doc = " \\param joystick an SDL_Joystick structure containing joystick information"]
-    #[doc = " \\param hat the hat index to get the state from; indices start at index 0"]
-    #[doc = " \\returns the current hat position."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_JoystickNumHats"]
     pub fn SDL_JoystickGetHat(joystick: *mut SDL_Joystick, hat: ::std::os::raw::c_int) -> Uint8;
 }
 extern "C" {
-    #[doc = " Get the ball axis change since the last poll."]
-    #[doc = ""]
-    #[doc = " Trackballs can only return relative motion since the last call to"]
-    #[doc = " SDL_JoystickGetBall(), these motion deltas are placed into `dx` and `dy`."]
-    #[doc = ""]
-    #[doc = " Most joysticks do not have trackballs."]
-    #[doc = ""]
-    #[doc = " \\param joystick the SDL_Joystick to query"]
-    #[doc = " \\param ball the ball index to query; ball indices start at index 0"]
-    #[doc = " \\param dx stores the difference in the x axis position since the last poll"]
-    #[doc = " \\param dy stores the difference in the y axis position since the last poll"]
-    #[doc = " \\returns 0 on success or a negative error code on failure; call"]
-    #[doc = "          SDL_GetError() for more information."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_JoystickNumBalls"]
     pub fn SDL_JoystickGetBall(
         joystick: *mut SDL_Joystick,
         ball: ::std::os::raw::c_int,
@@ -10463,32 +5310,12 @@ extern "C" {
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[doc = " Get the current state of a button on a joystick."]
-    #[doc = ""]
-    #[doc = " \\param joystick an SDL_Joystick structure containing joystick information"]
-    #[doc = " \\param button the button index to get the state from; indices start at"]
-    #[doc = "               index 0"]
-    #[doc = " \\returns 1 if the specified button is pressed, 0 otherwise."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_JoystickNumButtons"]
     pub fn SDL_JoystickGetButton(
         joystick: *mut SDL_Joystick,
         button: ::std::os::raw::c_int,
     ) -> Uint8;
 }
 extern "C" {
-    #[doc = " Start a rumble effect."]
-    #[doc = ""]
-    #[doc = " Each call to this function cancels any previous rumble effect, and calling"]
-    #[doc = " it with 0 intensity stops any rumbling."]
-    #[doc = ""]
-    #[doc = " \\param joystick The joystick to vibrate"]
-    #[doc = " \\param low_frequency_rumble The intensity of the low frequency (left)"]
-    #[doc = "                             rumble motor, from 0 to 0xFFFF"]
-    #[doc = " \\param high_frequency_rumble The intensity of the high frequency (right)"]
-    #[doc = "                              rumble motor, from 0 to 0xFFFF"]
-    #[doc = " \\param duration_ms The duration of the rumble effect, in milliseconds"]
-    #[doc = " \\returns 0, or -1 if rumble isn't supported on this joystick"]
     pub fn SDL_JoystickRumble(
         joystick: *mut SDL_Joystick,
         low_frequency_rumble: Uint16,
@@ -10497,23 +5324,6 @@ extern "C" {
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[doc = " Start a rumble effect in the joystick's triggers"]
-    #[doc = ""]
-    #[doc = " Each call to this function cancels any previous trigger rumble effect, and"]
-    #[doc = " calling it with 0 intensity stops any rumbling."]
-    #[doc = ""]
-    #[doc = " Note that this function is for _trigger_ rumble; the first joystick to"]
-    #[doc = " support this was the PlayStation 5's DualShock 5 controller. If you want"]
-    #[doc = " the (more common) whole-controller rumble, use SDL_JoystickRumble()"]
-    #[doc = " instead."]
-    #[doc = ""]
-    #[doc = " \\param joystick The joystick to vibrate"]
-    #[doc = " \\param left_rumble The intensity of the left trigger rumble motor, from 0"]
-    #[doc = "                    to 0xFFFF"]
-    #[doc = " \\param right_rumble The intensity of the right trigger rumble motor, from 0"]
-    #[doc = "                     to 0xFFFF"]
-    #[doc = " \\param duration_ms The duration of the rumble effect, in milliseconds"]
-    #[doc = " \\returns 0, or -1 if trigger rumble isn't supported on this joystick"]
     pub fn SDL_JoystickRumbleTriggers(
         joystick: *mut SDL_Joystick,
         left_rumble: Uint16,
@@ -10522,26 +5332,9 @@ extern "C" {
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[doc = " Query whether a joystick has an LED."]
-    #[doc = ""]
-    #[doc = " An example of a joystick LED is the light on the back of a PlayStation 4's"]
-    #[doc = " DualShock 4 controller."]
-    #[doc = ""]
-    #[doc = " \\param joystick The joystick to query"]
-    #[doc = " \\return SDL_TRUE if the joystick has a modifiable LED, SDL_FALSE otherwise."]
     pub fn SDL_JoystickHasLED(joystick: *mut SDL_Joystick) -> SDL_bool;
 }
 extern "C" {
-    #[doc = " Update a joystick's LED color."]
-    #[doc = ""]
-    #[doc = " An example of a joystick LED is the light on the back of a PlayStation 4's"]
-    #[doc = " DualShock 4 controller."]
-    #[doc = ""]
-    #[doc = " \\param joystick The joystick to update"]
-    #[doc = " \\param red The intensity of the red LED"]
-    #[doc = " \\param green The intensity of the green LED"]
-    #[doc = " \\param blue The intensity of the blue LED"]
-    #[doc = " \\returns 0 on success, -1 if this joystick does not have a modifiable LED"]
     pub fn SDL_JoystickSetLED(
         joystick: *mut SDL_Joystick,
         red: Uint8,
@@ -10550,12 +5343,6 @@ extern "C" {
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[doc = " Send a joystick specific effect packet"]
-    #[doc = ""]
-    #[doc = " \\param joystick The joystick to affect"]
-    #[doc = " \\param data The data to send to the joystick"]
-    #[doc = " \\param size The size of the data to send to the joystick"]
-    #[doc = " \\returns 0, or -1 if this joystick or driver doesn't support effect packets"]
     pub fn SDL_JoystickSendEffect(
         joystick: *mut SDL_Joystick,
         data: *const ::std::os::raw::c_void,
@@ -10563,154 +5350,67 @@ extern "C" {
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[doc = " Close a joystick previously opened with SDL_JoystickOpen()."]
-    #[doc = ""]
-    #[doc = " \\param joystick The joystick device to close"]
-    #[doc = ""]
-    #[doc = " \\sa SDL_JoystickOpen"]
     pub fn SDL_JoystickClose(joystick: *mut SDL_Joystick);
 }
 extern "C" {
-    #[doc = " Get the battery level of a joystick as SDL_JoystickPowerLevel."]
-    #[doc = ""]
-    #[doc = " \\param joystick the SDL_Joystick to query"]
-    #[doc = " \\returns the current battery level as SDL_JoystickPowerLevel on success or"]
-    #[doc = "          `SDL_JOYSTICK_POWER_UNKNOWN` if it is unknown"]
-    #[doc = ""]
-    #[doc = " \\since This function is available since SDL 2.0.4."]
     pub fn SDL_JoystickCurrentPowerLevel(joystick: *mut SDL_Joystick) -> SDL_JoystickPowerLevel;
 }
-#[doc = "  \\brief SDL_sensor.h"]
-#[doc = ""]
-#[doc = "  In order to use these functions, SDL_Init() must have been called"]
-#[doc = "  with the ::SDL_INIT_SENSOR flag.  This causes SDL to scan the system"]
-#[doc = "  for sensors, and load appropriate drivers."]
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
 pub struct _SDL_Sensor {
     _unused: [u8; 0],
 }
 pub type SDL_Sensor = _SDL_Sensor;
-#[doc = " This is a unique ID for a sensor for the time it is connected to the system,"]
-#[doc = " and is never reused for the lifetime of the application."]
-#[doc = ""]
-#[doc = " The ID value starts at 0 and increments from there. The value -1 is an invalid ID."]
 pub type SDL_SensorID = Sint32;
-#[doc = "< Returned for an invalid sensor"]
 pub const SDL_SensorType_SDL_SENSOR_INVALID: SDL_SensorType = -1;
-#[doc = "< Unknown sensor type"]
 pub const SDL_SensorType_SDL_SENSOR_UNKNOWN: SDL_SensorType = 0;
-#[doc = "< Accelerometer"]
 pub const SDL_SensorType_SDL_SENSOR_ACCEL: SDL_SensorType = 1;
-#[doc = "< Gyroscope"]
 pub const SDL_SensorType_SDL_SENSOR_GYRO: SDL_SensorType = 2;
 pub type SDL_SensorType = ::std::os::raw::c_int;
 extern "C" {
-    #[doc = " Locking for multi-threaded access to the sensor API"]
-    #[doc = ""]
-    #[doc = " If you are using the sensor API or handling events from multiple threads"]
-    #[doc = " you should use these locking functions to protect access to the sensors."]
-    #[doc = ""]
-    #[doc = " In particular, you are guaranteed that the sensor list won't change, so the"]
-    #[doc = " API functions that take a sensor index will be valid, and sensor events"]
-    #[doc = " will not be delivered."]
     pub fn SDL_LockSensors();
 }
 extern "C" {
     pub fn SDL_UnlockSensors();
 }
 extern "C" {
-    #[doc = " Count the number of sensors attached to the system right now."]
-    #[doc = ""]
-    #[doc = " \\returns the number of sensors detected."]
     pub fn SDL_NumSensors() -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[doc = " Get the implementation dependent name of a sensor."]
-    #[doc = ""]
-    #[doc = " \\param device_index The sensor to obtain name from"]
-    #[doc = " \\returns the sensor name, or NULL if `device_index` is out of range."]
     pub fn SDL_SensorGetDeviceName(
         device_index: ::std::os::raw::c_int,
     ) -> *const ::std::os::raw::c_char;
 }
 extern "C" {
-    #[doc = " Get the type of a sensor."]
-    #[doc = ""]
-    #[doc = " \\param device_index The sensor to get the type from"]
-    #[doc = " \\returns the SDL_SensorType, or `SDL_SENSOR_INVALID` if `device_index` is"]
-    #[doc = "          out of range."]
     pub fn SDL_SensorGetDeviceType(device_index: ::std::os::raw::c_int) -> SDL_SensorType;
 }
 extern "C" {
-    #[doc = " Get the platform dependent type of a sensor."]
-    #[doc = ""]
-    #[doc = " \\param device_index The sensor to check"]
-    #[doc = " \\returns the sensor platform dependent type, or -1 if `device_index` is out"]
-    #[doc = "          of range."]
     pub fn SDL_SensorGetDeviceNonPortableType(
         device_index: ::std::os::raw::c_int,
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[doc = " Get the instance ID of a sensor."]
-    #[doc = ""]
-    #[doc = " \\param device_index The sensor to get instance id from"]
-    #[doc = " \\returns the sensor instance ID, or -1 if `device_index` is out of range."]
     pub fn SDL_SensorGetDeviceInstanceID(device_index: ::std::os::raw::c_int) -> SDL_SensorID;
 }
 extern "C" {
-    #[doc = " Open a sensor for use."]
-    #[doc = ""]
-    #[doc = " \\param device_index The sensor to open"]
-    #[doc = " \\returns an SDL_Sensor sensor object, or NULL if an error occurred."]
     pub fn SDL_SensorOpen(device_index: ::std::os::raw::c_int) -> *mut SDL_Sensor;
 }
 extern "C" {
-    #[doc = " Return the SDL_Sensor associated with an instance id."]
-    #[doc = ""]
-    #[doc = " \\param instance_id The sensor from instance id"]
-    #[doc = " \\returns an SDL_Sensor object."]
     pub fn SDL_SensorFromInstanceID(instance_id: SDL_SensorID) -> *mut SDL_Sensor;
 }
 extern "C" {
-    #[doc = " Get the implementation dependent name of a sensor"]
-    #[doc = ""]
-    #[doc = " \\param sensor The SDL_Sensor object"]
-    #[doc = " \\returns the sensor name, or NULL if `sensor` is NULL."]
     pub fn SDL_SensorGetName(sensor: *mut SDL_Sensor) -> *const ::std::os::raw::c_char;
 }
 extern "C" {
-    #[doc = " Get the type of a sensor."]
-    #[doc = ""]
-    #[doc = " \\param sensor The SDL_Sensor object to inspect"]
-    #[doc = " \\returns the SDL_SensorType type, or `SDL_SENSOR_INVALID` if `sensor` is"]
-    #[doc = "          NULL."]
     pub fn SDL_SensorGetType(sensor: *mut SDL_Sensor) -> SDL_SensorType;
 }
 extern "C" {
-    #[doc = " Get the platform dependent type of a sensor."]
-    #[doc = ""]
-    #[doc = " \\param sensor The SDL_Sensor object to inspect"]
-    #[doc = " \\returns the sensor platform dependent type, or -1 if `sensor` is NULL."]
     pub fn SDL_SensorGetNonPortableType(sensor: *mut SDL_Sensor) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[doc = " Get the instance ID of a sensor."]
-    #[doc = ""]
-    #[doc = " \\param sensor The SDL_Sensor object to inspect"]
-    #[doc = " \\returns the sensor instance ID, or -1 if `sensor` is NULL."]
     pub fn SDL_SensorGetInstanceID(sensor: *mut SDL_Sensor) -> SDL_SensorID;
 }
 extern "C" {
-    #[doc = " Get the current state of an opened sensor."]
-    #[doc = ""]
-    #[doc = " The number of values and interpretation of the data is sensor dependent."]
-    #[doc = ""]
-    #[doc = " \\param sensor The SDL_Sensor object to query"]
-    #[doc = " \\param data A pointer filled with the current sensor state"]
-    #[doc = " \\param num_values The number of values to write to data"]
-    #[doc = " \\returns 0 or -1 if an error occurred."]
     pub fn SDL_SensorGetData(
         sensor: *mut SDL_Sensor,
         data: *mut f32,
@@ -10718,22 +5418,11 @@ extern "C" {
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[doc = " Close a sensor previously opened with SDL_SensorOpen()."]
-    #[doc = ""]
-    #[doc = " \\param sensor The SDL_Sensor object to close"]
     pub fn SDL_SensorClose(sensor: *mut SDL_Sensor);
 }
 extern "C" {
-    #[doc = " Update the current state of the open sensors."]
-    #[doc = ""]
-    #[doc = " This is called automatically by the event loop if sensor events are"]
-    #[doc = " enabled."]
-    #[doc = ""]
-    #[doc = " This needs to be called from the thread that initialized the sensor"]
-    #[doc = " subsystem."]
     pub fn SDL_SensorUpdate();
 }
-#[doc = " The gamecontroller structure used to identify an SDL game controller"]
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
 pub struct _SDL_GameController {
@@ -10757,7 +5446,6 @@ pub const SDL_GameControllerBindType_SDL_CONTROLLER_BINDTYPE_BUTTON: SDL_GameCon
 pub const SDL_GameControllerBindType_SDL_CONTROLLER_BINDTYPE_AXIS: SDL_GameControllerBindType = 2;
 pub const SDL_GameControllerBindType_SDL_CONTROLLER_BINDTYPE_HAT: SDL_GameControllerBindType = 3;
 pub type SDL_GameControllerBindType = ::std::os::raw::c_uint;
-#[doc = "  Get the SDL joystick layer binding for this controller button/axis mapping"]
 #[repr(C)]
 #[derive(Copy, Clone)]
 pub struct SDL_GameControllerButtonBind {
@@ -10919,375 +5607,109 @@ fn bindgen_test_layout_SDL_GameControllerButtonBind() {
     );
 }
 extern "C" {
-    #[doc = " Load a set of Game Controller mappings from a seekable SDL data stream."]
-    #[doc = ""]
-    #[doc = " You can call this function several times, if needed, to load different"]
-    #[doc = " database files."]
-    #[doc = ""]
-    #[doc = " If a new mapping is loaded for an already known controller GUID, the later"]
-    #[doc = " version will overwrite the one currently loaded."]
-    #[doc = ""]
-    #[doc = " Mappings not belonging to the current platform or with no platform field"]
-    #[doc = " specified will be ignored (i.e. mappings for Linux will be ignored in"]
-    #[doc = " Windows, etc)."]
-    #[doc = ""]
-    #[doc = " This function will load the text database entirely in memory before"]
-    #[doc = " processing it, so take this into consideration if you are in a memory"]
-    #[doc = " constrained environment."]
-    #[doc = ""]
-    #[doc = " \\param rw the data stream for the mappings to be added"]
-    #[doc = " \\param freerw non-zero to close the stream after being read"]
-    #[doc = " \\returns the number of mappings added or -1 on error; call SDL_GetError()"]
-    #[doc = "          for more information."]
-    #[doc = ""]
-    #[doc = " \\since This function is available since SDL 2.0.2."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_GameControllerAddMapping"]
-    #[doc = " \\sa SDL_GameControllerAddMappingsFromFile"]
-    #[doc = " \\sa SDL_GameControllerMappingForGUID"]
     pub fn SDL_GameControllerAddMappingsFromRW(
         rw: *mut SDL_RWops,
         freerw: ::std::os::raw::c_int,
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[doc = " Add support for controllers that SDL is unaware of or to cause an existing"]
-    #[doc = " controller to have a different binding."]
-    #[doc = ""]
-    #[doc = " The mapping string has the format \"GUID,name,mapping\", where GUID is the"]
-    #[doc = " string value from SDL_JoystickGetGUIDString(), name is the human readable"]
-    #[doc = " string for the device and mappings are controller mappings to joystick"]
-    #[doc = " ones. Under Windows there is a reserved GUID of \"xinput\" that covers all"]
-    #[doc = " XInput devices. The mapping format for joystick is: {| |bX |a joystick"]
-    #[doc = " button, index X |- |hX.Y |hat X with value Y |- |aX |axis X of the joystick"]
-    #[doc = " |} Buttons can be used as a controller axes and vice versa."]
-    #[doc = ""]
-    #[doc = " This string shows an example of a valid mapping for a controller:"]
-    #[doc = ""]
-    #[doc = " ```c"]
-    #[doc = " \"341a3608000000000000504944564944,Afterglow PS3 Controller,a:b1,b:b2,y:b3,x:b0,start:b9,guide:b12,back:b8,dpup:h0.1,dpleft:h0.8,dpdown:h0.4,dpright:h0.2,leftshoulder:b4,rightshoulder:b5,leftstick:b10,rightstick:b11,leftx:a0,lefty:a1,rightx:a2,righty:a3,lefttrigger:b6,righttrigger:b7\""]
-    #[doc = " ```"]
-    #[doc = ""]
-    #[doc = " \\param mappingString the mapping string"]
-    #[doc = " \\returns 1 if a new mapping is added, 0 if an existing mapping is updated,"]
-    #[doc = "          -1 on error; call SDL_GetError() for more information."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_GameControllerMapping"]
-    #[doc = " \\sa SDL_GameControllerMappingForGUID"]
     pub fn SDL_GameControllerAddMapping(
         mappingString: *const ::std::os::raw::c_char,
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[doc = " Get the number of mappings installed."]
-    #[doc = ""]
-    #[doc = " \\returns the number of mappings."]
     pub fn SDL_GameControllerNumMappings() -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[doc = " Get the mapping at a particular index."]
-    #[doc = ""]
-    #[doc = " \\returns the mapping string. Must be freed with SDL_free(). Returns NULL if"]
-    #[doc = "          the index is out of range."]
     pub fn SDL_GameControllerMappingForIndex(
         mapping_index: ::std::os::raw::c_int,
     ) -> *mut ::std::os::raw::c_char;
 }
 extern "C" {
-    #[doc = " Get the game controller mapping string for a given GUID."]
-    #[doc = ""]
-    #[doc = " The returned string must be freed with SDL_free()."]
-    #[doc = ""]
-    #[doc = " \\param guid a structure containing the GUID for which a mapping is desired"]
-    #[doc = " \\returns a mapping string or NULL on error; call SDL_GetError() for more"]
-    #[doc = "          information."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_JoystickGetDeviceGUID"]
-    #[doc = " \\sa SDL_JoystickGetGUID"]
     pub fn SDL_GameControllerMappingForGUID(guid: SDL_JoystickGUID) -> *mut ::std::os::raw::c_char;
 }
 extern "C" {
-    #[doc = " Get the current mapping of a Game Controller."]
-    #[doc = ""]
-    #[doc = " The returned string must be freed with SDL_free()."]
-    #[doc = ""]
-    #[doc = " Details about mappings are discussed with SDL_GameControllerAddMapping()."]
-    #[doc = ""]
-    #[doc = " \\param gamecontroller the game controller you want to get the current"]
-    #[doc = "                       mapping for"]
-    #[doc = " \\returns a string that has the controller's mapping or NULL if no mapping"]
-    #[doc = "          is available; call SDL_GetError() for more information."]
-    #[doc = ""]
-    #[doc = " \\since This function is available since SDL 2.0.0."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_GameControllerAddMapping"]
-    #[doc = " \\sa SDL_GameControllerMappingForGUID"]
     pub fn SDL_GameControllerMapping(
         gamecontroller: *mut SDL_GameController,
     ) -> *mut ::std::os::raw::c_char;
 }
 extern "C" {
-    #[doc = " Check if the given joystick is supported by the game controller interface."]
-    #[doc = ""]
-    #[doc = " `joystick_index` is the same as the `device_index` passed to"]
-    #[doc = " SDL_JoystickOpen()."]
-    #[doc = ""]
-    #[doc = " \\param joystick_index the device_index of a device, up to"]
-    #[doc = "                       SDL_NumJoysticks()"]
-    #[doc = " \\returns SDL_TRUE if the given joystick is supported by the game controller"]
-    #[doc = "          interface, SDL_FALSE if it isn't or it's an invalid index."]
-    #[doc = ""]
-    #[doc = " \\since This function is available since SDL 2.0.0."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_GameControllerNameForIndex"]
-    #[doc = " \\sa SDL_GameControllerOpen"]
     pub fn SDL_IsGameController(joystick_index: ::std::os::raw::c_int) -> SDL_bool;
 }
 extern "C" {
-    #[doc = " Get the implementation dependent name for the game controller."]
-    #[doc = ""]
-    #[doc = " This function can be called before any controllers are opened."]
-    #[doc = ""]
-    #[doc = " `joystick_index` is the same as the `device_index` passed to"]
-    #[doc = " SDL_JoystickOpen()."]
-    #[doc = ""]
-    #[doc = " \\param joystick_index the device_index of a device, from zero to"]
-    #[doc = "                       SDL_NumJoysticks()-1"]
-    #[doc = " \\returns the implementation-dependent name for the game controller, or NULL"]
-    #[doc = "          if there is no name or the index is invalid."]
-    #[doc = ""]
-    #[doc = " \\since This function is available since SDL 2.0.0."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_GameControllerName"]
-    #[doc = " \\sa SDL_GameControllerOpen"]
-    #[doc = " \\sa SDL_IsGameController"]
     pub fn SDL_GameControllerNameForIndex(
         joystick_index: ::std::os::raw::c_int,
     ) -> *const ::std::os::raw::c_char;
 }
 extern "C" {
-    #[doc = " Get the type of a game controller."]
-    #[doc = ""]
-    #[doc = " This can be called before any controllers are opened."]
-    #[doc = ""]
-    #[doc = " \\param joystick_index the device_index of a device, from zero to"]
-    #[doc = "                       SDL_NumJoysticks()-1"]
-    #[doc = " \\returns the controller type."]
     pub fn SDL_GameControllerTypeForIndex(
         joystick_index: ::std::os::raw::c_int,
     ) -> SDL_GameControllerType;
 }
 extern "C" {
-    #[doc = " Get the mapping of a game controller."]
-    #[doc = ""]
-    #[doc = " This can be called before any controllers are opened."]
-    #[doc = ""]
-    #[doc = " \\param joystick_index the device_index of a device, from zero to"]
-    #[doc = "                       SDL_NumJoysticks()-1"]
-    #[doc = " \\returns the mapping string. Must be freed with SDL_free(). Returns NULL if"]
-    #[doc = "          no mapping is available."]
     pub fn SDL_GameControllerMappingForDeviceIndex(
         joystick_index: ::std::os::raw::c_int,
     ) -> *mut ::std::os::raw::c_char;
 }
 extern "C" {
-    #[doc = " Open a game controller for use."]
-    #[doc = ""]
-    #[doc = " `joystick_index` is the same as the `device_index` passed to"]
-    #[doc = " SDL_JoystickOpen()."]
-    #[doc = ""]
-    #[doc = " The index passed as an argument refers to the N'th game controller on the"]
-    #[doc = " system. This index is not the value which will identify this controller in"]
-    #[doc = " future controller events. The joystick's instance id (SDL_JoystickID) will"]
-    #[doc = " be used there instead."]
-    #[doc = ""]
-    #[doc = " \\param joystick_index the device_index of a device, up to"]
-    #[doc = "                       SDL_NumJoysticks()"]
-    #[doc = " \\returns a gamecontroller identifier or NULL if an error occurred; call"]
-    #[doc = "          SDL_GetError() for more information."]
-    #[doc = ""]
-    #[doc = " \\since This function is available since SDL 2.0.0."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_GameControllerClose"]
-    #[doc = " \\sa SDL_GameControllerNameForIndex"]
-    #[doc = " \\sa SDL_IsGameController"]
     pub fn SDL_GameControllerOpen(joystick_index: ::std::os::raw::c_int)
         -> *mut SDL_GameController;
 }
 extern "C" {
-    #[doc = " Get the SDL_GameController associated with an instance id."]
-    #[doc = ""]
-    #[doc = " \\param joyid the instance id to get the SDL_GameController for"]
-    #[doc = " \\returns an SDL_GameController on success or NULL on failure; call"]
-    #[doc = "          SDL_GetError() for more information."]
-    #[doc = ""]
-    #[doc = " \\since This function is available since SDL 2.0.4."]
     pub fn SDL_GameControllerFromInstanceID(joyid: SDL_JoystickID) -> *mut SDL_GameController;
 }
 extern "C" {
-    #[doc = " Get the SDL_GameController associated with a player index."]
-    #[doc = ""]
-    #[doc = " Please note that the player index is _not_ the device index, nor is it the"]
-    #[doc = " instance id!"]
-    #[doc = ""]
-    #[doc = " \\param player_index the player index, which is not the device index or the"]
-    #[doc = "                     instance id!"]
-    #[doc = " \\returns the SDL_GameController associated with a player index."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_GameControllerGetPlayerIndex"]
-    #[doc = " \\sa SDL_GameControllerSetPlayerIndex"]
     pub fn SDL_GameControllerFromPlayerIndex(
         player_index: ::std::os::raw::c_int,
     ) -> *mut SDL_GameController;
 }
 extern "C" {
-    #[doc = " Get the implementation-dependent name for an opened game controller."]
-    #[doc = ""]
-    #[doc = " This is the same name as returned by SDL_GameControllerNameForIndex(), but"]
-    #[doc = " it takes a controller identifier instead of the (unstable) device index."]
-    #[doc = ""]
-    #[doc = " \\param gamecontroller a game controller identifier previously returned by"]
-    #[doc = "                       SDL_GameControllerOpen()"]
-    #[doc = " \\returns the implementation dependent name for the game controller, or NULL"]
-    #[doc = "          if there is no name or the identifier passed is invalid."]
-    #[doc = ""]
-    #[doc = " \\since This function is available since SDL 2.0.0."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_GameControllerNameForIndex"]
-    #[doc = " \\sa SDL_GameControllerOpen"]
     pub fn SDL_GameControllerName(
         gamecontroller: *mut SDL_GameController,
     ) -> *const ::std::os::raw::c_char;
 }
 extern "C" {
-    #[doc = " Get the type of this currently opened controller"]
-    #[doc = ""]
-    #[doc = " This is the same name as returned by SDL_GameControllerTypeForIndex(), but"]
-    #[doc = " it takes a controller identifier instead of the (unstable) device index."]
-    #[doc = ""]
-    #[doc = " \\param gamecontroller the game controller object to query."]
-    #[doc = " \\returns the controller type."]
     pub fn SDL_GameControllerGetType(
         gamecontroller: *mut SDL_GameController,
     ) -> SDL_GameControllerType;
 }
 extern "C" {
-    #[doc = " Get the player index of an opened game controller."]
-    #[doc = ""]
-    #[doc = " For XInput controllers this returns the XInput user index."]
-    #[doc = ""]
-    #[doc = " \\param gamecontroller the game controller object to query."]
-    #[doc = " \\returns the player index for controller, or -1 if it's not available."]
     pub fn SDL_GameControllerGetPlayerIndex(
         gamecontroller: *mut SDL_GameController,
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[doc = " Set the player index of an opened game controller."]
-    #[doc = ""]
-    #[doc = " \\param gamecontroller the game controller object to adjust."]
-    #[doc = " \\param player_index Player index to assign to this controller."]
     pub fn SDL_GameControllerSetPlayerIndex(
         gamecontroller: *mut SDL_GameController,
         player_index: ::std::os::raw::c_int,
     );
 }
 extern "C" {
-    #[doc = " Get the USB vendor ID of an opened controller, if available."]
-    #[doc = ""]
-    #[doc = " If the vendor ID isn't available this function returns 0."]
-    #[doc = ""]
-    #[doc = " \\param gamecontroller the game controller object to query."]
-    #[doc = " \\return the USB vendor ID, or zero if unavailable."]
     pub fn SDL_GameControllerGetVendor(gamecontroller: *mut SDL_GameController) -> Uint16;
 }
 extern "C" {
-    #[doc = " Get the USB product ID of an opened controller, if available."]
-    #[doc = ""]
-    #[doc = " If the product ID isn't available this function returns 0."]
-    #[doc = ""]
-    #[doc = " \\param gamecontroller the game controller object to query."]
-    #[doc = " \\return the USB product ID, or zero if unavailable."]
     pub fn SDL_GameControllerGetProduct(gamecontroller: *mut SDL_GameController) -> Uint16;
 }
 extern "C" {
-    #[doc = " Get the product version of an opened controller, if available."]
-    #[doc = ""]
-    #[doc = " If the product version isn't available this function returns 0."]
-    #[doc = ""]
-    #[doc = " \\param gamecontroller the game controller object to query."]
-    #[doc = " \\return the USB product version, or zero if unavailable."]
     pub fn SDL_GameControllerGetProductVersion(gamecontroller: *mut SDL_GameController) -> Uint16;
 }
 extern "C" {
-    #[doc = " Get the serial number of an opened controller, if available."]
-    #[doc = ""]
-    #[doc = " Returns the serial number of the controller, or NULL if it is not"]
-    #[doc = " available."]
-    #[doc = ""]
-    #[doc = " \\param gamecontroller the game controller object to query."]
-    #[doc = " \\return the serial number, or NULL if unavailable."]
     pub fn SDL_GameControllerGetSerial(
         gamecontroller: *mut SDL_GameController,
     ) -> *const ::std::os::raw::c_char;
 }
 extern "C" {
-    #[doc = " Check if a controller has been opened and is currently connected."]
-    #[doc = ""]
-    #[doc = " \\param gamecontroller a game controller identifier previously returned by"]
-    #[doc = "                       SDL_GameControllerOpen()"]
-    #[doc = " \\returns SDL_TRUE if the controller has been opened and is currently"]
-    #[doc = "          connected, or SDL_FALSE if not."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_GameControllerClose"]
-    #[doc = " \\sa SDL_GameControllerOpen"]
     pub fn SDL_GameControllerGetAttached(gamecontroller: *mut SDL_GameController) -> SDL_bool;
 }
 extern "C" {
-    #[doc = " Get the Joystick ID from a Game Controller."]
-    #[doc = ""]
-    #[doc = " This function will give you a SDL_Joystick object, which allows you to use"]
-    #[doc = " the SDL_Joystick functions with a SDL_GameController object. This would be"]
-    #[doc = " useful for getting a joystick's position at any given time, even if it"]
-    #[doc = " hasn't moved (moving it would produce an event, which would have the axis'"]
-    #[doc = " value)."]
-    #[doc = ""]
-    #[doc = " The pointer returned is owned by the SDL_GameController. You should not"]
-    #[doc = " call SDL_JoystickClose() on it, for example, since doing so will likely"]
-    #[doc = " cause SDL to crash."]
-    #[doc = ""]
-    #[doc = " \\param gamecontroller the game controller object that you want to get a"]
-    #[doc = "                       joystick from"]
-    #[doc = " \\returns a SDL_Joystick object; call SDL_GetError() for more information."]
     pub fn SDL_GameControllerGetJoystick(
         gamecontroller: *mut SDL_GameController,
     ) -> *mut SDL_Joystick;
 }
 extern "C" {
-    #[doc = " Query or change current state of Game Controller events."]
-    #[doc = ""]
-    #[doc = " If controller events are disabled, you must call SDL_GameControllerUpdate()"]
-    #[doc = " yourself and check the state of the controller when you want controller"]
-    #[doc = " information."]
-    #[doc = ""]
-    #[doc = " Any number can be passed to SDL_GameControllerEventState(), but only -1, 0,"]
-    #[doc = " and 1 will have any effect. Other numbers will just be returned."]
-    #[doc = ""]
-    #[doc = " \\param state can be one of `SDL_QUERY`, `SDL_IGNORE`, or `SDL_ENABLE`"]
-    #[doc = " \\returns the same value passed to the function, with exception to -1"]
-    #[doc = "          (SDL_QUERY), which will return the current state."]
-    #[doc = ""]
-    #[doc = " \\since This function is available since SDL 2.0.0."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_JoystickEventState"]
     pub fn SDL_GameControllerEventState(state: ::std::os::raw::c_int) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[doc = " Manually pump game controller updates if not using the loop."]
-    #[doc = ""]
-    #[doc = " This function is called automatically by the event loop if events are"]
-    #[doc = " enabled. Under such circumstances, it will not be necessary to call this"]
-    #[doc = " function."]
     pub fn SDL_GameControllerUpdate();
 }
 pub const SDL_GameControllerAxis_SDL_CONTROLLER_AXIS_INVALID: SDL_GameControllerAxis = -1;
@@ -11298,97 +5720,30 @@ pub const SDL_GameControllerAxis_SDL_CONTROLLER_AXIS_RIGHTY: SDL_GameControllerA
 pub const SDL_GameControllerAxis_SDL_CONTROLLER_AXIS_TRIGGERLEFT: SDL_GameControllerAxis = 4;
 pub const SDL_GameControllerAxis_SDL_CONTROLLER_AXIS_TRIGGERRIGHT: SDL_GameControllerAxis = 5;
 pub const SDL_GameControllerAxis_SDL_CONTROLLER_AXIS_MAX: SDL_GameControllerAxis = 6;
-#[doc = "  The list of axes available from a controller"]
-#[doc = ""]
-#[doc = "  Thumbstick axis values range from SDL_JOYSTICK_AXIS_MIN to SDL_JOYSTICK_AXIS_MAX,"]
-#[doc = "  and are centered within ~8000 of zero, though advanced UI will allow users to set"]
-#[doc = "  or autodetect the dead zone, which varies between controllers."]
-#[doc = ""]
-#[doc = "  Trigger axis values range from 0 to SDL_JOYSTICK_AXIS_MAX."]
 pub type SDL_GameControllerAxis = ::std::os::raw::c_int;
 extern "C" {
-    #[doc = " Convert a string into SDL_GameControllerAxis enum."]
-    #[doc = ""]
-    #[doc = " This function is called internally to translate SDL_GameController mapping"]
-    #[doc = " strings for the underlying joystick device into the consistent"]
-    #[doc = " SDL_GameController mapping. You do not normally need to call this function"]
-    #[doc = " unless you are parsing SDL_GameController mappings in your own code."]
-    #[doc = ""]
-    #[doc = " Note specially that \"righttrigger\" and \"lefttrigger\" map to"]
-    #[doc = " `SDL_CONTROLLER_AXIS_TRIGGERRIGHT` and `SDL_CONTROLLER_AXIS_TRIGGERLEFT`,"]
-    #[doc = " respectively."]
-    #[doc = ""]
-    #[doc = " \\param str string representing a SDL_GameController axis"]
-    #[doc = " \\returns the SDL_GameControllerAxis enum corresponding to the input string,"]
-    #[doc = "          or `SDL_CONTROLLER_AXIS_INVALID` if no match was found."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_GameControllerGetStringForAxis"]
     pub fn SDL_GameControllerGetAxisFromString(
         str_: *const ::std::os::raw::c_char,
     ) -> SDL_GameControllerAxis;
 }
 extern "C" {
-    #[doc = " Convert from an SDL_GameControllerAxis enum to a string."]
-    #[doc = ""]
-    #[doc = " The caller should not SDL_free() the returned string."]
-    #[doc = ""]
-    #[doc = " \\param axis an enum value for a given SDL_GameControllerAxis"]
-    #[doc = " \\returns a string for the given axis, or NULL if an invalid axis is"]
-    #[doc = "          specified. The string returned is of the format used by"]
-    #[doc = "          SDL_GameController mapping strings."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_GameControllerGetAxisFromString"]
     pub fn SDL_GameControllerGetStringForAxis(
         axis: SDL_GameControllerAxis,
     ) -> *const ::std::os::raw::c_char;
 }
 extern "C" {
-    #[doc = " Get the SDL joystick layer binding for a controller axis mapping."]
-    #[doc = ""]
-    #[doc = " \\param gamecontroller a game controller"]
-    #[doc = " \\param axis an axis enum value (one of the SDL_GameControllerAxis values)"]
-    #[doc = " \\returns a SDL_GameControllerButtonBind describing the bind. On failure"]
-    #[doc = "          (like the given Controller axis doesn't exist on the device), its"]
-    #[doc = "          `.bindType` will be `SDL_CONTROLLER_BINDTYPE_NONE`."]
-    #[doc = ""]
-    #[doc = " \\since This function is available since SDL 2.0.0."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_GameControllerGetBindForButton"]
     pub fn SDL_GameControllerGetBindForAxis(
         gamecontroller: *mut SDL_GameController,
         axis: SDL_GameControllerAxis,
     ) -> SDL_GameControllerButtonBind;
 }
 extern "C" {
-    #[doc = " Query whether a game controller has a given axis."]
-    #[doc = ""]
-    #[doc = " This merely reports whether the controller's mapping defined this axis, as"]
-    #[doc = " that is all the information SDL has about the physical device."]
-    #[doc = ""]
-    #[doc = " \\param gamecontroller a game controller"]
-    #[doc = " \\param axis an axis enum value (an SDL_GameControllerAxis value)"]
-    #[doc = " \\returns SDL_TRUE if the controller has this axis, SDL_FALSE otherwise."]
     pub fn SDL_GameControllerHasAxis(
         gamecontroller: *mut SDL_GameController,
         axis: SDL_GameControllerAxis,
     ) -> SDL_bool;
 }
 extern "C" {
-    #[doc = " Get the current state of an axis control on a game controller."]
-    #[doc = ""]
-    #[doc = " The axis indices start at index 0."]
-    #[doc = ""]
-    #[doc = " The state is a value ranging from -32768 to 32767. Triggers, however, range"]
-    #[doc = " from 0 to 32767 (they never return a negative value)."]
-    #[doc = ""]
-    #[doc = " \\param gamecontroller a game controller"]
-    #[doc = " \\param axis an axis index (one of the SDL_GameControllerAxis values)"]
-    #[doc = " \\returns axis state (including 0) on success or 0 (also) on failure; call"]
-    #[doc = "          SDL_GetError() for more information."]
-    #[doc = ""]
-    #[doc = " \\since This function is available since SDL 2.0.0."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_GameControllerGetButton"]
     pub fn SDL_GameControllerGetAxis(
         gamecontroller: *mut SDL_GameController,
         axis: SDL_GameControllerAxis,
@@ -11418,103 +5773,47 @@ pub const SDL_GameControllerButton_SDL_CONTROLLER_BUTTON_PADDLE3: SDL_GameContro
 pub const SDL_GameControllerButton_SDL_CONTROLLER_BUTTON_PADDLE4: SDL_GameControllerButton = 19;
 pub const SDL_GameControllerButton_SDL_CONTROLLER_BUTTON_TOUCHPAD: SDL_GameControllerButton = 20;
 pub const SDL_GameControllerButton_SDL_CONTROLLER_BUTTON_MAX: SDL_GameControllerButton = 21;
-#[doc = "  The list of buttons available from a controller"]
 pub type SDL_GameControllerButton = ::std::os::raw::c_int;
 extern "C" {
-    #[doc = " Convert a string into an SDL_GameControllerButton enum."]
-    #[doc = ""]
-    #[doc = " This function is called internally to translate SDL_GameController mapping"]
-    #[doc = " strings for the underlying joystick device into the consistent"]
-    #[doc = " SDL_GameController mapping. You do not normally need to call this function"]
-    #[doc = " unless you are parsing SDL_GameController mappings in your own code."]
-    #[doc = ""]
-    #[doc = " \\param str string representing a SDL_GameController axis"]
-    #[doc = " \\returns the SDL_GameControllerButton enum corresponding to the input"]
-    #[doc = "          string, or `SDL_CONTROLLER_AXIS_INVALID` if no match was found."]
     pub fn SDL_GameControllerGetButtonFromString(
         str_: *const ::std::os::raw::c_char,
     ) -> SDL_GameControllerButton;
 }
 extern "C" {
-    #[doc = " Convert from an SDL_GameControllerButton enum to a string."]
-    #[doc = ""]
-    #[doc = " The caller should not SDL_free() the returned string."]
-    #[doc = ""]
-    #[doc = " \\param button an enum value for a given SDL_GameControllerButton"]
-    #[doc = " \\returns a string for the given button, or NULL if an invalid axis is"]
-    #[doc = "          specified. The string returned is of the format used by"]
-    #[doc = "          SDL_GameController mapping strings."]
-    #[doc = ""]
-    #[doc = " \\since This function is available since SDL 2.0.0."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_GameControllerGetButtonFromString"]
     pub fn SDL_GameControllerGetStringForButton(
         button: SDL_GameControllerButton,
     ) -> *const ::std::os::raw::c_char;
 }
 extern "C" {
-    #[doc = " Get the SDL joystick layer binding for a controller button mapping."]
-    #[doc = ""]
-    #[doc = " \\param gamecontroller a game controller"]
-    #[doc = " \\param button an button enum value (an SDL_GameControllerButton value)"]
-    #[doc = " \\returns a SDL_GameControllerButtonBind describing the bind. On failure"]
-    #[doc = "          (like the given Controller button doesn't exist on the device),"]
-    #[doc = "          its `.bindType` will be `SDL_CONTROLLER_BINDTYPE_NONE`."]
-    #[doc = ""]
-    #[doc = " \\since This function is available since SDL 2.0.0."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_GameControllerGetBindForAxis"]
     pub fn SDL_GameControllerGetBindForButton(
         gamecontroller: *mut SDL_GameController,
         button: SDL_GameControllerButton,
     ) -> SDL_GameControllerButtonBind;
 }
 extern "C" {
-    #[doc = " Query whether a game controller has a given button."]
-    #[doc = ""]
-    #[doc = " This merely reports whether the controller's mapping defined this button,"]
-    #[doc = " as that is all the information SDL has about the physical device."]
-    #[doc = ""]
-    #[doc = " \\param gamecontroller a game controller"]
-    #[doc = " \\param button a button enum value (an SDL_GameControllerButton value)"]
-    #[doc = " \\returns SDL_TRUE if the controller has this button, SDL_FALSE otherwise."]
     pub fn SDL_GameControllerHasButton(
         gamecontroller: *mut SDL_GameController,
         button: SDL_GameControllerButton,
     ) -> SDL_bool;
 }
 extern "C" {
-    #[doc = " Get the current state of a button on a game controller."]
-    #[doc = ""]
-    #[doc = " \\param gamecontroller a game controller"]
-    #[doc = " \\param button a button index (one of the SDL_GameControllerButton values)"]
-    #[doc = " \\returns 1 for pressed state or 0 for not pressed state or error; call"]
-    #[doc = "          SDL_GetError() for more information."]
-    #[doc = ""]
-    #[doc = " \\since This function is available since SDL 2.0.0."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_GameControllerGetAxis"]
     pub fn SDL_GameControllerGetButton(
         gamecontroller: *mut SDL_GameController,
         button: SDL_GameControllerButton,
     ) -> Uint8;
 }
 extern "C" {
-    #[doc = " Get the number of touchpads on a game controller."]
     pub fn SDL_GameControllerGetNumTouchpads(
         gamecontroller: *mut SDL_GameController,
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[doc = " Get the number of supported simultaneous fingers on a touchpad on a game"]
-    #[doc = " controller."]
     pub fn SDL_GameControllerGetNumTouchpadFingers(
         gamecontroller: *mut SDL_GameController,
         touchpad: ::std::os::raw::c_int,
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[doc = " Get the current state of a finger on a touchpad on a game controller."]
     pub fn SDL_GameControllerGetTouchpadFinger(
         gamecontroller: *mut SDL_GameController,
         touchpad: ::std::os::raw::c_int,
@@ -11526,23 +5825,12 @@ extern "C" {
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[doc = " Return whether a game controller has a particular sensor."]
-    #[doc = ""]
-    #[doc = " \\param gamecontroller The controller to query"]
-    #[doc = " \\param type The type of sensor to query"]
-    #[doc = " \\returns SDL_TRUE if the sensor exists, SDL_FALSE otherwise."]
     pub fn SDL_GameControllerHasSensor(
         gamecontroller: *mut SDL_GameController,
         type_: SDL_SensorType,
     ) -> SDL_bool;
 }
 extern "C" {
-    #[doc = " Set whether data reporting for a game controller sensor is enabled."]
-    #[doc = ""]
-    #[doc = " \\param gamecontroller The controller to update"]
-    #[doc = " \\param type The type of sensor to enable/disable"]
-    #[doc = " \\param enabled Whether data reporting should be enabled"]
-    #[doc = " \\returns 0 or -1 if an error occurred."]
     pub fn SDL_GameControllerSetSensorEnabled(
         gamecontroller: *mut SDL_GameController,
         type_: SDL_SensorType,
@@ -11550,39 +5838,18 @@ extern "C" {
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[doc = " Query whether sensor data reporting is enabled for a game controller."]
-    #[doc = ""]
-    #[doc = " \\param gamecontroller The controller to query"]
-    #[doc = " \\param type The type of sensor to query"]
-    #[doc = " \\returns SDL_TRUE if the sensor is enabled, SDL_FALSE otherwise."]
     pub fn SDL_GameControllerIsSensorEnabled(
         gamecontroller: *mut SDL_GameController,
         type_: SDL_SensorType,
     ) -> SDL_bool;
 }
 extern "C" {
-    #[doc = " Get the data rate (number of events per second) of a game controller"]
-    #[doc = " sensor."]
-    #[doc = ""]
-    #[doc = " \\param gamecontroller The controller to query"]
-    #[doc = " \\param type The type of sensor to query"]
-    #[doc = " \\return the data rate, or 0.0f if the data rate is not available."]
     pub fn SDL_GameControllerGetSensorDataRate(
         gamecontroller: *mut SDL_GameController,
         type_: SDL_SensorType,
     ) -> f32;
 }
 extern "C" {
-    #[doc = " Get the current state of a game controller sensor."]
-    #[doc = ""]
-    #[doc = " The number of values and interpretation of the data is sensor dependent."]
-    #[doc = " See SDL_sensor.h for the details for each type of sensor."]
-    #[doc = ""]
-    #[doc = " \\param gamecontroller The controller to query"]
-    #[doc = " \\param type The type of sensor to query"]
-    #[doc = " \\param data A pointer filled with the current sensor state"]
-    #[doc = " \\param num_values The number of values to write to data"]
-    #[doc = " \\return 0 or -1 if an error occurred."]
     pub fn SDL_GameControllerGetSensorData(
         gamecontroller: *mut SDL_GameController,
         type_: SDL_SensorType,
@@ -11591,18 +5858,6 @@ extern "C" {
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[doc = " Start a rumble effect on a game controller."]
-    #[doc = ""]
-    #[doc = " Each call to this function cancels any previous rumble effect, and calling"]
-    #[doc = " it with 0 intensity stops any rumbling."]
-    #[doc = ""]
-    #[doc = " \\param gamecontroller The controller to vibrate"]
-    #[doc = " \\param low_frequency_rumble The intensity of the low frequency (left)"]
-    #[doc = "                             rumble motor, from 0 to 0xFFFF"]
-    #[doc = " \\param high_frequency_rumble The intensity of the high frequency (right)"]
-    #[doc = "                              rumble motor, from 0 to 0xFFFF"]
-    #[doc = " \\param duration_ms The duration of the rumble effect, in milliseconds"]
-    #[doc = " \\returns 0, or -1 if rumble isn't supported on this controller"]
     pub fn SDL_GameControllerRumble(
         gamecontroller: *mut SDL_GameController,
         low_frequency_rumble: Uint16,
@@ -11611,22 +5866,6 @@ extern "C" {
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[doc = " Start a rumble effect in the game controller's triggers."]
-    #[doc = ""]
-    #[doc = " Each call to this function cancels any previous trigger rumble effect, and"]
-    #[doc = " calling it with 0 intensity stops any rumbling."]
-    #[doc = ""]
-    #[doc = " Note that this is rumbling of the _triggers_ and not the game controller as"]
-    #[doc = " a whole. The first controller to offer this feature was the PlayStation 5's"]
-    #[doc = " DualShock 5."]
-    #[doc = ""]
-    #[doc = " \\param gamecontroller The controller to vibrate"]
-    #[doc = " \\param left_rumble The intensity of the left trigger rumble motor, from 0"]
-    #[doc = "                    to 0xFFFF"]
-    #[doc = " \\param right_rumble The intensity of the right trigger rumble motor, from 0"]
-    #[doc = "                     to 0xFFFF"]
-    #[doc = " \\param duration_ms The duration of the rumble effect, in milliseconds"]
-    #[doc = " \\returns 0, or -1 if trigger rumble isn't supported on this controller"]
     pub fn SDL_GameControllerRumbleTriggers(
         gamecontroller: *mut SDL_GameController,
         left_rumble: Uint16,
@@ -11635,21 +5874,9 @@ extern "C" {
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[doc = " Query whether a game controller has an LED."]
-    #[doc = ""]
-    #[doc = " \\param gamecontroller The controller to query"]
-    #[doc = " \\returns SDL_TRUE, or SDL_FALSE if this controller does not have a"]
-    #[doc = "          modifiable LED"]
     pub fn SDL_GameControllerHasLED(gamecontroller: *mut SDL_GameController) -> SDL_bool;
 }
 extern "C" {
-    #[doc = " Update a game controller's LED color."]
-    #[doc = ""]
-    #[doc = " \\param gamecontroller The controller to update"]
-    #[doc = " \\param red The intensity of the red LED"]
-    #[doc = " \\param green The intensity of the green LED"]
-    #[doc = " \\param blue The intensity of the blue LED"]
-    #[doc = " \\returns 0, or -1 if this controller does not have a modifiable LED"]
     pub fn SDL_GameControllerSetLED(
         gamecontroller: *mut SDL_GameController,
         red: Uint8,
@@ -11658,13 +5885,6 @@ extern "C" {
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[doc = " Send a controller specific effect packet"]
-    #[doc = ""]
-    #[doc = " \\param gamecontroller The controller to affect"]
-    #[doc = " \\param data The data to send to the controller"]
-    #[doc = " \\param size The size of the data to send to the controller"]
-    #[doc = " \\returns 0, or -1 if this controller or driver doesn't support effect"]
-    #[doc = "          packets"]
     pub fn SDL_GameControllerSendEffect(
         gamecontroller: *mut SDL_GameController,
         data: *const ::std::os::raw::c_void,
@@ -11672,12 +5892,6 @@ extern "C" {
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[doc = " Close a game controller previously opened with SDL_GameControllerOpen()."]
-    #[doc = ""]
-    #[doc = " \\param gamecontroller a game controller identifier previously returned by"]
-    #[doc = "                       SDL_GameControllerOpen()"]
-    #[doc = ""]
-    #[doc = " \\sa SDL_GameControllerOpen"]
     pub fn SDL_GameControllerClose(gamecontroller: *mut SDL_GameController);
 }
 pub type SDL_TouchID = Sint64;
@@ -11749,61 +5963,18 @@ fn bindgen_test_layout_SDL_Finger() {
     );
 }
 extern "C" {
-    #[doc = " Get the number of registered touch devices."]
-    #[doc = ""]
-    #[doc = " On some platforms SDL first sees the touch device if it was actually used."]
-    #[doc = " Therefore SDL_GetNumTouchDevices() may return 0 although devices are"]
-    #[doc = " available. After using all devices at least once the number will be"]
-    #[doc = " correct."]
-    #[doc = ""]
-    #[doc = " This was fixed for Android in SDL 2.0.1."]
-    #[doc = ""]
-    #[doc = " \\returns the number of registered touch devices."]
-    #[doc = ""]
-    #[doc = " \\since This function is available since SDL 2.0.0."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_GetTouchDevice"]
     pub fn SDL_GetNumTouchDevices() -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[doc = " Get the touch ID with the given index."]
-    #[doc = ""]
-    #[doc = " \\param index the touch device index"]
-    #[doc = " \\returns the touch ID with the given index on success or 0 if the index is"]
-    #[doc = "          invalid; call SDL_GetError() for more information."]
-    #[doc = ""]
-    #[doc = " \\since This function is available since SDL 2.0.0."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_GetNumTouchDevices"]
     pub fn SDL_GetTouchDevice(index: ::std::os::raw::c_int) -> SDL_TouchID;
 }
 extern "C" {
-    #[doc = " Get the type of the given touch device."]
     pub fn SDL_GetTouchDeviceType(touchID: SDL_TouchID) -> SDL_TouchDeviceType;
 }
 extern "C" {
-    #[doc = " Get the number of active fingers for a given touch device."]
-    #[doc = ""]
-    #[doc = " \\param touchID the ID of a touch device"]
-    #[doc = " \\returns the number of active fingers for a given touch device on success"]
-    #[doc = "          or 0 on failure; call SDL_GetError() for more information."]
-    #[doc = ""]
-    #[doc = " \\since This function is available since SDL 2.0.0."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_GetTouchFinger"]
     pub fn SDL_GetNumTouchFingers(touchID: SDL_TouchID) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[doc = " Get the finger object for specified touch device ID and finger index."]
-    #[doc = ""]
-    #[doc = " The returned resource is owned by SDL and should not be deallocated."]
-    #[doc = ""]
-    #[doc = " \\param touchID the ID of the requested touch device"]
-    #[doc = " \\param index the index of the requested finger"]
-    #[doc = " \\returns a pointer to the SDL_Finger object or NULL if no object at the"]
-    #[doc = "          given ID and index could be found."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_RecordGesture"]
     pub fn SDL_GetTouchFinger(
         touchID: SDL_TouchID,
         index: ::std::os::raw::c_int,
@@ -11811,154 +5982,60 @@ extern "C" {
 }
 pub type SDL_GestureID = Sint64;
 extern "C" {
-    #[doc = " Begin recording a gesture on a specified touch device or all touch devices."]
-    #[doc = ""]
-    #[doc = " If the parameter `touchId` is -1 (i.e., all devices), this function will"]
-    #[doc = " always return 1, regardless of whether there actually are any devices."]
-    #[doc = ""]
-    #[doc = " \\param touchId the touch device id, or -1 for all touch devices"]
-    #[doc = " \\returns 1 on success or 0 if the specified device could not be found."]
-    #[doc = ""]
-    #[doc = " \\since This function is available since SDL 2.0.0."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_GetTouchDevice"]
     pub fn SDL_RecordGesture(touchId: SDL_TouchID) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[doc = " Save all currently loaded Dollar Gesture templates."]
-    #[doc = ""]
-    #[doc = " \\param dst a SDL_RWops to save to"]
-    #[doc = " \\returns the number of saved templates on success or 0 on failure; call"]
-    #[doc = "          SDL_GetError() for more information."]
-    #[doc = ""]
-    #[doc = " \\since This function is available since SDL 2.0.0."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_LoadDollarTemplates"]
-    #[doc = " \\sa SDL_SaveDollarTemplate"]
     pub fn SDL_SaveAllDollarTemplates(dst: *mut SDL_RWops) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[doc = " Save a currently loaded Dollar Gesture template."]
-    #[doc = ""]
-    #[doc = " \\param gestureId a gesture id"]
-    #[doc = " \\param dst a SDL_RWops to save to"]
-    #[doc = " \\returns 1 on success or 0 on failure; call SDL_GetError() for more"]
-    #[doc = "          information."]
-    #[doc = ""]
-    #[doc = " \\since This function is available since SDL 2.0.0."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_LoadDollarTemplates"]
-    #[doc = " \\sa SDL_SaveAllDollarTemplates"]
     pub fn SDL_SaveDollarTemplate(
         gestureId: SDL_GestureID,
         dst: *mut SDL_RWops,
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[doc = " Load Dollar Gesture templates from a file."]
-    #[doc = ""]
-    #[doc = " \\param touchId a touch id"]
-    #[doc = " \\param src a SDL_RWops to load from"]
-    #[doc = " \\returns the number of loaded templates on success or a negative error code"]
-    #[doc = "          (or 0) on failure; call SDL_GetError() for more information."]
-    #[doc = ""]
-    #[doc = " \\since This function is available since SDL 2.0.0."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_SaveAllDollarTemplates"]
-    #[doc = " \\sa SDL_SaveDollarTemplate"]
     pub fn SDL_LoadDollarTemplates(
         touchId: SDL_TouchID,
         src: *mut SDL_RWops,
     ) -> ::std::os::raw::c_int;
 }
-#[doc = "< Unused (do not remove)"]
 pub const SDL_EventType_SDL_FIRSTEVENT: SDL_EventType = 0;
-#[doc = "< User-requested quit"]
 pub const SDL_EventType_SDL_QUIT: SDL_EventType = 256;
-#[doc = "< The application is being terminated by the OS"]
-#[doc = "Called on iOS in applicationWillTerminate()"]
-#[doc = "Called on Android in onDestroy()"]
 pub const SDL_EventType_SDL_APP_TERMINATING: SDL_EventType = 257;
-#[doc = "< The application is low on memory, free memory if possible."]
-#[doc = "Called on iOS in applicationDidReceiveMemoryWarning()"]
-#[doc = "Called on Android in onLowMemory()"]
 pub const SDL_EventType_SDL_APP_LOWMEMORY: SDL_EventType = 258;
-#[doc = "< The application is about to enter the background"]
-#[doc = "Called on iOS in applicationWillResignActive()"]
-#[doc = "Called on Android in onPause()"]
 pub const SDL_EventType_SDL_APP_WILLENTERBACKGROUND: SDL_EventType = 259;
-#[doc = "< The application did enter the background and may not get CPU for some time"]
-#[doc = "Called on iOS in applicationDidEnterBackground()"]
-#[doc = "Called on Android in onPause()"]
 pub const SDL_EventType_SDL_APP_DIDENTERBACKGROUND: SDL_EventType = 260;
-#[doc = "< The application is about to enter the foreground"]
-#[doc = "Called on iOS in applicationWillEnterForeground()"]
-#[doc = "Called on Android in onResume()"]
 pub const SDL_EventType_SDL_APP_WILLENTERFOREGROUND: SDL_EventType = 261;
-#[doc = "< The application is now interactive"]
-#[doc = "Called on iOS in applicationDidBecomeActive()"]
-#[doc = "Called on Android in onResume()"]
 pub const SDL_EventType_SDL_APP_DIDENTERFOREGROUND: SDL_EventType = 262;
-#[doc = "< The user's locale preferences have changed."]
 pub const SDL_EventType_SDL_LOCALECHANGED: SDL_EventType = 263;
-#[doc = "< Display state change"]
 pub const SDL_EventType_SDL_DISPLAYEVENT: SDL_EventType = 336;
-#[doc = "< Window state change"]
 pub const SDL_EventType_SDL_WINDOWEVENT: SDL_EventType = 512;
-#[doc = "< System specific event"]
 pub const SDL_EventType_SDL_SYSWMEVENT: SDL_EventType = 513;
-#[doc = "< Key pressed"]
 pub const SDL_EventType_SDL_KEYDOWN: SDL_EventType = 768;
-#[doc = "< Key released"]
 pub const SDL_EventType_SDL_KEYUP: SDL_EventType = 769;
-#[doc = "< Keyboard text editing (composition)"]
 pub const SDL_EventType_SDL_TEXTEDITING: SDL_EventType = 770;
-#[doc = "< Keyboard text input"]
 pub const SDL_EventType_SDL_TEXTINPUT: SDL_EventType = 771;
-#[doc = "< Keymap changed due to a system event such as an"]
-#[doc = "input language or keyboard layout change."]
 pub const SDL_EventType_SDL_KEYMAPCHANGED: SDL_EventType = 772;
-#[doc = "< Mouse moved"]
 pub const SDL_EventType_SDL_MOUSEMOTION: SDL_EventType = 1024;
-#[doc = "< Mouse button pressed"]
 pub const SDL_EventType_SDL_MOUSEBUTTONDOWN: SDL_EventType = 1025;
-#[doc = "< Mouse button released"]
 pub const SDL_EventType_SDL_MOUSEBUTTONUP: SDL_EventType = 1026;
-#[doc = "< Mouse wheel motion"]
 pub const SDL_EventType_SDL_MOUSEWHEEL: SDL_EventType = 1027;
-#[doc = "< Joystick axis motion"]
 pub const SDL_EventType_SDL_JOYAXISMOTION: SDL_EventType = 1536;
-#[doc = "< Joystick trackball motion"]
 pub const SDL_EventType_SDL_JOYBALLMOTION: SDL_EventType = 1537;
-#[doc = "< Joystick hat position change"]
 pub const SDL_EventType_SDL_JOYHATMOTION: SDL_EventType = 1538;
-#[doc = "< Joystick button pressed"]
 pub const SDL_EventType_SDL_JOYBUTTONDOWN: SDL_EventType = 1539;
-#[doc = "< Joystick button released"]
 pub const SDL_EventType_SDL_JOYBUTTONUP: SDL_EventType = 1540;
-#[doc = "< A new joystick has been inserted into the system"]
 pub const SDL_EventType_SDL_JOYDEVICEADDED: SDL_EventType = 1541;
-#[doc = "< An opened joystick has been removed"]
 pub const SDL_EventType_SDL_JOYDEVICEREMOVED: SDL_EventType = 1542;
-#[doc = "< Game controller axis motion"]
 pub const SDL_EventType_SDL_CONTROLLERAXISMOTION: SDL_EventType = 1616;
-#[doc = "< Game controller button pressed"]
 pub const SDL_EventType_SDL_CONTROLLERBUTTONDOWN: SDL_EventType = 1617;
-#[doc = "< Game controller button released"]
 pub const SDL_EventType_SDL_CONTROLLERBUTTONUP: SDL_EventType = 1618;
-#[doc = "< A new Game controller has been inserted into the system"]
 pub const SDL_EventType_SDL_CONTROLLERDEVICEADDED: SDL_EventType = 1619;
-#[doc = "< An opened Game controller has been removed"]
 pub const SDL_EventType_SDL_CONTROLLERDEVICEREMOVED: SDL_EventType = 1620;
-#[doc = "< The controller mapping was updated"]
 pub const SDL_EventType_SDL_CONTROLLERDEVICEREMAPPED: SDL_EventType = 1621;
-#[doc = "< Game controller touchpad was touched"]
 pub const SDL_EventType_SDL_CONTROLLERTOUCHPADDOWN: SDL_EventType = 1622;
-#[doc = "< Game controller touchpad finger was moved"]
 pub const SDL_EventType_SDL_CONTROLLERTOUCHPADMOTION: SDL_EventType = 1623;
-#[doc = "< Game controller touchpad finger was lifted"]
 pub const SDL_EventType_SDL_CONTROLLERTOUCHPADUP: SDL_EventType = 1624;
-#[doc = "< Game controller sensor was updated"]
 pub const SDL_EventType_SDL_CONTROLLERSENSORUPDATE: SDL_EventType = 1625;
 pub const SDL_EventType_SDL_FINGERDOWN: SDL_EventType = 1792;
 pub const SDL_EventType_SDL_FINGERUP: SDL_EventType = 1793;
@@ -11966,39 +6043,23 @@ pub const SDL_EventType_SDL_FINGERMOTION: SDL_EventType = 1794;
 pub const SDL_EventType_SDL_DOLLARGESTURE: SDL_EventType = 2048;
 pub const SDL_EventType_SDL_DOLLARRECORD: SDL_EventType = 2049;
 pub const SDL_EventType_SDL_MULTIGESTURE: SDL_EventType = 2050;
-#[doc = "< The clipboard changed"]
 pub const SDL_EventType_SDL_CLIPBOARDUPDATE: SDL_EventType = 2304;
-#[doc = "< The system requests a file open"]
 pub const SDL_EventType_SDL_DROPFILE: SDL_EventType = 4096;
-#[doc = "< text/plain drag-and-drop event"]
 pub const SDL_EventType_SDL_DROPTEXT: SDL_EventType = 4097;
-#[doc = "< A new set of drops is beginning (NULL filename)"]
 pub const SDL_EventType_SDL_DROPBEGIN: SDL_EventType = 4098;
-#[doc = "< Current set of drops is now complete (NULL filename)"]
 pub const SDL_EventType_SDL_DROPCOMPLETE: SDL_EventType = 4099;
-#[doc = "< A new audio device is available"]
 pub const SDL_EventType_SDL_AUDIODEVICEADDED: SDL_EventType = 4352;
-#[doc = "< An audio device has been removed."]
 pub const SDL_EventType_SDL_AUDIODEVICEREMOVED: SDL_EventType = 4353;
-#[doc = "< A sensor was updated"]
 pub const SDL_EventType_SDL_SENSORUPDATE: SDL_EventType = 4608;
-#[doc = "< The render targets have been reset and their contents need to be updated"]
 pub const SDL_EventType_SDL_RENDER_TARGETS_RESET: SDL_EventType = 8192;
-#[doc = "< The device has been reset and all textures need to be recreated"]
 pub const SDL_EventType_SDL_RENDER_DEVICE_RESET: SDL_EventType = 8193;
-#[doc = " Events ::SDL_USEREVENT through ::SDL_LASTEVENT are for your use,"]
-#[doc = "  and should be allocated with SDL_RegisterEvents()"]
 pub const SDL_EventType_SDL_USEREVENT: SDL_EventType = 32768;
-#[doc = "  This last event is only for bounding internal arrays"]
 pub const SDL_EventType_SDL_LASTEVENT: SDL_EventType = 65535;
-#[doc = " The types of events that can be delivered."]
 pub type SDL_EventType = ::std::os::raw::c_uint;
-#[doc = "  \\brief Fields shared by every event"]
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
 pub struct SDL_CommonEvent {
     pub type_: Uint32,
-    #[doc = "< In milliseconds, populated using SDL_GetTicks()"]
     pub timestamp: Uint32,
 }
 #[test]
@@ -12034,22 +6095,16 @@ fn bindgen_test_layout_SDL_CommonEvent() {
         )
     );
 }
-#[doc = "  \\brief Display state change event data (event.display.*)"]
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
 pub struct SDL_DisplayEvent {
-    #[doc = "< ::SDL_DISPLAYEVENT"]
     pub type_: Uint32,
-    #[doc = "< In milliseconds, populated using SDL_GetTicks()"]
     pub timestamp: Uint32,
-    #[doc = "< The associated display index"]
     pub display: Uint32,
-    #[doc = "< ::SDL_DisplayEventID"]
     pub event: Uint8,
     pub padding1: Uint8,
     pub padding2: Uint8,
     pub padding3: Uint8,
-    #[doc = "< event dependent data"]
     pub data1: Sint32,
 }
 #[test]
@@ -12145,24 +6200,17 @@ fn bindgen_test_layout_SDL_DisplayEvent() {
         )
     );
 }
-#[doc = "  \\brief Window state change event data (event.window.*)"]
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
 pub struct SDL_WindowEvent {
-    #[doc = "< ::SDL_WINDOWEVENT"]
     pub type_: Uint32,
-    #[doc = "< In milliseconds, populated using SDL_GetTicks()"]
     pub timestamp: Uint32,
-    #[doc = "< The associated window"]
     pub windowID: Uint32,
-    #[doc = "< ::SDL_WindowEventID"]
     pub event: Uint8,
     pub padding1: Uint8,
     pub padding2: Uint8,
     pub padding3: Uint8,
-    #[doc = "< event dependent data"]
     pub data1: Sint32,
-    #[doc = "< event dependent data"]
     pub data2: Sint32,
 }
 #[test]
@@ -12268,23 +6316,16 @@ fn bindgen_test_layout_SDL_WindowEvent() {
         )
     );
 }
-#[doc = "  \\brief Keyboard button event structure (event.key.*)"]
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
 pub struct SDL_KeyboardEvent {
-    #[doc = "< ::SDL_KEYDOWN or ::SDL_KEYUP"]
     pub type_: Uint32,
-    #[doc = "< In milliseconds, populated using SDL_GetTicks()"]
     pub timestamp: Uint32,
-    #[doc = "< The window with keyboard focus, if any"]
     pub windowID: Uint32,
-    #[doc = "< ::SDL_PRESSED or ::SDL_RELEASED"]
     pub state: Uint8,
-    #[doc = "< Non-zero if this is a key repeat"]
     pub repeat: Uint8,
     pub padding2: Uint8,
     pub padding3: Uint8,
-    #[doc = "< The key that was pressed or released"]
     pub keysym: SDL_Keysym,
 }
 #[test]
@@ -12380,21 +6421,14 @@ fn bindgen_test_layout_SDL_KeyboardEvent() {
         )
     );
 }
-#[doc = "  \\brief Keyboard text editing event structure (event.edit.*)"]
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
 pub struct SDL_TextEditingEvent {
-    #[doc = "< ::SDL_TEXTEDITING"]
     pub type_: Uint32,
-    #[doc = "< In milliseconds, populated using SDL_GetTicks()"]
     pub timestamp: Uint32,
-    #[doc = "< The window with keyboard focus, if any"]
     pub windowID: Uint32,
-    #[doc = "< The editing text"]
     pub text: [::std::os::raw::c_char; 32usize],
-    #[doc = "< The start cursor of selected editing text"]
     pub start: Sint32,
-    #[doc = "< The length of selected editing text"]
     pub length: Sint32,
 }
 #[test]
@@ -12470,17 +6504,12 @@ fn bindgen_test_layout_SDL_TextEditingEvent() {
         )
     );
 }
-#[doc = "  \\brief Keyboard text input event structure (event.text.*)"]
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
 pub struct SDL_TextInputEvent {
-    #[doc = "< ::SDL_TEXTINPUT"]
     pub type_: Uint32,
-    #[doc = "< In milliseconds, populated using SDL_GetTicks()"]
     pub timestamp: Uint32,
-    #[doc = "< The window with keyboard focus, if any"]
     pub windowID: Uint32,
-    #[doc = "< The input text"]
     pub text: [::std::os::raw::c_char; 32usize],
 }
 #[test]
@@ -12536,27 +6565,17 @@ fn bindgen_test_layout_SDL_TextInputEvent() {
         )
     );
 }
-#[doc = "  \\brief Mouse motion event structure (event.motion.*)"]
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
 pub struct SDL_MouseMotionEvent {
-    #[doc = "< ::SDL_MOUSEMOTION"]
     pub type_: Uint32,
-    #[doc = "< In milliseconds, populated using SDL_GetTicks()"]
     pub timestamp: Uint32,
-    #[doc = "< The window with mouse focus, if any"]
     pub windowID: Uint32,
-    #[doc = "< The mouse instance id, or SDL_TOUCH_MOUSEID"]
     pub which: Uint32,
-    #[doc = "< The current button state"]
     pub state: Uint32,
-    #[doc = "< X coordinate, relative to window"]
     pub x: Sint32,
-    #[doc = "< Y coordinate, relative to window"]
     pub y: Sint32,
-    #[doc = "< The relative motion in the X direction"]
     pub xrel: Sint32,
-    #[doc = "< The relative motion in the Y direction"]
     pub yrel: Sint32,
 }
 #[test]
@@ -12662,28 +6681,18 @@ fn bindgen_test_layout_SDL_MouseMotionEvent() {
         )
     );
 }
-#[doc = "  \\brief Mouse button event structure (event.button.*)"]
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
 pub struct SDL_MouseButtonEvent {
-    #[doc = "< ::SDL_MOUSEBUTTONDOWN or ::SDL_MOUSEBUTTONUP"]
     pub type_: Uint32,
-    #[doc = "< In milliseconds, populated using SDL_GetTicks()"]
     pub timestamp: Uint32,
-    #[doc = "< The window with mouse focus, if any"]
     pub windowID: Uint32,
-    #[doc = "< The mouse instance id, or SDL_TOUCH_MOUSEID"]
     pub which: Uint32,
-    #[doc = "< The mouse button index"]
     pub button: Uint8,
-    #[doc = "< ::SDL_PRESSED or ::SDL_RELEASED"]
     pub state: Uint8,
-    #[doc = "< 1 for single-click, 2 for double-click, etc."]
     pub clicks: Uint8,
     pub padding1: Uint8,
-    #[doc = "< X coordinate, relative to window"]
     pub x: Sint32,
-    #[doc = "< Y coordinate, relative to window"]
     pub y: Sint32,
 }
 #[test]
@@ -12799,23 +6808,15 @@ fn bindgen_test_layout_SDL_MouseButtonEvent() {
         )
     );
 }
-#[doc = "  \\brief Mouse wheel event structure (event.wheel.*)"]
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
 pub struct SDL_MouseWheelEvent {
-    #[doc = "< ::SDL_MOUSEWHEEL"]
     pub type_: Uint32,
-    #[doc = "< In milliseconds, populated using SDL_GetTicks()"]
     pub timestamp: Uint32,
-    #[doc = "< The window with mouse focus, if any"]
     pub windowID: Uint32,
-    #[doc = "< The mouse instance id, or SDL_TOUCH_MOUSEID"]
     pub which: Uint32,
-    #[doc = "< The amount scrolled horizontally, positive to the right and negative to the left"]
     pub x: Sint32,
-    #[doc = "< The amount scrolled vertically, positive away from the user and negative toward the user"]
     pub y: Sint32,
-    #[doc = "< Set to one of the SDL_MOUSEWHEEL_* defines. When FLIPPED the values in X and Y will be opposite. Multiply by -1 to change them back"]
     pub direction: Uint32,
 }
 #[test]
@@ -12901,22 +6902,16 @@ fn bindgen_test_layout_SDL_MouseWheelEvent() {
         )
     );
 }
-#[doc = "  \\brief Joystick axis motion event structure (event.jaxis.*)"]
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
 pub struct SDL_JoyAxisEvent {
-    #[doc = "< ::SDL_JOYAXISMOTION"]
     pub type_: Uint32,
-    #[doc = "< In milliseconds, populated using SDL_GetTicks()"]
     pub timestamp: Uint32,
-    #[doc = "< The joystick instance id"]
     pub which: SDL_JoystickID,
-    #[doc = "< The joystick axis index"]
     pub axis: Uint8,
     pub padding1: Uint8,
     pub padding2: Uint8,
     pub padding3: Uint8,
-    #[doc = "< The axis value (range: -32768 to 32767)"]
     pub value: Sint16,
     pub padding4: Uint16,
 }
@@ -13023,24 +7018,17 @@ fn bindgen_test_layout_SDL_JoyAxisEvent() {
         )
     );
 }
-#[doc = "  \\brief Joystick trackball motion event structure (event.jball.*)"]
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
 pub struct SDL_JoyBallEvent {
-    #[doc = "< ::SDL_JOYBALLMOTION"]
     pub type_: Uint32,
-    #[doc = "< In milliseconds, populated using SDL_GetTicks()"]
     pub timestamp: Uint32,
-    #[doc = "< The joystick instance id"]
     pub which: SDL_JoystickID,
-    #[doc = "< The joystick trackball index"]
     pub ball: Uint8,
     pub padding1: Uint8,
     pub padding2: Uint8,
     pub padding3: Uint8,
-    #[doc = "< The relative motion in the X direction"]
     pub xrel: Sint16,
-    #[doc = "< The relative motion in the Y direction"]
     pub yrel: Sint16,
 }
 #[test]
@@ -13146,24 +7134,13 @@ fn bindgen_test_layout_SDL_JoyBallEvent() {
         )
     );
 }
-#[doc = "  \\brief Joystick hat position change event structure (event.jhat.*)"]
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
 pub struct SDL_JoyHatEvent {
-    #[doc = "< ::SDL_JOYHATMOTION"]
     pub type_: Uint32,
-    #[doc = "< In milliseconds, populated using SDL_GetTicks()"]
     pub timestamp: Uint32,
-    #[doc = "< The joystick instance id"]
     pub which: SDL_JoystickID,
-    #[doc = "< The joystick hat index"]
     pub hat: Uint8,
-    #[doc = "< The hat position value."]
-    #[doc = "   \\sa ::SDL_HAT_LEFTUP ::SDL_HAT_UP ::SDL_HAT_RIGHTUP"]
-    #[doc = "   \\sa ::SDL_HAT_LEFT ::SDL_HAT_CENTERED ::SDL_HAT_RIGHT"]
-    #[doc = "   \\sa ::SDL_HAT_LEFTDOWN ::SDL_HAT_DOWN ::SDL_HAT_RIGHTDOWN"]
-    #[doc = ""]
-    #[doc = "   Note that zero means the POV is centered."]
     pub value: Uint8,
     pub padding1: Uint8,
     pub padding2: Uint8,
@@ -13251,19 +7228,13 @@ fn bindgen_test_layout_SDL_JoyHatEvent() {
         )
     );
 }
-#[doc = "  \\brief Joystick button event structure (event.jbutton.*)"]
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
 pub struct SDL_JoyButtonEvent {
-    #[doc = "< ::SDL_JOYBUTTONDOWN or ::SDL_JOYBUTTONUP"]
     pub type_: Uint32,
-    #[doc = "< In milliseconds, populated using SDL_GetTicks()"]
     pub timestamp: Uint32,
-    #[doc = "< The joystick instance id"]
     pub which: SDL_JoystickID,
-    #[doc = "< The joystick button index"]
     pub button: Uint8,
-    #[doc = "< ::SDL_PRESSED or ::SDL_RELEASED"]
     pub state: Uint8,
     pub padding1: Uint8,
     pub padding2: Uint8,
@@ -13351,15 +7322,11 @@ fn bindgen_test_layout_SDL_JoyButtonEvent() {
         )
     );
 }
-#[doc = "  \\brief Joystick device event structure (event.jdevice.*)"]
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
 pub struct SDL_JoyDeviceEvent {
-    #[doc = "< ::SDL_JOYDEVICEADDED or ::SDL_JOYDEVICEREMOVED"]
     pub type_: Uint32,
-    #[doc = "< In milliseconds, populated using SDL_GetTicks()"]
     pub timestamp: Uint32,
-    #[doc = "< The joystick device index for the ADDED event, instance id for the REMOVED event"]
     pub which: Sint32,
 }
 #[test]
@@ -13405,22 +7372,16 @@ fn bindgen_test_layout_SDL_JoyDeviceEvent() {
         )
     );
 }
-#[doc = "  \\brief Game controller axis motion event structure (event.caxis.*)"]
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
 pub struct SDL_ControllerAxisEvent {
-    #[doc = "< ::SDL_CONTROLLERAXISMOTION"]
     pub type_: Uint32,
-    #[doc = "< In milliseconds, populated using SDL_GetTicks()"]
     pub timestamp: Uint32,
-    #[doc = "< The joystick instance id"]
     pub which: SDL_JoystickID,
-    #[doc = "< The controller axis (SDL_GameControllerAxis)"]
     pub axis: Uint8,
     pub padding1: Uint8,
     pub padding2: Uint8,
     pub padding3: Uint8,
-    #[doc = "< The axis value (range: -32768 to 32767)"]
     pub value: Sint16,
     pub padding4: Uint16,
 }
@@ -13537,19 +7498,13 @@ fn bindgen_test_layout_SDL_ControllerAxisEvent() {
         )
     );
 }
-#[doc = "  \\brief Game controller button event structure (event.cbutton.*)"]
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
 pub struct SDL_ControllerButtonEvent {
-    #[doc = "< ::SDL_CONTROLLERBUTTONDOWN or ::SDL_CONTROLLERBUTTONUP"]
     pub type_: Uint32,
-    #[doc = "< In milliseconds, populated using SDL_GetTicks()"]
     pub timestamp: Uint32,
-    #[doc = "< The joystick instance id"]
     pub which: SDL_JoystickID,
-    #[doc = "< The controller button (SDL_GameControllerButton)"]
     pub button: Uint8,
-    #[doc = "< ::SDL_PRESSED or ::SDL_RELEASED"]
     pub state: Uint8,
     pub padding1: Uint8,
     pub padding2: Uint8,
@@ -13645,15 +7600,11 @@ fn bindgen_test_layout_SDL_ControllerButtonEvent() {
         )
     );
 }
-#[doc = "  \\brief Controller device event structure (event.cdevice.*)"]
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
 pub struct SDL_ControllerDeviceEvent {
-    #[doc = "< ::SDL_CONTROLLERDEVICEADDED, ::SDL_CONTROLLERDEVICEREMOVED, or ::SDL_CONTROLLERDEVICEREMAPPED"]
     pub type_: Uint32,
-    #[doc = "< In milliseconds, populated using SDL_GetTicks()"]
     pub timestamp: Uint32,
-    #[doc = "< The joystick device index for the ADDED event, instance id for the REMOVED or REMAPPED event"]
     pub which: Sint32,
 }
 #[test]
@@ -13701,25 +7652,16 @@ fn bindgen_test_layout_SDL_ControllerDeviceEvent() {
         )
     );
 }
-#[doc = "  \\brief Game controller touchpad event structure (event.ctouchpad.*)"]
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
 pub struct SDL_ControllerTouchpadEvent {
-    #[doc = "< ::SDL_CONTROLLERTOUCHPADDOWN or ::SDL_CONTROLLERTOUCHPADMOTION or ::SDL_CONTROLLERTOUCHPADUP"]
     pub type_: Uint32,
-    #[doc = "< In milliseconds, populated using SDL_GetTicks()"]
     pub timestamp: Uint32,
-    #[doc = "< The joystick instance id"]
     pub which: SDL_JoystickID,
-    #[doc = "< The index of the touchpad"]
     pub touchpad: Sint32,
-    #[doc = "< The index of the finger on the touchpad"]
     pub finger: Sint32,
-    #[doc = "< Normalized in the range 0...1 with 0 being on the left"]
     pub x: f32,
-    #[doc = "< Normalized in the range 0...1 with 0 being at the top"]
     pub y: f32,
-    #[doc = "< Normalized in the range 0...1"]
     pub pressure: f32,
 }
 #[test]
@@ -13827,19 +7769,13 @@ fn bindgen_test_layout_SDL_ControllerTouchpadEvent() {
         )
     );
 }
-#[doc = "  \\brief Game controller sensor event structure (event.csensor.*)"]
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
 pub struct SDL_ControllerSensorEvent {
-    #[doc = "< ::SDL_CONTROLLERSENSORUPDATE"]
     pub type_: Uint32,
-    #[doc = "< In milliseconds, populated using SDL_GetTicks()"]
     pub timestamp: Uint32,
-    #[doc = "< The joystick instance id"]
     pub which: SDL_JoystickID,
-    #[doc = "< The type of the sensor, one of the values of ::SDL_SensorType"]
     pub sensor: Sint32,
-    #[doc = "< Up to 3 values from the sensor, as defined in SDL_sensor.h"]
     pub data: [f32; 3usize],
 }
 #[test]
@@ -13909,17 +7845,12 @@ fn bindgen_test_layout_SDL_ControllerSensorEvent() {
         )
     );
 }
-#[doc = "  \\brief Audio device event structure (event.adevice.*)"]
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
 pub struct SDL_AudioDeviceEvent {
-    #[doc = "< ::SDL_AUDIODEVICEADDED, or ::SDL_AUDIODEVICEREMOVED"]
     pub type_: Uint32,
-    #[doc = "< In milliseconds, populated using SDL_GetTicks()"]
     pub timestamp: Uint32,
-    #[doc = "< The audio device index for the ADDED event (valid until next SDL_GetNumAudioDevices() call), SDL_AudioDeviceID for the REMOVED event"]
     pub which: Uint32,
-    #[doc = "< zero if an output device, non-zero if a capture device."]
     pub iscapture: Uint8,
     pub padding1: Uint8,
     pub padding2: Uint8,
@@ -14008,28 +7939,18 @@ fn bindgen_test_layout_SDL_AudioDeviceEvent() {
         )
     );
 }
-#[doc = "  \\brief Touch finger event structure (event.tfinger.*)"]
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
 pub struct SDL_TouchFingerEvent {
-    #[doc = "< ::SDL_FINGERMOTION or ::SDL_FINGERDOWN or ::SDL_FINGERUP"]
     pub type_: Uint32,
-    #[doc = "< In milliseconds, populated using SDL_GetTicks()"]
     pub timestamp: Uint32,
-    #[doc = "< The touch device id"]
     pub touchId: SDL_TouchID,
     pub fingerId: SDL_FingerID,
-    #[doc = "< Normalized in the range 0...1"]
     pub x: f32,
-    #[doc = "< Normalized in the range 0...1"]
     pub y: f32,
-    #[doc = "< Normalized in the range -1...1"]
     pub dx: f32,
-    #[doc = "< Normalized in the range -1...1"]
     pub dy: f32,
-    #[doc = "< Normalized in the range 0...1"]
     pub pressure: f32,
-    #[doc = "< The window underneath the finger, if any"]
     pub windowID: Uint32,
 }
 #[test]
@@ -14145,15 +8066,11 @@ fn bindgen_test_layout_SDL_TouchFingerEvent() {
         )
     );
 }
-#[doc = "  \\brief Multiple Finger Gesture Event (event.mgesture.*)"]
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
 pub struct SDL_MultiGestureEvent {
-    #[doc = "< ::SDL_MULTIGESTURE"]
     pub type_: Uint32,
-    #[doc = "< In milliseconds, populated using SDL_GetTicks()"]
     pub timestamp: Uint32,
-    #[doc = "< The touch device id"]
     pub touchId: SDL_TouchID,
     pub dTheta: f32,
     pub dDist: f32,
@@ -14267,22 +8184,16 @@ fn bindgen_test_layout_SDL_MultiGestureEvent() {
         )
     );
 }
-#[doc = " \\brief Dollar Gesture Event (event.dgesture.*)"]
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
 pub struct SDL_DollarGestureEvent {
-    #[doc = "< ::SDL_DOLLARGESTURE or ::SDL_DOLLARRECORD"]
     pub type_: Uint32,
-    #[doc = "< In milliseconds, populated using SDL_GetTicks()"]
     pub timestamp: Uint32,
-    #[doc = "< The touch device id"]
     pub touchId: SDL_TouchID,
     pub gestureId: SDL_GestureID,
     pub numFingers: Uint32,
     pub error: f32,
-    #[doc = "< Normalized center of gesture"]
     pub x: f32,
-    #[doc = "< Normalized center of gesture"]
     pub y: f32,
 }
 #[test]
@@ -14384,19 +8295,12 @@ fn bindgen_test_layout_SDL_DollarGestureEvent() {
         )
     );
 }
-#[doc = "  \\brief An event used to request a file open by the system (event.drop.*)"]
-#[doc = "         This event is enabled by default, you can disable it with SDL_EventState()."]
-#[doc = "  \\note If this event is enabled, you must free the filename in the event."]
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
 pub struct SDL_DropEvent {
-    #[doc = "< ::SDL_DROPBEGIN or ::SDL_DROPFILE or ::SDL_DROPTEXT or ::SDL_DROPCOMPLETE"]
     pub type_: Uint32,
-    #[doc = "< In milliseconds, populated using SDL_GetTicks()"]
     pub timestamp: Uint32,
-    #[doc = "< The file name, which should be freed with SDL_free(), is NULL on begin/complete"]
     pub file: *mut ::std::os::raw::c_char,
-    #[doc = "< The window that was dropped on, if any"]
     pub windowID: Uint32,
 }
 #[test]
@@ -14452,17 +8356,12 @@ fn bindgen_test_layout_SDL_DropEvent() {
         )
     );
 }
-#[doc = "  \\brief Sensor event structure (event.sensor.*)"]
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
 pub struct SDL_SensorEvent {
-    #[doc = "< ::SDL_SENSORUPDATE"]
     pub type_: Uint32,
-    #[doc = "< In milliseconds, populated using SDL_GetTicks()"]
     pub timestamp: Uint32,
-    #[doc = "< The instance ID of the sensor"]
     pub which: Sint32,
-    #[doc = "< Up to 6 values from the sensor - additional values can be queried using SDL_SensorGetData()"]
     pub data: [f32; 6usize],
 }
 #[test]
@@ -14518,13 +8417,10 @@ fn bindgen_test_layout_SDL_SensorEvent() {
         )
     );
 }
-#[doc = "  \\brief The \"quit requested\" event"]
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
 pub struct SDL_QuitEvent {
-    #[doc = "< ::SDL_QUIT"]
     pub type_: Uint32,
-    #[doc = "< In milliseconds, populated using SDL_GetTicks()"]
     pub timestamp: Uint32,
 }
 #[test]
@@ -14560,13 +8456,10 @@ fn bindgen_test_layout_SDL_QuitEvent() {
         )
     );
 }
-#[doc = "  \\brief OS Specific event"]
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
 pub struct SDL_OSEvent {
-    #[doc = "< ::SDL_QUIT"]
     pub type_: Uint32,
-    #[doc = "< In milliseconds, populated using SDL_GetTicks()"]
     pub timestamp: Uint32,
 }
 #[test]
@@ -14602,21 +8495,14 @@ fn bindgen_test_layout_SDL_OSEvent() {
         )
     );
 }
-#[doc = "  \\brief A user-defined event type (event.user.*)"]
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
 pub struct SDL_UserEvent {
-    #[doc = "< ::SDL_USEREVENT through ::SDL_LASTEVENT-1"]
     pub type_: Uint32,
-    #[doc = "< In milliseconds, populated using SDL_GetTicks()"]
     pub timestamp: Uint32,
-    #[doc = "< The associated window if any"]
     pub windowID: Uint32,
-    #[doc = "< User defined event code"]
     pub code: Sint32,
-    #[doc = "< User defined data pointer"]
     pub data1: *mut ::std::os::raw::c_void,
-    #[doc = "< User defined data pointer"]
     pub data2: *mut ::std::os::raw::c_void,
 }
 #[test]
@@ -14697,18 +8583,11 @@ fn bindgen_test_layout_SDL_UserEvent() {
 pub struct SDL_SysWMmsg {
     _unused: [u8; 0],
 }
-#[doc = "  \\brief A video driver dependent system event (event.syswm.*)"]
-#[doc = "         This event is disabled by default, you can enable it with SDL_EventState()"]
-#[doc = ""]
-#[doc = "  \\note If you want to use this event, you should include SDL_syswm.h."]
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
 pub struct SDL_SysWMEvent {
-    #[doc = "< ::SDL_SYSWMEVENT"]
     pub type_: Uint32,
-    #[doc = "< In milliseconds, populated using SDL_GetTicks()"]
     pub timestamp: Uint32,
-    #[doc = "< driver dependent data, defined in SDL_syswm.h"]
     pub msg: *mut SDL_SysWMmsg,
 }
 #[test]
@@ -14754,67 +8633,37 @@ fn bindgen_test_layout_SDL_SysWMEvent() {
         )
     );
 }
-#[doc = "  \\brief General event structure"]
 #[repr(C)]
 #[derive(Copy, Clone)]
 pub union SDL_Event {
-    #[doc = "< Event type, shared with all events"]
     pub type_: Uint32,
-    #[doc = "< Common event data"]
     pub common: SDL_CommonEvent,
-    #[doc = "< Display event data"]
     pub display: SDL_DisplayEvent,
-    #[doc = "< Window event data"]
     pub window: SDL_WindowEvent,
-    #[doc = "< Keyboard event data"]
     pub key: SDL_KeyboardEvent,
-    #[doc = "< Text editing event data"]
     pub edit: SDL_TextEditingEvent,
-    #[doc = "< Text input event data"]
     pub text: SDL_TextInputEvent,
-    #[doc = "< Mouse motion event data"]
     pub motion: SDL_MouseMotionEvent,
-    #[doc = "< Mouse button event data"]
     pub button: SDL_MouseButtonEvent,
-    #[doc = "< Mouse wheel event data"]
     pub wheel: SDL_MouseWheelEvent,
-    #[doc = "< Joystick axis event data"]
     pub jaxis: SDL_JoyAxisEvent,
-    #[doc = "< Joystick ball event data"]
     pub jball: SDL_JoyBallEvent,
-    #[doc = "< Joystick hat event data"]
     pub jhat: SDL_JoyHatEvent,
-    #[doc = "< Joystick button event data"]
     pub jbutton: SDL_JoyButtonEvent,
-    #[doc = "< Joystick device change event data"]
     pub jdevice: SDL_JoyDeviceEvent,
-    #[doc = "< Game Controller axis event data"]
     pub caxis: SDL_ControllerAxisEvent,
-    #[doc = "< Game Controller button event data"]
     pub cbutton: SDL_ControllerButtonEvent,
-    #[doc = "< Game Controller device event data"]
     pub cdevice: SDL_ControllerDeviceEvent,
-    #[doc = "< Game Controller touchpad event data"]
     pub ctouchpad: SDL_ControllerTouchpadEvent,
-    #[doc = "< Game Controller sensor event data"]
     pub csensor: SDL_ControllerSensorEvent,
-    #[doc = "< Audio device event data"]
     pub adevice: SDL_AudioDeviceEvent,
-    #[doc = "< Sensor event data"]
     pub sensor: SDL_SensorEvent,
-    #[doc = "< Quit request event data"]
     pub quit: SDL_QuitEvent,
-    #[doc = "< Custom event data"]
     pub user: SDL_UserEvent,
-    #[doc = "< System dependent window event data"]
     pub syswm: SDL_SysWMEvent,
-    #[doc = "< Touch finger event data"]
     pub tfinger: SDL_TouchFingerEvent,
-    #[doc = "< Gesture event data"]
     pub mgesture: SDL_MultiGestureEvent,
-    #[doc = "< Gesture event data"]
     pub dgesture: SDL_DollarGestureEvent,
-    #[doc = "< Drag and drop event data"]
     pub drop: SDL_DropEvent,
     pub padding: [Uint8; 56usize],
     _bindgen_union_align: [u64; 7usize],
@@ -15134,24 +8983,6 @@ fn bindgen_test_layout_SDL_Event() {
 }
 pub type SDL_compile_time_assert_SDL_Event = [::std::os::raw::c_int; 1usize];
 extern "C" {
-    #[doc = " Pump the event loop, gathering events from the input devices."]
-    #[doc = ""]
-    #[doc = " This function updates the event queue and internal input device state."]
-    #[doc = ""]
-    #[doc = " **WARNING**: This should only be run in the thread that initialized the"]
-    #[doc = " video subsystem, and for extra safety, you should consider only doing those"]
-    #[doc = " things on the main thread in any case."]
-    #[doc = ""]
-    #[doc = " SDL_PumpEvents() gathers all the pending input information from devices and"]
-    #[doc = " places it in the event queue. Without calls to SDL_PumpEvents() no events"]
-    #[doc = " would ever be placed on the queue. Often the need for calls to"]
-    #[doc = " SDL_PumpEvents() is hidden from the user since SDL_PollEvent() and"]
-    #[doc = " SDL_WaitEvent() implicitly call SDL_PumpEvents(). However, if you are not"]
-    #[doc = " polling or waiting for events (e.g. you are filtering them), then you must"]
-    #[doc = " call SDL_PumpEvents() to force an event queue update."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_PollEvent"]
-    #[doc = " \\sa SDL_WaitEvent"]
     pub fn SDL_PumpEvents();
 }
 pub const SDL_eventaction_SDL_ADDEVENT: SDL_eventaction = 0;
@@ -15159,40 +8990,6 @@ pub const SDL_eventaction_SDL_PEEKEVENT: SDL_eventaction = 1;
 pub const SDL_eventaction_SDL_GETEVENT: SDL_eventaction = 2;
 pub type SDL_eventaction = ::std::os::raw::c_uint;
 extern "C" {
-    #[doc = " Check the event queue for messages and optionally return them."]
-    #[doc = ""]
-    #[doc = " `action` may be any of the following:"]
-    #[doc = ""]
-    #[doc = " - `SDL_ADDEVENT`: up to `numevents` events will be added to the back of the"]
-    #[doc = "   event queue."]
-    #[doc = " - `SDL_PEEKEVENT`: `numevents` events at the front of the event queue,"]
-    #[doc = "   within the specified minimum and maximum type, will be returned to the"]
-    #[doc = "   caller and will _not_ be removed from the queue."]
-    #[doc = " - `SDL_GETEVENT`: up to `numevents` events at the front of the event queue,"]
-    #[doc = "   within the specified minimum and maximum type, will be returned to the"]
-    #[doc = "   caller and will be removed from the queue."]
-    #[doc = ""]
-    #[doc = " You may have to call SDL_PumpEvents() before calling this function."]
-    #[doc = " Otherwise, the events may not be ready to be filtered when you call"]
-    #[doc = " SDL_PeepEvents()."]
-    #[doc = ""]
-    #[doc = " This function is thread-safe."]
-    #[doc = ""]
-    #[doc = " \\param events destination buffer for the retrieved events"]
-    #[doc = " \\param numevents if action is SDL_ADDEVENT, the number of events to add"]
-    #[doc = "                  back to the event queue; if action is SDL_PEEKEVENT or"]
-    #[doc = "                  SDL_GETEVENT, the maximum number of events to retrieve"]
-    #[doc = " \\param action action to take; see [[#action|Remarks]] for details"]
-    #[doc = " \\param minType minimum value of the event type to be considered;"]
-    #[doc = "                SDL_FIRSTEVENT is a safe choice"]
-    #[doc = " \\param maxType maximum value of the event type to be considered;"]
-    #[doc = "                SDL_LASTEVENT is a safe choice"]
-    #[doc = " \\returns the number of events actually stored or a negative error code on"]
-    #[doc = "          failure; call SDL_GetError() for more information."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_PollEvent"]
-    #[doc = " \\sa SDL_PumpEvents"]
-    #[doc = " \\sa SDL_PushEvent"]
     pub fn SDL_PeepEvents(
         events: *mut SDL_Event,
         numevents: ::std::os::raw::c_int,
@@ -15202,204 +8999,32 @@ extern "C" {
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[doc = " Check for the existence of a certain event type in the event queue."]
-    #[doc = ""]
-    #[doc = " If you need to check for a range of event types, use SDL_HasEvents()"]
-    #[doc = " instead."]
-    #[doc = ""]
-    #[doc = " \\param type the type of event to be queried; see SDL_EventType for details"]
-    #[doc = " \\returns SDL_TRUE if events matching `type` are present, or SDL_FALSE if"]
-    #[doc = "          events matching `type` are not present."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_HasEvents"]
     pub fn SDL_HasEvent(type_: Uint32) -> SDL_bool;
 }
 extern "C" {
-    #[doc = " Check for the existence of certain event types in the event queue."]
-    #[doc = ""]
-    #[doc = " If you need to check for a single event type, use SDL_HasEvent() instead."]
-    #[doc = ""]
-    #[doc = " \\param minType the low end of event type to be queried, inclusive; see"]
-    #[doc = "                SDL_EventType for details"]
-    #[doc = " \\param maxType the high end of event type to be queried, inclusive; see"]
-    #[doc = "                SDL_EventType for details"]
-    #[doc = " \\returns SDL_TRUE if events with type >= `minType` and <= `maxType` are"]
-    #[doc = "          present, or SDL_FALSE if not."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_HasEvents"]
     pub fn SDL_HasEvents(minType: Uint32, maxType: Uint32) -> SDL_bool;
 }
 extern "C" {
-    #[doc = " Clear events of a specific type from the event queue."]
-    #[doc = ""]
-    #[doc = " This will unconditionally remove any events from the queue that match"]
-    #[doc = " `type`. If you need to remove a range of event types, use SDL_FlushEvents()"]
-    #[doc = " instead."]
-    #[doc = ""]
-    #[doc = " It's also normal to just ignore events you don't care about in your event"]
-    #[doc = " loop without calling this function."]
-    #[doc = ""]
-    #[doc = " This function only affects currently queued events. If you want to make"]
-    #[doc = " sure that all pending OS events are flushed, you can call SDL_PumpEvents()"]
-    #[doc = " on the main thread immediately before the flush call."]
-    #[doc = ""]
-    #[doc = " \\param type the type of event to be cleared; see SDL_EventType for details"]
-    #[doc = ""]
-    #[doc = " \\sa SDL_FlushEvents"]
     pub fn SDL_FlushEvent(type_: Uint32);
 }
 extern "C" {
-    #[doc = " Clear events of a range of types from the event queue."]
-    #[doc = ""]
-    #[doc = " This will unconditionally remove any events from the queue that are in the"]
-    #[doc = " range of `minType` to `maxType`, inclusive. If you need to remove a single"]
-    #[doc = " event type, use SDL_FlushEvent() instead."]
-    #[doc = ""]
-    #[doc = " It's also normal to just ignore events you don't care about in your event"]
-    #[doc = " loop without calling this function."]
-    #[doc = ""]
-    #[doc = " This function only affects currently queued events. If you want to make"]
-    #[doc = " sure that all pending OS events are flushed, you can call SDL_PumpEvents()"]
-    #[doc = " on the main thread immediately before the flush call."]
-    #[doc = ""]
-    #[doc = " \\param minType the low end of event type to be cleared, inclusive; see"]
-    #[doc = "                SDL_EventType for details"]
-    #[doc = " \\param maxType the high end of event type to be cleared, inclusive; see"]
-    #[doc = "                SDL_EventType for details"]
-    #[doc = ""]
-    #[doc = " \\sa SDL_FlushEvent"]
     pub fn SDL_FlushEvents(minType: Uint32, maxType: Uint32);
 }
 extern "C" {
-    #[doc = " Poll for currently pending events."]
-    #[doc = ""]
-    #[doc = " If `event` is not NULL, the next event is removed from the queue and stored"]
-    #[doc = " in the SDL_Event structure pointed to by `event`. The 1 returned refers to"]
-    #[doc = " this event, immediately stored in the SDL Event structure -- not an event"]
-    #[doc = " to follow."]
-    #[doc = ""]
-    #[doc = " If `event` is NULL, it simply returns 1 if there is an event in the queue,"]
-    #[doc = " but will not remove it from the queue."]
-    #[doc = ""]
-    #[doc = " As this function implicitly calls SDL_PumpEvents(), you can only call this"]
-    #[doc = " function in the thread that set the video mode."]
-    #[doc = ""]
-    #[doc = " SDL_PollEvent() is the favored way of receiving system events since it can"]
-    #[doc = " be done from the main loop and does not suspend the main loop while waiting"]
-    #[doc = " on an event to be posted."]
-    #[doc = ""]
-    #[doc = " The common practice is to fully process the event queue once every frame,"]
-    #[doc = " usually as a first step before updating the game's state:"]
-    #[doc = ""]
-    #[doc = " ```c"]
-    #[doc = " while (game_is_still_running) {"]
-    #[doc = "     SDL_Event event;"]
-    #[doc = "     while (SDL_PollEvent(&event)) {  // poll until all events are handled!"]
-    #[doc = "         // decide what to do with this event."]
-    #[doc = "     }"]
-    #[doc = ""]
-    #[doc = "     // update game state, draw the current frame"]
-    #[doc = " }"]
-    #[doc = " ```"]
-    #[doc = ""]
-    #[doc = " \\param event the SDL_Event structure to be filled with the next event from"]
-    #[doc = "              the queue, or NULL"]
-    #[doc = " \\returns 1 if there is a pending event or 0 if there are none available."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_GetEventFilter"]
-    #[doc = " \\sa SDL_PeepEvents"]
-    #[doc = " \\sa SDL_PushEvent"]
-    #[doc = " \\sa SDL_SetEventFilter"]
-    #[doc = " \\sa SDL_WaitEvent"]
-    #[doc = " \\sa SDL_WaitEventTimeout"]
     pub fn SDL_PollEvent(event: *mut SDL_Event) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[doc = " Wait indefinitely for the next available event."]
-    #[doc = ""]
-    #[doc = " If `event` is not NULL, the next event is removed from the queue and stored"]
-    #[doc = " in the SDL_Event structure pointed to by `event`."]
-    #[doc = ""]
-    #[doc = " As this function implicitly calls SDL_PumpEvents(), you can only call this"]
-    #[doc = " function in the thread that initialized the video subsystem."]
-    #[doc = ""]
-    #[doc = " \\param event the SDL_Event structure to be filled in with the next event"]
-    #[doc = "              from the queue, or NULL"]
-    #[doc = " \\returns 1 on success or 0 if there was an error while waiting for events;"]
-    #[doc = "          call SDL_GetError() for more information."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_PollEvent"]
-    #[doc = " \\sa SDL_PumpEvents"]
-    #[doc = " \\sa SDL_WaitEventTimeout"]
     pub fn SDL_WaitEvent(event: *mut SDL_Event) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[doc = " Wait until the specified timeout (in milliseconds) for the next available"]
-    #[doc = " event."]
-    #[doc = ""]
-    #[doc = " If `event` is not NULL, the next event is removed from the queue and stored"]
-    #[doc = " in the SDL_Event structure pointed to by `event`."]
-    #[doc = ""]
-    #[doc = " As this function implicitly calls SDL_PumpEvents(), you can only call this"]
-    #[doc = " function in the thread that initialized the video subsystem."]
-    #[doc = ""]
-    #[doc = " \\param event the SDL_Event structure to be filled in with the next event"]
-    #[doc = "              from the queue, or NULL"]
-    #[doc = " \\param timeout the maximum number of milliseconds to wait for the next"]
-    #[doc = "                available event"]
-    #[doc = " \\returns 1 on success or 0 if there was an error while waiting for events;"]
-    #[doc = "          call SDL_GetError() for more information. This also returns 0 if"]
-    #[doc = "          the timeout elapsed without an event arriving."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_PollEvent"]
-    #[doc = " \\sa SDL_PumpEvents"]
-    #[doc = " \\sa SDL_WaitEvent"]
     pub fn SDL_WaitEventTimeout(
         event: *mut SDL_Event,
         timeout: ::std::os::raw::c_int,
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[doc = " Add an event to the event queue."]
-    #[doc = ""]
-    #[doc = " The event queue can actually be used as a two way communication channel."]
-    #[doc = " Not only can events be read from the queue, but the user can also push"]
-    #[doc = " their own events onto it. `event` is a pointer to the event structure you"]
-    #[doc = " wish to push onto the queue. The event is copied into the queue, and the"]
-    #[doc = " caller may dispose of the memory pointed to after SDL_PushEvent() returns."]
-    #[doc = ""]
-    #[doc = " Note: Pushing device input events onto the queue doesn't modify the state"]
-    #[doc = " of the device within SDL."]
-    #[doc = ""]
-    #[doc = " This function is thread-safe, and can be called from other threads safely."]
-    #[doc = ""]
-    #[doc = " Note: Events pushed onto the queue with SDL_PushEvent() get passed through"]
-    #[doc = " the event filter but events added with SDL_PeepEvents() do not."]
-    #[doc = ""]
-    #[doc = " For pushing application-specific events, please use SDL_RegisterEvents() to"]
-    #[doc = " get an event type that does not conflict with other code that also wants"]
-    #[doc = " its own custom event types."]
-    #[doc = ""]
-    #[doc = " \\param event the SDL_Event to be added to the queue"]
-    #[doc = " \\returns 1 on success, 0 if the event was filtered, or a negative error"]
-    #[doc = "          code on failure; call SDL_GetError() for more information. A"]
-    #[doc = "          common reason for error is the event queue being full."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_PeepEvents"]
-    #[doc = " \\sa SDL_PollEvent"]
-    #[doc = " \\sa SDL_RegisterEvents"]
     pub fn SDL_PushEvent(event: *mut SDL_Event) -> ::std::os::raw::c_int;
 }
-#[doc = " A function pointer used for callbacks that watch the event queue."]
-#[doc = ""]
-#[doc = " \\param userdata what was passed as `userdata` to SDL_SetEventFilter()"]
-#[doc = "        or SDL_AddEventWatch, etc"]
-#[doc = " \\param event the event that triggered the callback"]
-#[doc = " \\returns 1 to permit event to be added to the queue, and 0 to disallow"]
-#[doc = "          it. When used with SDL_AddEventWatch, the return value is ignored."]
-#[doc = ""]
-#[doc = " \\sa SDL_SetEventFilter"]
-#[doc = " \\sa SDL_AddEventWatch"]
 pub type SDL_EventFilter = ::std::option::Option<
     unsafe extern "C" fn(
         userdata: *mut ::std::os::raw::c_void,
@@ -15407,363 +9032,48 @@ pub type SDL_EventFilter = ::std::option::Option<
     ) -> ::std::os::raw::c_int,
 >;
 extern "C" {
-    #[doc = " Set up a filter to process all events before they change internal state and"]
-    #[doc = " are posted to the internal event queue."]
-    #[doc = ""]
-    #[doc = " If the filter function returns 1 when called, then the event will be added"]
-    #[doc = " to the internal queue. If it returns 0, then the event will be dropped from"]
-    #[doc = " the queue, but the internal state will still be updated. This allows"]
-    #[doc = " selective filtering of dynamically arriving events."]
-    #[doc = ""]
-    #[doc = " **WARNING**: Be very careful of what you do in the event filter function,"]
-    #[doc = " as it may run in a different thread!"]
-    #[doc = ""]
-    #[doc = " On platforms that support it, if the quit event is generated by an"]
-    #[doc = " interrupt signal (e.g. pressing Ctrl-C), it will be delivered to the"]
-    #[doc = " application at the next event poll."]
-    #[doc = ""]
-    #[doc = " There is one caveat when dealing with the ::SDL_QuitEvent event type. The"]
-    #[doc = " event filter is only called when the window manager desires to close the"]
-    #[doc = " application window. If the event filter returns 1, then the window will be"]
-    #[doc = " closed, otherwise the window will remain open if possible."]
-    #[doc = ""]
-    #[doc = " Note: Disabled events never make it to the event filter function; see"]
-    #[doc = " SDL_EventState()."]
-    #[doc = ""]
-    #[doc = " Note: If you just want to inspect events without filtering, you should use"]
-    #[doc = " SDL_AddEventWatch() instead."]
-    #[doc = ""]
-    #[doc = " Note: Events pushed onto the queue with SDL_PushEvent() get passed through"]
-    #[doc = " the event filter, but events pushed onto the queue with SDL_PeepEvents() do"]
-    #[doc = " not."]
-    #[doc = ""]
-    #[doc = " \\param filter An SDL_EventFilter function to call when an event happens"]
-    #[doc = " \\param userdata a pointer that is passed to `filter`"]
-    #[doc = ""]
-    #[doc = " \\sa SDL_AddEventWatch"]
-    #[doc = " \\sa SDL_EventState"]
-    #[doc = " \\sa SDL_GetEventFilter"]
-    #[doc = " \\sa SDL_PeepEvents"]
-    #[doc = " \\sa SDL_PushEvent"]
     pub fn SDL_SetEventFilter(filter: SDL_EventFilter, userdata: *mut ::std::os::raw::c_void);
 }
 extern "C" {
-    #[doc = " Query the current event filter."]
-    #[doc = ""]
-    #[doc = " This function can be used to \"chain\" filters, by saving the existing filter"]
-    #[doc = " before replacing it with a function that will call that saved filter."]
-    #[doc = ""]
-    #[doc = " \\param filter the current callback function will be stored here"]
-    #[doc = " \\param userdata the pointer that is passed to the current event filter will"]
-    #[doc = "                 be stored here"]
-    #[doc = " \\returns SDL_TRUE on success or SDL_FALSE if there is no event filter set."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_SetEventFilter"]
     pub fn SDL_GetEventFilter(
         filter: *mut SDL_EventFilter,
         userdata: *mut *mut ::std::os::raw::c_void,
     ) -> SDL_bool;
 }
 extern "C" {
-    #[doc = " Add a callback to be triggered when an event is added to the event queue."]
-    #[doc = ""]
-    #[doc = " `filter` will be called when an event happens, and its return value is"]
-    #[doc = " ignored."]
-    #[doc = ""]
-    #[doc = " **WARNING**: Be very careful of what you do in the event filter function,"]
-    #[doc = " as it may run in a different thread!"]
-    #[doc = ""]
-    #[doc = " If the quit event is generated by a signal (e.g. SIGINT), it will bypass"]
-    #[doc = " the internal queue and be delivered to the watch callback immediately, and"]
-    #[doc = " arrive at the next event poll."]
-    #[doc = ""]
-    #[doc = " Note: the callback is called for events posted by the user through"]
-    #[doc = " SDL_PushEvent(), but not for disabled events, nor for events by a filter"]
-    #[doc = " callback set with SDL_SetEventFilter(), nor for events posted by the user"]
-    #[doc = " through SDL_PeepEvents()."]
-    #[doc = ""]
-    #[doc = " \\param filter an SDL_EventFilter function to call when an event happens."]
-    #[doc = " \\param userdata a pointer that is passed to `filter`"]
-    #[doc = ""]
-    #[doc = " \\sa SDL_DelEventWatch"]
-    #[doc = " \\sa SDL_SetEventFilter"]
     pub fn SDL_AddEventWatch(filter: SDL_EventFilter, userdata: *mut ::std::os::raw::c_void);
 }
 extern "C" {
-    #[doc = " Remove an event watch callback added with SDL_AddEventWatch()."]
-    #[doc = ""]
-    #[doc = " This function takes the same input as SDL_AddEventWatch() to identify and"]
-    #[doc = " delete the corresponding callback."]
-    #[doc = ""]
-    #[doc = " \\param filter the function originally passed to SDL_AddEventWatch()"]
-    #[doc = " \\param userdata the pointer originally passed to SDL_AddEventWatch()"]
-    #[doc = ""]
-    #[doc = " \\sa SDL_AddEventWatch"]
     pub fn SDL_DelEventWatch(filter: SDL_EventFilter, userdata: *mut ::std::os::raw::c_void);
 }
 extern "C" {
-    #[doc = " Run a specific filter function on the current event queue, removing any"]
-    #[doc = " events for which the filter returns 0."]
-    #[doc = ""]
-    #[doc = " See SDL_SetEventFilter() for more information. Unlike SDL_SetEventFilter(),"]
-    #[doc = " this function does not change the filter permanently, it only uses the"]
-    #[doc = " supplied filter until this function returns."]
-    #[doc = ""]
-    #[doc = " \\param filter the SDL_EventFilter function to call when an event happens"]
-    #[doc = " \\param userdata a pointer that is passed to `filter`"]
-    #[doc = ""]
-    #[doc = " \\sa SDL_GetEventFilter"]
-    #[doc = " \\sa SDL_SetEventFilter"]
     pub fn SDL_FilterEvents(filter: SDL_EventFilter, userdata: *mut ::std::os::raw::c_void);
 }
 extern "C" {
-    #[doc = " Set the state of processing events by type."]
-    #[doc = ""]
-    #[doc = " `state` may be any of the following:"]
-    #[doc = ""]
-    #[doc = " - `SDL_QUERY`: returns the current processing state of the specified event"]
-    #[doc = " - `SDL_IGNORE` (aka `SDL_DISABLE`): the event will automatically be dropped"]
-    #[doc = "   from the event queue and will not be filtered"]
-    #[doc = " - `SDL_ENABLE`: the event will be processed normally"]
-    #[doc = ""]
-    #[doc = " \\param type the type of event; see SDL_EventType for details"]
-    #[doc = " \\param state how to process the event"]
-    #[doc = " \\returns `SDL_DISABLE` or `SDL_ENABLE`, representing the processing state"]
-    #[doc = "          of the event before this function makes any changes to it."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_GetEventState"]
     pub fn SDL_EventState(type_: Uint32, state: ::std::os::raw::c_int) -> Uint8;
 }
 extern "C" {
-    #[doc = " Allocate a set of user-defined events, and return the beginning event"]
-    #[doc = " number for that set of events."]
-    #[doc = ""]
-    #[doc = " Calling this function with `numevents` <= 0 is an error and will return"]
-    #[doc = " (Uint32)-1."]
-    #[doc = ""]
-    #[doc = " Note, (Uint32)-1 means the maximum unsigned 32-bit integer value (or"]
-    #[doc = " 0xFFFFFFFF), but is clearer to write."]
-    #[doc = ""]
-    #[doc = " \\param numevents the number of events to be allocated"]
-    #[doc = " \\returns the beginning event number, or (Uint32)-1 if there are not enough"]
-    #[doc = "          user-defined events left."]
-    #[doc = ""]
-    #[doc = " \\since This function is available since SDL 2.0.0."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_PushEvent"]
     pub fn SDL_RegisterEvents(numevents: ::std::os::raw::c_int) -> Uint32;
 }
 extern "C" {
-    #[doc = " Get the directory where the application was run from."]
-    #[doc = ""]
-    #[doc = " This is not necessarily a fast call, so you should call this once near"]
-    #[doc = " startup and save the string if you need it."]
-    #[doc = ""]
-    #[doc = " **Mac OS X and iOS Specific Functionality**: If the application is in a"]
-    #[doc = " \".app\" bundle, this function returns the Resource directory (e.g."]
-    #[doc = " MyApp.app/Contents/Resources/). This behaviour can be overridden by adding"]
-    #[doc = " a property to the Info.plist file. Adding a string key with the name"]
-    #[doc = " SDL_FILESYSTEM_BASE_DIR_TYPE with a supported value will change the"]
-    #[doc = " behaviour."]
-    #[doc = ""]
-    #[doc = " Supported values for the SDL_FILESYSTEM_BASE_DIR_TYPE property (Given an"]
-    #[doc = " application in /Applications/SDLApp/MyApp.app):"]
-    #[doc = ""]
-    #[doc = " - `resource`: bundle resource directory (the default). For example:"]
-    #[doc = "   `/Applications/SDLApp/MyApp.app/Contents/Resources`"]
-    #[doc = " - `bundle`: the Bundle directory. Fpr example:"]
-    #[doc = "   `/Applications/SDLApp/MyApp.app/`"]
-    #[doc = " - `parent`: the containing directory of the bundle. For example:"]
-    #[doc = "   `/Applications/SDLApp/`"]
-    #[doc = ""]
-    #[doc = " The returned path is guaranteed to end with a path separator ('\\' on"]
-    #[doc = " Windows, '/' on most other platforms)."]
-    #[doc = ""]
-    #[doc = " The pointer returned is owned by the caller. Please call SDL_free() on the"]
-    #[doc = " pointer when done with it."]
-    #[doc = ""]
-    #[doc = " \\returns an absolute path in UTF-8 encoding to the application data"]
-    #[doc = "          directory. NULL will be returned on error or when the platform"]
-    #[doc = "          doesn't implement this functionality, call SDL_GetError() for more"]
-    #[doc = "          information."]
-    #[doc = ""]
-    #[doc = " \\since This function is available since SDL 2.0.1."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_GetPrefPath"]
     pub fn SDL_GetBasePath() -> *mut ::std::os::raw::c_char;
 }
 extern "C" {
-    #[doc = " Get the user-and-app-specific path where files can be written."]
-    #[doc = ""]
-    #[doc = " Get the \"pref dir\". This is meant to be where users can write personal"]
-    #[doc = " files (preferences and save games, etc) that are specific to your"]
-    #[doc = " application. This directory is unique per user, per application."]
-    #[doc = ""]
-    #[doc = " This function will decide the appropriate location in the native"]
-    #[doc = " filesystem, create the directory if necessary, and return a string of the"]
-    #[doc = " absolute path to the directory in UTF-8 encoding."]
-    #[doc = ""]
-    #[doc = " On Windows, the string might look like:"]
-    #[doc = ""]
-    #[doc = " `C:\\\\Users\\\\bob\\\\AppData\\\\Roaming\\\\My Company\\\\My Program Name\\\\`"]
-    #[doc = ""]
-    #[doc = " On Linux, the string might look like\""]
-    #[doc = ""]
-    #[doc = " `/home/bob/.local/share/My Program Name/`"]
-    #[doc = ""]
-    #[doc = " On Mac OS X, the string might look like:"]
-    #[doc = ""]
-    #[doc = " `/Users/bob/Library/Application Support/My Program Name/`"]
-    #[doc = ""]
-    #[doc = " You should assume the path returned by this function is the only safe place"]
-    #[doc = " to write files (and that SDL_GetBasePath(), while it might be writable, or"]
-    #[doc = " even the parent of the returned path, isn't where you should be writing"]
-    #[doc = " things)."]
-    #[doc = ""]
-    #[doc = " Both the org and app strings may become part of a directory name, so please"]
-    #[doc = " follow these rules:"]
-    #[doc = ""]
-    #[doc = " - Try to use the same org string (_including case-sensitivity_) for all"]
-    #[doc = "   your applications that use this function."]
-    #[doc = " - Always use a unique app string for each one, and make sure it never"]
-    #[doc = "   changes for an app once you've decided on it."]
-    #[doc = " - Unicode characters are legal, as long as it's UTF-8 encoded, but..."]
-    #[doc = " - ...only use letters, numbers, and spaces. Avoid punctuation like \"Game"]
-    #[doc = "   Name 2: Bad Guy's Revenge!\" ... \"Game Name 2\" is sufficient."]
-    #[doc = ""]
-    #[doc = " The returned path is guaranteed to end with a path separator ('\\' on"]
-    #[doc = " Windows, '/' on most other platforms)."]
-    #[doc = ""]
-    #[doc = " The pointer returned is owned by the caller. Please call SDL_free() on the"]
-    #[doc = " pointer when done with it."]
-    #[doc = ""]
-    #[doc = " \\param org the name of your organization"]
-    #[doc = " \\param app the name of your application"]
-    #[doc = " \\returns a UTF-8 string of the user directory in platform-dependent"]
-    #[doc = "          notation. NULL if there's a problem (creating directory failed,"]
-    #[doc = "          etc.)."]
-    #[doc = ""]
-    #[doc = " \\since This function is available since SDL 2.0.1."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_GetBasePath"]
     pub fn SDL_GetPrefPath(
         org: *const ::std::os::raw::c_char,
         app: *const ::std::os::raw::c_char,
     ) -> *mut ::std::os::raw::c_char;
 }
-#[doc = "  \\typedef SDL_Haptic"]
-#[doc = ""]
-#[doc = "  \\brief The haptic structure used to identify an SDL haptic."]
-#[doc = ""]
-#[doc = "  \\sa SDL_HapticOpen"]
-#[doc = "  \\sa SDL_HapticOpenFromJoystick"]
-#[doc = "  \\sa SDL_HapticClose"]
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
 pub struct _SDL_Haptic {
     _unused: [u8; 0],
 }
 pub type SDL_Haptic = _SDL_Haptic;
-#[doc = "  \\brief Structure that represents a haptic direction."]
-#[doc = ""]
-#[doc = "  This is the direction where the force comes from,"]
-#[doc = "  instead of the direction in which the force is exerted."]
-#[doc = ""]
-#[doc = "  Directions can be specified by:"]
-#[doc = "   - ::SDL_HAPTIC_POLAR : Specified by polar coordinates."]
-#[doc = "   - ::SDL_HAPTIC_CARTESIAN : Specified by cartesian coordinates."]
-#[doc = "   - ::SDL_HAPTIC_SPHERICAL : Specified by spherical coordinates."]
-#[doc = ""]
-#[doc = "  Cardinal directions of the haptic device are relative to the positioning"]
-#[doc = "  of the device.  North is considered to be away from the user."]
-#[doc = ""]
-#[doc = "  The following diagram represents the cardinal directions:"]
-#[doc = "  \\verbatim"]
-#[doc = ".--."]
-#[doc = "|__| .-------."]
-#[doc = "|=.| |.-----.|"]
-#[doc = "|--| ||     ||"]
-#[doc = "|  | |'-----'|"]
-#[doc = "|__|~')_____('"]
-#[doc = "[ COMPUTER ]"]
-#[doc = ""]
-#[doc = ""]
-#[doc = "North (0,-1)"]
-#[doc = "^"]
-#[doc = "|"]
-#[doc = "|"]
-#[doc = "(-1,0)  West <----[ HAPTIC ]----> East (1,0)"]
-#[doc = "|"]
-#[doc = "|"]
-#[doc = "v"]
-#[doc = "South (0,1)"]
-#[doc = ""]
-#[doc = ""]
-#[doc = "[ USER ]"]
-#[doc = "\\|||/"]
-#[doc = "(o o)"]
-#[doc = "---ooO-(_)-Ooo---"]
-#[doc = "\\endverbatim"]
-#[doc = ""]
-#[doc = "  If type is ::SDL_HAPTIC_POLAR, direction is encoded by hundredths of a"]
-#[doc = "  degree starting north and turning clockwise.  ::SDL_HAPTIC_POLAR only uses"]
-#[doc = "  the first \\c dir parameter.  The cardinal directions would be:"]
-#[doc = "   - North: 0 (0 degrees)"]
-#[doc = "   - East: 9000 (90 degrees)"]
-#[doc = "   - South: 18000 (180 degrees)"]
-#[doc = "   - West: 27000 (270 degrees)"]
-#[doc = ""]
-#[doc = "  If type is ::SDL_HAPTIC_CARTESIAN, direction is encoded by three positions"]
-#[doc = "  (X axis, Y axis and Z axis (with 3 axes)).  ::SDL_HAPTIC_CARTESIAN uses"]
-#[doc = "  the first three \\c dir parameters.  The cardinal directions would be:"]
-#[doc = "   - North:  0,-1, 0"]
-#[doc = "   - East:   1, 0, 0"]
-#[doc = "   - South:  0, 1, 0"]
-#[doc = "   - West:  -1, 0, 0"]
-#[doc = ""]
-#[doc = "  The Z axis represents the height of the effect if supported, otherwise"]
-#[doc = "  it's unused.  In cartesian encoding (1, 2) would be the same as (2, 4), you"]
-#[doc = "  can use any multiple you want, only the direction matters."]
-#[doc = ""]
-#[doc = "  If type is ::SDL_HAPTIC_SPHERICAL, direction is encoded by two rotations."]
-#[doc = "  The first two \\c dir parameters are used.  The \\c dir parameters are as"]
-#[doc = "  follows (all values are in hundredths of degrees):"]
-#[doc = "   - Degrees from (1, 0) rotated towards (0, 1)."]
-#[doc = "   - Degrees towards (0, 0, 1) (device needs at least 3 axes)."]
-#[doc = ""]
-#[doc = ""]
-#[doc = "  Example of force coming from the south with all encodings (force coming"]
-#[doc = "  from the south means the user will have to pull the stick to counteract):"]
-#[doc = "  \\code"]
-#[doc = "  SDL_HapticDirection direction;"]
-#[doc = ""]
-#[doc = "  // Cartesian directions"]
-#[doc = "  direction.type = SDL_HAPTIC_CARTESIAN; // Using cartesian direction encoding."]
-#[doc = "  direction.dir[0] = 0; // X position"]
-#[doc = "  direction.dir[1] = 1; // Y position"]
-#[doc = "  // Assuming the device has 2 axes, we don't need to specify third parameter."]
-#[doc = ""]
-#[doc = "  // Polar directions"]
-#[doc = "  direction.type = SDL_HAPTIC_POLAR; // We'll be using polar direction encoding."]
-#[doc = "  direction.dir[0] = 18000; // Polar only uses first parameter"]
-#[doc = ""]
-#[doc = "  // Spherical coordinates"]
-#[doc = "  direction.type = SDL_HAPTIC_SPHERICAL; // Spherical encoding"]
-#[doc = "  direction.dir[0] = 9000; // Since we only have two axes we don't need more parameters."]
-#[doc = "  \\endcode"]
-#[doc = ""]
-#[doc = "  \\sa SDL_HAPTIC_POLAR"]
-#[doc = "  \\sa SDL_HAPTIC_CARTESIAN"]
-#[doc = "  \\sa SDL_HAPTIC_SPHERICAL"]
-#[doc = "  \\sa SDL_HAPTIC_STEERING_AXIS"]
-#[doc = "  \\sa SDL_HapticEffect"]
-#[doc = "  \\sa SDL_HapticNumAxes"]
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
 pub struct SDL_HapticDirection {
-    #[doc = "< The type of encoding."]
     pub type_: Uint8,
-    #[doc = "< The encoded direction."]
     pub dir: [Sint32; 3usize],
 }
 #[test]
@@ -15799,39 +9109,19 @@ fn bindgen_test_layout_SDL_HapticDirection() {
         )
     );
 }
-#[doc = "  \\brief A structure containing a template for a Constant effect."]
-#[doc = ""]
-#[doc = "  This struct is exclusively for the ::SDL_HAPTIC_CONSTANT effect."]
-#[doc = ""]
-#[doc = "  A constant effect applies a constant force in the specified direction"]
-#[doc = "  to the joystick."]
-#[doc = ""]
-#[doc = "  \\sa SDL_HAPTIC_CONSTANT"]
-#[doc = "  \\sa SDL_HapticEffect"]
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
 pub struct SDL_HapticConstant {
-    #[doc = "< ::SDL_HAPTIC_CONSTANT"]
     pub type_: Uint16,
-    #[doc = "< Direction of the effect."]
     pub direction: SDL_HapticDirection,
-    #[doc = "< Duration of the effect."]
     pub length: Uint32,
-    #[doc = "< Delay before starting the effect."]
     pub delay: Uint16,
-    #[doc = "< Button that triggers the effect."]
     pub button: Uint16,
-    #[doc = "< How soon it can be triggered again after button."]
     pub interval: Uint16,
-    #[doc = "< Strength of the constant effect."]
     pub level: Sint16,
-    #[doc = "< Duration of the attack."]
     pub attack_length: Uint16,
-    #[doc = "< Level at the start of the attack."]
     pub attack_level: Uint16,
-    #[doc = "< Duration of the fade."]
     pub fade_length: Uint16,
-    #[doc = "< Level at the end of the fade."]
     pub fade_level: Uint16,
 }
 #[test]
@@ -15959,85 +9249,22 @@ fn bindgen_test_layout_SDL_HapticConstant() {
         )
     );
 }
-#[doc = "  \\brief A structure containing a template for a Periodic effect."]
-#[doc = ""]
-#[doc = "  The struct handles the following effects:"]
-#[doc = "   - ::SDL_HAPTIC_SINE"]
-#[doc = "   - ::SDL_HAPTIC_LEFTRIGHT"]
-#[doc = "   - ::SDL_HAPTIC_TRIANGLE"]
-#[doc = "   - ::SDL_HAPTIC_SAWTOOTHUP"]
-#[doc = "   - ::SDL_HAPTIC_SAWTOOTHDOWN"]
-#[doc = ""]
-#[doc = "  A periodic effect consists in a wave-shaped effect that repeats itself"]
-#[doc = "  over time.  The type determines the shape of the wave and the parameters"]
-#[doc = "  determine the dimensions of the wave."]
-#[doc = ""]
-#[doc = "  Phase is given by hundredth of a degree meaning that giving the phase a value"]
-#[doc = "  of 9000 will displace it 25% of its period.  Here are sample values:"]
-#[doc = "   -     0: No phase displacement."]
-#[doc = "   -  9000: Displaced 25% of its period."]
-#[doc = "   - 18000: Displaced 50% of its period."]
-#[doc = "   - 27000: Displaced 75% of its period."]
-#[doc = "   - 36000: Displaced 100% of its period, same as 0, but 0 is preferred."]
-#[doc = ""]
-#[doc = "  Examples:"]
-#[doc = "  \\verbatim"]
-#[doc = "SDL_HAPTIC_SINE"]
-#[doc = "__      __      __      __"]
-#[doc = ""]
-#[doc = "SDL_HAPTIC_SQUARE"]
-#[doc = "__    __    __    __    __"]
-#[doc = "|  |  |  |  |  |  |  |  |  |"]
-#[doc = "|  |__|  |__|  |__|  |__|  |"]
-#[doc = ""]
-#[doc = "SDL_HAPTIC_TRIANGLE"]
-#[doc = ""]
-#[doc = "SDL_HAPTIC_SAWTOOTHUP"]
-#[doc = ""]
-#[doc = "SDL_HAPTIC_SAWTOOTHDOWN"]
-#[doc = "\\  |\\  |\\  |\\  |\\  |\\  |\\  |"]
-#[doc = "\\ | \\ | \\ | \\ | \\ | \\ | \\ |"]
-#[doc = "\\|  \\|  \\|  \\|  \\|  \\|  \\|"]
-#[doc = "\\endverbatim"]
-#[doc = ""]
-#[doc = "  \\sa SDL_HAPTIC_SINE"]
-#[doc = "  \\sa SDL_HAPTIC_LEFTRIGHT"]
-#[doc = "  \\sa SDL_HAPTIC_TRIANGLE"]
-#[doc = "  \\sa SDL_HAPTIC_SAWTOOTHUP"]
-#[doc = "  \\sa SDL_HAPTIC_SAWTOOTHDOWN"]
-#[doc = "  \\sa SDL_HapticEffect"]
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
 pub struct SDL_HapticPeriodic {
-    #[doc = "< ::SDL_HAPTIC_SINE, ::SDL_HAPTIC_LEFTRIGHT,"]
-    #[doc = "::SDL_HAPTIC_TRIANGLE, ::SDL_HAPTIC_SAWTOOTHUP or"]
-    #[doc = "::SDL_HAPTIC_SAWTOOTHDOWN"]
     pub type_: Uint16,
-    #[doc = "< Direction of the effect."]
     pub direction: SDL_HapticDirection,
-    #[doc = "< Duration of the effect."]
     pub length: Uint32,
-    #[doc = "< Delay before starting the effect."]
     pub delay: Uint16,
-    #[doc = "< Button that triggers the effect."]
     pub button: Uint16,
-    #[doc = "< How soon it can be triggered again after button."]
     pub interval: Uint16,
-    #[doc = "< Period of the wave."]
     pub period: Uint16,
-    #[doc = "< Peak value; if negative, equivalent to 180 degrees extra phase shift."]
     pub magnitude: Sint16,
-    #[doc = "< Mean value of the wave."]
     pub offset: Sint16,
-    #[doc = "< Positive phase shift given by hundredth of a degree."]
     pub phase: Uint16,
-    #[doc = "< Duration of the attack."]
     pub attack_length: Uint16,
-    #[doc = "< Level at the start of the attack."]
     pub attack_level: Uint16,
-    #[doc = "< Duration of the fade."]
     pub fade_length: Uint16,
-    #[doc = "< Level at the end of the fade."]
     pub fade_level: Uint16,
 }
 #[test]
@@ -16195,55 +9422,20 @@ fn bindgen_test_layout_SDL_HapticPeriodic() {
         )
     );
 }
-#[doc = "  \\brief A structure containing a template for a Condition effect."]
-#[doc = ""]
-#[doc = "  The struct handles the following effects:"]
-#[doc = "   - ::SDL_HAPTIC_SPRING: Effect based on axes position."]
-#[doc = "   - ::SDL_HAPTIC_DAMPER: Effect based on axes velocity."]
-#[doc = "   - ::SDL_HAPTIC_INERTIA: Effect based on axes acceleration."]
-#[doc = "   - ::SDL_HAPTIC_FRICTION: Effect based on axes movement."]
-#[doc = ""]
-#[doc = "  Direction is handled by condition internals instead of a direction member."]
-#[doc = "  The condition effect specific members have three parameters.  The first"]
-#[doc = "  refers to the X axis, the second refers to the Y axis and the third"]
-#[doc = "  refers to the Z axis.  The right terms refer to the positive side of the"]
-#[doc = "  axis and the left terms refer to the negative side of the axis.  Please"]
-#[doc = "  refer to the ::SDL_HapticDirection diagram for which side is positive and"]
-#[doc = "  which is negative."]
-#[doc = ""]
-#[doc = "  \\sa SDL_HapticDirection"]
-#[doc = "  \\sa SDL_HAPTIC_SPRING"]
-#[doc = "  \\sa SDL_HAPTIC_DAMPER"]
-#[doc = "  \\sa SDL_HAPTIC_INERTIA"]
-#[doc = "  \\sa SDL_HAPTIC_FRICTION"]
-#[doc = "  \\sa SDL_HapticEffect"]
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
 pub struct SDL_HapticCondition {
-    #[doc = "< ::SDL_HAPTIC_SPRING, ::SDL_HAPTIC_DAMPER,"]
-    #[doc = "::SDL_HAPTIC_INERTIA or ::SDL_HAPTIC_FRICTION"]
     pub type_: Uint16,
-    #[doc = "< Direction of the effect - Not used ATM."]
     pub direction: SDL_HapticDirection,
-    #[doc = "< Duration of the effect."]
     pub length: Uint32,
-    #[doc = "< Delay before starting the effect."]
     pub delay: Uint16,
-    #[doc = "< Button that triggers the effect."]
     pub button: Uint16,
-    #[doc = "< How soon it can be triggered again after button."]
     pub interval: Uint16,
-    #[doc = "< Level when joystick is to the positive side; max 0xFFFF."]
     pub right_sat: [Uint16; 3usize],
-    #[doc = "< Level when joystick is to the negative side; max 0xFFFF."]
     pub left_sat: [Uint16; 3usize],
-    #[doc = "< How fast to increase the force towards the positive side."]
     pub right_coeff: [Sint16; 3usize],
-    #[doc = "< How fast to increase the force towards the negative side."]
     pub left_coeff: [Sint16; 3usize],
-    #[doc = "< Size of the dead zone; max 0xFFFF: whole axis-range when 0-centered."]
     pub deadband: [Uint16; 3usize],
-    #[doc = "< Position of the dead zone."]
     pub center: [Sint16; 3usize],
 }
 #[test]
@@ -16379,43 +9571,20 @@ fn bindgen_test_layout_SDL_HapticCondition() {
         )
     );
 }
-#[doc = "  \\brief A structure containing a template for a Ramp effect."]
-#[doc = ""]
-#[doc = "  This struct is exclusively for the ::SDL_HAPTIC_RAMP effect."]
-#[doc = ""]
-#[doc = "  The ramp effect starts at start strength and ends at end strength."]
-#[doc = "  It augments in linear fashion.  If you use attack and fade with a ramp"]
-#[doc = "  the effects get added to the ramp effect making the effect become"]
-#[doc = "  quadratic instead of linear."]
-#[doc = ""]
-#[doc = "  \\sa SDL_HAPTIC_RAMP"]
-#[doc = "  \\sa SDL_HapticEffect"]
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
 pub struct SDL_HapticRamp {
-    #[doc = "< ::SDL_HAPTIC_RAMP"]
     pub type_: Uint16,
-    #[doc = "< Direction of the effect."]
     pub direction: SDL_HapticDirection,
-    #[doc = "< Duration of the effect."]
     pub length: Uint32,
-    #[doc = "< Delay before starting the effect."]
     pub delay: Uint16,
-    #[doc = "< Button that triggers the effect."]
     pub button: Uint16,
-    #[doc = "< How soon it can be triggered again after button."]
     pub interval: Uint16,
-    #[doc = "< Beginning strength level."]
     pub start: Sint16,
-    #[doc = "< Ending strength level."]
     pub end: Sint16,
-    #[doc = "< Duration of the attack."]
     pub attack_length: Uint16,
-    #[doc = "< Level at the start of the attack."]
     pub attack_level: Uint16,
-    #[doc = "< Duration of the fade."]
     pub fade_length: Uint16,
-    #[doc = "< Level at the end of the fade."]
     pub fade_level: Uint16,
 }
 #[test]
@@ -16551,26 +9720,12 @@ fn bindgen_test_layout_SDL_HapticRamp() {
         )
     );
 }
-#[doc = " \\brief A structure containing a template for a Left/Right effect."]
-#[doc = ""]
-#[doc = " This struct is exclusively for the ::SDL_HAPTIC_LEFTRIGHT effect."]
-#[doc = ""]
-#[doc = " The Left/Right effect is used to explicitly control the large and small"]
-#[doc = " motors, commonly found in modern game controllers. The small (right) motor"]
-#[doc = " is high frequency, and the large (left) motor is low frequency."]
-#[doc = ""]
-#[doc = " \\sa SDL_HAPTIC_LEFTRIGHT"]
-#[doc = " \\sa SDL_HapticEffect"]
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
 pub struct SDL_HapticLeftRight {
-    #[doc = "< ::SDL_HAPTIC_LEFTRIGHT"]
     pub type_: Uint16,
-    #[doc = "< Duration of the effect in milliseconds."]
     pub length: Uint32,
-    #[doc = "< Control of the large controller motor."]
     pub large_magnitude: Uint16,
-    #[doc = "< Control of the small controller motor."]
     pub small_magnitude: Uint16,
 }
 #[test]
@@ -16630,49 +9785,22 @@ fn bindgen_test_layout_SDL_HapticLeftRight() {
         )
     );
 }
-#[doc = "  \\brief A structure containing a template for the ::SDL_HAPTIC_CUSTOM effect."]
-#[doc = ""]
-#[doc = "  This struct is exclusively for the ::SDL_HAPTIC_CUSTOM effect."]
-#[doc = ""]
-#[doc = "  A custom force feedback effect is much like a periodic effect, where the"]
-#[doc = "  application can define its exact shape.  You will have to allocate the"]
-#[doc = "  data yourself.  Data should consist of channels * samples Uint16 samples."]
-#[doc = ""]
-#[doc = "  If channels is one, the effect is rotated using the defined direction."]
-#[doc = "  Otherwise it uses the samples in data for the different axes."]
-#[doc = ""]
-#[doc = "  \\sa SDL_HAPTIC_CUSTOM"]
-#[doc = "  \\sa SDL_HapticEffect"]
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
 pub struct SDL_HapticCustom {
-    #[doc = "< ::SDL_HAPTIC_CUSTOM"]
     pub type_: Uint16,
-    #[doc = "< Direction of the effect."]
     pub direction: SDL_HapticDirection,
-    #[doc = "< Duration of the effect."]
     pub length: Uint32,
-    #[doc = "< Delay before starting the effect."]
     pub delay: Uint16,
-    #[doc = "< Button that triggers the effect."]
     pub button: Uint16,
-    #[doc = "< How soon it can be triggered again after button."]
     pub interval: Uint16,
-    #[doc = "< Axes to use, minimum of one."]
     pub channels: Uint8,
-    #[doc = "< Sample periods."]
     pub period: Uint16,
-    #[doc = "< Amount of samples."]
     pub samples: Uint16,
-    #[doc = "< Should contain channels*samples items."]
     pub data: *mut Uint16,
-    #[doc = "< Duration of the attack."]
     pub attack_length: Uint16,
-    #[doc = "< Level at the start of the attack."]
     pub attack_level: Uint16,
-    #[doc = "< Duration of the fade."]
     pub fade_length: Uint16,
-    #[doc = "< Level at the end of the fade."]
     pub fade_level: Uint16,
 }
 #[test]
@@ -16828,89 +9956,15 @@ fn bindgen_test_layout_SDL_HapticCustom() {
         )
     );
 }
-#[doc = "  \\brief The generic template for any haptic effect."]
-#[doc = ""]
-#[doc = "  All values max at 32767 (0x7FFF).  Signed values also can be negative."]
-#[doc = "  Time values unless specified otherwise are in milliseconds."]
-#[doc = ""]
-#[doc = "  You can also pass ::SDL_HAPTIC_INFINITY to length instead of a 0-32767"]
-#[doc = "  value.  Neither delay, interval, attack_length nor fade_length support"]
-#[doc = "  ::SDL_HAPTIC_INFINITY.  Fade will also not be used since effect never ends."]
-#[doc = ""]
-#[doc = "  Additionally, the ::SDL_HAPTIC_RAMP effect does not support a duration of"]
-#[doc = "  ::SDL_HAPTIC_INFINITY."]
-#[doc = ""]
-#[doc = "  Button triggers may not be supported on all devices, it is advised to not"]
-#[doc = "  use them if possible.  Buttons start at index 1 instead of index 0 like"]
-#[doc = "  the joystick."]
-#[doc = ""]
-#[doc = "  If both attack_length and fade_level are 0, the envelope is not used,"]
-#[doc = "  otherwise both values are used."]
-#[doc = ""]
-#[doc = "  Common parts:"]
-#[doc = "  \\code"]
-#[doc = "  // Replay - All effects have this"]
-#[doc = "  Uint32 length;        // Duration of effect (ms)."]
-#[doc = "  Uint16 delay;         // Delay before starting effect."]
-#[doc = ""]
-#[doc = "  // Trigger - All effects have this"]
-#[doc = "  Uint16 button;        // Button that triggers effect."]
-#[doc = "  Uint16 interval;      // How soon before effect can be triggered again."]
-#[doc = ""]
-#[doc = "  // Envelope - All effects except condition effects have this"]
-#[doc = "  Uint16 attack_length; // Duration of the attack (ms)."]
-#[doc = "  Uint16 attack_level;  // Level at the start of the attack."]
-#[doc = "  Uint16 fade_length;   // Duration of the fade out (ms)."]
-#[doc = "  Uint16 fade_level;    // Level at the end of the fade."]
-#[doc = "  \\endcode"]
-#[doc = ""]
-#[doc = ""]
-#[doc = "  Here we have an example of a constant effect evolution in time:"]
-#[doc = "  \\verbatim"]
-#[doc = "Strength"]
-#[doc = "^"]
-#[doc = "|"]
-#[doc = "|    effect level -->  _________________"]
-#[doc = "|                     /                 \\"]
-#[doc = "|                    /                   \\"]
-#[doc = "|                   /                     \\"]
-#[doc = "|                  /                       \\"]
-#[doc = "| attack_level --> |                        \\"]
-#[doc = "|                  |                        |  <---  fade_level"]
-#[doc = "|"]
-#[doc = "+--------------------------------------------------> Time"]
-#[doc = "[--]                 [---]"]
-#[doc = "attack_length        fade_length"]
-#[doc = ""]
-#[doc = "[------------------][-----------------------]"]
-#[doc = "delay               length"]
-#[doc = "\\endverbatim"]
-#[doc = ""]
-#[doc = "  Note either the attack_level or the fade_level may be above the actual"]
-#[doc = "  effect level."]
-#[doc = ""]
-#[doc = "  \\sa SDL_HapticConstant"]
-#[doc = "  \\sa SDL_HapticPeriodic"]
-#[doc = "  \\sa SDL_HapticCondition"]
-#[doc = "  \\sa SDL_HapticRamp"]
-#[doc = "  \\sa SDL_HapticLeftRight"]
-#[doc = "  \\sa SDL_HapticCustom"]
 #[repr(C)]
 #[derive(Copy, Clone)]
 pub union SDL_HapticEffect {
-    #[doc = "< Effect type."]
     pub type_: Uint16,
-    #[doc = "< Constant effect."]
     pub constant: SDL_HapticConstant,
-    #[doc = "< Periodic effect."]
     pub periodic: SDL_HapticPeriodic,
-    #[doc = "< Condition effect."]
     pub condition: SDL_HapticCondition,
-    #[doc = "< Ramp effect."]
     pub ramp: SDL_HapticRamp,
-    #[doc = "< Left/Right effect."]
     pub leftright: SDL_HapticLeftRight,
-    #[doc = "< Custom effect."]
     pub custom: SDL_HapticCustom,
     _bindgen_union_align: [u64; 9usize],
 }
@@ -16998,260 +10052,60 @@ fn bindgen_test_layout_SDL_HapticEffect() {
     );
 }
 extern "C" {
-    #[doc = " Count the number of haptic devices attached to the system."]
-    #[doc = ""]
-    #[doc = " \\returns the number of haptic devices detected on the system or a negative"]
-    #[doc = "          error code on failure; call SDL_GetError() for more information."]
-    #[doc = ""]
-    #[doc = " \\since This function is available since SDL 2.0.0."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_HapticName"]
     pub fn SDL_NumHaptics() -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[doc = " Get the implementation dependent name of a haptic device."]
-    #[doc = ""]
-    #[doc = " This can be called before any joysticks are opened. If no name can be"]
-    #[doc = " found, this function returns NULL."]
-    #[doc = ""]
-    #[doc = " \\param device_index index of the device to query."]
-    #[doc = " \\returns the name of the device or NULL on failure; call SDL_GetError() for"]
-    #[doc = "          more information."]
-    #[doc = ""]
-    #[doc = " \\since This function is available since SDL 2.0.0."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_NumHaptics"]
     pub fn SDL_HapticName(device_index: ::std::os::raw::c_int) -> *const ::std::os::raw::c_char;
 }
 extern "C" {
-    #[doc = " Open a haptic device for use."]
-    #[doc = ""]
-    #[doc = " The index passed as an argument refers to the N'th haptic device on this"]
-    #[doc = " system."]
-    #[doc = ""]
-    #[doc = " When opening a haptic device, its gain will be set to maximum and"]
-    #[doc = " autocenter will be disabled. To modify these values use SDL_HapticSetGain()"]
-    #[doc = " and SDL_HapticSetAutocenter()."]
-    #[doc = ""]
-    #[doc = " \\param device_index index of the device to open"]
-    #[doc = " \\returns the device identifier or NULL on failure; call SDL_GetError() for"]
-    #[doc = "          more information."]
-    #[doc = ""]
-    #[doc = " \\since This function is available since SDL 2.0.0."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_HapticClose"]
-    #[doc = " \\sa SDL_HapticIndex"]
-    #[doc = " \\sa SDL_HapticOpenFromJoystick"]
-    #[doc = " \\sa SDL_HapticOpenFromMouse"]
-    #[doc = " \\sa SDL_HapticPause"]
-    #[doc = " \\sa SDL_HapticSetAutocenter"]
-    #[doc = " \\sa SDL_HapticSetGain"]
-    #[doc = " \\sa SDL_HapticStopAll"]
     pub fn SDL_HapticOpen(device_index: ::std::os::raw::c_int) -> *mut SDL_Haptic;
 }
 extern "C" {
-    #[doc = " Check if the haptic device at the designated index has been opened."]
-    #[doc = ""]
-    #[doc = " \\param device_index the index of the device to query"]
-    #[doc = " \\returns 1 if it has been opened, 0 if it hasn't or on failure; call"]
-    #[doc = "          SDL_GetError() for more information."]
-    #[doc = ""]
-    #[doc = " \\since This function is available since SDL 2.0.0."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_HapticIndex"]
-    #[doc = " \\sa SDL_HapticOpen"]
     pub fn SDL_HapticOpened(device_index: ::std::os::raw::c_int) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[doc = " Get the index of a haptic device."]
-    #[doc = ""]
-    #[doc = " \\param haptic the SDL_Haptic device to query"]
-    #[doc = " \\returns the index of the specified haptic device or a negative error code"]
-    #[doc = "          on failure; call SDL_GetError() for more information."]
-    #[doc = ""]
-    #[doc = " \\since This function is available since SDL 2.0.0."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_HapticOpen"]
-    #[doc = " \\sa SDL_HapticOpened"]
     pub fn SDL_HapticIndex(haptic: *mut SDL_Haptic) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[doc = " Query whether or not the current mouse has haptic capabilities."]
-    #[doc = ""]
-    #[doc = " \\returns SDL_TRUE if the mouse is haptic or SDL_FALSE if it isn't."]
-    #[doc = ""]
-    #[doc = " \\since This function is available since SDL 2.0.0."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_HapticOpenFromMouse"]
     pub fn SDL_MouseIsHaptic() -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[doc = " Try to open a haptic device from the current mouse."]
-    #[doc = ""]
-    #[doc = " \\returns the haptic device identifier or NULL on failure; call"]
-    #[doc = "          SDL_GetError() for more information."]
-    #[doc = ""]
-    #[doc = " \\since This function is available since SDL 2.0.0."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_HapticOpen"]
-    #[doc = " \\sa SDL_MouseIsHaptic"]
     pub fn SDL_HapticOpenFromMouse() -> *mut SDL_Haptic;
 }
 extern "C" {
-    #[doc = " Query if a joystick has haptic features."]
-    #[doc = ""]
-    #[doc = " \\param joystick the SDL_Joystick to test for haptic capabilities"]
-    #[doc = " \\returns SDL_TRUE if the joystick is haptic, SDL_FALSE if it isn't, or a"]
-    #[doc = "          negative error code on failure; call SDL_GetError() for more"]
-    #[doc = "          information."]
-    #[doc = ""]
-    #[doc = " \\since This function is available since SDL 2.0.0."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_HapticOpenFromJoystick"]
     pub fn SDL_JoystickIsHaptic(joystick: *mut SDL_Joystick) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[doc = " Open a haptic device for use from a joystick device."]
-    #[doc = ""]
-    #[doc = " You must still close the haptic device separately. It will not be closed"]
-    #[doc = " with the joystick."]
-    #[doc = ""]
-    #[doc = " When opened from a joystick you should first close the haptic device before"]
-    #[doc = " closing the joystick device. If not, on some implementations the haptic"]
-    #[doc = " device will also get unallocated and you'll be unable to use force feedback"]
-    #[doc = " on that device."]
-    #[doc = ""]
-    #[doc = " \\param joystick the SDL_Joystick to create a haptic device from"]
-    #[doc = " \\returns a valid haptic device identifier on success or NULL on failure;"]
-    #[doc = "          call SDL_GetError() for more information."]
-    #[doc = ""]
-    #[doc = " \\since This function is available since SDL 2.0.0."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_HapticClose"]
-    #[doc = " \\sa SDL_HapticOpen"]
-    #[doc = " \\sa SDL_JoystickIsHaptic"]
     pub fn SDL_HapticOpenFromJoystick(joystick: *mut SDL_Joystick) -> *mut SDL_Haptic;
 }
 extern "C" {
-    #[doc = " Close a haptic device previously opened with SDL_HapticOpen()."]
-    #[doc = ""]
-    #[doc = " \\param haptic the SDL_Haptic device to close"]
-    #[doc = ""]
-    #[doc = " \\sa SDL_HapticOpen"]
     pub fn SDL_HapticClose(haptic: *mut SDL_Haptic);
 }
 extern "C" {
-    #[doc = " Get the number of effects a haptic device can store."]
-    #[doc = ""]
-    #[doc = " On some platforms this isn't fully supported, and therefore is an"]
-    #[doc = " approximation. Always check to see if your created effect was actually"]
-    #[doc = " created and do not rely solely on SDL_HapticNumEffects()."]
-    #[doc = ""]
-    #[doc = " \\param haptic the SDL_Haptic device to query"]
-    #[doc = " \\returns the number of effects the haptic device can store or a negative"]
-    #[doc = "          error code on failure; call SDL_GetError() for more information."]
-    #[doc = ""]
-    #[doc = " \\since This function is available since SDL 2.0.0."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_HapticNumEffectsPlaying"]
-    #[doc = " \\sa SDL_HapticQuery"]
     pub fn SDL_HapticNumEffects(haptic: *mut SDL_Haptic) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[doc = " Get the number of effects a haptic device can play at the same time."]
-    #[doc = ""]
-    #[doc = " This is not supported on all platforms, but will always return a value."]
-    #[doc = ""]
-    #[doc = " \\param haptic the SDL_Haptic device to query maximum playing effects"]
-    #[doc = " \\returns the number of effects the haptic device can play at the same time"]
-    #[doc = "          or a negative error code on failure; call SDL_GetError() for more"]
-    #[doc = "          information."]
-    #[doc = ""]
-    #[doc = " \\since This function is available since SDL 2.0.0."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_HapticNumEffects"]
-    #[doc = " \\sa SDL_HapticQuery"]
     pub fn SDL_HapticNumEffectsPlaying(haptic: *mut SDL_Haptic) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[doc = " Get the haptic device's supported features in bitwise manner."]
-    #[doc = ""]
-    #[doc = " \\param haptic the SDL_Haptic device to query"]
-    #[doc = " \\returns a list of supported haptic features in bitwise manner (OR'd), or 0"]
-    #[doc = "          on failure; call SDL_GetError() for more information."]
-    #[doc = ""]
-    #[doc = " \\since This function is available since SDL 2.0.0."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_HapticEffectSupported"]
-    #[doc = " \\sa SDL_HapticNumEffects"]
     pub fn SDL_HapticQuery(haptic: *mut SDL_Haptic) -> ::std::os::raw::c_uint;
 }
 extern "C" {
-    #[doc = " Get the number of haptic axes the device has."]
-    #[doc = ""]
-    #[doc = " The number of haptic axes might be useful if working with the"]
-    #[doc = " SDL_HapticDirection effect."]
-    #[doc = ""]
-    #[doc = " \\param haptic the SDL_Haptic device to query"]
-    #[doc = " \\returns the number of axes on success or a negative error code on failure;"]
-    #[doc = "          call SDL_GetError() for more information."]
     pub fn SDL_HapticNumAxes(haptic: *mut SDL_Haptic) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[doc = " Check to see if an effect is supported by a haptic device."]
-    #[doc = ""]
-    #[doc = " \\param haptic the SDL_Haptic device to query"]
-    #[doc = " \\param effect the desired effect to query"]
-    #[doc = " \\returns SDL_TRUE if effect is supported, SDL_FALSE if it isn't, or a"]
-    #[doc = "          negative error code on failure; call SDL_GetError() for more"]
-    #[doc = "          information."]
-    #[doc = ""]
-    #[doc = " \\since This function is available since SDL 2.0.0."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_HapticNewEffect"]
-    #[doc = " \\sa SDL_HapticQuery"]
     pub fn SDL_HapticEffectSupported(
         haptic: *mut SDL_Haptic,
         effect: *mut SDL_HapticEffect,
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[doc = " Create a new haptic effect on a specified device."]
-    #[doc = ""]
-    #[doc = " \\param haptic an SDL_Haptic device to create the effect on"]
-    #[doc = " \\param effect an SDL_HapticEffect structure containing the properties of"]
-    #[doc = "               the effect to create"]
-    #[doc = " \\returns the ID of the effect on success or a negative error code on"]
-    #[doc = "          failure; call SDL_GetError() for more information."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_HapticDestroyEffect"]
-    #[doc = " \\sa SDL_HapticRunEffect"]
-    #[doc = " \\sa SDL_HapticUpdateEffect"]
     pub fn SDL_HapticNewEffect(
         haptic: *mut SDL_Haptic,
         effect: *mut SDL_HapticEffect,
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[doc = " Update the properties of an effect."]
-    #[doc = ""]
-    #[doc = " Can be used dynamically, although behavior when dynamically changing"]
-    #[doc = " direction may be strange. Specifically the effect may re-upload itself and"]
-    #[doc = " start playing from the start. You also cannot change the type either when"]
-    #[doc = " running SDL_HapticUpdateEffect()."]
-    #[doc = ""]
-    #[doc = " \\param haptic the SDL_Haptic device that has the effect"]
-    #[doc = " \\param effect the identifier of the effect to update"]
-    #[doc = " \\param data an SDL_HapticEffect structure containing the new effect"]
-    #[doc = "             properties to use"]
-    #[doc = " \\returns 0 on success or a negative error code on failure; call"]
-    #[doc = "          SDL_GetError() for more information."]
-    #[doc = ""]
-    #[doc = " \\since This function is available since SDL 2.0.0."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_HapticDestroyEffect"]
-    #[doc = " \\sa SDL_HapticNewEffect"]
-    #[doc = " \\sa SDL_HapticRunEffect"]
     pub fn SDL_HapticUpdateEffect(
         haptic: *mut SDL_Haptic,
         effect: ::std::os::raw::c_int,
@@ -17259,26 +10113,6 @@ extern "C" {
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[doc = " Run the haptic effect on its associated haptic device."]
-    #[doc = ""]
-    #[doc = " To repeat the effect over and over indefinitely, set `iterations` to"]
-    #[doc = " `SDL_HAPTIC_INFINITY`. (Repeats the envelope - attack and fade.) To make"]
-    #[doc = " one instance of the effect last indefinitely (so the effect does not fade),"]
-    #[doc = " set the effect's `length` in its structure/union to `SDL_HAPTIC_INFINITY`"]
-    #[doc = " instead."]
-    #[doc = ""]
-    #[doc = " \\param haptic the SDL_Haptic device to run the effect on"]
-    #[doc = " \\param effect the ID of the haptic effect to run"]
-    #[doc = " \\param iterations the number of iterations to run the effect; use"]
-    #[doc = "                   `SDL_HAPTIC_INFINITY` to repeat forever"]
-    #[doc = " \\returns 0 on success or a negative error code on failure; call"]
-    #[doc = "          SDL_GetError() for more information."]
-    #[doc = ""]
-    #[doc = " \\since This function is available since SDL 2.0.0."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_HapticDestroyEffect"]
-    #[doc = " \\sa SDL_HapticGetEffectStatus"]
-    #[doc = " \\sa SDL_HapticStopEffect"]
     pub fn SDL_HapticRunEffect(
         haptic: *mut SDL_Haptic,
         effect: ::std::os::raw::c_int,
@@ -17286,175 +10120,48 @@ extern "C" {
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[doc = " Stop the haptic effect on its associated haptic device."]
-    #[doc = ""]
-    #[doc = " *"]
-    #[doc = ""]
-    #[doc = " \\param haptic the SDL_Haptic device to stop the effect on"]
-    #[doc = " \\param effect the ID of the haptic effect to stop"]
-    #[doc = " \\returns 0 on success or a negative error code on failure; call"]
-    #[doc = "          SDL_GetError() for more information."]
-    #[doc = ""]
-    #[doc = " \\since This function is available since SDL 2.0.0."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_HapticDestroyEffect"]
-    #[doc = " \\sa SDL_HapticRunEffect"]
     pub fn SDL_HapticStopEffect(
         haptic: *mut SDL_Haptic,
         effect: ::std::os::raw::c_int,
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[doc = " Destroy a haptic effect on the device."]
-    #[doc = ""]
-    #[doc = " This will stop the effect if it's running. Effects are automatically"]
-    #[doc = " destroyed when the device is closed."]
-    #[doc = ""]
-    #[doc = " \\param haptic the SDL_Haptic device to destroy the effect on"]
-    #[doc = " \\param effect the ID of the haptic effect to destroy"]
-    #[doc = ""]
-    #[doc = " \\since This function is available since SDL 2.0.0."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_HapticNewEffect"]
     pub fn SDL_HapticDestroyEffect(haptic: *mut SDL_Haptic, effect: ::std::os::raw::c_int);
 }
 extern "C" {
-    #[doc = " Get the status of the current effect on the specified haptic device."]
-    #[doc = ""]
-    #[doc = " Device must support the SDL_HAPTIC_STATUS feature."]
-    #[doc = ""]
-    #[doc = " \\param haptic the SDL_Haptic device to query for the effect status on"]
-    #[doc = " \\param effect the ID of the haptic effect to query its status"]
-    #[doc = " \\returns 0 if it isn't playing, 1 if it is playing, or a negative error"]
-    #[doc = "          code on failure; call SDL_GetError() for more information."]
-    #[doc = ""]
-    #[doc = " \\since This function is available since SDL 2.0.0."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_HapticRunEffect"]
-    #[doc = " \\sa SDL_HapticStopEffect"]
     pub fn SDL_HapticGetEffectStatus(
         haptic: *mut SDL_Haptic,
         effect: ::std::os::raw::c_int,
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[doc = " Set the global gain of the specified haptic device."]
-    #[doc = ""]
-    #[doc = " Device must support the SDL_HAPTIC_GAIN feature."]
-    #[doc = ""]
-    #[doc = " The user may specify the maximum gain by setting the environment variable"]
-    #[doc = " `SDL_HAPTIC_GAIN_MAX` which should be between 0 and 100. All calls to"]
-    #[doc = " SDL_HapticSetGain() will scale linearly using `SDL_HAPTIC_GAIN_MAX` as the"]
-    #[doc = " maximum."]
-    #[doc = ""]
-    #[doc = " \\param haptic the SDL_Haptic device to set the gain on"]
-    #[doc = " \\param gain value to set the gain to, should be between 0 and 100 (0 - 100)"]
-    #[doc = " \\returns 0 on success or a negative error code on failure; call"]
-    #[doc = "          SDL_GetError() for more information."]
-    #[doc = ""]
-    #[doc = " \\since This function is available since SDL 2.0.0."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_HapticQuery"]
     pub fn SDL_HapticSetGain(
         haptic: *mut SDL_Haptic,
         gain: ::std::os::raw::c_int,
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[doc = " Set the global autocenter of the device."]
-    #[doc = ""]
-    #[doc = " Autocenter should be between 0 and 100. Setting it to 0 will disable"]
-    #[doc = " autocentering."]
-    #[doc = ""]
-    #[doc = " Device must support the SDL_HAPTIC_AUTOCENTER feature."]
-    #[doc = ""]
-    #[doc = " \\param haptic the SDL_Haptic device to set autocentering on"]
-    #[doc = " \\param autocenter value to set autocenter to (0-100)"]
-    #[doc = " \\returns 0 on success or a negative error code on failure; call"]
-    #[doc = "          SDL_GetError() for more information."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_HapticQuery"]
     pub fn SDL_HapticSetAutocenter(
         haptic: *mut SDL_Haptic,
         autocenter: ::std::os::raw::c_int,
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[doc = " Pause a haptic device."]
-    #[doc = ""]
-    #[doc = " Device must support the `SDL_HAPTIC_PAUSE` feature. Call"]
-    #[doc = " SDL_HapticUnpause() to resume playback."]
-    #[doc = ""]
-    #[doc = " Do not modify the effects nor add new ones while the device is paused. That"]
-    #[doc = " can cause all sorts of weird errors."]
-    #[doc = ""]
-    #[doc = " \\param haptic the SDL_Haptic device to pause"]
-    #[doc = " \\returns 0 on success or a negative error code on failure; call"]
-    #[doc = "          SDL_GetError() for more information."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_HapticUnpause"]
     pub fn SDL_HapticPause(haptic: *mut SDL_Haptic) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[doc = " Unpause a haptic device."]
-    #[doc = ""]
-    #[doc = " Call to unpause after SDL_HapticPause()."]
-    #[doc = ""]
-    #[doc = " \\param haptic the SDL_Haptic device to unpause"]
-    #[doc = " \\returns 0 on success or a negative error code on failure; call"]
-    #[doc = "          SDL_GetError() for more information."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_HapticPause"]
     pub fn SDL_HapticUnpause(haptic: *mut SDL_Haptic) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[doc = " Stop all the currently playing effects on a haptic device."]
-    #[doc = ""]
-    #[doc = " \\param haptic the SDL_Haptic device to stop"]
-    #[doc = " \\returns 0 on success or a negative error code on failure; call"]
-    #[doc = "          SDL_GetError() for more information."]
     pub fn SDL_HapticStopAll(haptic: *mut SDL_Haptic) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[doc = " Check whether rumble is supported on a haptic device."]
-    #[doc = ""]
-    #[doc = " \\param haptic haptic device to check for rumble support"]
-    #[doc = " \\returns SDL_TRUE if effect is supported, SDL_FALSE if it isn't, or a"]
-    #[doc = "          negative error code on failure; call SDL_GetError() for more"]
-    #[doc = "          information."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_HapticRumbleInit"]
-    #[doc = " \\sa SDL_HapticRumblePlay"]
-    #[doc = " \\sa SDL_HapticRumbleStop"]
     pub fn SDL_HapticRumbleSupported(haptic: *mut SDL_Haptic) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[doc = " Initialize a haptic device for simple rumble playback."]
-    #[doc = ""]
-    #[doc = " \\param haptic the haptic device to initialize for simple rumble playback"]
-    #[doc = " \\returns 0 on success or a negative error code on failure; call"]
-    #[doc = "          SDL_GetError() for more information."]
-    #[doc = ""]
-    #[doc = " \\since This function is available since SDL 2.0.0."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_HapticOpen"]
-    #[doc = " \\sa SDL_HapticRumblePlay"]
-    #[doc = " \\sa SDL_HapticRumbleStop"]
-    #[doc = " \\sa SDL_HapticRumbleSupported"]
     pub fn SDL_HapticRumbleInit(haptic: *mut SDL_Haptic) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[doc = " Run a simple rumble effect on a haptic device."]
-    #[doc = ""]
-    #[doc = " \\param haptic the haptic device to play the rumble effect on"]
-    #[doc = " \\param strength strength of the rumble to play as a 0-1 float value"]
-    #[doc = " \\param length length of the rumble to play in milliseconds"]
-    #[doc = " \\returns 0 on success or a negative error code on failure; call"]
-    #[doc = "          SDL_GetError() for more information."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_HapticRumbleInit"]
-    #[doc = " \\sa SDL_HapticRumbleStop"]
-    #[doc = " \\sa SDL_HapticRumbleSupported"]
     pub fn SDL_HapticRumblePlay(
         haptic: *mut SDL_Haptic,
         strength: f32,
@@ -17462,36 +10169,13 @@ extern "C" {
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[doc = " Stop the simple rumble on a haptic device."]
-    #[doc = ""]
-    #[doc = " \\param haptic the haptic device to stop the rumble effect on"]
-    #[doc = " \\returns 0 on success or a negative error code on failure; call"]
-    #[doc = "          SDL_GetError() for more information."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_HapticRumbleInit"]
-    #[doc = " \\sa SDL_HapticRumblePlay"]
-    #[doc = " \\sa SDL_HapticRumbleSupported"]
     pub fn SDL_HapticRumbleStop(haptic: *mut SDL_Haptic) -> ::std::os::raw::c_int;
 }
 pub const SDL_HintPriority_SDL_HINT_DEFAULT: SDL_HintPriority = 0;
 pub const SDL_HintPriority_SDL_HINT_NORMAL: SDL_HintPriority = 1;
 pub const SDL_HintPriority_SDL_HINT_OVERRIDE: SDL_HintPriority = 2;
-#[doc = "  \\brief  An enumeration of hint priorities"]
 pub type SDL_HintPriority = ::std::os::raw::c_uint;
 extern "C" {
-    #[doc = " Set a hint with a specific priority."]
-    #[doc = ""]
-    #[doc = " The priority controls the behavior when setting a hint that already has a"]
-    #[doc = " value. Hints will replace existing hints of their priority and lower."]
-    #[doc = " Environment variables are considered to have override priority."]
-    #[doc = ""]
-    #[doc = " \\param name the hint to set"]
-    #[doc = " \\param value the value of the hint variable"]
-    #[doc = " \\param priority the SDL_HintPriority level for the hint"]
-    #[doc = " \\returns SDL_TRUE if the hint was set, SDL_FALSE otherwise."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_GetHint"]
-    #[doc = " \\sa SDL_SetHint"]
     pub fn SDL_SetHintWithPriority(
         name: *const ::std::os::raw::c_char,
         value: *const ::std::os::raw::c_char,
@@ -17499,56 +10183,20 @@ extern "C" {
     ) -> SDL_bool;
 }
 extern "C" {
-    #[doc = " Set a hint with normal priority."]
-    #[doc = ""]
-    #[doc = " Hints will not be set if there is an existing override hint or environment"]
-    #[doc = " variable that takes precedence. You can use SDL_SetHintWithPriority() to"]
-    #[doc = " set the hint with override priority instead."]
-    #[doc = ""]
-    #[doc = " \\param name the hint to set"]
-    #[doc = " \\param value the value of the hint variable"]
-    #[doc = " \\returns SDL_TRUE if the hint was set, SDL_FALSE otherwise."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_GetHint"]
-    #[doc = " \\sa SDL_SetHintWithPriority"]
     pub fn SDL_SetHint(
         name: *const ::std::os::raw::c_char,
         value: *const ::std::os::raw::c_char,
     ) -> SDL_bool;
 }
 extern "C" {
-    #[doc = " Get the value of a hint."]
-    #[doc = ""]
-    #[doc = " \\param name the hint to query"]
-    #[doc = " \\returns the string value of a hint or NULL if the hint isn't set."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_SetHint"]
-    #[doc = " \\sa SDL_SetHintWithPriority"]
     pub fn SDL_GetHint(name: *const ::std::os::raw::c_char) -> *const ::std::os::raw::c_char;
 }
 extern "C" {
-    #[doc = " Get the boolean value of a hint variable."]
-    #[doc = ""]
-    #[doc = " \\param name the name of the hint to get the boolean value from"]
-    #[doc = " \\param default_value the value to return if the hint does not exist"]
-    #[doc = " \\returns the boolean value of a hint or the provided default value if the"]
-    #[doc = "          hint does not exist."]
-    #[doc = ""]
-    #[doc = " \\since This function is available since SDL 2.0.5."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_GetHint"]
-    #[doc = " \\sa SDL_SetHint"]
     pub fn SDL_GetHintBoolean(
         name: *const ::std::os::raw::c_char,
         default_value: SDL_bool,
     ) -> SDL_bool;
 }
-#[doc = " Type definition of the hint callback function."]
-#[doc = ""]
-#[doc = " \\param userdata what was passed as `userdata` to SDL_AddHintCallback()"]
-#[doc = " \\param name what was passed as `name` to SDL_AddHintCallback()"]
-#[doc = " \\param oldValue the previous hint value"]
-#[doc = " \\param newValue the new value hint is to be set to"]
 pub type SDL_HintCallback = ::std::option::Option<
     unsafe extern "C" fn(
         userdata: *mut ::std::os::raw::c_void,
@@ -17558,16 +10206,6 @@ pub type SDL_HintCallback = ::std::option::Option<
     ),
 >;
 extern "C" {
-    #[doc = " Add a function to watch a particular hint."]
-    #[doc = ""]
-    #[doc = " \\param name the hint to watch"]
-    #[doc = " \\param callback An SDL_HintCallback function that will be called when the"]
-    #[doc = "                 hint value changes"]
-    #[doc = " \\param userdata a pointer to pass to the callback function"]
-    #[doc = ""]
-    #[doc = " \\since This function is available since SDL 2.0.0."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_DelHintCallback"]
     pub fn SDL_AddHintCallback(
         name: *const ::std::os::raw::c_char,
         callback: SDL_HintCallback,
@@ -17575,16 +10213,6 @@ extern "C" {
     );
 }
 extern "C" {
-    #[doc = " Remove a function watching a particular hint."]
-    #[doc = ""]
-    #[doc = " \\param name the hint being watched"]
-    #[doc = " \\param callback An SDL_HintCallback function that will be called when the"]
-    #[doc = "                 hint value changes"]
-    #[doc = " \\param userdata a pointer being passed to the callback function"]
-    #[doc = ""]
-    #[doc = " \\since This function is available since SDL 2.0.0."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_AddHintCallback"]
     pub fn SDL_DelHintCallback(
         name: *const ::std::os::raw::c_char,
         callback: SDL_HintCallback,
@@ -17592,56 +10220,18 @@ extern "C" {
     );
 }
 extern "C" {
-    #[doc = " Clear all hints."]
-    #[doc = ""]
-    #[doc = " This function is automatically called during SDL_Quit()."]
     pub fn SDL_ClearHints();
 }
 extern "C" {
-    #[doc = " Dynamically load a shared object."]
-    #[doc = ""]
-    #[doc = " \\param sofile a system-dependent name of the object file"]
-    #[doc = " \\returns an opaque pointer to the object handle or NULL if there was an"]
-    #[doc = "          error; call SDL_GetError() for more information."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_LoadFunction"]
-    #[doc = " \\sa SDL_UnloadObject"]
     pub fn SDL_LoadObject(sofile: *const ::std::os::raw::c_char) -> *mut ::std::os::raw::c_void;
 }
 extern "C" {
-    #[doc = " Look up the address of the named function in a shared object."]
-    #[doc = ""]
-    #[doc = " This function pointer is no longer valid after calling SDL_UnloadObject()."]
-    #[doc = ""]
-    #[doc = " This function can only look up C function names. Other languages may have"]
-    #[doc = " name mangling and intrinsic language support that varies from compiler to"]
-    #[doc = " compiler."]
-    #[doc = ""]
-    #[doc = " Make sure you declare your function pointers with the same calling"]
-    #[doc = " convention as the actual library function. Your code will crash"]
-    #[doc = " mysteriously if you do not do this."]
-    #[doc = ""]
-    #[doc = " If the requested function doesn't exist, NULL is returned."]
-    #[doc = ""]
-    #[doc = " \\param handle a valid shared object handle returned by SDL_LoadObject()"]
-    #[doc = " \\param name the name of the function to look up"]
-    #[doc = " \\returns a pointer to the function or NULL if there was an error; call"]
-    #[doc = "          SDL_GetError() for more information."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_LoadObject"]
-    #[doc = " \\sa SDL_UnloadObject"]
     pub fn SDL_LoadFunction(
         handle: *mut ::std::os::raw::c_void,
         name: *const ::std::os::raw::c_char,
     ) -> *mut ::std::os::raw::c_void;
 }
 extern "C" {
-    #[doc = " Unload a shared object from memory."]
-    #[doc = ""]
-    #[doc = " \\param handle a valid shared object handle returned by SDL_LoadObject()"]
-    #[doc = ""]
-    #[doc = " \\sa SDL_LoadFunction"]
-    #[doc = " \\sa SDL_LoadObject"]
     pub fn SDL_UnloadObject(handle: *mut ::std::os::raw::c_void);
 }
 pub const SDL_LogCategory_SDL_LOG_CATEGORY_APPLICATION: SDL_LogCategory = 0;
@@ -17664,12 +10254,6 @@ pub const SDL_LogCategory_SDL_LOG_CATEGORY_RESERVED8: SDL_LogCategory = 16;
 pub const SDL_LogCategory_SDL_LOG_CATEGORY_RESERVED9: SDL_LogCategory = 17;
 pub const SDL_LogCategory_SDL_LOG_CATEGORY_RESERVED10: SDL_LogCategory = 18;
 pub const SDL_LogCategory_SDL_LOG_CATEGORY_CUSTOM: SDL_LogCategory = 19;
-#[doc = "  \\brief The predefined log categories"]
-#[doc = ""]
-#[doc = "  By default the application category is enabled at the INFO level,"]
-#[doc = "  the assert category is enabled at the WARN level, test is enabled"]
-#[doc = "  at the VERBOSE level and all other categories are enabled at the"]
-#[doc = "  CRITICAL level."]
 pub type SDL_LogCategory = ::std::os::raw::c_uint;
 pub const SDL_LogPriority_SDL_LOG_PRIORITY_VERBOSE: SDL_LogPriority = 1;
 pub const SDL_LogPriority_SDL_LOG_PRIORITY_DEBUG: SDL_LogPriority = 2;
@@ -17678,168 +10262,38 @@ pub const SDL_LogPriority_SDL_LOG_PRIORITY_WARN: SDL_LogPriority = 4;
 pub const SDL_LogPriority_SDL_LOG_PRIORITY_ERROR: SDL_LogPriority = 5;
 pub const SDL_LogPriority_SDL_LOG_PRIORITY_CRITICAL: SDL_LogPriority = 6;
 pub const SDL_LogPriority_SDL_NUM_LOG_PRIORITIES: SDL_LogPriority = 7;
-#[doc = "  \\brief The predefined log priorities"]
 pub type SDL_LogPriority = ::std::os::raw::c_uint;
 extern "C" {
-    #[doc = " Set the priority of all log categories."]
-    #[doc = ""]
-    #[doc = " \\param priority the SDL_LogPriority to assign"]
-    #[doc = ""]
-    #[doc = " \\sa SDL_LogSetPriority"]
     pub fn SDL_LogSetAllPriority(priority: SDL_LogPriority);
 }
 extern "C" {
-    #[doc = " Set the priority of a particular log category."]
-    #[doc = ""]
-    #[doc = " \\param category the category to assign a priority to"]
-    #[doc = " \\param priority the SDL_LogPriority to assign"]
-    #[doc = ""]
-    #[doc = " \\sa SDL_LogGetPriority"]
-    #[doc = " \\sa SDL_LogSetAllPriority"]
     pub fn SDL_LogSetPriority(category: ::std::os::raw::c_int, priority: SDL_LogPriority);
 }
 extern "C" {
-    #[doc = " Get the priority of a particular log category."]
-    #[doc = ""]
-    #[doc = " \\param category the category to query"]
-    #[doc = " \\returns the SDL_LogPriority for the requested category"]
-    #[doc = ""]
-    #[doc = " \\sa SDL_LogSetPriority"]
     pub fn SDL_LogGetPriority(category: ::std::os::raw::c_int) -> SDL_LogPriority;
 }
 extern "C" {
-    #[doc = " Reset all priorities to default."]
-    #[doc = ""]
-    #[doc = " This is called by SDL_Quit()."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_LogSetAllPriority"]
-    #[doc = " \\sa SDL_LogSetPriority"]
     pub fn SDL_LogResetPriorities();
 }
 extern "C" {
-    #[doc = " Log a message with SDL_LOG_CATEGORY_APPLICATION and SDL_LOG_PRIORITY_INFO."]
-    #[doc = ""]
-    #[doc = " = * \\param fmt a printf() style message format string"]
-    #[doc = ""]
-    #[doc = " \\param ... additional parameters matching % tokens in the `fmt` string, if"]
-    #[doc = "            any"]
-    #[doc = ""]
-    #[doc = " \\sa SDL_LogCritical"]
-    #[doc = " \\sa SDL_LogDebug"]
-    #[doc = " \\sa SDL_LogError"]
-    #[doc = " \\sa SDL_LogInfo"]
-    #[doc = " \\sa SDL_LogMessage"]
-    #[doc = " \\sa SDL_LogMessageV"]
-    #[doc = " \\sa SDL_LogVerbose"]
-    #[doc = " \\sa SDL_LogWarn"]
     pub fn SDL_Log(fmt: *const ::std::os::raw::c_char, ...);
 }
 extern "C" {
-    #[doc = " Log a message with SDL_LOG_PRIORITY_VERBOSE."]
-    #[doc = ""]
-    #[doc = " \\param category the category of the message"]
-    #[doc = " \\param fmt a printf() style message format string"]
-    #[doc = " \\param ... additional parameters matching % tokens in the **fmt** string,"]
-    #[doc = "            if any"]
-    #[doc = ""]
-    #[doc = " \\sa SDL_Log"]
-    #[doc = " \\sa SDL_LogCritical"]
-    #[doc = " \\sa SDL_LogDebug"]
-    #[doc = " \\sa SDL_LogError"]
-    #[doc = " \\sa SDL_LogInfo"]
-    #[doc = " \\sa SDL_LogMessage"]
-    #[doc = " \\sa SDL_LogMessageV"]
-    #[doc = " \\sa SDL_LogWarn"]
     pub fn SDL_LogVerbose(category: ::std::os::raw::c_int, fmt: *const ::std::os::raw::c_char, ...);
 }
 extern "C" {
-    #[doc = " Log a message with SDL_LOG_PRIORITY_DEBUG."]
-    #[doc = ""]
-    #[doc = " \\param category the category of the message"]
-    #[doc = " \\param fmt a printf() style message format string"]
-    #[doc = " \\param ... additional parameters matching % tokens in the **fmt** string,"]
-    #[doc = "            if any"]
-    #[doc = ""]
-    #[doc = " \\sa SDL_Log"]
-    #[doc = " \\sa SDL_LogCritical"]
-    #[doc = " \\sa SDL_LogError"]
-    #[doc = " \\sa SDL_LogInfo"]
-    #[doc = " \\sa SDL_LogMessage"]
-    #[doc = " \\sa SDL_LogMessageV"]
-    #[doc = " \\sa SDL_LogVerbose"]
-    #[doc = " \\sa SDL_LogWarn"]
     pub fn SDL_LogDebug(category: ::std::os::raw::c_int, fmt: *const ::std::os::raw::c_char, ...);
 }
 extern "C" {
-    #[doc = " Log a message with SDL_LOG_PRIORITY_INFO."]
-    #[doc = ""]
-    #[doc = " \\param category the category of the message"]
-    #[doc = " \\param fmt a printf() style message format string"]
-    #[doc = " \\param ... additional parameters matching % tokens in the **fmt** string,"]
-    #[doc = "            if any"]
-    #[doc = ""]
-    #[doc = " \\sa SDL_Log"]
-    #[doc = " \\sa SDL_LogCritical"]
-    #[doc = " \\sa SDL_LogDebug"]
-    #[doc = " \\sa SDL_LogError"]
-    #[doc = " \\sa SDL_LogMessage"]
-    #[doc = " \\sa SDL_LogMessageV"]
-    #[doc = " \\sa SDL_LogVerbose"]
-    #[doc = " \\sa SDL_LogWarn"]
     pub fn SDL_LogInfo(category: ::std::os::raw::c_int, fmt: *const ::std::os::raw::c_char, ...);
 }
 extern "C" {
-    #[doc = " Log a message with SDL_LOG_PRIORITY_WARN."]
-    #[doc = ""]
-    #[doc = " \\param category the category of the message"]
-    #[doc = " \\param fmt a printf() style message format string"]
-    #[doc = " \\param ... additional parameters matching % tokens in the **fmt** string,"]
-    #[doc = "            if any"]
-    #[doc = ""]
-    #[doc = " \\sa SDL_Log"]
-    #[doc = " \\sa SDL_LogCritical"]
-    #[doc = " \\sa SDL_LogDebug"]
-    #[doc = " \\sa SDL_LogError"]
-    #[doc = " \\sa SDL_LogInfo"]
-    #[doc = " \\sa SDL_LogMessage"]
-    #[doc = " \\sa SDL_LogMessageV"]
-    #[doc = " \\sa SDL_LogVerbose"]
     pub fn SDL_LogWarn(category: ::std::os::raw::c_int, fmt: *const ::std::os::raw::c_char, ...);
 }
 extern "C" {
-    #[doc = " Log a message with SDL_LOG_PRIORITY_ERROR."]
-    #[doc = ""]
-    #[doc = " \\param category the category of the message"]
-    #[doc = " \\param fmt a printf() style message format string"]
-    #[doc = " \\param ... additional parameters matching % tokens in the **fmt** string,"]
-    #[doc = "            if any"]
-    #[doc = ""]
-    #[doc = " \\sa SDL_Log"]
-    #[doc = " \\sa SDL_LogCritical"]
-    #[doc = " \\sa SDL_LogDebug"]
-    #[doc = " \\sa SDL_LogInfo"]
-    #[doc = " \\sa SDL_LogMessage"]
-    #[doc = " \\sa SDL_LogMessageV"]
-    #[doc = " \\sa SDL_LogVerbose"]
-    #[doc = " \\sa SDL_LogWarn"]
     pub fn SDL_LogError(category: ::std::os::raw::c_int, fmt: *const ::std::os::raw::c_char, ...);
 }
 extern "C" {
-    #[doc = " Log a message with SDL_LOG_PRIORITY_CRITICAL."]
-    #[doc = ""]
-    #[doc = " \\param category the category of the message"]
-    #[doc = " \\param fmt a printf() style message format string"]
-    #[doc = " \\param ... additional parameters matching % tokens in the **fmt** string,"]
-    #[doc = "            if any"]
-    #[doc = ""]
-    #[doc = " \\sa SDL_Log"]
-    #[doc = " \\sa SDL_LogDebug"]
-    #[doc = " \\sa SDL_LogError"]
-    #[doc = " \\sa SDL_LogInfo"]
-    #[doc = " \\sa SDL_LogMessage"]
-    #[doc = " \\sa SDL_LogMessageV"]
-    #[doc = " \\sa SDL_LogVerbose"]
-    #[doc = " \\sa SDL_LogWarn"]
     pub fn SDL_LogCritical(
         category: ::std::os::raw::c_int,
         fmt: *const ::std::os::raw::c_char,
@@ -17847,22 +10301,6 @@ extern "C" {
     );
 }
 extern "C" {
-    #[doc = " Log a message with the specified category and priority."]
-    #[doc = ""]
-    #[doc = " \\param category the category of the message"]
-    #[doc = " \\param priority the priority of the message"]
-    #[doc = " \\param fmt a printf() style message format string"]
-    #[doc = " \\param ... additional parameters matching % tokens in the **fmt** string,"]
-    #[doc = "            if any"]
-    #[doc = ""]
-    #[doc = " \\sa SDL_Log"]
-    #[doc = " \\sa SDL_LogCritical"]
-    #[doc = " \\sa SDL_LogDebug"]
-    #[doc = " \\sa SDL_LogError"]
-    #[doc = " \\sa SDL_LogInfo"]
-    #[doc = " \\sa SDL_LogMessageV"]
-    #[doc = " \\sa SDL_LogVerbose"]
-    #[doc = " \\sa SDL_LogWarn"]
     pub fn SDL_LogMessage(
         category: ::std::os::raw::c_int,
         priority: SDL_LogPriority,
@@ -17871,23 +10309,6 @@ extern "C" {
     );
 }
 extern "C" {
-    #[doc = " Log a message with the specified category and priority."]
-    #[doc = ""]
-    #[doc = " \\param category the category of the message"]
-    #[doc = " \\param priority the priority of the message"]
-    #[doc = " \\param fmt a printf() style message format string"]
-    #[doc = " \\param ap a variable argument list"]
-    #[doc = ""]
-    #[doc = " \\since This function is available since SDL 2.0.0."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_Log"]
-    #[doc = " \\sa SDL_LogCritical"]
-    #[doc = " \\sa SDL_LogDebug"]
-    #[doc = " \\sa SDL_LogError"]
-    #[doc = " \\sa SDL_LogInfo"]
-    #[doc = " \\sa SDL_LogMessage"]
-    #[doc = " \\sa SDL_LogVerbose"]
-    #[doc = " \\sa SDL_LogWarn"]
     pub fn SDL_LogMessageV(
         category: ::std::os::raw::c_int,
         priority: SDL_LogPriority,
@@ -17895,14 +10316,6 @@ extern "C" {
         ap: *mut __va_list_tag,
     );
 }
-#[doc = " The prototype for the log output callback function."]
-#[doc = ""]
-#[doc = " This function is called by SDL when there is new text to be logged."]
-#[doc = ""]
-#[doc = " \\param userdata what was passed as `userdata` to SDL_LogSetOutputFunction()"]
-#[doc = " \\param category the category of the message"]
-#[doc = " \\param priority the priority of the message"]
-#[doc = " \\param message the message being output"]
 pub type SDL_LogOutputFunction = ::std::option::Option<
     unsafe extern "C" fn(
         userdata: *mut ::std::os::raw::c_void,
@@ -17912,60 +10325,33 @@ pub type SDL_LogOutputFunction = ::std::option::Option<
     ),
 >;
 extern "C" {
-    #[doc = " Get the current log output function."]
-    #[doc = ""]
-    #[doc = " \\param callback an SDL_LogOutputFunction filled in with the current log"]
-    #[doc = "                 callback"]
-    #[doc = " \\param userdata a pointer filled in with the pointer that is passed to"]
-    #[doc = "                 `callback`"]
-    #[doc = ""]
-    #[doc = " \\sa SDL_LogSetOutputFunction"]
     pub fn SDL_LogGetOutputFunction(
         callback: *mut SDL_LogOutputFunction,
         userdata: *mut *mut ::std::os::raw::c_void,
     );
 }
 extern "C" {
-    #[doc = " Replace the default log output function with one of your own."]
-    #[doc = ""]
-    #[doc = " \\param callback an SDL_LogOutputFunction to call instead of the default"]
-    #[doc = " \\param userdata a pointer that is passed to `callback`"]
-    #[doc = ""]
-    #[doc = " \\sa SDL_LogGetOutputFunction"]
     pub fn SDL_LogSetOutputFunction(
         callback: SDL_LogOutputFunction,
         userdata: *mut ::std::os::raw::c_void,
     );
 }
-#[doc = "< error dialog"]
 pub const SDL_MessageBoxFlags_SDL_MESSAGEBOX_ERROR: SDL_MessageBoxFlags = 16;
-#[doc = "< warning dialog"]
 pub const SDL_MessageBoxFlags_SDL_MESSAGEBOX_WARNING: SDL_MessageBoxFlags = 32;
-#[doc = "< informational dialog"]
 pub const SDL_MessageBoxFlags_SDL_MESSAGEBOX_INFORMATION: SDL_MessageBoxFlags = 64;
-#[doc = "< buttons placed left to right"]
 pub const SDL_MessageBoxFlags_SDL_MESSAGEBOX_BUTTONS_LEFT_TO_RIGHT: SDL_MessageBoxFlags = 128;
-#[doc = "< buttons placed right to left"]
 pub const SDL_MessageBoxFlags_SDL_MESSAGEBOX_BUTTONS_RIGHT_TO_LEFT: SDL_MessageBoxFlags = 256;
-#[doc = " SDL_MessageBox flags. If supported will display warning icon, etc."]
 pub type SDL_MessageBoxFlags = ::std::os::raw::c_uint;
-#[doc = "< Marks the default button when return is hit"]
 pub const SDL_MessageBoxButtonFlags_SDL_MESSAGEBOX_BUTTON_RETURNKEY_DEFAULT:
     SDL_MessageBoxButtonFlags = 1;
-#[doc = "< Marks the default button when escape is hit"]
 pub const SDL_MessageBoxButtonFlags_SDL_MESSAGEBOX_BUTTON_ESCAPEKEY_DEFAULT:
     SDL_MessageBoxButtonFlags = 2;
-#[doc = " Flags for SDL_MessageBoxButtonData."]
 pub type SDL_MessageBoxButtonFlags = ::std::os::raw::c_uint;
-#[doc = " Individual button data."]
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
 pub struct SDL_MessageBoxButtonData {
-    #[doc = "< ::SDL_MessageBoxButtonFlags"]
     pub flags: Uint32,
-    #[doc = "< User defined button id (value returned via SDL_ShowMessageBox)"]
     pub buttonid: ::std::os::raw::c_int,
-    #[doc = "< The UTF-8 button text"]
     pub text: *const ::std::os::raw::c_char,
 }
 #[test]
@@ -18013,7 +10399,6 @@ fn bindgen_test_layout_SDL_MessageBoxButtonData() {
         )
     );
 }
-#[doc = " RGB value used in a message box color scheme"]
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
 pub struct SDL_MessageBoxColor {
@@ -18072,7 +10457,6 @@ pub const SDL_MessageBoxColorType_SDL_MESSAGEBOX_COLOR_BUTTON_BACKGROUND: SDL_Me
 pub const SDL_MessageBoxColorType_SDL_MESSAGEBOX_COLOR_BUTTON_SELECTED: SDL_MessageBoxColorType = 4;
 pub const SDL_MessageBoxColorType_SDL_MESSAGEBOX_COLOR_MAX: SDL_MessageBoxColorType = 5;
 pub type SDL_MessageBoxColorType = ::std::os::raw::c_uint;
-#[doc = " A set of colors to use for message box dialogs"]
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
 pub struct SDL_MessageBoxColorScheme {
@@ -18103,21 +10487,15 @@ fn bindgen_test_layout_SDL_MessageBoxColorScheme() {
         )
     );
 }
-#[doc = " MessageBox structure containing title, text, window, etc."]
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
 pub struct SDL_MessageBoxData {
-    #[doc = "< ::SDL_MessageBoxFlags"]
     pub flags: Uint32,
-    #[doc = "< Parent window, can be NULL"]
     pub window: *mut SDL_Window,
-    #[doc = "< UTF-8 title"]
     pub title: *const ::std::os::raw::c_char,
-    #[doc = "< UTF-8 message text"]
     pub message: *const ::std::os::raw::c_char,
     pub numbuttons: ::std::os::raw::c_int,
     pub buttons: *const SDL_MessageBoxButtonData,
-    #[doc = "< ::SDL_MessageBoxColorScheme, can be NULL to use system settings"]
     pub colorScheme: *const SDL_MessageBoxColorScheme,
 }
 #[test]
@@ -18204,79 +10582,12 @@ fn bindgen_test_layout_SDL_MessageBoxData() {
     );
 }
 extern "C" {
-    #[doc = " Create a modal message box."]
-    #[doc = ""]
-    #[doc = " If your needs aren't complex, it might be easier to use"]
-    #[doc = " SDL_ShowSimpleMessageBox."]
-    #[doc = ""]
-    #[doc = " This function should be called on the thread that created the parent"]
-    #[doc = " window, or on the main thread if the messagebox has no parent. It will"]
-    #[doc = " block execution of that thread until the user clicks a button or closes the"]
-    #[doc = " messagebox."]
-    #[doc = ""]
-    #[doc = " This function may be called at any time, even before SDL_Init(). This makes"]
-    #[doc = " it useful for reporting errors like a failure to create a renderer or"]
-    #[doc = " OpenGL context."]
-    #[doc = ""]
-    #[doc = " On X11, SDL rolls its own dialog box with X11 primitives instead of a"]
-    #[doc = " formal toolkit like GTK+ or Qt."]
-    #[doc = ""]
-    #[doc = " Note that if SDL_Init() would fail because there isn't any available video"]
-    #[doc = " target, this function is likely to fail for the same reasons. If this is a"]
-    #[doc = " concern, check the return value from this function and fall back to writing"]
-    #[doc = " to stderr if you can."]
-    #[doc = ""]
-    #[doc = " \\param messageboxdata the SDL_MessageBoxData structure with title, text and"]
-    #[doc = "                       other options"]
-    #[doc = " \\param buttonid the pointer to which user id of hit button should be copied"]
-    #[doc = " \\returns 0 on success or a negative error code on failure; call"]
-    #[doc = "          SDL_GetError() for more information."]
-    #[doc = ""]
-    #[doc = " \\since This function is available since SDL 2.0.0."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_ShowSimpleMessageBox"]
     pub fn SDL_ShowMessageBox(
         messageboxdata: *const SDL_MessageBoxData,
         buttonid: *mut ::std::os::raw::c_int,
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[doc = " Display a simple modal message box."]
-    #[doc = ""]
-    #[doc = " If your needs aren't complex, this function is preferred over"]
-    #[doc = " SDL_ShowMessageBox."]
-    #[doc = ""]
-    #[doc = " `flags` may be any of the following:"]
-    #[doc = ""]
-    #[doc = " - `SDL_MESSAGEBOX_ERROR`: error dialog"]
-    #[doc = " - `SDL_MESSAGEBOX_WARNING`: warning dialog"]
-    #[doc = " - `SDL_MESSAGEBOX_INFORMATION`: informational dialog"]
-    #[doc = ""]
-    #[doc = " This function should be called on the thread that created the parent"]
-    #[doc = " window, or on the main thread if the messagebox has no parent. It will"]
-    #[doc = " block execution of that thread until the user clicks a button or closes the"]
-    #[doc = " messagebox."]
-    #[doc = ""]
-    #[doc = " This function may be called at any time, even before SDL_Init(). This makes"]
-    #[doc = " it useful for reporting errors like a failure to create a renderer or"]
-    #[doc = " OpenGL context."]
-    #[doc = ""]
-    #[doc = " On X11, SDL rolls its own dialog box with X11 primitives instead of a"]
-    #[doc = " formal toolkit like GTK+ or Qt."]
-    #[doc = ""]
-    #[doc = " Note that if SDL_Init() would fail because there isn't any available video"]
-    #[doc = " target, this function is likely to fail for the same reasons. If this is a"]
-    #[doc = " concern, check the return value from this function and fall back to writing"]
-    #[doc = " to stderr if you can."]
-    #[doc = ""]
-    #[doc = " \\param flags an SDL_MessageBoxFlags value"]
-    #[doc = " \\param title UTF-8 title text"]
-    #[doc = " \\param message UTF-8 message text"]
-    #[doc = " \\param window the parent window, or NULL for no parent"]
-    #[doc = " \\returns 0 on success or a negative error code on failure; call"]
-    #[doc = "          SDL_GetError() for more information."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_ShowMessageBox"]
     pub fn SDL_ShowSimpleMessageBox(
         flags: Uint32,
         title: *const ::std::os::raw::c_char,
@@ -18284,122 +10595,48 @@ extern "C" {
         window: *mut SDL_Window,
     ) -> ::std::os::raw::c_int;
 }
-#[doc = "  \\brief A handle to a CAMetalLayer-backed NSView (macOS) or UIView (iOS/tvOS)."]
-#[doc = ""]
-#[doc = "  \\note This can be cast directly to an NSView or UIView."]
 pub type SDL_MetalView = *mut ::std::os::raw::c_void;
 extern "C" {
-    #[doc = " Create a CAMetalLayer-backed NSView/UIView and attach it to the specified"]
-    #[doc = " window."]
-    #[doc = ""]
-    #[doc = " On macOS, this does *not* associate a MTLDevice with the CAMetalLayer on"]
-    #[doc = " its own. It is up to user code to do that."]
-    #[doc = ""]
-    #[doc = " The returned handle can be casted directly to a NSView or UIView. To access"]
-    #[doc = " the backing CAMetalLayer, call SDL_Metal_GetLayer()."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_Metal_DestroyView"]
-    #[doc = " \\sa SDL_Metal_GetLayer"]
     pub fn SDL_Metal_CreateView(window: *mut SDL_Window) -> SDL_MetalView;
 }
 extern "C" {
-    #[doc = " Destroy an existing SDL_MetalView object."]
-    #[doc = ""]
-    #[doc = " This should be called before SDL_DestroyWindow, if SDL_Metal_CreateView was"]
-    #[doc = " called after SDL_CreateWindow."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_Metal_CreateView"]
     pub fn SDL_Metal_DestroyView(view: SDL_MetalView);
 }
 extern "C" {
-    #[doc = " Get a pointer to the backing CAMetalLayer for the given view."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_MetalCreateView"]
     pub fn SDL_Metal_GetLayer(view: SDL_MetalView) -> *mut ::std::os::raw::c_void;
 }
 extern "C" {
-    #[doc = " Get the size of a window's underlying drawable in pixels (for use with"]
-    #[doc = " setting viewport, scissor & etc)."]
-    #[doc = ""]
-    #[doc = " \\param window SDL_Window from which the drawable size should be queried"]
-    #[doc = " \\param w Pointer to variable for storing the width in pixels, may be NULL"]
-    #[doc = ""]
-    #[doc = " \\sa SDL_GetWindowSize"]
-    #[doc = " \\sa SDL_CreateWindow"]
     pub fn SDL_Metal_GetDrawableSize(
         window: *mut SDL_Window,
         w: *mut ::std::os::raw::c_int,
         h: *mut ::std::os::raw::c_int,
     );
 }
-#[doc = "< cannot determine power status"]
 pub const SDL_PowerState_SDL_POWERSTATE_UNKNOWN: SDL_PowerState = 0;
-#[doc = "< Not plugged in, running on the battery"]
 pub const SDL_PowerState_SDL_POWERSTATE_ON_BATTERY: SDL_PowerState = 1;
-#[doc = "< Plugged in, no battery available"]
 pub const SDL_PowerState_SDL_POWERSTATE_NO_BATTERY: SDL_PowerState = 2;
-#[doc = "< Plugged in, charging battery"]
 pub const SDL_PowerState_SDL_POWERSTATE_CHARGING: SDL_PowerState = 3;
-#[doc = "< Plugged in, battery charged"]
 pub const SDL_PowerState_SDL_POWERSTATE_CHARGED: SDL_PowerState = 4;
-#[doc = "  The basic state for the system's power supply."]
 pub type SDL_PowerState = ::std::os::raw::c_uint;
 extern "C" {
-    #[doc = " Get the current power supply details."]
-    #[doc = ""]
-    #[doc = " You should never take a battery status as absolute truth. Batteries"]
-    #[doc = " (especially failing batteries) are delicate hardware, and the values"]
-    #[doc = " reported here are best estimates based on what that hardware reports. It's"]
-    #[doc = " not uncommon for older batteries to lose stored power much faster than it"]
-    #[doc = " reports, or completely drain when reporting it has 20 percent left, etc."]
-    #[doc = ""]
-    #[doc = " Battery status can change at any time; if you are concerned with power"]
-    #[doc = " state, you should call this function frequently, and perhaps ignore changes"]
-    #[doc = " until they seem to be stable for a few seconds."]
-    #[doc = ""]
-    #[doc = " It's possible a platform can only report battery percentage or time left"]
-    #[doc = " but not both."]
-    #[doc = ""]
-    #[doc = " \\param secs seconds of battery life left, you can pass a NULL here if you"]
-    #[doc = "             don't care, will return -1 if we can't determine a value, or"]
-    #[doc = "             we're not running on a battery"]
-    #[doc = " \\param pct percentage of battery life left, between 0 and 100, you can pass"]
-    #[doc = "            a NULL here if you don't care, will return -1 if we can't"]
-    #[doc = "            determine a value, or we're not running on a battery"]
-    #[doc = " \\returns an SDL_PowerState enum representing the current battery state."]
     pub fn SDL_GetPowerInfo(
         secs: *mut ::std::os::raw::c_int,
         pct: *mut ::std::os::raw::c_int,
     ) -> SDL_PowerState;
 }
-#[doc = "< The renderer is a software fallback"]
 pub const SDL_RendererFlags_SDL_RENDERER_SOFTWARE: SDL_RendererFlags = 1;
-#[doc = "< The renderer uses hardware"]
-#[doc = "acceleration"]
 pub const SDL_RendererFlags_SDL_RENDERER_ACCELERATED: SDL_RendererFlags = 2;
-#[doc = "< Present is synchronized"]
-#[doc = "with the refresh rate"]
 pub const SDL_RendererFlags_SDL_RENDERER_PRESENTVSYNC: SDL_RendererFlags = 4;
-#[doc = "< The renderer supports"]
-#[doc = "rendering to texture"]
 pub const SDL_RendererFlags_SDL_RENDERER_TARGETTEXTURE: SDL_RendererFlags = 8;
-#[doc = " Flags used when creating a rendering context"]
 pub type SDL_RendererFlags = ::std::os::raw::c_uint;
-#[doc = " Information on the capabilities of a render driver or context."]
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
 pub struct SDL_RendererInfo {
-    #[doc = "< The name of the renderer"]
     pub name: *const ::std::os::raw::c_char,
-    #[doc = "< Supported ::SDL_RendererFlags"]
     pub flags: Uint32,
-    #[doc = "< The number of available texture formats"]
     pub num_texture_formats: Uint32,
-    #[doc = "< The available texture formats"]
     pub texture_formats: [Uint32; 16usize],
-    #[doc = "< The maximum texture width"]
     pub max_texture_width: ::std::os::raw::c_int,
-    #[doc = "< The maximum texture height"]
     pub max_texture_height: ::std::os::raw::c_int,
 }
 #[test]
@@ -18483,98 +10720,42 @@ fn bindgen_test_layout_SDL_RendererInfo() {
         )
     );
 }
-#[doc = "< nearest pixel sampling"]
 pub const SDL_ScaleMode_SDL_ScaleModeNearest: SDL_ScaleMode = 0;
-#[doc = "< linear filtering"]
 pub const SDL_ScaleMode_SDL_ScaleModeLinear: SDL_ScaleMode = 1;
-#[doc = "< anisotropic filtering"]
 pub const SDL_ScaleMode_SDL_ScaleModeBest: SDL_ScaleMode = 2;
-#[doc = " The scaling mode for a texture."]
 pub type SDL_ScaleMode = ::std::os::raw::c_uint;
-#[doc = "< Changes rarely, not lockable"]
 pub const SDL_TextureAccess_SDL_TEXTUREACCESS_STATIC: SDL_TextureAccess = 0;
-#[doc = "< Changes frequently, lockable"]
 pub const SDL_TextureAccess_SDL_TEXTUREACCESS_STREAMING: SDL_TextureAccess = 1;
-#[doc = "< Texture can be used as a render target"]
 pub const SDL_TextureAccess_SDL_TEXTUREACCESS_TARGET: SDL_TextureAccess = 2;
-#[doc = " The access pattern allowed for a texture."]
 pub type SDL_TextureAccess = ::std::os::raw::c_uint;
-#[doc = "< No modulation"]
 pub const SDL_TextureModulate_SDL_TEXTUREMODULATE_NONE: SDL_TextureModulate = 0;
-#[doc = "< srcC = srcC * color"]
 pub const SDL_TextureModulate_SDL_TEXTUREMODULATE_COLOR: SDL_TextureModulate = 1;
-#[doc = "< srcA = srcA * alpha"]
 pub const SDL_TextureModulate_SDL_TEXTUREMODULATE_ALPHA: SDL_TextureModulate = 2;
-#[doc = " The texture channel modulation used in SDL_RenderCopy()."]
 pub type SDL_TextureModulate = ::std::os::raw::c_uint;
-#[doc = "< Do not flip"]
 pub const SDL_RendererFlip_SDL_FLIP_NONE: SDL_RendererFlip = 0;
-#[doc = "< flip horizontally"]
 pub const SDL_RendererFlip_SDL_FLIP_HORIZONTAL: SDL_RendererFlip = 1;
-#[doc = "< flip vertically"]
 pub const SDL_RendererFlip_SDL_FLIP_VERTICAL: SDL_RendererFlip = 2;
-#[doc = " Flip constants for SDL_RenderCopyEx"]
 pub type SDL_RendererFlip = ::std::os::raw::c_uint;
-#[doc = " A structure representing rendering state"]
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
 pub struct SDL_Renderer {
     _unused: [u8; 0],
 }
-#[doc = " An efficient driver-specific representation of pixel data"]
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
 pub struct SDL_Texture {
     _unused: [u8; 0],
 }
 extern "C" {
-    #[doc = " Get the number of 2D rendering drivers available for the current display."]
-    #[doc = ""]
-    #[doc = " A render driver is a set of code that handles rendering and texture"]
-    #[doc = " management on a particular display. Normally there is only one, but some"]
-    #[doc = " drivers may have several available with different capabilities."]
-    #[doc = ""]
-    #[doc = " There may be none if SDL was compiled without render support."]
-    #[doc = ""]
-    #[doc = " \\returns a number >= 0 on success or a negative error code on failure; call"]
-    #[doc = "          SDL_GetError() for more information."]
-    #[doc = ""]
-    #[doc = " \\since This function is available since SDL 2.0.0."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_CreateRenderer"]
-    #[doc = " \\sa SDL_GetRenderDriverInfo"]
     pub fn SDL_GetNumRenderDrivers() -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[doc = " Get info about a specific 2D rendering driver for the current display."]
-    #[doc = ""]
-    #[doc = " \\param index the index of the driver to query information about"]
-    #[doc = " \\param info an SDL_RendererInfo structure to be filled with information on"]
-    #[doc = "             the rendering driver"]
-    #[doc = " \\returns 0 on success or a negative error code on failure; call"]
-    #[doc = "          SDL_GetError() for more information."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_CreateRenderer"]
-    #[doc = " \\sa SDL_GetNumRenderDrivers"]
     pub fn SDL_GetRenderDriverInfo(
         index: ::std::os::raw::c_int,
         info: *mut SDL_RendererInfo,
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[doc = " Create a window and default renderer."]
-    #[doc = ""]
-    #[doc = " \\param width the width of the window"]
-    #[doc = " \\param height the height of the window"]
-    #[doc = " \\param window_flags the flags used to create the window (see"]
-    #[doc = "                     SDL_CreateWindow())"]
-    #[doc = " \\param window a pointer filled with the window, or NULL on error"]
-    #[doc = " \\param renderer a pointer filled with the renderer, or NULL on error"]
-    #[doc = " \\returns 0 on success, or -1 on error; call SDL_GetError() for more"]
-    #[doc = "          information."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_CreateRenderer"]
-    #[doc = " \\sa SDL_CreateWindow"]
     pub fn SDL_CreateWindowAndRenderer(
         width: ::std::os::raw::c_int,
         height: ::std::os::raw::c_int,
@@ -18584,19 +10765,6 @@ extern "C" {
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[doc = " Create a 2D rendering context for a window."]
-    #[doc = ""]
-    #[doc = " \\param window the window where rendering is displayed"]
-    #[doc = " \\param index the index of the rendering driver to initialize, or -1 to"]
-    #[doc = "              initialize the first one supporting the requested flags"]
-    #[doc = " \\param flags 0, or one or more SDL_RendererFlags OR'd together"]
-    #[doc = " \\returns a valid rendering context or NULL if there was an error; call"]
-    #[doc = "          SDL_GetError() for more information."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_CreateSoftwareRenderer"]
-    #[doc = " \\sa SDL_DestroyRenderer"]
-    #[doc = " \\sa SDL_GetNumRenderDrivers"]
-    #[doc = " \\sa SDL_GetRendererInfo"]
     pub fn SDL_CreateRenderer(
         window: *mut SDL_Window,
         index: ::std::os::raw::c_int,
@@ -18604,64 +10772,18 @@ extern "C" {
     ) -> *mut SDL_Renderer;
 }
 extern "C" {
-    #[doc = " Create a 2D software rendering context for a surface."]
-    #[doc = ""]
-    #[doc = " Two other API which can be used to create SDL_Renderer:"]
-    #[doc = " SDL_CreateRenderer() and SDL_CreateWindowAndRenderer(). These can _also_"]
-    #[doc = " create a software renderer, but they are intended to be used with an"]
-    #[doc = " SDL_Window as the final destination and not an SDL_Surface."]
-    #[doc = ""]
-    #[doc = " \\param surface the SDL_Surface structure representing the surface where"]
-    #[doc = "                rendering is done"]
-    #[doc = " \\returns a valid rendering context or NULL if there was an error; call"]
-    #[doc = "          SDL_GetError() for more information."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_CreateRenderer"]
-    #[doc = " \\sa SDL_CreateWindowRenderer"]
-    #[doc = " \\sa SDL_DestroyRenderer"]
     pub fn SDL_CreateSoftwareRenderer(surface: *mut SDL_Surface) -> *mut SDL_Renderer;
 }
 extern "C" {
-    #[doc = " Get the renderer associated with a window."]
-    #[doc = ""]
-    #[doc = " \\param window the window to query"]
-    #[doc = " \\returns the rendering context on success or NULL on failure; call"]
-    #[doc = "          SDL_GetError() for more information."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_CreateRenderer"]
     pub fn SDL_GetRenderer(window: *mut SDL_Window) -> *mut SDL_Renderer;
 }
 extern "C" {
-    #[doc = " Get information about a rendering context."]
-    #[doc = ""]
-    #[doc = " \\param renderer the rendering context"]
-    #[doc = " \\param info an SDL_RendererInfo structure filled with information about the"]
-    #[doc = "             current renderer"]
-    #[doc = " \\returns 0 on success or a negative error code on failure; call"]
-    #[doc = "          SDL_GetError() for more information."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_CreateRenderer"]
     pub fn SDL_GetRendererInfo(
         renderer: *mut SDL_Renderer,
         info: *mut SDL_RendererInfo,
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[doc = " Get the output size in pixels of a rendering context."]
-    #[doc = ""]
-    #[doc = " Due to high-dpi displays, you might end up with a rendering context that"]
-    #[doc = " has more pixels than the window that contains it, so use this instead of"]
-    #[doc = " SDL_GetWindowSize() to decide how much drawing area you have."]
-    #[doc = ""]
-    #[doc = " \\param renderer the rendering context"]
-    #[doc = " \\param w an int filled with the width"]
-    #[doc = " \\param h an int filled with the height"]
-    #[doc = " \\returns 0 on success or a negative error code on failure; call"]
-    #[doc = "          SDL_GetError() for more information."]
-    #[doc = ""]
-    #[doc = " \\since This function is available since SDL 2.0.0."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_GetRenderer"]
     pub fn SDL_GetRendererOutputSize(
         renderer: *mut SDL_Renderer,
         w: *mut ::std::os::raw::c_int,
@@ -18669,24 +10791,6 @@ extern "C" {
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[doc = " Create a texture for a rendering context."]
-    #[doc = ""]
-    #[doc = " You can set the texture scaling method by setting"]
-    #[doc = " `SDL_HINT_RENDER_SCALE_QUALITY` before creating the texture."]
-    #[doc = ""]
-    #[doc = " \\param renderer the rendering context"]
-    #[doc = " \\param format one of the enumerated values in SDL_PixelFormatEnum"]
-    #[doc = " \\param access one of the enumerated values in SDL_TextureAccess"]
-    #[doc = " \\param w the width of the texture in pixels"]
-    #[doc = " \\param h the height of the texture in pixels"]
-    #[doc = " \\returns a pointer to the created texture or NULL if no rendering context"]
-    #[doc = "          was active, the format was unsupported, or the width or height"]
-    #[doc = "          were out of range; call SDL_GetError() for more information."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_CreateTextureFromSurface"]
-    #[doc = " \\sa SDL_DestroyTexture"]
-    #[doc = " \\sa SDL_QueryTexture"]
-    #[doc = " \\sa SDL_UpdateTexture"]
     pub fn SDL_CreateTexture(
         renderer: *mut SDL_Renderer,
         format: Uint32,
@@ -18696,46 +10800,12 @@ extern "C" {
     ) -> *mut SDL_Texture;
 }
 extern "C" {
-    #[doc = " Create a texture from an existing surface."]
-    #[doc = ""]
-    #[doc = " The surface is not modified or freed by this function."]
-    #[doc = ""]
-    #[doc = " The SDL_TextureAccess hint for the created texture is"]
-    #[doc = " `SDL_TEXTUREACCESS_STATIC`."]
-    #[doc = ""]
-    #[doc = " The pixel format of the created texture may be different from the pixel"]
-    #[doc = " format of the surface. Use SDL_QueryTexture() to query the pixel format of"]
-    #[doc = " the texture."]
-    #[doc = ""]
-    #[doc = " \\param renderer the rendering context"]
-    #[doc = " \\param surface the SDL_Surface structure containing pixel data used to fill"]
-    #[doc = "                the texture"]
-    #[doc = " \\returns the created texture or NULL on failure; call SDL_GetError() for"]
-    #[doc = "          more information."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_CreateTexture"]
-    #[doc = " \\sa SDL_DestroyTexture"]
-    #[doc = " \\sa SDL_QueryTexture"]
     pub fn SDL_CreateTextureFromSurface(
         renderer: *mut SDL_Renderer,
         surface: *mut SDL_Surface,
     ) -> *mut SDL_Texture;
 }
 extern "C" {
-    #[doc = " Query the attributes of a texture."]
-    #[doc = ""]
-    #[doc = " \\param texture the texture to query"]
-    #[doc = " \\param format a pointer filled in with the raw format of the texture; the"]
-    #[doc = "               actual format may differ, but pixel transfers will use this"]
-    #[doc = "               format (one of the SDL_PixelFormatEnum values)"]
-    #[doc = " \\param access a pointer filled in with the actual access to the texture"]
-    #[doc = "               (one of the SDL_TextureAccess values)"]
-    #[doc = " \\param w a pointer filled in with the width of the texture in pixels"]
-    #[doc = " \\param h a pointer filled in with the height of the texture in pixels"]
-    #[doc = " \\returns 0 on success or a negative error code on failure; call"]
-    #[doc = "          SDL_GetError() for more information."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_CreateTexture"]
     pub fn SDL_QueryTexture(
         texture: *mut SDL_Texture,
         format: *mut Uint32,
@@ -18745,26 +10815,6 @@ extern "C" {
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[doc = " Set an additional color value multiplied into render copy operations."]
-    #[doc = ""]
-    #[doc = " When this texture is rendered, during the copy operation each source color"]
-    #[doc = " channel is modulated by the appropriate color value according to the"]
-    #[doc = " following formula:"]
-    #[doc = ""]
-    #[doc = " `srcC = srcC * (color / 255)`"]
-    #[doc = ""]
-    #[doc = " Color modulation is not always supported by the renderer; it will return -1"]
-    #[doc = " if color modulation is not supported."]
-    #[doc = ""]
-    #[doc = " \\param texture the texture to update"]
-    #[doc = " \\param r the red color value multiplied into copy operations"]
-    #[doc = " \\param g the green color value multiplied into copy operations"]
-    #[doc = " \\param b the blue color value multiplied into copy operations"]
-    #[doc = " \\returns 0 on success or a negative error code on failure; call"]
-    #[doc = "          SDL_GetError() for more information."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_GetTextureColorMod"]
-    #[doc = " \\sa SDL_SetTextureAlphaMod"]
     pub fn SDL_SetTextureColorMod(
         texture: *mut SDL_Texture,
         r: Uint8,
@@ -18773,17 +10823,6 @@ extern "C" {
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[doc = " Get the additional color value multiplied into render copy operations."]
-    #[doc = ""]
-    #[doc = " \\param texture the texture to query"]
-    #[doc = " \\param r a pointer filled in with the current red color value"]
-    #[doc = " \\param g a pointer filled in with the current green color value"]
-    #[doc = " \\param b a pointer filled in with the current blue color value"]
-    #[doc = " \\returns 0 on success or a negative error code on failure; call"]
-    #[doc = "          SDL_GetError() for more information."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_GetTextureAlphaMod"]
-    #[doc = " \\sa SDL_SetTextureColorMod"]
     pub fn SDL_GetTextureColorMod(
         texture: *mut SDL_Texture,
         r: *mut Uint8,
@@ -18792,150 +10831,49 @@ extern "C" {
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[doc = " Set an additional alpha value multiplied into render copy operations."]
-    #[doc = ""]
-    #[doc = " When this texture is rendered, during the copy operation the source alpha"]
-    #[doc = " value is modulated by this alpha value according to the following formula:"]
-    #[doc = ""]
-    #[doc = " `srcA = srcA * (alpha / 255)`"]
-    #[doc = ""]
-    #[doc = " Alpha modulation is not always supported by the renderer; it will return -1"]
-    #[doc = " if alpha modulation is not supported."]
-    #[doc = ""]
-    #[doc = " \\param texture the texture to update"]
-    #[doc = " \\param alpha the source alpha value multiplied into copy operations"]
-    #[doc = " \\returns 0 on success or a negative error code on failure; call"]
-    #[doc = "          SDL_GetError() for more information."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_GetTextureAlphaMod"]
-    #[doc = " \\sa SDL_SetTextureColorMod"]
     pub fn SDL_SetTextureAlphaMod(texture: *mut SDL_Texture, alpha: Uint8)
         -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[doc = " Get the additional alpha value multiplied into render copy operations."]
-    #[doc = ""]
-    #[doc = " \\param texture the texture to query"]
-    #[doc = " \\param alpha a pointer filled in with the current alpha value"]
-    #[doc = " \\returns 0 on success or a negative error code on failure; call"]
-    #[doc = "          SDL_GetError() for more information."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_GetTextureColorMod"]
-    #[doc = " \\sa SDL_SetTextureAlphaMod"]
     pub fn SDL_GetTextureAlphaMod(
         texture: *mut SDL_Texture,
         alpha: *mut Uint8,
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[doc = " Set the blend mode for a texture, used by SDL_RenderCopy()."]
-    #[doc = ""]
-    #[doc = " If the blend mode is not supported, the closest supported mode is chosen"]
-    #[doc = " and this function returns -1."]
-    #[doc = ""]
-    #[doc = " \\param texture the texture to update"]
-    #[doc = " \\param blendMode the SDL_BlendMode to use for texture blending"]
-    #[doc = " \\returns 0 on success or a negative error code on failure; call"]
-    #[doc = "          SDL_GetError() for more information."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_GetTextureBlendMode"]
-    #[doc = " \\sa SDL_RenderCopy"]
     pub fn SDL_SetTextureBlendMode(
         texture: *mut SDL_Texture,
         blendMode: SDL_BlendMode,
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[doc = " Get the blend mode used for texture copy operations."]
-    #[doc = ""]
-    #[doc = " \\param texture the texture to query"]
-    #[doc = " \\param blendMode a pointer filled in with the current SDL_BlendMode"]
-    #[doc = " \\returns 0 on success or a negative error code on failure; call"]
-    #[doc = "          SDL_GetError() for more information."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_SetTextureBlendMode"]
     pub fn SDL_GetTextureBlendMode(
         texture: *mut SDL_Texture,
         blendMode: *mut SDL_BlendMode,
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[doc = " Set the scale mode used for texture scale operations."]
-    #[doc = ""]
-    #[doc = " If the scale mode is not supported, the closest supported mode is chosen."]
-    #[doc = ""]
-    #[doc = " \\param texture The texture to update."]
-    #[doc = " \\param scaleMode the SDL_ScaleMode to use for texture scaling."]
-    #[doc = " \\returns 0 on success, or -1 if the texture is not valid."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_GetTextureScaleMode"]
     pub fn SDL_SetTextureScaleMode(
         texture: *mut SDL_Texture,
         scaleMode: SDL_ScaleMode,
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[doc = " Get the scale mode used for texture scale operations."]
-    #[doc = ""]
-    #[doc = " \\param texture the texture to query."]
-    #[doc = " \\param scaleMode a pointer filled in with the current scale mode."]
-    #[doc = " \\return 0 on success, or -1 if the texture is not valid."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_SetTextureScaleMode"]
     pub fn SDL_GetTextureScaleMode(
         texture: *mut SDL_Texture,
         scaleMode: *mut SDL_ScaleMode,
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[doc = " Associate a user-specified pointer with a texture."]
-    #[doc = ""]
-    #[doc = " \\param texture the texture to update."]
-    #[doc = " \\param userdata the pointer to associate with the texture."]
-    #[doc = " \\returns 0 on success, or -1 if the texture is not valid."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_GetTextureUserData"]
     pub fn SDL_SetTextureUserData(
         texture: *mut SDL_Texture,
         userdata: *mut ::std::os::raw::c_void,
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[doc = " Get the user-specified pointer associated with a texture"]
-    #[doc = ""]
-    #[doc = " \\param texture the texture to query."]
-    #[doc = " \\return the pointer associated with the texture, or NULL if the texture is"]
-    #[doc = "         not valid."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_SetTextureUserData"]
     pub fn SDL_GetTextureUserData(texture: *mut SDL_Texture) -> *mut ::std::os::raw::c_void;
 }
 extern "C" {
-    #[doc = " Update the given texture rectangle with new pixel data."]
-    #[doc = ""]
-    #[doc = " The pixel data must be in the pixel format of the texture. Use"]
-    #[doc = " SDL_QueryTexture() to query the pixel format of the texture."]
-    #[doc = ""]
-    #[doc = " This is a fairly slow function, intended for use with static textures that"]
-    #[doc = " do not change often."]
-    #[doc = ""]
-    #[doc = " If the texture is intended to be updated often, it is preferred to create"]
-    #[doc = " the texture as streaming and use the locking functions referenced below."]
-    #[doc = " While this function will work with streaming textures, for optimization"]
-    #[doc = " reasons you may not get the pixels back if you lock the texture afterward."]
-    #[doc = ""]
-    #[doc = " \\param texture the texture to update"]
-    #[doc = " \\param rect an SDL_Rect structure representing the area to update, or NULL"]
-    #[doc = "             to update the entire texture"]
-    #[doc = " \\param pixels the raw pixel data in the format of the texture"]
-    #[doc = " \\param pitch the number of bytes in a row of pixel data, including padding"]
-    #[doc = "              between lines"]
-    #[doc = " \\returns 0 on success or a negative error code on failure; call"]
-    #[doc = "          SDL_GetError() for more information."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_CreateTexture"]
-    #[doc = " \\sa SDL_LockTexture"]
-    #[doc = " \\sa SDL_UnlockTexture"]
     pub fn SDL_UpdateTexture(
         texture: *mut SDL_Texture,
         rect: *const SDL_Rect,
@@ -18944,31 +10882,6 @@ extern "C" {
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[doc = " Update a rectangle within a planar YV12 or IYUV texture with new pixel"]
-    #[doc = " data."]
-    #[doc = ""]
-    #[doc = " You can use SDL_UpdateTexture() as long as your pixel data is a contiguous"]
-    #[doc = " block of Y and U/V planes in the proper order, but this function is"]
-    #[doc = " available if your pixel data is not contiguous."]
-    #[doc = ""]
-    #[doc = " \\param texture the texture to update"]
-    #[doc = " \\param rect a pointer to the rectangle of pixels to update, or NULL to"]
-    #[doc = "             update the entire texture"]
-    #[doc = " \\param Yplane the raw pixel data for the Y plane"]
-    #[doc = " \\param Ypitch the number of bytes between rows of pixel data for the Y"]
-    #[doc = "               plane"]
-    #[doc = " \\param Uplane the raw pixel data for the U plane"]
-    #[doc = " \\param Upitch the number of bytes between rows of pixel data for the U"]
-    #[doc = "               plane"]
-    #[doc = " \\param Vplane the raw pixel data for the V plane"]
-    #[doc = " \\param Vpitch the number of bytes between rows of pixel data for the V"]
-    #[doc = "               plane"]
-    #[doc = " \\returns 0 on success or -1 if the texture is not valid; call"]
-    #[doc = "          SDL_GetError() for more information."]
-    #[doc = ""]
-    #[doc = " \\since This function is available since SDL 2.0.1."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_UpdateTexture"]
     pub fn SDL_UpdateYUVTexture(
         texture: *mut SDL_Texture,
         rect: *const SDL_Rect,
@@ -18981,22 +10894,6 @@ extern "C" {
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[doc = " Update a rectangle within a planar NV12 or NV21 texture with new pixels."]
-    #[doc = ""]
-    #[doc = " You can use SDL_UpdateTexture() as long as your pixel data is a contiguous"]
-    #[doc = " block of NV12/21 planes in the proper order, but this function is available"]
-    #[doc = " if your pixel data is not contiguous."]
-    #[doc = ""]
-    #[doc = " \\param texture the texture to update"]
-    #[doc = " \\param rect a pointer to the rectangle of pixels to update, or NULL to"]
-    #[doc = "             update the entire texture."]
-    #[doc = " \\param Yplane the raw pixel data for the Y plane."]
-    #[doc = " \\param Ypitch the number of bytes between rows of pixel data for the Y"]
-    #[doc = "               plane."]
-    #[doc = " \\param UVplane the raw pixel data for the UV plane."]
-    #[doc = " \\param UVpitch the number of bytes between rows of pixel data for the UV"]
-    #[doc = "                plane."]
-    #[doc = " \\return 0 on success, or -1 if the texture is not valid."]
     pub fn SDL_UpdateNVTexture(
         texture: *mut SDL_Texture,
         rect: *const SDL_Rect,
@@ -19007,29 +10904,6 @@ extern "C" {
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[doc = " Lock a portion of the texture for **write-only** pixel access."]
-    #[doc = ""]
-    #[doc = " As an optimization, the pixels made available for editing don't necessarily"]
-    #[doc = " contain the old texture data. This is a write-only operation, and if you"]
-    #[doc = " need to keep a copy of the texture data you should do that at the"]
-    #[doc = " application level."]
-    #[doc = ""]
-    #[doc = " You must use SDL_UnlockTexture() to unlock the pixels and apply any"]
-    #[doc = " changes."]
-    #[doc = ""]
-    #[doc = " \\param texture the texture to lock for access, which was created with"]
-    #[doc = "                `SDL_TEXTUREACCESS_STREAMING`"]
-    #[doc = " \\param rect an SDL_Rect structure representing the area to lock for access;"]
-    #[doc = "             NULL to lock the entire texture"]
-    #[doc = " \\param pixels this is filled in with a pointer to the locked pixels,"]
-    #[doc = "               appropriately offset by the locked area"]
-    #[doc = " \\param pitch this is filled in with the pitch of the locked pixels; the"]
-    #[doc = "              pitch is the length of one row in bytes"]
-    #[doc = " \\returns 0 on success or a negative error code if the texture is not valid"]
-    #[doc = "          or was not created with `SDL_TEXTUREACCESS_STREAMING`; call"]
-    #[doc = "          SDL_GetError() for more information."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_UnlockTexture"]
     pub fn SDL_LockTexture(
         texture: *mut SDL_Texture,
         rect: *const SDL_Rect,
@@ -19038,34 +10912,6 @@ extern "C" {
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[doc = " Lock a portion of the texture for **write-only** pixel access, and expose"]
-    #[doc = " it as a SDL surface."]
-    #[doc = ""]
-    #[doc = " Besides providing an SDL_Surface instead of raw pixel data, this function"]
-    #[doc = " operates like SDL_LockTexture."]
-    #[doc = ""]
-    #[doc = " As an optimization, the pixels made available for editing don't necessarily"]
-    #[doc = " contain the old texture data. This is a write-only operation, and if you"]
-    #[doc = " need to keep a copy of the texture data you should do that at the"]
-    #[doc = " application level."]
-    #[doc = ""]
-    #[doc = " You must use SDL_UnlockTexture() to unlock the pixels and apply any"]
-    #[doc = " changes."]
-    #[doc = ""]
-    #[doc = " The returned surface is freed internally after calling SDL_UnlockTexture()"]
-    #[doc = " or SDL_DestroyTexture(). The caller should not free it."]
-    #[doc = ""]
-    #[doc = " \\param texture the texture to lock for access, which was created with"]
-    #[doc = "                `SDL_TEXTUREACCESS_STREAMING`"]
-    #[doc = " \\param rect a pointer to the rectangle to lock for access. If the rect is"]
-    #[doc = "             NULL, the entire texture will be locked"]
-    #[doc = " \\param surface this is filled in with an SDL surface representing the"]
-    #[doc = "                locked area"]
-    #[doc = " \\returns 0 on success, or -1 if the texture is not valid or was not created"]
-    #[doc = "          with `SDL_TEXTUREACCESS_STREAMING`"]
-    #[doc = ""]
-    #[doc = " \\sa SDL_LockTexture"]
-    #[doc = " \\sa SDL_UnlockTexture"]
     pub fn SDL_LockTextureToSurface(
         texture: *mut SDL_Texture,
         rect: *const SDL_Rect,
@@ -19073,97 +10919,21 @@ extern "C" {
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[doc = " Unlock a texture, uploading the changes to video memory, if needed."]
-    #[doc = ""]
-    #[doc = " **Warning**: Please note that SDL_LockTexture() is intended to be"]
-    #[doc = " write-only; it will notguarantee the previous contents of the texture will"]
-    #[doc = " be provided. You must fully initialize any area of a texture that you lock"]
-    #[doc = " before unlocking it, as the pixels might otherwise be uninitialized memory."]
-    #[doc = ""]
-    #[doc = " Which is to say: locking and immediately unlocking a texture can result in"]
-    #[doc = " corrupted textures, depending on the renderer in use."]
-    #[doc = ""]
-    #[doc = " \\param texture a texture locked by SDL_LockTexture()"]
-    #[doc = ""]
-    #[doc = " \\sa SDL_LockTexture"]
     pub fn SDL_UnlockTexture(texture: *mut SDL_Texture);
 }
 extern "C" {
-    #[doc = " Determine whether a renderer supports the use of render targets."]
-    #[doc = ""]
-    #[doc = " \\param renderer the renderer that will be checked"]
-    #[doc = " \\returns SDL_TRUE if supported or SDL_FALSE if not."]
-    #[doc = ""]
-    #[doc = " \\since This function is available since SDL 2.0.0."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_SetRenderTarget"]
     pub fn SDL_RenderTargetSupported(renderer: *mut SDL_Renderer) -> SDL_bool;
 }
 extern "C" {
-    #[doc = " Set a texture as the current rendering target."]
-    #[doc = ""]
-    #[doc = " Before using this function, you should check the"]
-    #[doc = " `SDL_RENDERER_TARGETTEXTURE` bit in the flags of SDL_RendererInfo to see if"]
-    #[doc = " render targets are supported."]
-    #[doc = ""]
-    #[doc = " The default render target is the window for which the renderer was created."]
-    #[doc = " To stop rendering to a texture and render to the window again, call this"]
-    #[doc = " function with a NULL `texture`."]
-    #[doc = ""]
-    #[doc = " \\param renderer the rendering context"]
-    #[doc = " \\param texture the targeted texture, which must be created with the"]
-    #[doc = "                `SDL_TEXTUREACCESS_TARGET` flag, or NULL to render to the"]
-    #[doc = "                window instead of a texture."]
-    #[doc = " \\returns 0 on success or a negative error code on failure; call"]
-    #[doc = "          SDL_GetError() for more information."]
-    #[doc = ""]
-    #[doc = " \\since This function is available since SDL 2.0.0."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_GetRenderTarget"]
     pub fn SDL_SetRenderTarget(
         renderer: *mut SDL_Renderer,
         texture: *mut SDL_Texture,
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[doc = " Get the current render target."]
-    #[doc = ""]
-    #[doc = " The default render target is the window for which the renderer was created,"]
-    #[doc = " and is reported a NULL here."]
-    #[doc = ""]
-    #[doc = " \\param renderer the rendering context"]
-    #[doc = " \\returns the current render target or NULL for the default render target."]
-    #[doc = ""]
-    #[doc = " \\since This function is available since SDL 2.0.0."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_SetRenderTarget"]
     pub fn SDL_GetRenderTarget(renderer: *mut SDL_Renderer) -> *mut SDL_Texture;
 }
 extern "C" {
-    #[doc = " Set a device independent resolution for rendering."]
-    #[doc = ""]
-    #[doc = " This function uses the viewport and scaling functionality to allow a fixed"]
-    #[doc = " logical resolution for rendering, regardless of the actual output"]
-    #[doc = " resolution. If the actual output resolution doesn't have the same aspect"]
-    #[doc = " ratio the output rendering will be centered within the output display."]
-    #[doc = ""]
-    #[doc = " If the output display is a window, mouse and touch events in the window"]
-    #[doc = " will be filtered and scaled so they seem to arrive within the logical"]
-    #[doc = " resolution. The SDL_HINT_MOUSE_RELATIVE_SCALING hint controls whether"]
-    #[doc = " relative motion events are also scaled."]
-    #[doc = ""]
-    #[doc = " If this function results in scaling or subpixel drawing by the rendering"]
-    #[doc = " backend, it will be handled using the appropriate quality hints."]
-    #[doc = ""]
-    #[doc = " \\param renderer the renderer for which resolution should be set"]
-    #[doc = " \\param w the width of the logical resolution"]
-    #[doc = " \\param h the height of the logical resolution"]
-    #[doc = " \\returns 0 on success or a negative error code on failure; call"]
-    #[doc = "          SDL_GetError() for more information."]
-    #[doc = ""]
-    #[doc = " \\since This function is available since SDL 2.0.0."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_RenderGetLogicalSize"]
     pub fn SDL_RenderSetLogicalSize(
         renderer: *mut SDL_Renderer,
         w: ::std::os::raw::c_int,
@@ -19171,19 +10941,6 @@ extern "C" {
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[doc = " Get device independent resolution for rendering."]
-    #[doc = ""]
-    #[doc = " This may return 0 for `w` and `h` if the SDL_Renderer has never had its"]
-    #[doc = " logical size set by SDL_RenderSetLogicalSize() and never had a render"]
-    #[doc = " target set."]
-    #[doc = ""]
-    #[doc = " \\param renderer a rendering context"]
-    #[doc = " \\param w an int to be filled with the width"]
-    #[doc = " \\param h an int to be filled with the height"]
-    #[doc = ""]
-    #[doc = " \\since This function is available since SDL 2.0.0."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_RenderSetLogicalSize"]
     pub fn SDL_RenderGetLogicalSize(
         renderer: *mut SDL_Renderer,
         w: *mut ::std::os::raw::c_int,
@@ -19191,128 +10948,36 @@ extern "C" {
     );
 }
 extern "C" {
-    #[doc = " Set whether to force integer scales for resolution-independent rendering."]
-    #[doc = ""]
-    #[doc = " This function restricts the logical viewport to integer values - that is,"]
-    #[doc = " when a resolution is between two multiples of a logical size, the viewport"]
-    #[doc = " size is rounded down to the lower multiple."]
-    #[doc = ""]
-    #[doc = " \\param renderer the renderer for which integer scaling should be set"]
-    #[doc = " \\param enable enable or disable the integer scaling for rendering"]
-    #[doc = " \\returns 0 on success or a negative error code on failure; call"]
-    #[doc = "          SDL_GetError() for more information."]
-    #[doc = ""]
-    #[doc = " \\since This function is available since SDL 2.0.5."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_RenderGetIntegerScale"]
-    #[doc = " \\sa SDL_RenderSetLogicalSize"]
     pub fn SDL_RenderSetIntegerScale(
         renderer: *mut SDL_Renderer,
         enable: SDL_bool,
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[doc = " Get whether integer scales are forced for resolution-independent rendering."]
-    #[doc = ""]
-    #[doc = " \\param renderer the renderer from which integer scaling should be queried"]
-    #[doc = " \\returns SDL_TRUE if integer scales are forced or SDL_FALSE if not and on"]
-    #[doc = "          failure; call SDL_GetError() for more information."]
-    #[doc = ""]
-    #[doc = " \\since This function is available since SDL 2.0.5."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_RenderSetIntegerScale"]
     pub fn SDL_RenderGetIntegerScale(renderer: *mut SDL_Renderer) -> SDL_bool;
 }
 extern "C" {
-    #[doc = " Set the drawing area for rendering on the current target."]
-    #[doc = ""]
-    #[doc = " When the window is resized, the viewport is reset to fill the entire new"]
-    #[doc = " window size."]
-    #[doc = ""]
-    #[doc = " \\param renderer the rendering context"]
-    #[doc = " \\param rect the SDL_Rect structure representing the drawing area, or NULL"]
-    #[doc = "             to set the viewport to the entire target"]
-    #[doc = " \\returns 0 on success or a negative error code on failure; call"]
-    #[doc = "          SDL_GetError() for more information."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_RenderGetViewport"]
     pub fn SDL_RenderSetViewport(
         renderer: *mut SDL_Renderer,
         rect: *const SDL_Rect,
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[doc = " Get the drawing area for the current target."]
-    #[doc = ""]
-    #[doc = " \\param renderer the rendering context"]
-    #[doc = " \\param rect an SDL_Rect structure filled in with the current drawing area"]
-    #[doc = ""]
-    #[doc = " \\sa SDL_RenderSetViewport"]
     pub fn SDL_RenderGetViewport(renderer: *mut SDL_Renderer, rect: *mut SDL_Rect);
 }
 extern "C" {
-    #[doc = " Set the clip rectangle for rendering on the specified target."]
-    #[doc = ""]
-    #[doc = " \\param renderer the rendering context for which clip rectangle should be"]
-    #[doc = "                 set"]
-    #[doc = " \\param rect an SDL_Rect structure representing the clip area, relative to"]
-    #[doc = "             the viewport, or NULL to disable clipping"]
-    #[doc = " \\returns 0 on success or a negative error code on failure; call"]
-    #[doc = "          SDL_GetError() for more information."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_RenderGetClipRect"]
-    #[doc = " \\sa SDL_RenderIsClipEnabled"]
     pub fn SDL_RenderSetClipRect(
         renderer: *mut SDL_Renderer,
         rect: *const SDL_Rect,
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[doc = " Get the clip rectangle for the current target."]
-    #[doc = ""]
-    #[doc = " \\param renderer the rendering context from which clip rectangle should be"]
-    #[doc = "                 queried"]
-    #[doc = " \\param rect an SDL_Rect structure filled in with the current clipping area"]
-    #[doc = "             or an empty rectangle if clipping is disabled"]
-    #[doc = ""]
-    #[doc = " \\sa SDL_RenderIsClipEnabled"]
-    #[doc = " \\sa SDL_RenderSetClipRect"]
     pub fn SDL_RenderGetClipRect(renderer: *mut SDL_Renderer, rect: *mut SDL_Rect);
 }
 extern "C" {
-    #[doc = " Get whether clipping is enabled on the given renderer."]
-    #[doc = ""]
-    #[doc = " \\param renderer the renderer from which clip state should be queried"]
-    #[doc = " \\returns SDL_TRUE if clipping is enabled or SDL_FALSE if not; call"]
-    #[doc = "          SDL_GetError() for more information."]
-    #[doc = ""]
-    #[doc = " \\since This function is available since SDL 2.0.4."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_RenderGetClipRect"]
-    #[doc = " \\sa SDL_RenderSetClipRect"]
     pub fn SDL_RenderIsClipEnabled(renderer: *mut SDL_Renderer) -> SDL_bool;
 }
 extern "C" {
-    #[doc = " Set the drawing scale for rendering on the current target."]
-    #[doc = ""]
-    #[doc = " The drawing coordinates are scaled by the x/y scaling factors before they"]
-    #[doc = " are used by the renderer. This allows resolution independent drawing with a"]
-    #[doc = " single coordinate system."]
-    #[doc = ""]
-    #[doc = " If this results in scaling or subpixel drawing by the rendering backend, it"]
-    #[doc = " will be handled using the appropriate quality hints. For best results use"]
-    #[doc = " integer scaling factors."]
-    #[doc = ""]
-    #[doc = " \\param renderer a rendering context"]
-    #[doc = " \\param scaleX the horizontal scaling factor"]
-    #[doc = " \\param scaleY the vertical scaling factor"]
-    #[doc = " \\returns 0 on success or a negative error code on failure; call"]
-    #[doc = "          SDL_GetError() for more information."]
-    #[doc = ""]
-    #[doc = " \\since This function is available since SDL 2.0.0."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_RenderGetScale"]
-    #[doc = " \\sa SDL_RenderSetLogicalSize"]
     pub fn SDL_RenderSetScale(
         renderer: *mut SDL_Renderer,
         scaleX: f32,
@@ -19320,43 +10985,9 @@ extern "C" {
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[doc = " Get the drawing scale for the current target."]
-    #[doc = ""]
-    #[doc = " \\param renderer the renderer from which drawing scale should be queried"]
-    #[doc = " \\param scaleX a pointer filled in with the horizontal scaling factor"]
-    #[doc = " \\param scaleY a pointer filled in with the vertical scaling factor"]
-    #[doc = ""]
-    #[doc = " \\since This function is available since SDL 2.0.0."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_RenderSetScale"]
     pub fn SDL_RenderGetScale(renderer: *mut SDL_Renderer, scaleX: *mut f32, scaleY: *mut f32);
 }
 extern "C" {
-    #[doc = " Set the color used for drawing operations (Rect, Line and Clear)."]
-    #[doc = ""]
-    #[doc = " Set the color for drawing or filling rectangles, lines, and points, and for"]
-    #[doc = " SDL_RenderClear()."]
-    #[doc = ""]
-    #[doc = " \\param renderer the rendering context"]
-    #[doc = " \\param r the red value used to draw on the rendering target"]
-    #[doc = " \\param g the green value used to draw on the rendering target"]
-    #[doc = " \\param b the blue value used to draw on the rendering target"]
-    #[doc = " \\param a the alpha value used to draw on the rendering target; usually"]
-    #[doc = "          `SDL_ALPHA_OPAQUE` (255). Use SDL_SetRenderDrawBlendMode to"]
-    #[doc = "          specify how the alpha channel is used"]
-    #[doc = " \\returns 0 on success or a negative error code on failure; call"]
-    #[doc = "          SDL_GetError() for more information."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_GetRenderDrawColor"]
-    #[doc = " \\sa SDL_RenderClear"]
-    #[doc = " \\sa SDL_RenderDrawLine"]
-    #[doc = " \\sa SDL_RenderDrawLines"]
-    #[doc = " \\sa SDL_RenderDrawPoint"]
-    #[doc = " \\sa SDL_RenderDrawPoints"]
-    #[doc = " \\sa SDL_RenderDrawRect"]
-    #[doc = " \\sa SDL_RenderDrawRects"]
-    #[doc = " \\sa SDL_RenderFillRect"]
-    #[doc = " \\sa SDL_RenderFillRects"]
     pub fn SDL_SetRenderDrawColor(
         renderer: *mut SDL_Renderer,
         r: Uint8,
@@ -19366,21 +10997,6 @@ extern "C" {
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[doc = " Get the color used for drawing operations (Rect, Line and Clear)."]
-    #[doc = ""]
-    #[doc = " \\param renderer the rendering context"]
-    #[doc = " \\param r a pointer filled in with the red value used to draw on the"]
-    #[doc = "          rendering target"]
-    #[doc = " \\param g a pointer filled in with the green value used to draw on the"]
-    #[doc = "          rendering target"]
-    #[doc = " \\param b a pointer filled in with the blue value used to draw on the"]
-    #[doc = "          rendering target"]
-    #[doc = " \\param a a pointer filled in with the alpha value used to draw on the"]
-    #[doc = "          rendering target; usually `SDL_ALPHA_OPAQUE` (255)"]
-    #[doc = " \\returns 0 on success or a negative error code on failure; call"]
-    #[doc = "          SDL_GetError() for more information."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_SetRenderDrawColor"]
     pub fn SDL_GetRenderDrawColor(
         renderer: *mut SDL_Renderer,
         r: *mut Uint8,
@@ -19390,80 +11006,21 @@ extern "C" {
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[doc = " Set the blend mode used for drawing operations (Fill and Line)."]
-    #[doc = ""]
-    #[doc = " If the blend mode is not supported, the closest supported mode is chosen."]
-    #[doc = ""]
-    #[doc = " \\param renderer the rendering context"]
-    #[doc = " \\param blendMode the SDL_BlendMode to use for blending"]
-    #[doc = " \\returns 0 on success or a negative error code on failure; call"]
-    #[doc = "          SDL_GetError() for more information."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_GetRenderDrawBlendMode"]
-    #[doc = " \\sa SDL_RenderDrawLine"]
-    #[doc = " \\sa SDL_RenderDrawLines"]
-    #[doc = " \\sa SDL_RenderDrawPoint"]
-    #[doc = " \\sa SDL_RenderDrawPoints"]
-    #[doc = " \\sa SDL_RenderDrawRect"]
-    #[doc = " \\sa SDL_RenderDrawRects"]
-    #[doc = " \\sa SDL_RenderFillRect"]
-    #[doc = " \\sa SDL_RenderFillRects"]
     pub fn SDL_SetRenderDrawBlendMode(
         renderer: *mut SDL_Renderer,
         blendMode: SDL_BlendMode,
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[doc = " Get the blend mode used for drawing operations."]
-    #[doc = ""]
-    #[doc = " \\param renderer the rendering context"]
-    #[doc = " \\param blendMode a pointer filled in with the current SDL_BlendMode"]
-    #[doc = " \\returns 0 on success or a negative error code on failure; call"]
-    #[doc = "          SDL_GetError() for more information."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_SetRenderDrawBlendMode"]
     pub fn SDL_GetRenderDrawBlendMode(
         renderer: *mut SDL_Renderer,
         blendMode: *mut SDL_BlendMode,
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[doc = " Clear the current rendering target with the drawing color."]
-    #[doc = ""]
-    #[doc = " This function clears the entire rendering target, ignoring the viewport and"]
-    #[doc = " the clip rectangle."]
-    #[doc = ""]
-    #[doc = " \\param renderer the rendering context"]
-    #[doc = " \\returns 0 on success or a negative error code on failure; call"]
-    #[doc = "          SDL_GetError() for more information."]
-    #[doc = ""]
-    #[doc = " \\since This function is available since SDL 2.0.0."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_SetRenderDrawColor"]
     pub fn SDL_RenderClear(renderer: *mut SDL_Renderer) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[doc = " Draw a point on the current rendering target."]
-    #[doc = ""]
-    #[doc = " SDL_RenderDrawPoint() draws a single point. If you want to draw multiple,"]
-    #[doc = " use SDL_RenderDrawPoints() instead."]
-    #[doc = ""]
-    #[doc = " \\param renderer the rendering context"]
-    #[doc = " \\param x the x coordinate of the point"]
-    #[doc = " \\param y the y coordinate of the point"]
-    #[doc = " \\returns 0 on success or a negative error code on failure; call"]
-    #[doc = "          SDL_GetError() for more information."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_RenderDrawLine"]
-    #[doc = " \\sa SDL_RenderDrawLines"]
-    #[doc = " \\sa SDL_RenderDrawPoints"]
-    #[doc = " \\sa SDL_RenderDrawRect"]
-    #[doc = " \\sa SDL_RenderDrawRects"]
-    #[doc = " \\sa SDL_RenderFillRect"]
-    #[doc = " \\sa SDL_RenderFillRects"]
-    #[doc = " \\sa SDL_RenderPresent"]
-    #[doc = " \\sa SDL_SetRenderDrawBlendMode"]
-    #[doc = " \\sa SDL_SetRenderDrawColor"]
     pub fn SDL_RenderDrawPoint(
         renderer: *mut SDL_Renderer,
         x: ::std::os::raw::c_int,
@@ -19471,25 +11028,6 @@ extern "C" {
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[doc = " Draw multiple points on the current rendering target."]
-    #[doc = ""]
-    #[doc = " \\param renderer the rendering context"]
-    #[doc = " \\param points an array of SDL_Point structures that represent the points to"]
-    #[doc = "               draw"]
-    #[doc = " \\param count the number of points to draw"]
-    #[doc = " \\returns 0 on success or a negative error code on failure; call"]
-    #[doc = "          SDL_GetError() for more information."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_RenderDrawLine"]
-    #[doc = " \\sa SDL_RenderDrawLines"]
-    #[doc = " \\sa SDL_RenderDrawPoint"]
-    #[doc = " \\sa SDL_RenderDrawRect"]
-    #[doc = " \\sa SDL_RenderDrawRects"]
-    #[doc = " \\sa SDL_RenderFillRect"]
-    #[doc = " \\sa SDL_RenderFillRects"]
-    #[doc = " \\sa SDL_RenderPresent"]
-    #[doc = " \\sa SDL_SetRenderDrawBlendMode"]
-    #[doc = " \\sa SDL_SetRenderDrawColor"]
     pub fn SDL_RenderDrawPoints(
         renderer: *mut SDL_Renderer,
         points: *const SDL_Point,
@@ -19497,31 +11035,6 @@ extern "C" {
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[doc = " Draw a line on the current rendering target."]
-    #[doc = ""]
-    #[doc = " SDL_RenderDrawLine() draws the line to include both end points. If you want"]
-    #[doc = " to draw multiple, connecting lines use SDL_RenderDrawLines() instead."]
-    #[doc = ""]
-    #[doc = " \\param renderer the rendering context"]
-    #[doc = " \\param x1 the x coordinate of the start point"]
-    #[doc = " \\param y1 the y coordinate of the start point"]
-    #[doc = " \\param x2 the x coordinate of the end point"]
-    #[doc = " \\param y2 the y coordinate of the end point"]
-    #[doc = " \\returns 0 on success or a negative error code on failure; call"]
-    #[doc = "          SDL_GetError() for more information."]
-    #[doc = ""]
-    #[doc = " \\since This function is available since SDL 2.0.0."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_RenderDrawLines"]
-    #[doc = " \\sa SDL_RenderDrawPoint"]
-    #[doc = " \\sa SDL_RenderDrawPoints"]
-    #[doc = " \\sa SDL_RenderDrawRect"]
-    #[doc = " \\sa SDL_RenderDrawRects"]
-    #[doc = " \\sa SDL_RenderFillRect"]
-    #[doc = " \\sa SDL_RenderFillRects"]
-    #[doc = " \\sa SDL_RenderPresent"]
-    #[doc = " \\sa SDL_SetRenderDrawBlendMode"]
-    #[doc = " \\sa SDL_SetRenderDrawColor"]
     pub fn SDL_RenderDrawLine(
         renderer: *mut SDL_Renderer,
         x1: ::std::os::raw::c_int,
@@ -19531,27 +11044,6 @@ extern "C" {
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[doc = " Draw a series of connected lines on the current rendering target."]
-    #[doc = ""]
-    #[doc = " \\param renderer the rendering context"]
-    #[doc = " \\param points an array of SDL_Point structures representing points along"]
-    #[doc = "               the lines"]
-    #[doc = " \\param count the number of points, drawing count-1 lines"]
-    #[doc = " \\returns 0 on success or a negative error code on failure; call"]
-    #[doc = "          SDL_GetError() for more information."]
-    #[doc = ""]
-    #[doc = " \\since This function is available since SDL 2.0.0."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_RenderDrawLine"]
-    #[doc = " \\sa SDL_RenderDrawPoint"]
-    #[doc = " \\sa SDL_RenderDrawPoints"]
-    #[doc = " \\sa SDL_RenderDrawRect"]
-    #[doc = " \\sa SDL_RenderDrawRects"]
-    #[doc = " \\sa SDL_RenderFillRect"]
-    #[doc = " \\sa SDL_RenderFillRects"]
-    #[doc = " \\sa SDL_RenderPresent"]
-    #[doc = " \\sa SDL_SetRenderDrawBlendMode"]
-    #[doc = " \\sa SDL_SetRenderDrawColor"]
     pub fn SDL_RenderDrawLines(
         renderer: *mut SDL_Renderer,
         points: *const SDL_Point,
@@ -19559,49 +11051,12 @@ extern "C" {
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[doc = " Draw a rectangle on the current rendering target."]
-    #[doc = ""]
-    #[doc = " \\param renderer the rendering context"]
-    #[doc = " \\param rect an SDL_Rect structure representing the rectangle to draw, or"]
-    #[doc = "             NULL to outline the entire rendering target"]
-    #[doc = " \\returns 0 on success or a negative error code on failure; call"]
-    #[doc = "          SDL_GetError() for more information."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_RenderDrawLine"]
-    #[doc = " \\sa SDL_RenderDrawLines"]
-    #[doc = " \\sa SDL_RenderDrawPoint"]
-    #[doc = " \\sa SDL_RenderDrawPoints"]
-    #[doc = " \\sa SDL_RenderDrawRects"]
-    #[doc = " \\sa SDL_RenderFillRect"]
-    #[doc = " \\sa SDL_RenderFillRects"]
-    #[doc = " \\sa SDL_RenderPresent"]
-    #[doc = " \\sa SDL_SetRenderDrawBlendMode"]
-    #[doc = " \\sa SDL_SetRenderDrawColor"]
     pub fn SDL_RenderDrawRect(
         renderer: *mut SDL_Renderer,
         rect: *const SDL_Rect,
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[doc = " Draw some number of rectangles on the current rendering target."]
-    #[doc = ""]
-    #[doc = " \\param renderer the rendering context"]
-    #[doc = " \\param rects an array of SDL_Rect structures representing the rectangles to"]
-    #[doc = "              be drawn"]
-    #[doc = " \\param count the number of rectangles"]
-    #[doc = " \\returns 0 on success or a negative error code on failure; call"]
-    #[doc = "          SDL_GetError() for more information."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_RenderDrawLine"]
-    #[doc = " \\sa SDL_RenderDrawLines"]
-    #[doc = " \\sa SDL_RenderDrawPoint"]
-    #[doc = " \\sa SDL_RenderDrawPoints"]
-    #[doc = " \\sa SDL_RenderDrawRect"]
-    #[doc = " \\sa SDL_RenderFillRect"]
-    #[doc = " \\sa SDL_RenderFillRects"]
-    #[doc = " \\sa SDL_RenderPresent"]
-    #[doc = " \\sa SDL_SetRenderDrawBlendMode"]
-    #[doc = " \\sa SDL_SetRenderDrawColor"]
     pub fn SDL_RenderDrawRects(
         renderer: *mut SDL_Renderer,
         rects: *const SDL_Rect,
@@ -19609,52 +11064,12 @@ extern "C" {
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[doc = " Fill a rectangle on the current rendering target with the drawing color."]
-    #[doc = ""]
-    #[doc = " The current drawing color is set by SDL_SetRenderDrawColor(), and the"]
-    #[doc = " color's alpha value is ignored unless blending is enabled with the"]
-    #[doc = " appropriate call to SDL_SetRenderDrawBlendMode()."]
-    #[doc = ""]
-    #[doc = " \\param renderer the rendering context"]
-    #[doc = " \\param rect the SDL_Rect structure representing the rectangle to fill, or"]
-    #[doc = "             NULL for the entire rendering target"]
-    #[doc = " \\returns 0 on success or a negative error code on failure; call"]
-    #[doc = "          SDL_GetError() for more information."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_RenderDrawLine"]
-    #[doc = " \\sa SDL_RenderDrawLines"]
-    #[doc = " \\sa SDL_RenderDrawPoint"]
-    #[doc = " \\sa SDL_RenderDrawPoints"]
-    #[doc = " \\sa SDL_RenderDrawRect"]
-    #[doc = " \\sa SDL_RenderDrawRects"]
-    #[doc = " \\sa SDL_RenderFillRects"]
-    #[doc = " \\sa SDL_RenderPresent"]
-    #[doc = " \\sa SDL_SetRenderDrawBlendMode"]
-    #[doc = " \\sa SDL_SetRenderDrawColor"]
     pub fn SDL_RenderFillRect(
         renderer: *mut SDL_Renderer,
         rect: *const SDL_Rect,
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[doc = " Fill some number of rectangles on the current rendering target with the"]
-    #[doc = " drawing color."]
-    #[doc = ""]
-    #[doc = " \\param renderer the rendering context"]
-    #[doc = " \\param rects an array of SDL_Rect structures representing the rectangles to"]
-    #[doc = "              be filled"]
-    #[doc = " \\param count the number of rectangles"]
-    #[doc = " \\returns 0 on success or a negative error code on failure; call"]
-    #[doc = "          SDL_GetError() for more information."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_RenderDrawLine"]
-    #[doc = " \\sa SDL_RenderDrawLines"]
-    #[doc = " \\sa SDL_RenderDrawPoint"]
-    #[doc = " \\sa SDL_RenderDrawPoints"]
-    #[doc = " \\sa SDL_RenderDrawRect"]
-    #[doc = " \\sa SDL_RenderDrawRects"]
-    #[doc = " \\sa SDL_RenderFillRect"]
-    #[doc = " \\sa SDL_RenderPresent"]
     pub fn SDL_RenderFillRects(
         renderer: *mut SDL_Renderer,
         rects: *const SDL_Rect,
@@ -19662,30 +11077,6 @@ extern "C" {
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[doc = " Copy a portion of the texture to the current rendering target."]
-    #[doc = ""]
-    #[doc = " The texture is blended with the destination based on its blend mode set"]
-    #[doc = " with SDL_SetTextureBlendMode()."]
-    #[doc = ""]
-    #[doc = " The texture color is affected based on its color modulation set by"]
-    #[doc = " SDL_SetTextureColorMod()."]
-    #[doc = ""]
-    #[doc = " The texture alpha is affected based on its alpha modulation set by"]
-    #[doc = " SDL_SetTextureAlphaMod()."]
-    #[doc = ""]
-    #[doc = " \\param renderer the rendering context"]
-    #[doc = " \\param texture the source texture"]
-    #[doc = " \\param srcrect the source SDL_Rect structure or NULL for the entire texture"]
-    #[doc = " \\param dstrect the destination SDL_Rect structure or NULL for the entire"]
-    #[doc = "                rendering target; the texture will be stretched to fill the"]
-    #[doc = "                given rectangle"]
-    #[doc = " \\returns 0 on success or a negative error code on failure; call"]
-    #[doc = "          SDL_GetError() for more information."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_RenderCopyEx"]
-    #[doc = " \\sa SDL_SetTextureAlphaMod"]
-    #[doc = " \\sa SDL_SetTextureBlendMode"]
-    #[doc = " \\sa SDL_SetTextureColorMod"]
     pub fn SDL_RenderCopy(
         renderer: *mut SDL_Renderer,
         texture: *mut SDL_Texture,
@@ -19694,41 +11085,6 @@ extern "C" {
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[doc = " Copy a portion of the texture to the current rendering, with optional"]
-    #[doc = " rotation and flipping."]
-    #[doc = ""]
-    #[doc = " Copy a portion of the texture to the current rendering target, optionally"]
-    #[doc = " rotating it by angle around the given center and also flipping it"]
-    #[doc = " top-bottom and/or left-right."]
-    #[doc = ""]
-    #[doc = " The texture is blended with the destination based on its blend mode set"]
-    #[doc = " with SDL_SetTextureBlendMode()."]
-    #[doc = ""]
-    #[doc = " The texture color is affected based on its color modulation set by"]
-    #[doc = " SDL_SetTextureColorMod()."]
-    #[doc = ""]
-    #[doc = " The texture alpha is affected based on its alpha modulation set by"]
-    #[doc = " SDL_SetTextureAlphaMod()."]
-    #[doc = ""]
-    #[doc = " \\param renderer the rendering context"]
-    #[doc = " \\param texture the source texture"]
-    #[doc = " \\param srcrect the source SDL_Rect structure or NULL for the entire texture"]
-    #[doc = " \\param dstrect the destination SDL_Rect structure or NULL for the entire"]
-    #[doc = "                rendering target"]
-    #[doc = " \\param angle an angle in degrees that indicates the rotation that will be"]
-    #[doc = "              applied to dstrect, rotating it in a clockwise direction"]
-    #[doc = " \\param center a pointer to a point indicating the point around which"]
-    #[doc = "               dstrect will be rotated (if NULL, rotation will be done"]
-    #[doc = "               around `dstrect.w / 2`, `dstrect.h / 2`)"]
-    #[doc = " \\param flip a SDL_RendererFlip value stating which flipping actions should"]
-    #[doc = "             be performed on the texture"]
-    #[doc = " \\returns 0 on success or a negative error code on failure; call"]
-    #[doc = "          SDL_GetError() for more information."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_RenderCopy"]
-    #[doc = " \\sa SDL_SetTextureAlphaMod"]
-    #[doc = " \\sa SDL_SetTextureBlendMode"]
-    #[doc = " \\sa SDL_SetTextureColorMod"]
     pub fn SDL_RenderCopyEx(
         renderer: *mut SDL_Renderer,
         texture: *mut SDL_Texture,
@@ -19740,12 +11096,6 @@ extern "C" {
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[doc = " Draw a point on the current rendering target at subpixel precision."]
-    #[doc = ""]
-    #[doc = " \\param renderer The renderer which should draw a point."]
-    #[doc = " \\param x The x coordinate of the point."]
-    #[doc = " \\param y The y coordinate of the point."]
-    #[doc = " \\return 0 on success, or -1 on error"]
     pub fn SDL_RenderDrawPointF(
         renderer: *mut SDL_Renderer,
         x: f32,
@@ -19753,12 +11103,6 @@ extern "C" {
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[doc = " Draw multiple points on the current rendering target at subpixel precision."]
-    #[doc = ""]
-    #[doc = " \\param renderer The renderer which should draw multiple points."]
-    #[doc = " \\param points The points to draw"]
-    #[doc = " \\param count The number of points to draw"]
-    #[doc = " \\return 0 on success, or -1 on error"]
     pub fn SDL_RenderDrawPointsF(
         renderer: *mut SDL_Renderer,
         points: *const SDL_FPoint,
@@ -19766,14 +11110,6 @@ extern "C" {
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[doc = " Draw a line on the current rendering target at subpixel precision."]
-    #[doc = ""]
-    #[doc = " \\param renderer The renderer which should draw a line."]
-    #[doc = " \\param x1 The x coordinate of the start point."]
-    #[doc = " \\param y1 The y coordinate of the start point."]
-    #[doc = " \\param x2 The x coordinate of the end point."]
-    #[doc = " \\param y2 The y coordinate of the end point."]
-    #[doc = " \\return 0 on success, or -1 on error"]
     pub fn SDL_RenderDrawLineF(
         renderer: *mut SDL_Renderer,
         x1: f32,
@@ -19783,13 +11119,6 @@ extern "C" {
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[doc = " Draw a series of connected lines on the current rendering target at"]
-    #[doc = " subpixel precision."]
-    #[doc = ""]
-    #[doc = " \\param renderer The renderer which should draw multiple lines."]
-    #[doc = " \\param points The points along the lines"]
-    #[doc = " \\param count The number of points, drawing count-1 lines"]
-    #[doc = " \\return 0 on success, or -1 on error"]
     pub fn SDL_RenderDrawLinesF(
         renderer: *mut SDL_Renderer,
         points: *const SDL_FPoint,
@@ -19797,25 +11126,12 @@ extern "C" {
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[doc = " Draw a rectangle on the current rendering target at subpixel precision."]
-    #[doc = ""]
-    #[doc = " \\param renderer The renderer which should draw a rectangle."]
-    #[doc = " \\param rect A pointer to the destination rectangle, or NULL to outline the"]
-    #[doc = "             entire rendering target."]
-    #[doc = " \\return 0 on success, or -1 on error"]
     pub fn SDL_RenderDrawRectF(
         renderer: *mut SDL_Renderer,
         rect: *const SDL_FRect,
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[doc = " Draw some number of rectangles on the current rendering target at subpixel"]
-    #[doc = " precision."]
-    #[doc = ""]
-    #[doc = " \\param renderer The renderer which should draw multiple rectangles."]
-    #[doc = " \\param rects A pointer to an array of destination rectangles."]
-    #[doc = " \\param count The number of rectangles."]
-    #[doc = " \\return 0 on success, or -1 on error"]
     pub fn SDL_RenderDrawRectsF(
         renderer: *mut SDL_Renderer,
         rects: *const SDL_FRect,
@@ -19823,26 +11139,12 @@ extern "C" {
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[doc = " Fill a rectangle on the current rendering target with the drawing color at"]
-    #[doc = " subpixel precision."]
-    #[doc = ""]
-    #[doc = " \\param renderer The renderer which should fill a rectangle."]
-    #[doc = " \\param rect A pointer to the destination rectangle, or NULL for the entire"]
-    #[doc = "             rendering target."]
-    #[doc = " \\return 0 on success, or -1 on error"]
     pub fn SDL_RenderFillRectF(
         renderer: *mut SDL_Renderer,
         rect: *const SDL_FRect,
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[doc = " Fill some number of rectangles on the current rendering target with the"]
-    #[doc = " drawing color at subpixel precision."]
-    #[doc = ""]
-    #[doc = " \\param renderer The renderer which should fill multiple rectangles."]
-    #[doc = " \\param rects A pointer to an array of destination rectangles."]
-    #[doc = " \\param count The number of rectangles."]
-    #[doc = " \\return 0 on success, or -1 on error"]
     pub fn SDL_RenderFillRectsF(
         renderer: *mut SDL_Renderer,
         rects: *const SDL_FRect,
@@ -19850,16 +11152,6 @@ extern "C" {
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[doc = " Copy a portion of the texture to the current rendering target at subpixel"]
-    #[doc = " precision."]
-    #[doc = ""]
-    #[doc = " \\param renderer The renderer which should copy parts of a texture."]
-    #[doc = " \\param texture The source texture."]
-    #[doc = " \\param srcrect A pointer to the source rectangle, or NULL for the entire"]
-    #[doc = "                texture."]
-    #[doc = " \\param dstrect A pointer to the destination rectangle, or NULL for the"]
-    #[doc = "                entire rendering target."]
-    #[doc = " \\return 0 on success, or -1 on error"]
     pub fn SDL_RenderCopyF(
         renderer: *mut SDL_Renderer,
         texture: *mut SDL_Texture,
@@ -19868,23 +11160,6 @@ extern "C" {
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[doc = " Copy a portion of the source texture to the current rendering target, with"]
-    #[doc = " rotation and flipping, at subpixel precision."]
-    #[doc = ""]
-    #[doc = " \\param renderer The renderer which should copy parts of a texture."]
-    #[doc = " \\param texture The source texture."]
-    #[doc = " \\param srcrect A pointer to the source rectangle, or NULL for the entire"]
-    #[doc = "                texture."]
-    #[doc = " \\param dstrect A pointer to the destination rectangle, or NULL for the"]
-    #[doc = "                entire rendering target."]
-    #[doc = " \\param angle An angle in degrees that indicates the rotation that will be"]
-    #[doc = "              applied to dstrect, rotating it in a clockwise direction"]
-    #[doc = " \\param center A pointer to a point indicating the point around which"]
-    #[doc = "               dstrect will be rotated (if NULL, rotation will be done"]
-    #[doc = "               around dstrect.w/2, dstrect.h/2)."]
-    #[doc = " \\param flip An SDL_RendererFlip value stating which flipping actions should"]
-    #[doc = "             be performed on the texture"]
-    #[doc = " \\return 0 on success, or -1 on error"]
     pub fn SDL_RenderCopyExF(
         renderer: *mut SDL_Renderer,
         texture: *mut SDL_Texture,
@@ -19896,27 +11171,6 @@ extern "C" {
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[doc = " Read pixels from the current rendering target to an array of pixels."]
-    #[doc = ""]
-    #[doc = " **WARNING**: This is a very slow operation, and should not be used"]
-    #[doc = " frequently."]
-    #[doc = ""]
-    #[doc = " `pitch` specifies the number of bytes between rows in the destination"]
-    #[doc = " `pixels` data. This allows you to write to a subrectangle or have padded"]
-    #[doc = " rows in the destination. Generally, `pitch` should equal the number of"]
-    #[doc = " pixels per row in the `pixels` data times the number of bytes per pixel,"]
-    #[doc = " but it might contain additional padding (for example, 24bit RGB Windows"]
-    #[doc = " Bitmap data pads all rows to multiples of 4 bytes)."]
-    #[doc = ""]
-    #[doc = " \\param renderer the rendering context"]
-    #[doc = " \\param rect an SDL_Rect structure representing the area to read, or NULL"]
-    #[doc = "             for the entire render target"]
-    #[doc = " \\param format an SDL_PixelFormatEnum value of the desired format of the"]
-    #[doc = "               pixel data, or 0 to use the format of the rendering target"]
-    #[doc = " \\param pixels a pointer to the pixel data to copy into"]
-    #[doc = " \\param pitch the pitch of the `pixels` parameter"]
-    #[doc = " \\returns 0 on success or a negative error code on failure; call"]
-    #[doc = "          SDL_GetError() for more information."]
     pub fn SDL_RenderReadPixels(
         renderer: *mut SDL_Renderer,
         rect: *const SDL_Rect,
@@ -19926,123 +11180,18 @@ extern "C" {
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[doc = " Update the screen with any rendering performed since the previous call."]
-    #[doc = ""]
-    #[doc = " SDL's rendering functions operate on a backbuffer; that is, calling a"]
-    #[doc = " rendering function such as SDL_RenderDrawLine() does not directly put a"]
-    #[doc = " line on the screen, but rather updates the backbuffer. As such, you compose"]
-    #[doc = " your entire scene and *present* the composed backbuffer to the screen as a"]
-    #[doc = " complete picture."]
-    #[doc = ""]
-    #[doc = " Therefore, when using SDL's rendering API, one does all drawing intended"]
-    #[doc = " for the frame, and then calls this function once per frame to present the"]
-    #[doc = " final drawing to the user."]
-    #[doc = ""]
-    #[doc = " The backbuffer should be considered invalidated after each present; do not"]
-    #[doc = " assume that previous contents will exist between frames. You are strongly"]
-    #[doc = " encouraged to call SDL_RenderClear() to initialize the backbuffer before"]
-    #[doc = " starting each new frame's drawing, even if you plan to overwrite every"]
-    #[doc = " pixel."]
-    #[doc = ""]
-    #[doc = " \\param renderer the rendering context"]
-    #[doc = ""]
-    #[doc = " \\sa SDL_RenderClear"]
-    #[doc = " \\sa SDL_RenderDrawLine"]
-    #[doc = " \\sa SDL_RenderDrawLines"]
-    #[doc = " \\sa SDL_RenderDrawPoint"]
-    #[doc = " \\sa SDL_RenderDrawPoints"]
-    #[doc = " \\sa SDL_RenderDrawRect"]
-    #[doc = " \\sa SDL_RenderDrawRects"]
-    #[doc = " \\sa SDL_RenderFillRect"]
-    #[doc = " \\sa SDL_RenderFillRects"]
-    #[doc = " \\sa SDL_SetRenderDrawBlendMode"]
-    #[doc = " \\sa SDL_SetRenderDrawColor"]
     pub fn SDL_RenderPresent(renderer: *mut SDL_Renderer);
 }
 extern "C" {
-    #[doc = " Destroy the specified texture."]
-    #[doc = ""]
-    #[doc = " Passing NULL or an otherwise invalid texture will set the SDL error message"]
-    #[doc = " to \"Invalid texture\"."]
-    #[doc = ""]
-    #[doc = " \\param texture the texture to destroy"]
-    #[doc = ""]
-    #[doc = " \\sa SDL_CreateTexture"]
-    #[doc = " \\sa SDL_CreateTextureFromSurface"]
     pub fn SDL_DestroyTexture(texture: *mut SDL_Texture);
 }
 extern "C" {
-    #[doc = " Destroy the rendering context for a window and free associated textures."]
-    #[doc = ""]
-    #[doc = " \\param renderer the rendering context"]
-    #[doc = ""]
-    #[doc = " \\sa SDL_CreateRenderer"]
     pub fn SDL_DestroyRenderer(renderer: *mut SDL_Renderer);
 }
 extern "C" {
-    #[doc = " Force the rendering context to flush any pending commands to the underlying"]
-    #[doc = " rendering API."]
-    #[doc = ""]
-    #[doc = " You do not need to (and in fact, shouldn't) call this function unless you"]
-    #[doc = " are planning to call into OpenGL/Direct3D/Metal/whatever directly in"]
-    #[doc = " addition to using an SDL_Renderer."]
-    #[doc = ""]
-    #[doc = " This is for a very-specific case: if you are using SDL's render API, you"]
-    #[doc = " asked for a specific renderer backend (OpenGL, Direct3D, etc), you set"]
-    #[doc = " SDL_HINT_RENDER_BATCHING to \"1\", and you plan to make OpenGL/D3D/whatever"]
-    #[doc = " calls in addition to SDL render API calls. If all of this applies, you"]
-    #[doc = " should call SDL_RenderFlush() between calls to SDL's render API and the"]
-    #[doc = " low-level API you're using in cooperation."]
-    #[doc = ""]
-    #[doc = " In all other cases, you can ignore this function. This is only here to get"]
-    #[doc = " maximum performance out of a specific situation. In all other cases, SDL"]
-    #[doc = " will do the right thing, perhaps at a performance loss."]
-    #[doc = ""]
-    #[doc = " This function is first available in SDL 2.0.10, and is not needed in 2.0.9"]
-    #[doc = " and earlier, as earlier versions did not queue rendering commands at all,"]
-    #[doc = " instead flushing them to the OS immediately."]
-    #[doc = ""]
-    #[doc = " \\param renderer the rendering context"]
-    #[doc = " \\returns 0 on success or a negative error code on failure; call"]
-    #[doc = "          SDL_GetError() for more information."]
-    #[doc = ""]
-    #[doc = " \\since This function is available since SDL 2.0.10."]
     pub fn SDL_RenderFlush(renderer: *mut SDL_Renderer) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[doc = " Bind an OpenGL/ES/ES2 texture to the current context."]
-    #[doc = ""]
-    #[doc = " This is for use with OpenGL instructions when rendering OpenGL primitives"]
-    #[doc = " directly."]
-    #[doc = ""]
-    #[doc = " If not NULL, `texw` and `texh` will be filled with the width and height"]
-    #[doc = " values suitable for the provided texture. In most cases, both will be 1.0,"]
-    #[doc = " however, on systems that support the GL_ARB_texture_rectangle extension,"]
-    #[doc = " these values will actually be the pixel width and height used to create the"]
-    #[doc = " texture, so this factor needs to be taken into account when providing"]
-    #[doc = " texture coordinates to OpenGL."]
-    #[doc = ""]
-    #[doc = " You need a renderer to create an SDL_Texture, therefore you can only use"]
-    #[doc = " this function with an implicit OpenGL context from SDL_CreateRenderer(),"]
-    #[doc = " not with your own OpenGL context. If you need control over your OpenGL"]
-    #[doc = " context, you need to write your own texture-loading methods."]
-    #[doc = ""]
-    #[doc = " Also note that SDL may upload RGB textures as BGR (or vice-versa), and"]
-    #[doc = " re-order the color channels in the shaders phase, so the uploaded texture"]
-    #[doc = " may have swapped color channels."]
-    #[doc = ""]
-    #[doc = " \\param texture the texture to bind to the current OpenGL/ES/ES2 context"]
-    #[doc = " \\param texw a pointer to a float value which will be filled with the"]
-    #[doc = "             texture width or NULL if you don't need that value"]
-    #[doc = " \\param texh a pointer to a float value which will be filled with the"]
-    #[doc = "             texture height or NULL if you don't need that value"]
-    #[doc = " \\returns 0 on success, or -1 if the operation is not supported; call"]
-    #[doc = "          SDL_GetError() for more information."]
-    #[doc = ""]
-    #[doc = " \\since This function is available since SDL 2.0.0."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_GL_MakeCurrent"]
-    #[doc = " \\sa SDL_GL_UnbindTexture"]
     pub fn SDL_GL_BindTexture(
         texture: *mut SDL_Texture,
         texw: *mut f32,
@@ -20050,65 +11199,17 @@ extern "C" {
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[doc = " Unbind an OpenGL/ES/ES2 texture from the current context."]
-    #[doc = ""]
-    #[doc = " See SDL_GL_BindTexture() for examples on how to use these functions"]
-    #[doc = ""]
-    #[doc = " \\param texture the texture to unbind from the current OpenGL/ES/ES2 context"]
-    #[doc = " \\returns 0 on success, or -1 if the operation is not supported"]
-    #[doc = ""]
-    #[doc = " \\sa SDL_GL_BindTexture"]
-    #[doc = " \\sa SDL_GL_MakeCurrent"]
     pub fn SDL_GL_UnbindTexture(texture: *mut SDL_Texture) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[doc = " Get the CAMetalLayer associated with the given Metal renderer."]
-    #[doc = ""]
-    #[doc = " This function returns `void *`, so SDL doesn't have to include Metal's"]
-    #[doc = " headers, but it can be safely cast to a `CAMetalLayer *`."]
-    #[doc = ""]
-    #[doc = " \\param renderer The renderer to query"]
-    #[doc = " \\returns a `CAMetalLayer *` on success, or NULL if the renderer isn't a"]
-    #[doc = "          Metal renderer"]
-    #[doc = ""]
-    #[doc = " \\sa SDL_RenderGetMetalCommandEncoder"]
     pub fn SDL_RenderGetMetalLayer(renderer: *mut SDL_Renderer) -> *mut ::std::os::raw::c_void;
 }
 extern "C" {
-    #[doc = " Get the Metal command encoder for the current frame"]
-    #[doc = ""]
-    #[doc = " This function returns `void *`, so SDL doesn't have to include Metal's"]
-    #[doc = " headers, but it can be safely cast to an `id<MTLRenderCommandEncoder>`."]
-    #[doc = ""]
-    #[doc = " \\param renderer The renderer to query"]
-    #[doc = " \\returns an `id<MTLRenderCommandEncoder>` on success, or NULL if the"]
-    #[doc = "          renderer isn't a Metal renderer."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_RenderGetMetalLayer"]
     pub fn SDL_RenderGetMetalCommandEncoder(
         renderer: *mut SDL_Renderer,
     ) -> *mut ::std::os::raw::c_void;
 }
 extern "C" {
-    #[doc = " Create a window that can be shaped with the specified position, dimensions,"]
-    #[doc = " and flags."]
-    #[doc = ""]
-    #[doc = " \\param title The title of the window, in UTF-8 encoding."]
-    #[doc = " \\param x The x position of the window, ::SDL_WINDOWPOS_CENTERED, or"]
-    #[doc = "          ::SDL_WINDOWPOS_UNDEFINED."]
-    #[doc = " \\param y The y position of the window, ::SDL_WINDOWPOS_CENTERED, or"]
-    #[doc = "          ::SDL_WINDOWPOS_UNDEFINED."]
-    #[doc = " \\param w The width of the window."]
-    #[doc = " \\param h The height of the window."]
-    #[doc = " \\param flags The flags for the window, a mask of SDL_WINDOW_BORDERLESS with"]
-    #[doc = "              any of the following: ::SDL_WINDOW_OPENGL,"]
-    #[doc = "              ::SDL_WINDOW_INPUT_GRABBED, ::SDL_WINDOW_HIDDEN,"]
-    #[doc = "              ::SDL_WINDOW_RESIZABLE, ::SDL_WINDOW_MAXIMIZED,"]
-    #[doc = "              ::SDL_WINDOW_MINIMIZED, ::SDL_WINDOW_BORDERLESS is always set,"]
-    #[doc = "              and ::SDL_WINDOW_FULLSCREEN is always unset."]
-    #[doc = " \\return the window created, or NULL if window creation failed."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_DestroyWindow"]
     pub fn SDL_CreateShapedWindow(
         title: *const ::std::os::raw::c_char,
         x: ::std::os::raw::c_uint,
@@ -20119,30 +11220,16 @@ extern "C" {
     ) -> *mut SDL_Window;
 }
 extern "C" {
-    #[doc = " Return whether the given window is a shaped window."]
-    #[doc = ""]
-    #[doc = " \\param window The window to query for being shaped."]
-    #[doc = " \\return SDL_TRUE if the window is a window that can be shaped, SDL_FALSE if"]
-    #[doc = "         the window is unshaped or NULL."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_CreateShapedWindow"]
     pub fn SDL_IsShapedWindow(window: *const SDL_Window) -> SDL_bool;
 }
-#[doc = " \\brief The default mode, a binarized alpha cutoff of 1."]
 pub const WindowShapeMode_ShapeModeDefault: WindowShapeMode = 0;
-#[doc = " \\brief A binarized alpha cutoff with a given integer value."]
 pub const WindowShapeMode_ShapeModeBinarizeAlpha: WindowShapeMode = 1;
-#[doc = " \\brief A binarized alpha cutoff with a given integer value, but with the opposite comparison."]
 pub const WindowShapeMode_ShapeModeReverseBinarizeAlpha: WindowShapeMode = 2;
-#[doc = " \\brief A color key is applied."]
 pub const WindowShapeMode_ShapeModeColorKey: WindowShapeMode = 3;
-#[doc = " \\brief An enum denoting the specific type of contents present in an SDL_WindowShapeParams union."]
 pub type WindowShapeMode = ::std::os::raw::c_uint;
-#[doc = " \\brief A union containing parameters for shaped windows."]
 #[repr(C)]
 #[derive(Copy, Clone)]
 pub union SDL_WindowShapeParams {
-    #[doc = " \\brief A cutoff alpha value for binarization of the window shape's alpha channel."]
     pub binarizationCutoff: Uint8,
     pub colorKey: SDL_Color,
     _bindgen_union_align: [u8; 4usize],
@@ -20183,13 +11270,10 @@ fn bindgen_test_layout_SDL_WindowShapeParams() {
         )
     );
 }
-#[doc = " \\brief A struct that tags the SDL_WindowShapeParams union with an enum describing the type of its contents."]
 #[repr(C)]
 #[derive(Copy, Clone)]
 pub struct SDL_WindowShapeMode {
-    #[doc = " \\brief The mode of these window-shape parameters."]
     pub mode: WindowShapeMode,
-    #[doc = " \\brief Window-shape parameters."]
     pub parameters: SDL_WindowShapeParams,
 }
 #[test]
@@ -20226,17 +11310,6 @@ fn bindgen_test_layout_SDL_WindowShapeMode() {
     );
 }
 extern "C" {
-    #[doc = " Set the shape and parameters of a shaped window."]
-    #[doc = ""]
-    #[doc = " \\param window The shaped window whose parameters should be set."]
-    #[doc = " \\param shape A surface encoding the desired shape for the window."]
-    #[doc = " \\param shape_mode The parameters to set for the shaped window."]
-    #[doc = " \\return 0 on success, SDL_INVALID_SHAPE_ARGUMENT on an invalid shape"]
-    #[doc = "         argument, or SDL_NONSHAPEABLE_WINDOW if the SDL_Window given does"]
-    #[doc = "         not reference a valid shaped window."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_WindowShapeMode"]
-    #[doc = " \\sa SDL_GetShapedWindowMode"]
     pub fn SDL_SetWindowShape(
         window: *mut SDL_Window,
         shape: *mut SDL_Surface,
@@ -20244,30 +11317,12 @@ extern "C" {
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[doc = " Get the shape parameters of a shaped window."]
-    #[doc = ""]
-    #[doc = " \\param window The shaped window whose parameters should be retrieved."]
-    #[doc = " \\param shape_mode An empty shape-mode structure to fill, or NULL to check"]
-    #[doc = "                   whether the window has a shape."]
-    #[doc = " \\return 0 if the window has a shape and, provided shape_mode was not NULL,"]
-    #[doc = "         shape_mode has been filled with the mode data,"]
-    #[doc = "         SDL_NONSHAPEABLE_WINDOW if the SDL_Window given is not a shaped"]
-    #[doc = "         window, or SDL_WINDOW_LACKS_SHAPE if the SDL_Window given is a"]
-    #[doc = "         shapeable window currently lacking a shape."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_WindowShapeMode"]
-    #[doc = " \\sa SDL_SetWindowShape"]
     pub fn SDL_GetShapedWindowMode(
         window: *mut SDL_Window,
         shape_mode: *mut SDL_WindowShapeMode,
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[doc = " Query if the current device is a tablet."]
-    #[doc = ""]
-    #[doc = " If SDL can't determine this, it will return SDL_FALSE."]
-    #[doc = ""]
-    #[doc = " \\returns SDL_TRUE if the device is a tablet, SDL_FALSE otherwise."]
     pub fn SDL_IsTablet() -> SDL_bool;
 }
 extern "C" {
@@ -20289,90 +11344,22 @@ extern "C" {
     pub fn SDL_OnApplicationDidBecomeActive();
 }
 extern "C" {
-    #[doc = " Get the number of milliseconds since SDL library initialization."]
-    #[doc = ""]
-    #[doc = " This value wraps if the program runs for more than ~49 days."]
-    #[doc = ""]
-    #[doc = " \\returns an unsigned 32-bit value representing the number of milliseconds"]
-    #[doc = "          since the SDL library initialized."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_TICKS_PASSED"]
     pub fn SDL_GetTicks() -> Uint32;
 }
 extern "C" {
-    #[doc = " Get the current value of the high resolution counter."]
-    #[doc = ""]
-    #[doc = " This function is typically used for profiling."]
-    #[doc = ""]
-    #[doc = " The counter values are only meaningful relative to each other. Differences"]
-    #[doc = " between values can be converted to times by using"]
-    #[doc = " SDL_GetPerformanceFrequency()."]
-    #[doc = ""]
-    #[doc = " \\returns the current counter value."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_GetPerformanceFrequency"]
     pub fn SDL_GetPerformanceCounter() -> Uint64;
 }
 extern "C" {
-    #[doc = " Get the count per second of the high resolution counter."]
-    #[doc = ""]
-    #[doc = " \\returns a platform-specific count per second."]
-    #[doc = ""]
-    #[doc = " \\since This function is available since SDL 2.0.0."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_GetPerformanceCounter"]
     pub fn SDL_GetPerformanceFrequency() -> Uint64;
 }
 extern "C" {
-    #[doc = " Wait a specified number of milliseconds before returning."]
-    #[doc = ""]
-    #[doc = " This function waits a specified number of milliseconds before returning. It"]
-    #[doc = " waits at least the specified time, but possibly longer due to OS"]
-    #[doc = " scheduling."]
-    #[doc = ""]
-    #[doc = " \\param ms the number of milliseconds to delay"]
     pub fn SDL_Delay(ms: Uint32);
 }
-#[doc = " Function prototype for the timer callback function."]
-#[doc = ""]
-#[doc = " The callback function is passed the current timer interval and returns"]
-#[doc = " the next timer interval. If the returned value is the same as the one"]
-#[doc = " passed in, the periodic alarm continues, otherwise a new alarm is"]
-#[doc = " scheduled. If the callback returns 0, the periodic alarm is cancelled."]
 pub type SDL_TimerCallback = ::std::option::Option<
     unsafe extern "C" fn(interval: Uint32, param: *mut ::std::os::raw::c_void) -> Uint32,
 >;
-#[doc = " Definition of the timer ID type."]
 pub type SDL_TimerID = ::std::os::raw::c_int;
 extern "C" {
-    #[doc = " Call a callback function at a future time."]
-    #[doc = ""]
-    #[doc = " If you use this function, you must pass `SDL_INIT_TIMER` to SDL_Init()."]
-    #[doc = ""]
-    #[doc = " The callback function is passed the current timer interval and the user"]
-    #[doc = " supplied parameter from the SDL_AddTimer() call and should return the next"]
-    #[doc = " timer interval. If the value returned from the callback is 0, the timer is"]
-    #[doc = " canceled."]
-    #[doc = ""]
-    #[doc = " The callback is run on a separate thread."]
-    #[doc = ""]
-    #[doc = " Timers take into account the amount of time it took to execute the"]
-    #[doc = " callback. For example, if the callback took 250 ms to execute and returned"]
-    #[doc = " 1000 (ms), the timer would only wait another 750 ms before its next"]
-    #[doc = " iteration."]
-    #[doc = ""]
-    #[doc = " Timing may be inexact due to OS scheduling. Be sure to note the current"]
-    #[doc = " time with SDL_GetTicks() or SDL_GetPerformanceCounter() in case your"]
-    #[doc = " callback needs to adjust for variances."]
-    #[doc = ""]
-    #[doc = " \\param interval the timer delay, in milliseconds, passed to `callback`"]
-    #[doc = " \\param callback the SDL_TimerCallback function to call when the specified"]
-    #[doc = "                 `interval` elapses"]
-    #[doc = " \\param param a pointer that is passed to `callback`"]
-    #[doc = " \\returns a timer ID or 0 if an error occurs; call SDL_GetError() for more"]
-    #[doc = "          information."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_RemoveTimer"]
     pub fn SDL_AddTimer(
         interval: Uint32,
         callback: SDL_TimerCallback,
@@ -20380,33 +11367,13 @@ extern "C" {
     ) -> SDL_TimerID;
 }
 extern "C" {
-    #[doc = " Remove a timer created with SDL_AddTimer()."]
-    #[doc = ""]
-    #[doc = " \\param id the ID of the timer to remove"]
-    #[doc = " \\returns SDL_TRUE if the timer is removed or SDL_FALSE if the timer wasn't"]
-    #[doc = "          found."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_AddTimer"]
     pub fn SDL_RemoveTimer(id: SDL_TimerID) -> SDL_bool;
 }
-#[doc = " Information about the version of SDL in use."]
-#[doc = ""]
-#[doc = " Represents the library's version as three levels: major revision"]
-#[doc = " (increments with massive changes, additions, and enhancements),"]
-#[doc = " minor revision (increments with backwards-compatible changes to the"]
-#[doc = " major revision), and patchlevel (increments with fixes to the minor"]
-#[doc = " revision)."]
-#[doc = ""]
-#[doc = " \\sa SDL_VERSION"]
-#[doc = " \\sa SDL_GetVersion"]
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
 pub struct SDL_version {
-    #[doc = "< major version"]
     pub major: Uint8,
-    #[doc = "< minor version"]
     pub minor: Uint8,
-    #[doc = "< update version"]
     pub patch: Uint8,
 }
 #[test]
@@ -20453,62 +11420,18 @@ fn bindgen_test_layout_SDL_version() {
     );
 }
 extern "C" {
-    #[doc = " Get the version of SDL that is linked against your program."]
-    #[doc = ""]
-    #[doc = " If you are linking to SDL dynamically, then it is possible that the current"]
-    #[doc = " version will be different than the version you compiled against. This"]
-    #[doc = " function returns the current version, while SDL_VERSION() is a macro that"]
-    #[doc = " tells you what version you compiled with."]
-    #[doc = ""]
-    #[doc = " This function may be called safely at any time, even before SDL_Init()."]
-    #[doc = ""]
-    #[doc = " \\param ver the SDL_version structure that contains the version information"]
-    #[doc = ""]
-    #[doc = " \\sa SDL_GetRevision"]
     pub fn SDL_GetVersion(ver: *mut SDL_version);
 }
 extern "C" {
-    #[doc = " Get the code revision of SDL that is linked against your program."]
-    #[doc = ""]
-    #[doc = " This value is the revision of the code you are linked with and may be"]
-    #[doc = " different from the code you are compiling with, which is found in the"]
-    #[doc = " constant SDL_REVISION."]
-    #[doc = ""]
-    #[doc = " The revision is arbitrary string (a hash value) uniquely identifying the"]
-    #[doc = " exact revision of the SDL library in use, and is only useful in comparing"]
-    #[doc = " against other revisions. It is NOT an incrementing number."]
-    #[doc = ""]
-    #[doc = " If SDL wasn't built from a git repository with the appropriate tools, this"]
-    #[doc = " will return an empty string."]
-    #[doc = ""]
-    #[doc = " Prior to SDL 2.0.16, before development moved to GitHub, this returned a"]
-    #[doc = " hash for a Mercurial repository."]
-    #[doc = ""]
-    #[doc = " You shouldn't use this function for anything but logging it for debugging"]
-    #[doc = " purposes. The string is not intended to be reliable in any way."]
-    #[doc = ""]
-    #[doc = " \\returns an arbitrary string, uniquely identifying the exact revision of"]
-    #[doc = "          the SDL library in use."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_GetVersion"]
     pub fn SDL_GetRevision() -> *const ::std::os::raw::c_char;
 }
 extern "C" {
-    #[doc = " Obsolete function, do not use."]
-    #[doc = ""]
-    #[doc = " When SDL was hosted in a Mercurial repository, and was built carefully,"]
-    #[doc = " this would return the revision number that the build was created from."]
-    #[doc = " This number was not reliable for several reasons, but more importantly,"]
-    #[doc = " SDL is now hosted in a git repository, which does not offer numbers at"]
-    #[doc = " all, only hashes. This function only ever returns zero now. Don't use it."]
     pub fn SDL_GetRevisionNumber() -> ::std::os::raw::c_int;
 }
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
 pub struct SDL_Locale {
-    #[doc = "< A language name, like \"en\" for English."]
     pub language: *const ::std::os::raw::c_char,
-    #[doc = "< A country, like \"US\" for America. Can be NULL."]
     pub country: *const ::std::os::raw::c_char,
 }
 #[test]
@@ -20545,187 +11468,24 @@ fn bindgen_test_layout_SDL_Locale() {
     );
 }
 extern "C" {
-    #[doc = " Report the user's preferred locale."]
-    #[doc = ""]
-    #[doc = " This returns an array of SDL_Locale structs, the final item zeroed out."]
-    #[doc = " When the caller is done with this array, it should call SDL_free() on the"]
-    #[doc = " returned value; all the memory involved is allocated in a single block, so"]
-    #[doc = " a single SDL_free() will suffice."]
-    #[doc = ""]
-    #[doc = " Returned language strings are in the format xx, where 'xx' is an ISO-639"]
-    #[doc = " language specifier (such as \"en\" for English, \"de\" for German, etc)."]
-    #[doc = " Country strings are in the format YY, where \"YY\" is an ISO-3166 country"]
-    #[doc = " code (such as \"US\" for the United States, \"CA\" for Canada, etc). Country"]
-    #[doc = " might be NULL if there's no specific guidance on them (so you might get {"]
-    #[doc = " \"en\", \"US\" } for American English, but { \"en\", NULL } means \"English"]
-    #[doc = " language, generically\"). Language strings are never NULL, except to"]
-    #[doc = " terminate the array."]
-    #[doc = ""]
-    #[doc = " Please note that not all of these strings are 2 characters; some are three"]
-    #[doc = " or more."]
-    #[doc = ""]
-    #[doc = " The returned list of locales are in the order of the user's preference. For"]
-    #[doc = " example, a German citizen that is fluent in US English and knows enough"]
-    #[doc = " Japanese to navigate around Tokyo might have a list like: { \"de\", \"en_US\","]
-    #[doc = " \"jp\", NULL }. Someone from England might prefer British English (where"]
-    #[doc = " \"color\" is spelled \"colour\", etc), but will settle for anything like it: {"]
-    #[doc = " \"en_GB\", \"en\", NULL }."]
-    #[doc = ""]
-    #[doc = " This function returns NULL on error, including when the platform does not"]
-    #[doc = " supply this information at all."]
-    #[doc = ""]
-    #[doc = " This might be a \"slow\" call that has to query the operating system. It's"]
-    #[doc = " best to ask for this once and save the results. However, this list can"]
-    #[doc = " change, usually because the user has changed a system preference outside of"]
-    #[doc = " your program; SDL will send an SDL_LOCALECHANGED event in this case, if"]
-    #[doc = " possible, and you can call this function again to get an updated copy of"]
-    #[doc = " preferred locales."]
-    #[doc = ""]
-    #[doc = " \\return array of locales, terminated with a locale with a NULL language"]
-    #[doc = "         field. Will return NULL on error."]
     pub fn SDL_GetPreferredLocales() -> *mut SDL_Locale;
 }
 extern "C" {
-    #[doc = " Open a URL/URI in the browser or other appropriate external application."]
-    #[doc = ""]
-    #[doc = " Open a URL in a separate, system-provided application. How this works will"]
-    #[doc = " vary wildly depending on the platform. This will likely launch what makes"]
-    #[doc = " sense to handle a specific URL's protocol (a web browser for `http://`,"]
-    #[doc = " etc), but it might also be able to launch file managers for directories and"]
-    #[doc = " other things."]
-    #[doc = ""]
-    #[doc = " What happens when you open a URL varies wildly as well: your game window"]
-    #[doc = " may lose focus (and may or may not lose focus if your game was fullscreen"]
-    #[doc = " or grabbing input at the time). On mobile devices, your app will likely"]
-    #[doc = " move to the background or your process might be paused. Any given platform"]
-    #[doc = " may or may not handle a given URL."]
-    #[doc = ""]
-    #[doc = " If this is unimplemented (or simply unavailable) for a platform, this will"]
-    #[doc = " fail with an error. A successful result does not mean the URL loaded, just"]
-    #[doc = " that we launched _something_ to handle it (or at least believe we did)."]
-    #[doc = ""]
-    #[doc = " All this to say: this function can be useful, but you should definitely"]
-    #[doc = " test it on every platform you target."]
-    #[doc = ""]
-    #[doc = " \\param url A valid URL/URI to open. Use `file:///full/path/to/file` for"]
-    #[doc = "            local files, if supported."]
-    #[doc = " \\returns 0 on success, or -1 on error; call SDL_GetError() for more"]
-    #[doc = "          information."]
-    #[doc = ""]
-    #[doc = " \\since This function is available in SDL 2.0.14 and newer"]
     pub fn SDL_OpenURL(url: *const ::std::os::raw::c_char) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[doc = " Initialize the SDL library."]
-    #[doc = ""]
-    #[doc = " SDL_Init() simply forwards to calling SDL_InitSubSystem(). Therefore, the"]
-    #[doc = " two may be used interchangeably. Though for readability of your code"]
-    #[doc = " SDL_InitSubSystem() might be preferred."]
-    #[doc = ""]
-    #[doc = " The file I/O (for example: SDL_RWFromFile) and threading (SDL_CreateThread)"]
-    #[doc = " subsystems are initialized by default. Message boxes"]
-    #[doc = " (SDL_ShowSimpleMessageBox) also attempt to work without initializing the"]
-    #[doc = " video subsystem, in hopes of being useful in showing an error dialog when"]
-    #[doc = " SDL_Init fails. You must specifically initialize other subsystems if you"]
-    #[doc = " use them in your application."]
-    #[doc = ""]
-    #[doc = " Logging (such as SDL_Log) works without initialization, too."]
-    #[doc = ""]
-    #[doc = " `flags` may be any of the following OR'd together:"]
-    #[doc = ""]
-    #[doc = " - `SDL_INIT_TIMER`: timer subsystem"]
-    #[doc = " - `SDL_INIT_AUDIO`: audio subsystem"]
-    #[doc = " - `SDL_INIT_VIDEO`: video subsystem; automatically initializes the events"]
-    #[doc = "   subsystem"]
-    #[doc = " - `SDL_INIT_JOYSTICK`: joystick subsystem; automatically initializes the"]
-    #[doc = "   events subsystem"]
-    #[doc = " - `SDL_INIT_HAPTIC`: haptic (force feedback) subsystem"]
-    #[doc = " - `SDL_INIT_GAMECONTROLLER`: controller subsystem; automatically"]
-    #[doc = "   initializes the joystick subsystem"]
-    #[doc = " - `SDL_INIT_EVENTS`: events subsystem"]
-    #[doc = " - `SDL_INIT_EVERYTHING`: all of the above subsystems"]
-    #[doc = " - `SDL_INIT_NOPARACHUTE`: compatibility; this flag is ignored"]
-    #[doc = ""]
-    #[doc = " Subsystem initialization is ref-counted, you must call SDL_QuitSubSystem()"]
-    #[doc = " for each SDL_InitSubSystem() to correctly shutdown a subsystem manually (or"]
-    #[doc = " call SDL_Quit() to force shutdown). If a subsystem is already loaded then"]
-    #[doc = " this call will increase the ref-count and return."]
-    #[doc = ""]
-    #[doc = " \\param flags subsystem initialization flags"]
-    #[doc = " \\returns 0 on success or a negative error code on failure; call"]
-    #[doc = "          SDL_GetError() for more information."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_InitSubSystem"]
-    #[doc = " \\sa SDL_Quit"]
-    #[doc = " \\sa SDL_SetMainReady"]
-    #[doc = " \\sa SDL_WasInit"]
     pub fn SDL_Init(flags: Uint32) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[doc = " Compatibility function to initialize the SDL library."]
-    #[doc = ""]
-    #[doc = " In SDL2, this function and SDL_Init() are interchangeable."]
-    #[doc = ""]
-    #[doc = " \\param flags any of the flags used by SDL_Init(); see SDL_Init for details."]
-    #[doc = " \\returns 0 on success or a negative error code on failure; call"]
-    #[doc = "          SDL_GetError() for more information."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_Init"]
-    #[doc = " \\sa SDL_Quit"]
-    #[doc = " \\sa SDL_QuitSubSystem"]
     pub fn SDL_InitSubSystem(flags: Uint32) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[doc = " Shut down specific SDL subsystems."]
-    #[doc = ""]
-    #[doc = " If you start a subsystem using a call to that subsystem's init function"]
-    #[doc = " (for example SDL_VideoInit()) instead of SDL_Init() or SDL_InitSubSystem(),"]
-    #[doc = " SDL_QuitSubSystem() and SDL_WasInit() will not work. You will need to use"]
-    #[doc = " that subsystem's quit function (SDL_VideoQuit()) directly instead. But"]
-    #[doc = " generally, you should not be using those functions directly anyhow; use"]
-    #[doc = " SDL_Init() instead."]
-    #[doc = ""]
-    #[doc = " You still need to call SDL_Quit() even if you close all open subsystems"]
-    #[doc = " with SDL_QuitSubSystem()."]
-    #[doc = ""]
-    #[doc = " \\param flags any of the flags used by SDL_Init(); see SDL_Init for details."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_InitSubSystem"]
-    #[doc = " \\sa SDL_Quit"]
     pub fn SDL_QuitSubSystem(flags: Uint32);
 }
 extern "C" {
-    #[doc = " Get a mask of the specified subsystems which are currently initialized."]
-    #[doc = ""]
-    #[doc = " \\param flags any of the flags used by SDL_Init(); see SDL_Init for details."]
-    #[doc = " \\returns a mask of all initialized subsystems if `flags` is 0, otherwise it"]
-    #[doc = "          returns the initialization status of the specified subsystems."]
-    #[doc = ""]
-    #[doc = "          The return value does not include SDL_INIT_NOPARACHUTE."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_Init"]
-    #[doc = " \\sa SDL_InitSubSystem"]
     pub fn SDL_WasInit(flags: Uint32) -> Uint32;
 }
 extern "C" {
-    #[doc = " Clean up all initialized subsystems."]
-    #[doc = ""]
-    #[doc = " You should call this function even if you have already shutdown each"]
-    #[doc = " initialized subsystem with SDL_QuitSubSystem(). It is safe to call this"]
-    #[doc = " function even in the case of errors in initialization."]
-    #[doc = ""]
-    #[doc = " If you start a subsystem using a call to that subsystem's init function"]
-    #[doc = " (for example SDL_VideoInit()) instead of SDL_Init() or SDL_InitSubSystem(),"]
-    #[doc = " then you must use that subsystem's quit function (SDL_VideoQuit()) to shut"]
-    #[doc = " it down before calling SDL_Quit(). But generally, you should not be using"]
-    #[doc = " those functions directly anyhow; use SDL_Init() instead."]
-    #[doc = ""]
-    #[doc = " You can use this function with atexit() to ensure that it is run when your"]
-    #[doc = " application is shutdown, but it is not wise to do this from a library or"]
-    #[doc = " other dynamically loaded code."]
-    #[doc = ""]
-    #[doc = " \\sa SDL_Init"]
-    #[doc = " \\sa SDL_QuitSubSystem"]
     pub fn SDL_Quit();
 }
 #[repr(C)]
@@ -20743,91 +11503,15 @@ pub type VkSurfaceKHR = *mut VkSurfaceKHR_T;
 pub type SDL_vulkanInstance = VkInstance;
 pub type SDL_vulkanSurface = VkSurfaceKHR;
 extern "C" {
-    #[doc = " Dynamically load the Vulkan loader library."]
-    #[doc = ""]
-    #[doc = " This should be called after initializing the video driver, but before"]
-    #[doc = " creating any Vulkan windows. If no Vulkan loader library is loaded, the"]
-    #[doc = " default library will be loaded upon creation of the first Vulkan window."]
-    #[doc = ""]
-    #[doc = " It is fairly common for Vulkan applications to link with libvulkan instead"]
-    #[doc = " of explicitly loading it at run time. This will work with SDL provided the"]
-    #[doc = " application links to a dynamic library and both it and SDL use the same"]
-    #[doc = " search path."]
-    #[doc = ""]
-    #[doc = " If you specify a non-NULL `path`, an application should retrieve all of the"]
-    #[doc = " Vulkan functions it uses from the dynamic library using"]
-    #[doc = " SDL_Vulkan_GetVkGetInstanceProcAddr unless you can guarantee `path` points"]
-    #[doc = " to the same vulkan loader library the application linked to."]
-    #[doc = ""]
-    #[doc = " On Apple devices, if `path` is NULL, SDL will attempt to find the"]
-    #[doc = " `vkGetInstanceProcAddr` address within all the Mach-O images of the current"]
-    #[doc = " process. This is because it is fairly common for Vulkan applications to"]
-    #[doc = " link with libvulkan (and historically MoltenVK was provided as a static"]
-    #[doc = " library). If it is not found, on macOS, SDL will attempt to load"]
-    #[doc = " `vulkan.framework/vulkan`, `libvulkan.1.dylib`,"]
-    #[doc = " `MoltenVK.framework/MoltenVK`, and `libMoltenVK.dylib`, in that order. On"]
-    #[doc = " iOS, SDL will attempt to load `libMoltenVK.dylib`. Applications using a"]
-    #[doc = " dynamic framework or .dylib must ensure it is included in its application"]
-    #[doc = " bundle."]
-    #[doc = ""]
-    #[doc = " On non-Apple devices, application linking with a static libvulkan is not"]
-    #[doc = " supported. Either do not link to the Vulkan loader or link to a dynamic"]
-    #[doc = " library version."]
-    #[doc = ""]
-    #[doc = " \\param path The platform dependent Vulkan loader library name or NULL"]
-    #[doc = " \\returns 0 on success or -1 if the library couldn't be loaded; call"]
-    #[doc = "          SDL_GetError() for more information."]
-    #[doc = ""]
-    #[doc = " \\since This function is available in SDL 2.0.8"]
-    #[doc = ""]
-    #[doc = " \\sa SDL_Vulkan_GetVkInstanceProcAddr"]
-    #[doc = " \\sa SDL_Vulkan_UnloadLibrary"]
     pub fn SDL_Vulkan_LoadLibrary(path: *const ::std::os::raw::c_char) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[doc = " Get the address of the `vkGetInstanceProcAddr` function."]
-    #[doc = ""]
-    #[doc = " This should be called after either calling SDL_Vulkan_LoadLibrary() or"]
-    #[doc = " creating an SDL_Window with the `SDL_WINDOW_VULKAN` flag."]
-    #[doc = ""]
-    #[doc = " \\returns the function pointer for `vkGetInstanceProcAddr` or NULL on error."]
     pub fn SDL_Vulkan_GetVkGetInstanceProcAddr() -> *mut ::std::os::raw::c_void;
 }
 extern "C" {
-    #[doc = " Unload the Vulkan library previously loaded by SDL_Vulkan_LoadLibrary()"]
-    #[doc = ""]
-    #[doc = " \\since This function is available in SDL 2.0.8"]
-    #[doc = ""]
-    #[doc = " \\sa SDL_Vulkan_LoadLibrary"]
     pub fn SDL_Vulkan_UnloadLibrary();
 }
 extern "C" {
-    #[doc = " Get the names of the Vulkan instance extensions needed to create a surface"]
-    #[doc = " with SDL_Vulkan_CreateSurface."]
-    #[doc = ""]
-    #[doc = " If `pNames` is NULL, then the number of required Vulkan instance extensions"]
-    #[doc = " is returned in `pCount`. Otherwise, `pCount` must point to a variable set"]
-    #[doc = " to the number of elements in the `pNames` array, and on return the variable"]
-    #[doc = " is overwritten with the number of names actually written to `pNames`. If"]
-    #[doc = " `pCount` is less than the number of required extensions, at most `pCount`"]
-    #[doc = " structures will be written. If `pCount` is smaller than the number of"]
-    #[doc = " required extensions, SDL_FALSE will be returned instead of SDL_TRUE, to"]
-    #[doc = " indicate that not all the required extensions were returned."]
-    #[doc = ""]
-    #[doc = " The `window` parameter is currently needed to be valid as of SDL 2.0.8,"]
-    #[doc = " however, this parameter will likely be removed in future releases"]
-    #[doc = ""]
-    #[doc = " \\param window A window for which the required Vulkan instance extensions"]
-    #[doc = "               should be retrieved (will be deprecated in a future release)"]
-    #[doc = " \\param pCount A pointer to an unsigned int corresponding to the number of"]
-    #[doc = "               extensions to be returned"]
-    #[doc = " \\param pNames NULL or a pointer to an array to be filled with required"]
-    #[doc = "               Vulkan instance extensions"]
-    #[doc = " \\returns SDL_TRUE on success, SDL_FALSE on error."]
-    #[doc = ""]
-    #[doc = " \\since This function is available in SDL 2.0.8"]
-    #[doc = ""]
-    #[doc = " \\sa SDL_Vulkan_CreateSurface"]
     pub fn SDL_Vulkan_GetInstanceExtensions(
         window: *mut SDL_Window,
         pCount: *mut ::std::os::raw::c_uint,
@@ -20835,22 +11519,6 @@ extern "C" {
     ) -> SDL_bool;
 }
 extern "C" {
-    #[doc = " Create a Vulkan rendering surface for a window."]
-    #[doc = ""]
-    #[doc = " The `window` must have been created with the `SDL_WINDOW_VULKAN` flag and"]
-    #[doc = " `instance` must have been created with extensions returned by"]
-    #[doc = " SDL_Vulkan_GetInstanceExtensions() enabled."]
-    #[doc = ""]
-    #[doc = " \\param window The window to which to attach the Vulkan surface"]
-    #[doc = " \\param instance The Vulkan instance handle"]
-    #[doc = " \\param surface A pointer to a VkSurfaceKHR handle to output the newly"]
-    #[doc = "                created surface"]
-    #[doc = " \\returns SDL_TRUE on success, SDL_FALSE on error."]
-    #[doc = ""]
-    #[doc = " \\since This function is available in SDL 2.0.8"]
-    #[doc = ""]
-    #[doc = " \\sa SDL_Vulkan_GetInstanceExtensions"]
-    #[doc = " \\sa SDL_Vulkan_GetDrawableSize"]
     pub fn SDL_Vulkan_CreateSurface(
         window: *mut SDL_Window,
         instance: VkInstance,
@@ -20858,22 +11526,6 @@ extern "C" {
     ) -> SDL_bool;
 }
 extern "C" {
-    #[doc = " Get the size of the window's underlying drawable dimensions in pixels."]
-    #[doc = ""]
-    #[doc = " This may differ from SDL_GetWindowSize() if we're rendering to a high-DPI"]
-    #[doc = " drawable, i.e. the window was created with `SDL_WINDOW_ALLOW_HIGHDPI` on a"]
-    #[doc = " platform with high-DPI support (Apple calls this \"Retina\"), and not"]
-    #[doc = " disabled by the `SDL_HINT_VIDEO_HIGHDPI_DISABLED` hint."]
-    #[doc = ""]
-    #[doc = " \\param window an SDL_Window for which the size is to be queried"]
-    #[doc = " \\param w Pointer to the variable to write the width to or NULL"]
-    #[doc = " \\param h Pointer to the variable to write the height to or NULL"]
-    #[doc = ""]
-    #[doc = " \\since This function is available in SDL 2.0.8"]
-    #[doc = ""]
-    #[doc = " \\sa SDL_GetWindowSize"]
-    #[doc = " \\sa SDL_CreateWindow"]
-    #[doc = " \\sa SDL_Vulkan_CreateSurface"]
     pub fn SDL_Vulkan_GetDrawableSize(
         window: *mut SDL_Window,
         w: *mut ::std::os::raw::c_int,
@@ -20942,7 +11594,6 @@ fn bindgen_test_layout___va_list_tag() {
         )
     );
 }
-#[doc = "< Private"]
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
 pub struct SDL_BlitMap {
