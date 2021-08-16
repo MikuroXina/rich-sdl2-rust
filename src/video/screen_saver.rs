@@ -1,8 +1,11 @@
+//! Screen saving that allows the screen to be blanked by a screen saver.
+
 use static_assertions::assert_not_impl_all;
 use std::marker::PhantomData;
 
 use crate::{bind, Video};
 
+/// A screen saver that be enabled until dropped it.
 pub struct ScreenSaver<'video> {
     _phantom: PhantomData<&'video Video<'video>>,
 }
@@ -16,6 +19,7 @@ impl std::fmt::Debug for ScreenSaver<'_> {
 assert_not_impl_all!(ScreenSaver: Send, Sync);
 
 impl<'video> ScreenSaver<'video> {
+    /// Constructs and starts a screen saver.
     pub fn new(_: &'video Video) -> Self {
         unsafe { bind::SDL_EnableScreenSaver() }
         Self {
