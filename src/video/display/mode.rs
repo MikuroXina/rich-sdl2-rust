@@ -1,11 +1,16 @@
 use crate::bind;
 use crate::color::pixel::kind::PixelFormatKind;
 
+/// A mode of the display.
 #[derive(Debug, Clone)]
 pub struct Mode {
+    /// A pixel format of the display.
     pub pixel_format: PixelFormatKind,
+    /// A width of the display.
     pub width: u32,
+    /// A height of the display.
     pub height: u32,
+    /// A refresh rate of the display.
     pub refresh_rate: u32,
 }
 
