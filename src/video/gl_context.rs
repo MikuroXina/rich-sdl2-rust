@@ -10,9 +10,11 @@ use crate::{bind, Result, Sdl, SdlError};
 pub mod attribute;
 mod buffer;
 mod context_switch;
+mod flag;
 
 pub use buffer::*;
 pub use context_switch::*;
+pub use flag::*;
 
 pub struct GlContext<'window> {
     ctx: NonNull<c_void>,
