@@ -32,15 +32,17 @@ jobs:
       - name: Build SDL2 dependency
         run: cd SDL2 && ./configure && make -j4 && cd ..
 
-      - uses: actions/upload-artifact@v2
-        with:
-          name: sdl2-artifact
-          path: SDL2/build/
-
       - name: Build
         run: cargo build --verbose
       - name: Run tests
         run: cargo test --verbose
+      - name: Run doc
+        run: cargo doc --no-deps
+
+      - uses: actions/upload-artifact@v2
+        with:
+          name: doc-artifact
+          path: target/doc/
 
   doc:
     runs-on: ubuntu-latest
@@ -53,14 +55,10 @@ jobs:
           submodules: recursive
       - uses: actions/download-artifact@v2
         with:
-          name: sdl2-artifact
-          path: SDL2/build
-
-      - name: Run doc
-        run: cargo doc --no-deps
+          name: doc-artifact
 
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./target/doc/
+          publish_dir: .
