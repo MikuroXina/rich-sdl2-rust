@@ -13,9 +13,9 @@ fn main() {
 
     let bindings = bindgen::Builder::default()
         .header("wrapper.h")
-        .whitelist_function("SDL_.*")
-        .whitelist_type("SDL_.*")
-        .whitelist_var("SDL_.*")
+        .allowlist_function("SDL_.*")
+        .allowlist_type("SDL_.*")
+        .allowlist_var("SDL_.*")
         .generate_comments(false)
         .parse_callbacks(Box::new(bindgen::CargoCallbacks))
         .raw_line("//! Rust FFI to `SDL2/SDL.h`")
