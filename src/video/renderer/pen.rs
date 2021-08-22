@@ -19,6 +19,11 @@ impl<'renderer> Pen<'renderer> {
         Self { renderer }
     }
 
+    /// Returns the renderer that the pen is drawing.
+    pub fn renderer(&self) -> &Renderer {
+        self.renderer
+    }
+
     /// Sets the drawing color.
     pub fn set_color(&self, Rgb { r, g, b }: Rgb) {
         let ret = unsafe { bind::SDL_SetRenderDrawColor(self.renderer.as_ptr(), r, g, b, 255) };
