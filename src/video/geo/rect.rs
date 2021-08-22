@@ -45,6 +45,20 @@ impl Rect {
             y: self.up_left.y + self.size.height as i32,
         }
     }
+    /// Returns the top right point of the rectangle.
+    pub fn top_right(self) -> Point {
+        Point {
+            x: self.up_left.x + self.size.width as i32,
+            y: self.up_left.y,
+        }
+    }
+    /// Returns the bottom left point of the rectangle.
+    pub fn bottom_left(self) -> Point {
+        Point {
+            x: self.up_left.x,
+            y: self.up_left.y + self.size.height as i32,
+        }
+    }
 
     /// Returns the enclosed rectangle of the points, with the clip region.
     pub fn enclosed(points: impl IntoIterator<Item = Point>, clip: Option<Rect>) -> Option<Self> {

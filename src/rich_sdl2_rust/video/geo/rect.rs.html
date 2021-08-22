@@ -104,6 +104,20 @@
 <span id="102">102</span>
 <span id="103">103</span>
 <span id="104">104</span>
+<span id="105">105</span>
+<span id="106">106</span>
+<span id="107">107</span>
+<span id="108">108</span>
+<span id="109">109</span>
+<span id="110">110</span>
+<span id="111">111</span>
+<span id="112">112</span>
+<span id="113">113</span>
+<span id="114">114</span>
+<span id="115">115</span>
+<span id="116">116</span>
+<span id="117">117</span>
+<span id="118">118</span>
 </pre><pre class="rust">
 <span class="kw">use</span> <span class="ident">std::mem::MaybeUninit</span>;
 
@@ -149,6 +163,20 @@
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">bottom_right</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Point</span> {
         <span class="ident">Point</span> {
             <span class="ident">x</span>: <span class="self">self</span>.<span class="ident">up_left</span>.<span class="ident">x</span> <span class="op">+</span> <span class="self">self</span>.<span class="ident">size</span>.<span class="ident">width</span> <span class="kw">as</span> <span class="ident">i32</span>,
+            <span class="ident">y</span>: <span class="self">self</span>.<span class="ident">up_left</span>.<span class="ident">y</span> <span class="op">+</span> <span class="self">self</span>.<span class="ident">size</span>.<span class="ident">height</span> <span class="kw">as</span> <span class="ident">i32</span>,
+        }
+    }
+    <span class="doccomment">/// Returns the top right point of the rectangle.</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">top_right</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Point</span> {
+        <span class="ident">Point</span> {
+            <span class="ident">x</span>: <span class="self">self</span>.<span class="ident">up_left</span>.<span class="ident">x</span> <span class="op">+</span> <span class="self">self</span>.<span class="ident">size</span>.<span class="ident">width</span> <span class="kw">as</span> <span class="ident">i32</span>,
+            <span class="ident">y</span>: <span class="self">self</span>.<span class="ident">up_left</span>.<span class="ident">y</span>,
+        }
+    }
+    <span class="doccomment">/// Returns the bottom left point of the rectangle.</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">bottom_left</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Point</span> {
+        <span class="ident">Point</span> {
+            <span class="ident">x</span>: <span class="self">self</span>.<span class="ident">up_left</span>.<span class="ident">x</span>,
             <span class="ident">y</span>: <span class="self">self</span>.<span class="ident">up_left</span>.<span class="ident">y</span> <span class="op">+</span> <span class="self">self</span>.<span class="ident">size</span>.<span class="ident">height</span> <span class="kw">as</span> <span class="ident">i32</span>,
         }
     }
