@@ -154,8 +154,8 @@ impl Rect {
     }
 
     /// Returns whether the rectangle is empty.
-    pub fn empty(&self) -> bool {
-        self.size.width != 0 || self.size.height != 0
+    pub fn is_empty(&self) -> bool {
+        self.size.width == 0 || self.size.height == 0
     }
 
     /// Returns the union of two rectangles.
