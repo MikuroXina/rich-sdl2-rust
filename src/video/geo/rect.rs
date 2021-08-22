@@ -48,6 +48,16 @@ impl Rect {
             size,
         }
     }
+    /// Constructs a rect from the bottom right.
+    pub fn from_bottom_right(bottom_right: Point, size: Size) -> Self {
+        Self {
+            up_left: Point {
+                x: (bottom_right.x - size.width as i32),
+                y: (bottom_right.y - size.height as i32),
+            },
+            size,
+        }
+    }
 
     /// Constructs a rect from x and y coordinates.
     pub fn from_xs_ys(mut xs: [i32; 2], mut ys: [i32; 2]) -> Self {
