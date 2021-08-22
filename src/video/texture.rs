@@ -7,6 +7,7 @@ use std::ptr::NonNull;
 use crate::color::Rgb;
 use crate::geo::{Rect, Size};
 use crate::renderer::Renderer;
+use crate::surface::Surface;
 use crate::{bind, Result, Sdl, SdlError};
 
 pub mod lock;
@@ -87,6 +88,21 @@ impl<'renderer> Texture<'renderer> {
                 })
             },
         )
+    }
+
+    /// Constructs a texture from the [`Surface`]. The texture will be readonly and the access type will be [`TextureAccess::Static`].
+    pub fn from_surface(
+        renderer: &'renderer Renderer<'renderer>,
+        surface: &'renderer impl Surface,
+    ) -> Self {
+        let ptr = unsafe {
+            bind::SDL_CreateTextureFromSurface(renderer.as_ptr(), surface.as_ptr().as_ptr())
+        };
+        Self {
+            texture: NonNull::new(ptr).unwrap(),
+            clip: None,
+            _phantom: PhantomData,
+        }
     }
 
     pub(crate) fn as_ptr(&self) -> *mut bind::SDL_Texture {

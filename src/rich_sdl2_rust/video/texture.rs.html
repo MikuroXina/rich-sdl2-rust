@@ -188,6 +188,22 @@
 <span id="186">186</span>
 <span id="187">187</span>
 <span id="188">188</span>
+<span id="189">189</span>
+<span id="190">190</span>
+<span id="191">191</span>
+<span id="192">192</span>
+<span id="193">193</span>
+<span id="194">194</span>
+<span id="195">195</span>
+<span id="196">196</span>
+<span id="197">197</span>
+<span id="198">198</span>
+<span id="199">199</span>
+<span id="200">200</span>
+<span id="201">201</span>
+<span id="202">202</span>
+<span id="203">203</span>
+<span id="204">204</span>
 </pre><pre class="rust">
 <span class="doccomment">//! Texture used to draw the image to [`Renderer`].</span>
 
@@ -198,6 +214,7 @@
 <span class="kw">use</span> <span class="kw">crate</span><span class="ident">::color::Rgb</span>;
 <span class="kw">use</span> <span class="kw">crate</span><span class="ident">::geo</span>::{<span class="ident">Rect</span>, <span class="ident">Size</span>};
 <span class="kw">use</span> <span class="kw">crate</span><span class="ident">::renderer::Renderer</span>;
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::surface::Surface</span>;
 <span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">bind</span>, <span class="prelude-ty">Result</span>, <span class="ident">Sdl</span>, <span class="ident">SdlError</span>};
 
 <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">lock</span>;
@@ -278,6 +295,21 @@
                 })
             },
         )
+    }
+
+    <span class="doccomment">/// Constructs a texture from the [`Surface`]. The texture will be readonly and the access type will be [`TextureAccess::Static`].</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">from_surface</span>(
+        <span class="ident">renderer</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;renderer</span> <span class="ident">Renderer</span><span class="op">&lt;</span><span class="lifetime">&#39;renderer</span><span class="op">&gt;</span>,
+        <span class="ident">surface</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;renderer</span> <span class="kw">impl</span> <span class="ident">Surface</span>,
+    ) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+        <span class="kw">let</span> <span class="ident">ptr</span> <span class="op">=</span> <span class="kw">unsafe</span> {
+            <span class="ident">bind::SDL_CreateTextureFromSurface</span>(<span class="ident">renderer</span>.<span class="ident">as_ptr</span>(), <span class="ident">surface</span>.<span class="ident">as_ptr</span>().<span class="ident">as_ptr</span>())
+        };
+        <span class="self">Self</span> {
+            <span class="ident">texture</span>: <span class="ident">NonNull::new</span>(<span class="ident">ptr</span>).<span class="ident">unwrap</span>(),
+            <span class="ident">clip</span>: <span class="prelude-val">None</span>,
+            <span class="ident">_phantom</span>: <span class="ident">PhantomData</span>,
+        }
     }
 
     <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">as_ptr</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">bind::SDL_Texture</span> {
