@@ -35,6 +35,14 @@ impl From<Point> for bind::SDL_Point {
 }
 
 impl Point {
+    /// Calculates the new point with the offset.
+    pub fn offset(self, x: i32, y: i32) -> Self {
+        Self {
+            x: self.x + x,
+            y: self.y + y,
+        }
+    }
+
     /// Returns whether the point is in the rectangle.
     pub fn is_in(&self, rect: Rect) -> bool {
         let bottom_right = rect.bottom_right();
