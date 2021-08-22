@@ -98,20 +98,20 @@ impl Rect {
         }
     }
 
-    /// Returns the minimum x of the rect.
-    pub fn min_x(self) -> i32 {
+    /// Returns the left x of the rect.
+    pub fn left(self) -> i32 {
         self.up_left.x
     }
-    /// Returns the maximum x of the rect.
-    pub fn max_x(self) -> i32 {
+    /// Returns the right x of the rect.
+    pub fn right(self) -> i32 {
         self.up_left.x + self.size.width as i32
     }
-    /// Returns the minimum y of the rect.
-    pub fn min_y(self) -> i32 {
+    /// Returns the top y of the rect.
+    pub fn top(self) -> i32 {
         self.up_left.y
     }
-    /// Returns the maximum y of the rect.
-    pub fn max_y(self) -> i32 {
+    /// Returns the bottom y of the rect.
+    pub fn bottom(self) -> i32 {
         self.up_left.y + self.size.height as i32
     }
 
