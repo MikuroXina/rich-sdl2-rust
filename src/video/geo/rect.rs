@@ -49,6 +49,23 @@ impl Rect {
         }
     }
 
+    /// Constructs a rect from x and y coordinates.
+    pub fn from_xs_ys(mut xs: [i32; 2], mut ys: [i32; 2]) -> Self {
+        if xs[1] < xs[0] {
+            xs.swap(0, 1);
+        }
+        if ys[1] < ys[0] {
+            ys.swap(0, 1);
+        }
+        Self {
+            up_left: Point { x: xs[0], y: ys[0] },
+            size: Size {
+                width: (xs[1] - xs[0]) as u32,
+                height: (ys[1] - ys[0]) as u32,
+            },
+        }
+    }
+
     /// Returns the bottom right point of the rectangle.
     pub fn bottom_right(self) -> Point {
         Point {
