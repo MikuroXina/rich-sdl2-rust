@@ -38,6 +38,17 @@ impl From<Rect> for bind::SDL_Rect {
 }
 
 impl Rect {
+    /// Constructs a rect from the center.
+    pub fn from_center(center: Point, size: Size) -> Self {
+        Self {
+            up_left: Point {
+                x: center.x - size.width as i32 / 2,
+                y: center.y - size.height as i32 / 2,
+            },
+            size,
+        }
+    }
+
     /// Returns the bottom right point of the rectangle.
     pub fn bottom_right(self) -> Point {
         Point {
