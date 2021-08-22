@@ -170,4 +170,45 @@ impl Rect {
         }
         unsafe { raw.assume_init() }.into()
     }
+
+    /// Creates a new rect from the rect with overwriting the new top y position.
+    pub fn with_top(self, y: i32) -> Self {
+        Self::from_bottom_right(
+            self.bottom_right(),
+            Size {
+                height: y.saturating_sub(self.bottom()).max(0) as u32,
+                ..self.size
+            },
+        )
+    }
+    /// Creates a new rect from the rect with overwriting the new right x position.
+    pub fn with_right(self, x: i32) -> Self {
+        Self {
+            size: Size {
+                width: x.saturating_sub(self.left()).max(0) as u32,
+                height: self.size.height,
+            },
+            ..self
+        }
+    }
+    /// Creates a new rect from the rect with overwriting the new bottom y position.
+    pub fn with_bottom(self, y: i32) -> Self {
+        Self {
+            size: Size {
+                width: self.size.width,
+                height: self.top().saturating_sub(y) as u32,
+            },
+            ..self
+        }
+    }
+    /// Creates a new rect from the rect with overwriting the new left x position.
+    pub fn with_left(self, x: i32) -> Self {
+        Self::from_bottom_right(
+            self.bottom_right(),
+            Size {
+                width: self.right().saturating_sub(x).max(0) as u32,
+                ..self.size
+            },
+        )
+    }
 }
