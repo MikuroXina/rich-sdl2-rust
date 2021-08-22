@@ -211,4 +211,21 @@ impl Rect {
             },
         )
     }
+
+    /// Creates a new rect that increased the top from the rect.
+    pub fn extend_top(self, increase: u32) -> Self {
+        self.with_top(self.top() - increase as i32)
+    }
+    /// Creates a new rect that increased the right from the rect.
+    pub fn extend_right(self, increase: u32) -> Self {
+        self.with_right(self.right() + increase as i32)
+    }
+    /// Creates a new rect that increased the bottom from the rect.
+    pub fn extend_bottom(self, increase: u32) -> Self {
+        self.with_bottom(self.bottom() + increase as i32)
+    }
+    /// Creates a new rect that increased the left from the rect.
+    pub fn extend_left(self, increase: u32) -> Self {
+        self.with_left(self.left() - increase as i32)
+    }
 }
