@@ -71,6 +71,23 @@ impl Rect {
         }
     }
 
+    /// Returns the minimum x of the rect.
+    pub fn min_x(self) -> i32 {
+        self.up_left.x
+    }
+    /// Returns the maximum x of the rect.
+    pub fn max_x(self) -> i32 {
+        self.up_left.x + self.size.width as i32
+    }
+    /// Returns the minimum y of the rect.
+    pub fn min_y(self) -> i32 {
+        self.up_left.y
+    }
+    /// Returns the maximum y of the rect.
+    pub fn max_y(self) -> i32 {
+        self.up_left.y + self.size.height as i32
+    }
+
     /// Returns the enclosed rectangle of the points, with the clip region.
     pub fn enclosed(points: impl IntoIterator<Item = Point>, clip: Option<Rect>) -> Option<Self> {
         use std::os::raw::c_int;
