@@ -231,6 +231,13 @@
 <span id="229">229</span>
 <span id="230">230</span>
 <span id="231">231</span>
+<span id="232">232</span>
+<span id="233">233</span>
+<span id="234">234</span>
+<span id="235">235</span>
+<span id="236">236</span>
+<span id="237">237</span>
+<span id="238">238</span>
 </pre><pre class="rust">
 <span class="kw">use</span> <span class="ident">std::mem::MaybeUninit</span>;
 
@@ -329,6 +336,13 @@
         <span class="ident">Point</span> {
             <span class="ident">x</span>: <span class="self">self</span>.<span class="ident">up_left</span>.<span class="ident">x</span>,
             <span class="ident">y</span>: <span class="self">self</span>.<span class="ident">up_left</span>.<span class="ident">y</span> <span class="op">+</span> <span class="self">self</span>.<span class="ident">size</span>.<span class="ident">height</span> <span class="kw">as</span> <span class="ident">i32</span>,
+        }
+    }
+    <span class="doccomment">/// Returns the center point of the rectangle.</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">center</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Point</span> {
+        <span class="ident">Point</span> {
+            <span class="ident">x</span>: <span class="self">self</span>.<span class="ident">up_left</span>.<span class="ident">x</span> <span class="op">+</span> (<span class="self">self</span>.<span class="ident">size</span>.<span class="ident">width</span> <span class="op">/</span> <span class="number">2</span>) <span class="kw">as</span> <span class="ident">i32</span>,
+            <span class="ident">y</span>: <span class="self">self</span>.<span class="ident">up_left</span>.<span class="ident">y</span> <span class="op">+</span> (<span class="self">self</span>.<span class="ident">size</span>.<span class="ident">height</span> <span class="op">/</span> <span class="number">2</span>) <span class="kw">as</span> <span class="ident">i32</span>,
         }
     }
 
