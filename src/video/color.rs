@@ -15,6 +15,16 @@ pub struct Rgb {
     pub b: u8,
 }
 
+impl From<u32> for Rgb {
+    fn from(color_code: u32) -> Self {
+        Self {
+            r: (color_code >> 16) as u8,
+            g: (color_code >> 8) as u8,
+            b: (color_code) as u8,
+        }
+    }
+}
+
 /// A RGBA color structure.
 #[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord)]
 pub struct Rgba {
@@ -26,6 +36,17 @@ pub struct Rgba {
     pub b: u8,
     /// An alpha component in RGB.
     pub a: u8,
+}
+
+impl From<u32> for Rgba {
+    fn from(color_code: u32) -> Self {
+        Self {
+            r: (color_code >> 24) as u8,
+            g: (color_code >> 16) as u8,
+            b: (color_code >> 8) as u8,
+            a: (color_code) as u8,
+        }
+    }
 }
 
 impl From<Rgba> for bind::SDL_Color {
