@@ -97,6 +97,13 @@ impl Rect {
             y: self.up_left.y + self.size.height as i32,
         }
     }
+    /// Returns the center point of the rectangle.
+    pub fn center(self) -> Point {
+        Point {
+            x: self.up_left.x + (self.size.width / 2) as i32,
+            y: self.up_left.y + (self.size.height / 2) as i32,
+        }
+    }
 
     /// Returns the left x of the rect.
     pub fn left(self) -> i32 {
