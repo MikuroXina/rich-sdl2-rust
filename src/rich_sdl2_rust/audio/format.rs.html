@@ -151,7 +151,7 @@
 
 <span class="kw">impl</span> <span class="ident">AudioFormat</span> {
     <span class="doccomment">/// A format for signed 8-bit data.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">signed8</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">signed8</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
         <span class="self">Self</span> {
             <span class="ident">flag</span>: <span class="ident">AudioFormatFlag::SIGNED</span>,
             <span class="ident">bit_size</span>: <span class="number">8</span>,
@@ -159,7 +159,7 @@
     }
 
     <span class="doccomment">/// A format for unsigned 8-bit data.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">unsigned8</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">unsigned8</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
         <span class="self">Self</span> {
             <span class="ident">flag</span>: <span class="ident">AudioFormatFlag::empty</span>(),
             <span class="ident">bit_size</span>: <span class="number">8</span>,
@@ -167,7 +167,7 @@
     }
 
     <span class="doccomment">/// A format for signed little endian 16-bit data.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">signed16_lsb</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">signed16_lsb</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
         <span class="self">Self</span> {
             <span class="ident">flag</span>: <span class="ident">AudioFormatFlag::SIGNED</span>,
             <span class="ident">bit_size</span>: <span class="number">16</span>,
@@ -175,7 +175,7 @@
     }
 
     <span class="doccomment">/// A format for unsigned little endian 16-bit data.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">unsigned16_lsb</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">unsigned16_lsb</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
         <span class="self">Self</span> {
             <span class="ident">flag</span>: <span class="ident">AudioFormatFlag::empty</span>(),
             <span class="ident">bit_size</span>: <span class="number">16</span>,
@@ -183,15 +183,15 @@
     }
 
     <span class="doccomment">/// A format for signed big endian 16-bit data.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">signed16_msb</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">signed16_msb</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
         <span class="self">Self</span> {
-            <span class="ident">flag</span>: <span class="ident">AudioFormatFlag::BIG_ENDIAN</span> <span class="op">|</span> <span class="ident">AudioFormatFlag::SIGNED</span>,
+            <span class="ident">flag</span>: <span class="ident">AudioFormatFlag::from_bits_truncate</span>(<span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">4</span> <span class="op">|</span> <span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">7</span>),
             <span class="ident">bit_size</span>: <span class="number">16</span>,
         }
     }
 
     <span class="doccomment">/// A format for unsigned big endian 16-bit data.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">unsigned16_msb</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">unsigned16_msb</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
         <span class="self">Self</span> {
             <span class="ident">flag</span>: <span class="ident">AudioFormatFlag::BIG_ENDIAN</span>,
             <span class="ident">bit_size</span>: <span class="number">16</span>,
@@ -199,7 +199,7 @@
     }
 
     <span class="doccomment">/// A format for signed little endian 32-bit data.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">signed32_lsb</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">signed32_lsb</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
         <span class="self">Self</span> {
             <span class="ident">flag</span>: <span class="ident">AudioFormatFlag::SIGNED</span>,
             <span class="ident">bit_size</span>: <span class="number">32</span>,
@@ -207,25 +207,25 @@
     }
 
     <span class="doccomment">/// A format for signed big endian 32-bit data.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">signed32_msb</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">signed32_msb</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
         <span class="self">Self</span> {
-            <span class="ident">flag</span>: <span class="ident">AudioFormatFlag::BIG_ENDIAN</span> <span class="op">|</span> <span class="ident">AudioFormatFlag::SIGNED</span>,
+            <span class="ident">flag</span>: <span class="ident">AudioFormatFlag::from_bits_truncate</span>(<span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">4</span> <span class="op">|</span> <span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">7</span>),
             <span class="ident">bit_size</span>: <span class="number">32</span>,
         }
     }
 
     <span class="doccomment">/// A format for floating-point little endian 32-bit data.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">float32_lsb</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">float32_lsb</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
         <span class="self">Self</span> {
-            <span class="ident">flag</span>: <span class="ident">AudioFormatFlag::FLOAT</span> <span class="op">|</span> <span class="ident">AudioFormatFlag::SIGNED</span>,
+            <span class="ident">flag</span>: <span class="ident">AudioFormatFlag::from_bits_truncate</span>(<span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">0</span> <span class="op">|</span> <span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">7</span>),
             <span class="ident">bit_size</span>: <span class="number">32</span>,
         }
     }
 
     <span class="doccomment">/// A format for floating-point big endian 32-bit data.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">float32_msb</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">float32_msb</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
         <span class="self">Self</span> {
-            <span class="ident">flag</span>: <span class="ident">AudioFormatFlag::FLOAT</span> <span class="op">|</span> <span class="ident">AudioFormatFlag::BIG_ENDIAN</span> <span class="op">|</span> <span class="ident">AudioFormatFlag::SIGNED</span>,
+            <span class="ident">flag</span>: <span class="ident">AudioFormatFlag::from_bits_truncate</span>(<span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">0</span> <span class="op">|</span> <span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">4</span> <span class="op">|</span> <span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">7</span>),
             <span class="ident">bit_size</span>: <span class="number">32</span>,
         }
     }
