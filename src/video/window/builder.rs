@@ -1,6 +1,7 @@
 use bitflags::bitflags;
 use std::ffi::CString;
 use std::ptr::NonNull;
+use typed_builder::TypedBuilder;
 
 use super::{Window, WindowContextKind, WindowFormat};
 use crate::{bind, Sdl, Video};
@@ -40,108 +41,35 @@ impl WindowCoord {
 }
 
 /// A builder for the [`Window`].
-#[derive(Debug)]
+#[derive(Debug, TypedBuilder)]
 pub struct WindowBuilder {
+    #[builder(default = "Untitled".into(), setter(into))]
     title: String,
+    #[builder(default = WindowCoord::centered())]
     x: WindowCoord,
+    #[builder(default = WindowCoord::centered())]
     y: WindowCoord,
+    #[builder(default = 640)]
     width: u32,
+    #[builder(default = 480)]
     height: u32,
+    #[builder(default = WindowFormat::Normal)]
     format: WindowFormat,
+    #[builder(default = WindowContextKind::Software)]
     context_kind: WindowContextKind,
+    #[builder(default)]
     hidden: bool,
+    #[builder(default)]
     allow_high_dpi: bool,
+    #[builder(default)]
     borderless: bool,
+    #[builder(default)]
     resizable: bool,
 }
 
-impl Default for WindowBuilder {
-    fn default() -> Self {
-        Self {
-            title: "Untitled".into(),
-            x: WindowCoord::centered(),
-            y: WindowCoord::centered(),
-            width: 640,
-            height: 480,
-            format: WindowFormat::Normal,
-            context_kind: WindowContextKind::Software,
-            hidden: false,
-            allow_high_dpi: false,
-            borderless: false,
-            resizable: false,
-        }
-    }
-}
-
 impl WindowBuilder {
-    /// Sets the title of the window.
-    pub fn title(mut self, title: &str) -> Self {
-        self.title = title.to_owned();
-        self
-    }
-
-    /// Sets the x coordinate of the window.
-    pub fn x(mut self, x: WindowCoord) -> Self {
-        self.x = x;
-        self
-    }
-
-    /// Sets the y coordinate of the window.
-    pub fn y(mut self, y: WindowCoord) -> Self {
-        self.y = y;
-        self
-    }
-
-    /// Sets the width of the window.
-    pub fn width(mut self, width: u32) -> Self {
-        self.width = width;
-        self
-    }
-
-    /// Sets the height of the window.
-    pub fn height(mut self, height: u32) -> Self {
-        self.height = height;
-        self
-    }
-
-    /// Sets the format of the window.
-    pub fn format(mut self, format: WindowFormat) -> Self {
-        self.format = format;
-        self
-    }
-
-    /// Sets the context kind of the window.
-    pub fn context_kind(mut self, context_kind: WindowContextKind) -> Self {
-        self.context_kind = context_kind;
-        self
-    }
-
-    /// Sets whether the window is hidden.
-    pub fn hidden(mut self, hidden: bool) -> Self {
-        self.hidden = hidden;
-        self
-    }
-
-    /// Sets whether the window allows high dpi.
-    pub fn allow_high_dpi(mut self, allow_high_dpi: bool) -> Self {
-        self.allow_high_dpi = allow_high_dpi;
-        self
-    }
-
-    /// Sets whether the window is borderless.
-    pub fn borderless(mut self, borderless: bool) -> Self {
-        self.borderless = borderless;
-        self
-    }
-
-    /// Sets whether the window is resizable.
-    pub fn resizable(mut self, resizable: bool) -> Self {
-        self.resizable = resizable;
-        self
-    }
-
     /// Builds the window.
-    pub fn build<'video>(self, video: &'video Video) -> Window<'video> {
+    pub fn new_window<'video>(self, video: &'video Video) -> Window<'video> {
         if self.context_kind == WindowContextKind::Vulkan {
             let ret = unsafe { bind::SDL_Vulkan_LoadLibrary(std::ptr::null()) };
             if ret == -1 {

@@ -102,51 +102,6 @@
 <span id="100">100</span>
 <span id="101">101</span>
 <span id="102">102</span>
-<span id="103">103</span>
-<span id="104">104</span>
-<span id="105">105</span>
-<span id="106">106</span>
-<span id="107">107</span>
-<span id="108">108</span>
-<span id="109">109</span>
-<span id="110">110</span>
-<span id="111">111</span>
-<span id="112">112</span>
-<span id="113">113</span>
-<span id="114">114</span>
-<span id="115">115</span>
-<span id="116">116</span>
-<span id="117">117</span>
-<span id="118">118</span>
-<span id="119">119</span>
-<span id="120">120</span>
-<span id="121">121</span>
-<span id="122">122</span>
-<span id="123">123</span>
-<span id="124">124</span>
-<span id="125">125</span>
-<span id="126">126</span>
-<span id="127">127</span>
-<span id="128">128</span>
-<span id="129">129</span>
-<span id="130">130</span>
-<span id="131">131</span>
-<span id="132">132</span>
-<span id="133">133</span>
-<span id="134">134</span>
-<span id="135">135</span>
-<span id="136">136</span>
-<span id="137">137</span>
-<span id="138">138</span>
-<span id="139">139</span>
-<span id="140">140</span>
-<span id="141">141</span>
-<span id="142">142</span>
-<span id="143">143</span>
-<span id="144">144</span>
-<span id="145">145</span>
-<span id="146">146</span>
-<span id="147">147</span>
 </pre><pre class="rust">
 <span class="doccomment">//! Provides tools to make a specification to require what an audio device is.</span>
 
@@ -157,68 +112,25 @@
     <span class="ident">os::raw::c_int</span>,
     <span class="ident">sync</span>::{<span class="ident">Arc</span>, <span class="ident">Mutex</span>},
 };
+<span class="kw">use</span> <span class="ident">typed_builder::TypedBuilder</span>;
 
 <span class="kw">use</span> <span class="kw">crate</span><span class="ident">::bind</span>;
 
 <span class="kw">use</span> <span class="kw">super</span><span class="ident">::format::AudioFormat</span>;
 
 <span class="doccomment">/// A builder to build an information representing what specification is required for an audio device.</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>)]</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">AudioSpecBuilder</span> {
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">TypedBuilder</span>)]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">AudioSpecBuilder</span><span class="op">&lt;</span><span class="lifetime">&#39;callback</span><span class="op">&gt;</span> {
+    <span class="attribute">#[<span class="ident">builder</span>(<span class="ident">default</span> <span class="op">=</span> <span class="number">44100</span>)]</span>
     <span class="ident">sample_freq</span>: <span class="ident">u32</span>,
+    <span class="attribute">#[<span class="ident">builder</span>(<span class="ident">default</span> <span class="op">=</span> <span class="ident">AudioFormat::signed32_lsb</span>())]</span>
     <span class="ident">format</span>: <span class="ident">AudioFormat</span>,
+    <span class="attribute">#[<span class="ident">builder</span>(<span class="ident">default</span> <span class="op">=</span> <span class="number">2</span>)]</span>
     <span class="ident">channels</span>: <span class="ident">u8</span>,
+    <span class="attribute">#[<span class="ident">builder</span>(<span class="ident">default</span> <span class="op">=</span> <span class="number">4096</span>)]</span>
     <span class="ident">samples</span>: <span class="ident">u16</span>,
-}
-
-<span class="kw">impl</span> <span class="ident">Default</span> <span class="kw">for</span> <span class="ident">AudioSpecBuilder</span> {
-    <span class="kw">fn</span> <span class="ident">default</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-        <span class="self">Self</span><span class="ident">::new</span>()
-    }
-}
-
-<span class="kw">impl</span> <span class="ident">AudioSpecBuilder</span> {
-    <span class="doccomment">/// Constructs an empty builder with the standard specification.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-        <span class="self">Self</span> {
-            <span class="ident">sample_freq</span>: <span class="number">44100</span>,
-            <span class="ident">format</span>: <span class="ident">AudioFormat::signed32_lsb</span>(),
-            <span class="ident">channels</span>: <span class="number">2</span>,
-            <span class="ident">samples</span>: <span class="number">4096</span>,
-        }
-    }
-
-    <span class="doccomment">/// Changes the sample frequencies of the specification.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">sample_freq</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">value</span>: <span class="ident">u32</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span> {
-        <span class="self">self</span>.<span class="ident">sample_freq</span> <span class="op">=</span> <span class="ident">value</span>;
-        <span class="self">self</span>
-    }
-
-    <span class="doccomment">/// Changes the format of the specification.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">format</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">value</span>: <span class="ident">AudioFormat</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span> {
-        <span class="self">self</span>.<span class="ident">format</span> <span class="op">=</span> <span class="ident">value</span>;
-        <span class="self">self</span>
-    }
-
-    <span class="doccomment">/// Changes the numbers of channels of the specification.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">channels</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">value</span>: <span class="ident">u8</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span> {
-        <span class="self">self</span>.<span class="ident">channels</span> <span class="op">=</span> <span class="ident">value</span>;
-        <span class="self">self</span>
-    }
-
-    <span class="doccomment">/// Changes the sample rates of the specification.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">samples</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">value</span>: <span class="ident">u16</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span> {
-        <span class="self">self</span>.<span class="ident">samples</span> <span class="op">=</span> <span class="ident">value</span>;
-        <span class="self">self</span>
-    }
-
-    <span class="doccomment">/// Builds an [`AudioSpec`] with an optional callback.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">build</span><span class="op">&lt;</span><span class="lifetime">&#39;callback</span><span class="op">&gt;</span>(
-        <span class="self">self</span>,
-        <span class="ident">callback</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Box</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">AudioCallback</span> <span class="op">+</span> <span class="lifetime">&#39;callback</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">AudioSpec</span><span class="op">&lt;</span><span class="lifetime">&#39;callback</span><span class="op">&gt;</span> {
-        <span class="ident">AudioSpec::new</span>(<span class="self">self</span>, <span class="ident">callback</span>.<span class="ident">map</span>(<span class="ident">Box::new</span>))
-    }
+    <span class="attribute">#[<span class="ident">builder</span>(<span class="ident">default</span>, <span class="ident">setter</span>(<span class="ident">strip_option</span>))]</span>
+    <span class="ident">callback</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Box</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">AudioCallback</span> <span class="op">+</span> <span class="lifetime">&#39;callback</span><span class="op">&gt;</span><span class="op">&gt;</span>,
 }
 
 <span class="doccomment">/// A type of the callback to interact with the raw audio buffer.</span>
@@ -237,10 +149,8 @@
 }
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;callback</span><span class="op">&gt;</span> <span class="ident">AudioSpec</span><span class="op">&lt;</span><span class="lifetime">&#39;callback</span><span class="op">&gt;</span> {
-    <span class="kw">fn</span> <span class="ident">new</span>(
-        <span class="ident">builder</span>: <span class="ident">AudioSpecBuilder</span>,
-        <span class="ident">callback</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Box</span><span class="op">&lt;</span><span class="ident">Box</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">AudioCallback</span> <span class="op">+</span> <span class="lifetime">&#39;callback</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="doccomment">/// Constructs an audio specification with the optional callback.</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">builder</span>: <span class="ident">AudioSpecBuilder</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
         <span class="self">Self</span> {
             <span class="ident">raw</span>: <span class="ident">bind::SDL_AudioSpec</span> {
                 <span class="ident">freq</span>: <span class="ident">builder</span>.<span class="ident">sample_freq</span> <span class="kw">as</span> <span class="ident">c_int</span>,
@@ -251,8 +161,8 @@
                 <span class="ident">padding</span>: <span class="number">0</span>,
                 <span class="ident">size</span>: <span class="number">0</span>,
                 <span class="ident">callback</span>: <span class="prelude-val">Some</span>(<span class="ident">audio_spec_wrap_handler</span>),
-                <span class="ident">userdata</span>: <span class="ident">callback</span>.<span class="ident">map_or</span>(<span class="ident">std::ptr::null_mut</span>(), <span class="op">|</span><span class="ident">callback</span><span class="op">|</span> {
-                    <span class="ident">Box::into_raw</span>(<span class="ident">callback</span>).<span class="ident">cast</span>()
+                <span class="ident">userdata</span>: <span class="ident">builder</span>.<span class="ident">callback</span>.<span class="ident">map_or</span>(<span class="ident">std::ptr::null_mut</span>(), <span class="op">|</span><span class="ident">callback</span><span class="op">|</span> {
+                    <span class="ident">Box::into_raw</span>(<span class="ident">Box::new</span>(<span class="ident">callback</span>)).<span class="ident">cast</span>()
                 }),
             },
             <span class="ident">_phantom</span>: <span class="ident">PhantomData</span>,

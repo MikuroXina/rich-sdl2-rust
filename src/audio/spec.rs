@@ -7,68 +7,25 @@ use std::{
     os::raw::c_int,
     sync::{Arc, Mutex},
 };
+use typed_builder::TypedBuilder;
 
 use crate::bind;
 
 use super::format::AudioFormat;
 
 /// A builder to build an information representing what specification is required for an audio device.
-#[derive(Debug, Clone)]
-pub struct AudioSpecBuilder {
+#[derive(TypedBuilder)]
+pub struct AudioSpecBuilder<'callback> {
+    #[builder(default = 44100)]
     sample_freq: u32,
+    #[builder(default = AudioFormat::signed32_lsb())]
     format: AudioFormat,
+    #[builder(default = 2)]
     channels: u8,
+    #[builder(default = 4096)]
     samples: u16,
-}
-
-impl Default for AudioSpecBuilder {
-    fn default() -> Self {
-        Self::new()
-    }
-}
-
-impl AudioSpecBuilder {
-    /// Constructs an empty builder with the standard specification.
-    pub fn new() -> Self {
-        Self {
-            sample_freq: 44100,
-            format: AudioFormat::signed32_lsb(),
-            channels: 2,
-            samples: 4096,
-        }
-    }
-
-    /// Changes the sample frequencies of the specification.
-    pub fn sample_freq(&mut self, value: u32) -> &mut Self {
-        self.sample_freq = value;
-        self
-    }
-
-    /// Changes the format of the specification.
-    pub fn format(&mut self, value: AudioFormat) -> &mut Self {
-        self.format = value;
-        self
-    }
-
-    /// Changes the numbers of channels of the specification.
-    pub fn channels(&mut self, value: u8) -> &mut Self {
-        self.channels = value;
-        self
-    }
-
-    /// Changes the sample rates of the specification.
-    pub fn samples(&mut self, value: u16) -> &mut Self {
-        self.samples = value;
-        self
-    }
-
-    /// Builds an [`AudioSpec`] with an optional callback.
-    pub fn build<'callback>(
-        self,
-        callback: Option<Box<dyn AudioCallback + 'callback>>,
-    ) -> AudioSpec<'callback> {
-        AudioSpec::new(self, callback.map(Box::new))
-    }
+    #[builder(default, setter(strip_option))]
+    callback: Option<Box<dyn AudioCallback + 'callback>>,
 }
 
 /// A type of the callback to interact with the raw audio buffer.
@@ -87,10 +44,8 @@ impl std::fmt::Debug for AudioSpec<'_> {
 }
 
 impl<'callback> AudioSpec<'callback> {
-    fn new(
-        builder: AudioSpecBuilder,
-        callback: Option<Box<Box<dyn AudioCallback + 'callback>>>,
-    ) -> Self {
+    /// Constructs an audio specification with the optional callback.
+    pub fn new(builder: AudioSpecBuilder) -> Self {
         Self {
             raw: bind::SDL_AudioSpec {
                 freq: builder.sample_freq as c_int,
@@ -101,8 +56,8 @@ impl<'callback> AudioSpec<'callback> {
                 padding: 0,
                 size: 0,
                 callback: Some(audio_spec_wrap_handler),
-                userdata: callback.map_or(std::ptr::null_mut(), |callback| {
-                    Box::into_raw(callback).cast()
+                userdata: builder.callback.map_or(std::ptr::null_mut(), |callback| {
+                    Box::into_raw(Box::new(callback)).cast()
                 }),
             },
             _phantom: PhantomData,
