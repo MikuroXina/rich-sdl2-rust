@@ -73,7 +73,7 @@
 <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">scan_code</span>;
 
 <span class="doccomment">/// A symbol on the keyboard with the modification and the relationship of actual and virtual key code.</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>)]</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">Copy</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">KeySymbol</span> {
     <span class="doccomment">/// The actual key code on the keyboard.</span>
     <span class="kw">pub</span> <span class="ident">scan_code</span>: <span class="ident">ScanCode</span>,
@@ -94,7 +94,7 @@
 }
 
 <span class="doccomment">/// An event on interacting to the keyboard.</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>)]</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">KeyboardEvent</span> {
     <span class="doccomment">/// When this event occurred.</span>
     <span class="kw">pub</span> <span class="ident">timestamp</span>: <span class="ident">u32</span>,

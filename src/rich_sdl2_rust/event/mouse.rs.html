@@ -179,7 +179,7 @@
 }
 
 <span class="doccomment">/// An event related on the mouse.</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>)]</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>)]</span>
 <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">MouseEvent</span> {
     <span class="doccomment">/// A motion event [`MouseMotionEvent`].</span>
     <span class="ident">Motion</span>(<span class="ident">MouseMotionEvent</span>),
@@ -190,7 +190,7 @@
 }
 
 <span class="doccomment">/// An event that the mouse was moved.</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>)]</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">MouseMotionEvent</span> {
     <span class="doccomment">/// When this event occurred.</span>
     <span class="kw">pub</span> <span class="ident">timestamp</span>: <span class="ident">u32</span>,
@@ -223,7 +223,7 @@
 }
 
 <span class="doccomment">/// An event that th mouse button was pressed/released.</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>)]</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">MouseButtonEvent</span> {
     <span class="doccomment">/// When this event occurred.</span>
     <span class="kw">pub</span> <span class="ident">timestamp</span>: <span class="ident">u32</span>,
@@ -256,7 +256,7 @@
 }
 
 <span class="doccomment">/// An event that the mouse wheel was scrolled.</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>)]</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">MouseWheelEvent</span> {
     <span class="doccomment">/// When this event occurred.</span>
     <span class="kw">pub</span> <span class="ident">timestamp</span>: <span class="ident">u32</span>,

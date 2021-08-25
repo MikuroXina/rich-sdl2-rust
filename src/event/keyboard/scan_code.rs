@@ -6,7 +6,7 @@ use crate::bind;
 
 use super::key_code::KeyCode;
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum ScanCode {
     Unknown,
     A,
