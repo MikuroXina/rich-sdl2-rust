@@ -36,7 +36,7 @@ impl MouseButton {
 }
 
 /// An event related on the mouse.
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub enum MouseEvent {
     /// A motion event [`MouseMotionEvent`].
     Motion(MouseMotionEvent),
@@ -47,7 +47,7 @@ pub enum MouseEvent {
 }
 
 /// An event that the mouse was moved.
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub struct MouseMotionEvent {
     /// When this event occurred.
     pub timestamp: u32,
@@ -80,7 +80,7 @@ impl From<bind::SDL_MouseMotionEvent> for MouseMotionEvent {
 }
 
 /// An event that th mouse button was pressed/released.
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub struct MouseButtonEvent {
     /// When this event occurred.
     pub timestamp: u32,
@@ -113,7 +113,7 @@ impl From<bind::SDL_MouseButtonEvent> for MouseButtonEvent {
 }
 
 /// An event that the mouse wheel was scrolled.
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub struct MouseWheelEvent {
     /// When this event occurred.
     pub timestamp: u32,
