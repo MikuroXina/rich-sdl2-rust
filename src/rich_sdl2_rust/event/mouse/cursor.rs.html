@@ -55,6 +55,7 @@
 <span id="53">53</span>
 <span id="54">54</span>
 <span id="55">55</span>
+<span id="56">56</span>
 </pre><pre class="rust">
 <span class="doccomment">//! Controlling cursor to show/hide.</span>
 
@@ -65,6 +66,7 @@
 <span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">bind</span>, <span class="ident">window::Window</span>, <span class="ident">Sdl</span>};
 
 <span class="doccomment">/// This controls the cursor on the window. It can show/hide the cursor.</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Cursor</span><span class="op">&lt;</span><span class="lifetime">&#39;window</span><span class="op">&gt;</span> {
     <span class="ident">window</span>: <span class="ident">PhantomData</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;window</span> <span class="ident">Window</span><span class="op">&lt;</span><span class="lifetime">&#39;window</span><span class="op">&gt;</span><span class="op">&gt;</span>,
 }

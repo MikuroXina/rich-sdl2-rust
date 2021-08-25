@@ -5,7 +5,7 @@ use crate::bind;
 use super::direction::Direction;
 
 /// An effect on the haptic device.
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub enum HapticEffect {
     /// Applies the constant force in the direction.
     Constant(Direction, Play, Trigger, Level, Envelope),
@@ -34,7 +34,7 @@ impl HapticEffect {
             HapticEffect::Constant(dir, play, trigger, level, env) => bind::SDL_HapticEffect {
                 constant: bind::SDL_HapticConstant {
                     type_: bind::SDL_HAPTIC_CONSTANT as u16,
-                    direction: dir.to_raw(),
+                    direction: dir.into_raw(),
                     length: play.length,
                     delay: play.delay,
                     button: trigger.button,
@@ -49,7 +49,7 @@ impl HapticEffect {
             HapticEffect::Periodic(dir, play, trigger, wave, env) => bind::SDL_HapticEffect {
                 periodic: bind::SDL_HapticPeriodic {
                     type_: wave.kind.to_raw(),
-                    direction: dir.to_raw(),
+                    direction: dir.into_raw(),
                     length: play.length,
                     delay: play.delay,
                     button: trigger.button,
@@ -86,7 +86,7 @@ impl HapticEffect {
             HapticEffect::Ramp(dir, play, trigger, ramp, env) => bind::SDL_HapticEffect {
                 ramp: bind::SDL_HapticRamp {
                     type_: bind::SDL_HAPTIC_RAMP as u16,
-                    direction: dir.to_raw(),
+                    direction: dir.into_raw(),
                     length: play.length,
                     delay: play.delay,
                     button: trigger.button,
@@ -114,7 +114,7 @@ impl HapticEffect {
             HapticEffect::Custom(dir, play, trigger, mut custom, env) => bind::SDL_HapticEffect {
                 custom: bind::SDL_HapticCustom {
                     type_: bind::SDL_HAPTIC_CUSTOM as u16,
-                    direction: dir.to_raw(),
+                    direction: dir.into_raw(),
                     length: play.length,
                     delay: play.delay,
                     button: trigger.button,
@@ -325,7 +325,7 @@ impl From<bind::SDL_HapticEffect> for HapticEffect {
 }
 
 /// Length and delay of the playing.
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub struct Play {
     /// The length of the playing in milliseconds.
     pub length: u32,
@@ -334,7 +334,7 @@ pub struct Play {
 }
 
 /// A trigger button to start the effect, and an interval between the effect.
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub struct Trigger {
     /// The trigger button to start the effect
     pub button: u16,
@@ -343,7 +343,7 @@ pub struct Trigger {
 }
 
 /// A magnitude level of the force.
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub struct Level(pub i16);
 
 /// An envelope to fade in/out the effect. If both `attack_length` and `fade_level` are `0`, the envelope is not used. An example of a constant effect evolution in time:
@@ -368,7 +368,7 @@ pub struct Level(pub i16);
 /// [------------------][-----------------------]
 ///        delay                 length
 /// ```
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub struct Envelope {
     /// The length of the level from `attack_level` to the effect level in milliseconds.
     pub attack_length: u16,
@@ -381,7 +381,7 @@ pub struct Envelope {
 }
 
 /// A periodic waveform specification.
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub struct Wave {
     /// The kind of the waveform.
     pub kind: WaveKind,
@@ -396,7 +396,7 @@ pub struct Wave {
 }
 
 /// A kind of the waveform.
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub enum WaveKind {
     /// A sine wave like:
     ///
@@ -456,11 +456,11 @@ impl From<u16> for WaveKind {
 }
 
 /// A vector to represent the XYZ component for [`Condition`].
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub struct Vector3<T>(pub [T; 3]);
 
 /// A condition to trigger the effect. Refer to [`Direction`] for which side is the positive/negative on the joystick.
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub struct Condition {
     /// The level when the joystick in the positive side.
     pub positive_level: Vector3<u16>,
@@ -477,7 +477,7 @@ pub struct Condition {
 }
 
 /// A linear ramp to interpolate the force of the effect.
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub struct Ramp {
     /// The level at the start to play.
     pub start: Level,
@@ -486,7 +486,7 @@ pub struct Ramp {
 }
 
 /// A custom periodic waveform by your sampled data.
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub struct Custom {
     /// The numbers of using axes.
     pub channels: u8,

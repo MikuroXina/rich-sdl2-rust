@@ -9,7 +9,7 @@ use crate::{
 };
 
 /// An event occurs on inputted from a game controller or changed a game controller.
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub enum ControllerEvent<'joystick> {
     /// An axis was changed.
     Axis {

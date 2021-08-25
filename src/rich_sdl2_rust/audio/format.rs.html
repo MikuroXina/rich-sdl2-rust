@@ -141,7 +141,7 @@
 }
 
 <span class="doccomment">/// A format to represent how is stored samples in audio data.</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">Copy</span>)]</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">Copy</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">AudioFormat</span> {
     <span class="doccomment">/// A flag to represent characteristics of a type.</span>
     <span class="kw">pub</span> <span class="ident">flag</span>: <span class="ident">AudioFormatFlag</span>,

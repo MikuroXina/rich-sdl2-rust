@@ -507,7 +507,7 @@
 <span class="kw">use</span> <span class="kw">super</span><span class="ident">::direction::Direction</span>;
 
 <span class="doccomment">/// An effect on the haptic device.</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>)]</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>)]</span>
 <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">HapticEffect</span> {
     <span class="doccomment">/// Applies the constant force in the direction.</span>
     <span class="ident">Constant</span>(<span class="ident">Direction</span>, <span class="ident">Play</span>, <span class="ident">Trigger</span>, <span class="ident">Level</span>, <span class="ident">Envelope</span>),
@@ -536,7 +536,7 @@
             <span class="ident">HapticEffect::Constant</span>(<span class="ident">dir</span>, <span class="ident">play</span>, <span class="ident">trigger</span>, <span class="ident">level</span>, <span class="ident">env</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">bind::SDL_HapticEffect</span> {
                 <span class="ident">constant</span>: <span class="ident">bind::SDL_HapticConstant</span> {
                     <span class="ident">type_</span>: <span class="ident">bind::SDL_HAPTIC_CONSTANT</span> <span class="kw">as</span> <span class="ident">u16</span>,
-                    <span class="ident">direction</span>: <span class="ident">dir</span>.<span class="ident">to_raw</span>(),
+                    <span class="ident">direction</span>: <span class="ident">dir</span>.<span class="ident">into_raw</span>(),
                     <span class="ident">length</span>: <span class="ident">play</span>.<span class="ident">length</span>,
                     <span class="ident">delay</span>: <span class="ident">play</span>.<span class="ident">delay</span>,
                     <span class="ident">button</span>: <span class="ident">trigger</span>.<span class="ident">button</span>,
@@ -551,7 +551,7 @@
             <span class="ident">HapticEffect::Periodic</span>(<span class="ident">dir</span>, <span class="ident">play</span>, <span class="ident">trigger</span>, <span class="ident">wave</span>, <span class="ident">env</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">bind::SDL_HapticEffect</span> {
                 <span class="ident">periodic</span>: <span class="ident">bind::SDL_HapticPeriodic</span> {
                     <span class="ident">type_</span>: <span class="ident">wave</span>.<span class="ident">kind</span>.<span class="ident">to_raw</span>(),
-                    <span class="ident">direction</span>: <span class="ident">dir</span>.<span class="ident">to_raw</span>(),
+                    <span class="ident">direction</span>: <span class="ident">dir</span>.<span class="ident">into_raw</span>(),
                     <span class="ident">length</span>: <span class="ident">play</span>.<span class="ident">length</span>,
                     <span class="ident">delay</span>: <span class="ident">play</span>.<span class="ident">delay</span>,
                     <span class="ident">button</span>: <span class="ident">trigger</span>.<span class="ident">button</span>,
@@ -588,7 +588,7 @@
             <span class="ident">HapticEffect::Ramp</span>(<span class="ident">dir</span>, <span class="ident">play</span>, <span class="ident">trigger</span>, <span class="ident">ramp</span>, <span class="ident">env</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">bind::SDL_HapticEffect</span> {
                 <span class="ident">ramp</span>: <span class="ident">bind::SDL_HapticRamp</span> {
                     <span class="ident">type_</span>: <span class="ident">bind::SDL_HAPTIC_RAMP</span> <span class="kw">as</span> <span class="ident">u16</span>,
-                    <span class="ident">direction</span>: <span class="ident">dir</span>.<span class="ident">to_raw</span>(),
+                    <span class="ident">direction</span>: <span class="ident">dir</span>.<span class="ident">into_raw</span>(),
                     <span class="ident">length</span>: <span class="ident">play</span>.<span class="ident">length</span>,
                     <span class="ident">delay</span>: <span class="ident">play</span>.<span class="ident">delay</span>,
                     <span class="ident">button</span>: <span class="ident">trigger</span>.<span class="ident">button</span>,
@@ -616,7 +616,7 @@
             <span class="ident">HapticEffect::Custom</span>(<span class="ident">dir</span>, <span class="ident">play</span>, <span class="ident">trigger</span>, <span class="kw-2">mut</span> <span class="ident">custom</span>, <span class="ident">env</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">bind::SDL_HapticEffect</span> {
                 <span class="ident">custom</span>: <span class="ident">bind::SDL_HapticCustom</span> {
                     <span class="ident">type_</span>: <span class="ident">bind::SDL_HAPTIC_CUSTOM</span> <span class="kw">as</span> <span class="ident">u16</span>,
-                    <span class="ident">direction</span>: <span class="ident">dir</span>.<span class="ident">to_raw</span>(),
+                    <span class="ident">direction</span>: <span class="ident">dir</span>.<span class="ident">into_raw</span>(),
                     <span class="ident">length</span>: <span class="ident">play</span>.<span class="ident">length</span>,
                     <span class="ident">delay</span>: <span class="ident">play</span>.<span class="ident">delay</span>,
                     <span class="ident">button</span>: <span class="ident">trigger</span>.<span class="ident">button</span>,
@@ -827,7 +827,7 @@
 }
 
 <span class="doccomment">/// Length and delay of the playing.</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>)]</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Play</span> {
     <span class="doccomment">/// The length of the playing in milliseconds.</span>
     <span class="kw">pub</span> <span class="ident">length</span>: <span class="ident">u32</span>,
@@ -836,7 +836,7 @@
 }
 
 <span class="doccomment">/// A trigger button to start the effect, and an interval between the effect.</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>)]</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Trigger</span> {
     <span class="doccomment">/// The trigger button to start the effect</span>
     <span class="kw">pub</span> <span class="ident">button</span>: <span class="ident">u16</span>,
@@ -845,7 +845,7 @@
 }
 
 <span class="doccomment">/// A magnitude level of the force.</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>)]</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Level</span>(<span class="kw">pub</span> <span class="ident">i16</span>);
 
 <span class="doccomment">/// An envelope to fade in/out the effect. If both `attack_length` and `fade_level` are `0`, the envelope is not used. An example of a constant effect evolution in time:</span>
@@ -870,7 +870,7 @@
 <span class="doccomment">/// [------------------][-----------------------]</span>
 <span class="doccomment">///        delay                 length</span>
 <span class="doccomment">/// ```</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>)]</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Envelope</span> {
     <span class="doccomment">/// The length of the level from `attack_level` to the effect level in milliseconds.</span>
     <span class="kw">pub</span> <span class="ident">attack_length</span>: <span class="ident">u16</span>,
@@ -883,7 +883,7 @@
 }
 
 <span class="doccomment">/// A periodic waveform specification.</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>)]</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Wave</span> {
     <span class="doccomment">/// The kind of the waveform.</span>
     <span class="kw">pub</span> <span class="ident">kind</span>: <span class="ident">WaveKind</span>,
@@ -898,7 +898,7 @@
 }
 
 <span class="doccomment">/// A kind of the waveform.</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>)]</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>)]</span>
 <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">WaveKind</span> {
     <span class="doccomment">/// A sine wave like:</span>
     <span class="doccomment">///</span>
@@ -958,11 +958,11 @@
 }
 
 <span class="doccomment">/// A vector to represent the XYZ component for [`Condition`].</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>)]</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Vector3</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>(<span class="kw">pub</span> [<span class="ident">T</span>; <span class="number">3</span>]);
 
 <span class="doccomment">/// A condition to trigger the effect. Refer to [`Direction`] for which side is the positive/negative on the joystick.</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>)]</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Condition</span> {
     <span class="doccomment">/// The level when the joystick in the positive side.</span>
     <span class="kw">pub</span> <span class="ident">positive_level</span>: <span class="ident">Vector3</span><span class="op">&lt;</span><span class="ident">u16</span><span class="op">&gt;</span>,
@@ -979,7 +979,7 @@
 }
 
 <span class="doccomment">/// A linear ramp to interpolate the force of the effect.</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>)]</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Ramp</span> {
     <span class="doccomment">/// The level at the start to play.</span>
     <span class="kw">pub</span> <span class="ident">start</span>: <span class="ident">Level</span>,
@@ -988,7 +988,7 @@
 }
 
 <span class="doccomment">/// A custom periodic waveform by your sampled data.</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>)]</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Custom</span> {
     <span class="doccomment">/// The numbers of using axes.</span>
     <span class="kw">pub</span> <span class="ident">channels</span>: <span class="ident">u8</span>,

@@ -13,7 +13,7 @@ use crate::bind;
 use super::format::AudioFormat;
 
 /// A builder to build an information representing what specification is required for an audio device.
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub struct AudioSpecBuilder {
     sample_freq: u32,
     format: AudioFormat,
