@@ -3,7 +3,7 @@
 use crate::bind;
 
 /// A direction and coordinate system of the haptic movements.
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum Direction {
     /// A polar coordinate system.
     Polar {
@@ -29,8 +29,8 @@ pub enum Direction {
 }
 
 impl Direction {
-    pub(super) fn to_raw(&self) -> bind::SDL_HapticDirection {
-        match *self {
+    pub(super) fn into_raw(self) -> bind::SDL_HapticDirection {
+        match self {
             Direction::Polar { degree_100 } => bind::SDL_HapticDirection {
                 type_: bind::SDL_HAPTIC_POLAR as u8,
                 dir: [degree_100, 0, 0],

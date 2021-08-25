@@ -31,7 +31,7 @@ pub mod trackball;
 pub struct InputIndex(c_int);
 
 /// An id of the joystick. It can be used to share/duplicate Joystick object, but not [`Send`] and [`Sync`] due to the safety.
-#[derive(Clone, PartialEq)]
+#[derive(Clone, PartialEq, Eq)]
 pub struct JoystickId<'joystick> {
     pub(super) id: u32,
     pub(super) _phantom: PhantomData<&'joystick Joystick>,
@@ -46,6 +46,7 @@ impl std::fmt::Debug for JoystickId<'_> {
 }
 
 /// A physical joystick device manages its states, input devices and power levels.
+#[derive(Clone, PartialEq, Eq)]
 pub struct Joystick {
     ptr: NonNull<bind::SDL_Joystick>,
 }

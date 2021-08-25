@@ -6,7 +6,7 @@ use crate::{
 };
 
 /// The details what occurred in [`WindowEvent`].
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum WindowEventDetails {
     /// The window became to be shown.
     Shown,

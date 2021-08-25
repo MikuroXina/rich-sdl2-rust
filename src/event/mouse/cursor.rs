@@ -7,6 +7,7 @@ use std::os::raw::c_int;
 use crate::{bind, window::Window, Sdl};
 
 /// This controls the cursor on the window. It can show/hide the cursor.
+#[derive(Clone)]
 pub struct Cursor<'window> {
     window: PhantomData<&'window Window<'window>>,
 }

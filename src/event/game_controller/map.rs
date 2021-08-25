@@ -3,7 +3,7 @@
 use crate::bind;
 
 /// A mapping that the logical button is attached to the physical index.
-#[derive(Debug)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum MapInput {
     /// It is attached to the button.
     Button {

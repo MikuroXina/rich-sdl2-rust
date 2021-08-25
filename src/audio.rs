@@ -29,7 +29,7 @@ pub mod stream;
 pub mod wav;
 
 /// A property of an audio device.
-#[derive(Debug)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub struct AudioDeviceProperty {
     /// The sample frequencies of an audio device..
     pub sample_freq: u32,
