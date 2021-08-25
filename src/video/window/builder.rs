@@ -69,7 +69,7 @@ pub struct WindowBuilder {
 
 impl WindowBuilder {
     /// Builds the window.
-    pub fn build<'video>(self, video: &'video Video) -> Window<'video> {
+    pub fn new_window<'video>(self, video: &'video Video) -> Window<'video> {
         if self.context_kind == WindowContextKind::Vulkan {
             let ret = unsafe { bind::SDL_Vulkan_LoadLibrary(std::ptr::null()) };
             if ret == -1 {

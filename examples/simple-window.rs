@@ -4,7 +4,7 @@ use std::cell::Cell;
 pub fn main() {
     let sdl = Sdl::new();
     let video = Video::new(&sdl);
-    let window = window::WindowBuilder::builder().build(&video);
+    let window = window::WindowBuilder::builder().build().new_window(&video);
     let renderer = renderer::Renderer::new(&window);
 
     let exit = Cell::new(false);
