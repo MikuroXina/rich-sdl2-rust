@@ -1,5 +1,7 @@
 //! Vulkan support in SDL2. It accepts the instance from [`ash`] crate.
 
+#![cfg(feature = "vulkan")]
+
 use ash::vk::{Handle as _, Instance};
 use std::{
     ffi::{c_void, CStr},
