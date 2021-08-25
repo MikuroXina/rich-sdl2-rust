@@ -27,7 +27,7 @@ pub struct AudioFormat {
 
 impl AudioFormat {
     /// A format for signed 8-bit data.
-    pub fn signed8() -> Self {
+    pub const fn signed8() -> Self {
         Self {
             flag: AudioFormatFlag::SIGNED,
             bit_size: 8,
@@ -35,7 +35,7 @@ impl AudioFormat {
     }
 
     /// A format for unsigned 8-bit data.
-    pub fn unsigned8() -> Self {
+    pub const fn unsigned8() -> Self {
         Self {
             flag: AudioFormatFlag::empty(),
             bit_size: 8,
@@ -43,7 +43,7 @@ impl AudioFormat {
     }
 
     /// A format for signed little endian 16-bit data.
-    pub fn signed16_lsb() -> Self {
+    pub const fn signed16_lsb() -> Self {
         Self {
             flag: AudioFormatFlag::SIGNED,
             bit_size: 16,
@@ -51,7 +51,7 @@ impl AudioFormat {
     }
 
     /// A format for unsigned little endian 16-bit data.
-    pub fn unsigned16_lsb() -> Self {
+    pub const fn unsigned16_lsb() -> Self {
         Self {
             flag: AudioFormatFlag::empty(),
             bit_size: 16,
@@ -59,15 +59,15 @@ impl AudioFormat {
     }
 
     /// A format for signed big endian 16-bit data.
-    pub fn signed16_msb() -> Self {
+    pub const fn signed16_msb() -> Self {
         Self {
-            flag: AudioFormatFlag::BIG_ENDIAN | AudioFormatFlag::SIGNED,
+            flag: AudioFormatFlag::from_bits_truncate(1 << 4 | 1 << 7),
             bit_size: 16,
         }
     }
 
     /// A format for unsigned big endian 16-bit data.
-    pub fn unsigned16_msb() -> Self {
+    pub const fn unsigned16_msb() -> Self {
         Self {
             flag: AudioFormatFlag::BIG_ENDIAN,
             bit_size: 16,
@@ -75,7 +75,7 @@ impl AudioFormat {
     }
 
     /// A format for signed little endian 32-bit data.
-    pub fn signed32_lsb() -> Self {
+    pub const fn signed32_lsb() -> Self {
         Self {
             flag: AudioFormatFlag::SIGNED,
             bit_size: 32,
@@ -83,25 +83,25 @@ impl AudioFormat {
     }
 
     /// A format for signed big endian 32-bit data.
-    pub fn signed32_msb() -> Self {
+    pub const fn signed32_msb() -> Self {
         Self {
-            flag: AudioFormatFlag::BIG_ENDIAN | AudioFormatFlag::SIGNED,
+            flag: AudioFormatFlag::from_bits_truncate(1 << 4 | 1 << 7),
             bit_size: 32,
         }
     }
 
     /// A format for floating-point little endian 32-bit data.
-    pub fn float32_lsb() -> Self {
+    pub const fn float32_lsb() -> Self {
         Self {
-            flag: AudioFormatFlag::FLOAT | AudioFormatFlag::SIGNED,
+            flag: AudioFormatFlag::from_bits_truncate(1 << 0 | 1 << 7),
             bit_size: 32,
         }
     }
 
     /// A format for floating-point big endian 32-bit data.
-    pub fn float32_msb() -> Self {
+    pub const fn float32_msb() -> Self {
         Self {
-            flag: AudioFormatFlag::FLOAT | AudioFormatFlag::BIG_ENDIAN | AudioFormatFlag::SIGNED,
+            flag: AudioFormatFlag::from_bits_truncate(1 << 0 | 1 << 4 | 1 << 7),
             bit_size: 32,
         }
     }
