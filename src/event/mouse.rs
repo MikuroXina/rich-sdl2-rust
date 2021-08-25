@@ -7,7 +7,7 @@ pub mod cursor;
 pub mod relative;
 
 /// A kind of the mouse button.
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum MouseButton {
     /// The left button of the mouse.
     Left,
