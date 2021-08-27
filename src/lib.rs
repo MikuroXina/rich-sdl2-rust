@@ -1,6 +1,7 @@
 #![allow(unused)]
 #![warn(missing_docs)]
 #![warn(rustdoc::broken_intra_doc_links)]
+#![cfg_attr(feature = "simd_allocator", feature(allocator_api))]
 
 //! # rich-sdl2-rust
 //!
