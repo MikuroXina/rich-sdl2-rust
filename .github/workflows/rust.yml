@@ -20,7 +20,7 @@ jobs:
         uses: actions-rs/toolchain@v1
         with:
           profile: minimal
-          toolchain: stable
+          toolchain: stable, nightly
           components: rustfmt, clippy
 
       - name: Annotate commit with clippy warnings
@@ -37,7 +37,7 @@ jobs:
       - name: Run tests
         run: cargo test --verbose
       - name: Run doc
-        run: cargo doc --no-deps
+        run: cargo +nightly doc --all-features --no-deps
 
       - uses: actions/upload-artifact@v2
         with:

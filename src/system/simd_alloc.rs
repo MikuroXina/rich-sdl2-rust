@@ -1,6 +1,7 @@
 //! Provides SIMD-friendly allocator from SDL2.
 
 #![cfg(feature = "simd_allocator")]
+#![doc(cfg(feature = "simd_allocator"))]
 
 use std::{
     alloc::{AllocError, Allocator, Layout},

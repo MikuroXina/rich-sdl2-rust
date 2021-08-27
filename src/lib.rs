@@ -2,6 +2,7 @@
 #![warn(missing_docs)]
 #![warn(rustdoc::broken_intra_doc_links)]
 #![cfg_attr(feature = "simd_allocator", feature(allocator_api))]
+#![cfg_attr(feature = "nightly", feature(doc_cfg))]
 
 //! # rich-sdl2-rust
 //!
