@@ -15,6 +15,11 @@
 //! - [Handling Events](EventBox)
 //! - ...
 //!
+//! ## Crate features
+//!
+//! - `vulkan`: The Vulkan support API wrapper.
+//! - `nightly`: The features can be used on nightly.
+//!   - `simd_allocator`: The wrapper of SIMD-friendly allocator.
 
 pub mod audio;
 mod bind;
