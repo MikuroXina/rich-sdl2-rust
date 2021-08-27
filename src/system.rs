@@ -7,7 +7,7 @@ pub fn ram_size() -> usize {
     unsafe { bind::SDL_GetSystemRAM() as usize }
 }
 
-// TODO: SIMD allocator
+pub mod simd_alloc;
 
 /// System CPU information.
 pub mod cpu {
