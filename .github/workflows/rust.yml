@@ -27,6 +27,7 @@ jobs:
         uses: actions-rs/clippy-check@v1
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
+          toolchain: nightly
           args: --all-features
 
       - name: Build SDL2 dependency
