@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["SimdAllocator","Allocates memory in a SIMD-friendly way."]]});

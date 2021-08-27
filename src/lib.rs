@@ -1,6 +1,8 @@
 #![allow(unused)]
 #![warn(missing_docs)]
 #![warn(rustdoc::broken_intra_doc_links)]
+#![cfg_attr(feature = "simd_allocator", feature(allocator_api))]
+#![cfg_attr(feature = "nightly", feature(doc_cfg))]
 
 //! # rich-sdl2-rust
 //!
@@ -13,6 +15,11 @@
 //! - [Handling Events](EventBox)
 //! - ...
 //!
+//! ## Crate features
+//!
+//! - `vulkan`: The Vulkan support API wrapper.
+//! - `nightly`: The features can be used on nightly.
+//!   - `simd_allocator`: The wrapper of SIMD-friendly allocator.
 
 pub mod audio;
 mod bind;
