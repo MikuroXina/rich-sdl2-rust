@@ -25,7 +25,12 @@ impl std::fmt::Debug for RwOps<'_> {
 }
 
 impl<'a> RwOps<'a> {
-    pub(crate) unsafe fn ptr(&self) -> NonNull<bind::SDL_RWops> {
+    /// Returns the raw pointer of the file handler.
+    ///
+    /// # Safety
+    ///
+    /// Dereferencing the pointer and using the field is not recommended. Please use carefully.
+    pub unsafe fn ptr(&self) -> NonNull<bind::SDL_RWops> {
         self.ptr
     }
 
