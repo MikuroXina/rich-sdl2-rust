@@ -24,7 +24,6 @@ jobs:
           components: rustfmt, clippy
 
       - name: Clippy Check
-        if: matrix.os == 'ubuntu-latest'
         uses: actions-rs/clippy-check@v1
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
