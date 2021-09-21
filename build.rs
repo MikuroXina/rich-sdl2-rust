@@ -141,6 +141,7 @@ fn extract_gzip(file: fs::File, dst: &Path) {
     use tar::Archive;
 
     let mut decoder = GzDecoder::new(file);
+    assert!(decoder.header().is_some());
     let mut tar_file = fs::OpenOptions::new()
         .read(true)
         .write(true)
