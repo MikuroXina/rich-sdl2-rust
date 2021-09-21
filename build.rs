@@ -37,9 +37,12 @@ fn main() {
     }
     #[cfg(windows)]
     {
+        let pack_dir = root.join(SDL2_DIR);
+        fs::create_dir_all(&pack_dir).expect("failed to create pack directory");
+
         const LINK: &str = "https://libsdl.org/release/SDL2-devel-2.0.16-mingw.tar.gz";
         let tmp_file = download_sdl2(LINK, "SDL2-2.0.16.tar.gz");
-        extract_gzip(tmp_file, root.join(SDL2_DIR).as_path());
+        extract_gzip(tmp_file, pack_dir.as_path());
 
         for entry in fs::read_dir(SDL2_DIR)
             .expect("sdl2 dir not found")
