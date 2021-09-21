@@ -39,7 +39,7 @@ fn main() {
     {
         const LINK: &str = "https://libsdl.org/release/SDL2-devel-2.0.16-mingw.tar.gz";
         let tmp_file = download_sdl2(LINK);
-        extract_zip(tmp_file, &root);
+        extract_gzip(tmp_file, &root);
 
         println!(
             "cargo:rustc-link-search={}",
@@ -123,4 +123,13 @@ fn extract_zip(file: fs::File, dst: &Path) {
             }
         }
     }
+}
+
+fn extract_gzip(file: fs::File, dst: &Path) {
+    use libflate::gzip::Decoder;
+    use tar::Archive;
+
+    let gzip = Decoder::new(file).expect("got must be a gzip archive");
+    let mut archive = Archive::new(gzip);
+    archive.unpack(".").expect("failed to unpack tarball");
 }
