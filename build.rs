@@ -60,7 +60,7 @@ fn main() {
                 .as_path()
                 .to_string_lossy()
         );
-        sdl2_dir = "SDL2-2.0.16/x86_64-w64-mingw32";
+        sdl2_dir = "SDL2-2.0.16/x86_64-w64-mingw32/SDL2";
     }
 
     println!("cargo:rustc-link-lib=SDL2");
