@@ -37,7 +37,7 @@ fn main() {
     }
     #[cfg(windows)]
     {
-        const LINK: &str = "https://libsdl.org/release/SDL2-devel-2.0.16-VC.zip";
+        const LINK: &str = "https://libsdl.org/release/SDL2-devel-2.0.16-mingw.tar.gz";
         let tmp_file = download_sdl2(LINK);
         extract_zip(tmp_file, &root);
 
