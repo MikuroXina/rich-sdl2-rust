@@ -147,7 +147,7 @@ fn extract_gzip(file: fs::File, dst: &Path) {
         .create(true)
         .open(dst.with_extension("tar"))
         .expect("Failed to create temporary file");
-    io::copy(&mut tar_file, &mut decoder).expect("failed to decode gz file");
+    io::copy(&mut decoder, &mut tar_file).expect("failed to decode gz file");
 
     let mut archive = Archive::new(tar_file);
     archive.unpack(dst).expect("failed to unpack tarball");
