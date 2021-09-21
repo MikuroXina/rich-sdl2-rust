@@ -129,8 +129,15 @@ fn extract_gzip(file: fs::File, dst: &Path) {
     use flate2::read::GzDecoder;
     use tar::Archive;
 
-    let gzip = GzDecoder::new(file);
-    eprintln!("{:#?}", gzip.header());
-    let mut archive = Archive::new(gzip);
+    let mut decoder = GzDecoder::new(file);
+    let mut tar_file = fs::OpenOptions::new()
+        .read(true)
+        .write(true)
+        .create(true)
+        .open(dst.with_extension("tar"))
+        .expect("Failed to create temporary file");
+    io::copy(&mut tar_file, &mut decoder).expect("failed to decode gz file");
+
+    let mut archive = Archive::new(tar_file);
     archive.unpack(dst).expect("failed to unpack tarball");
 }
