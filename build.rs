@@ -45,14 +45,6 @@ fn main() {
         let tmp_file = download_sdl2(LINK, "SDL2-2.0.16.tar.gz");
         extract_gzip(tmp_file, pack_dir.as_path());
 
-        for entry in fs::read_dir(SDL2_DIR)
-            .expect("sdl2 dir not found")
-            .into_iter()
-            .flatten()
-        {
-            eprintln!("{:#?}", entry.path());
-        }
-
         println!(
             "cargo:rustc-link-search={}",
             root.join(SDL2_DIR)
@@ -151,7 +143,10 @@ fn extract_gzip(file: fs::File, dst: &Path) {
         .open(dst.with_extension("tar"))
         .expect("Failed to create temporary file");
     io::copy(&mut decoder, &mut tar_file).expect("failed to decode gz file");
+    tar_file.seek(SeekFrom::Start(0)).expect("failed to seek");
 
     let mut archive = Archive::new(tar_file);
-    archive.unpack(dst).expect("failed to unpack tarball");
+    archive
+        .unpack(dst.parent().unwrap())
+        .expect("failed to unpack tarball");
 }
