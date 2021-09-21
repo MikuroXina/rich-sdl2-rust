@@ -130,6 +130,7 @@ fn extract_gzip(file: fs::File, dst: &Path) {
     use tar::Archive;
 
     let gzip = GzDecoder::new(file);
+    eprintln!("{:#?}", gzip.header());
     let mut archive = Archive::new(gzip);
     archive.unpack(dst).expect("failed to unpack tarball");
 }
