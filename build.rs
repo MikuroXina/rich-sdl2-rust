@@ -13,7 +13,7 @@ fn main() {
     #[cfg(unix)]
     if fs::metadata(root.join(SDL2_DIR).join("build").join(".libs")).is_err() {
         const LINK: &str = "https://libsdl.org/release/SDL2-2.0.16.zip";
-        let tmp_file = download_sdl2(LINK);
+        let tmp_file = download_sdl2(LINK, "SDL2-2.0.16.zip");
         extract_zip(tmp_file, &root);
 
         let _ = Command::new("./configure")
@@ -38,7 +38,7 @@ fn main() {
     #[cfg(windows)]
     {
         const LINK: &str = "https://libsdl.org/release/SDL2-devel-2.0.16-mingw.tar.gz";
-        let tmp_file = download_sdl2(LINK);
+        let tmp_file = download_sdl2(LINK, "SDL2-2.0.16.tar.gz");
         extract_gzip(tmp_file, &root);
 
         println!(
@@ -81,13 +81,13 @@ fn main() {
         .expect("`src` directory not found");
 }
 
-fn download_sdl2(link: impl IntoUrl) -> fs::File {
+fn download_sdl2(link: impl IntoUrl, file_name: impl AsRef<Path>) -> fs::File {
     let tmp_dir = env::temp_dir();
     let mut tmp_file = fs::OpenOptions::new()
         .read(true)
         .write(true)
         .create(true)
-        .open(tmp_dir.join("SDL2-2.0.16.zip"))
+        .open(tmp_dir.join(file_name))
         .expect("Failed to create temporary file");
     let mut got = reqwest::blocking::get(link).expect("LINK url is invalid");
     io::copy(&mut got, &mut tmp_file).expect("failed to write to temporary file");
