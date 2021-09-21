@@ -45,6 +45,13 @@ fn main() {
         let tmp_file = download_sdl2(LINK, "SDL2-2.0.16.tar.gz");
         extract_gzip(tmp_file, pack_dir.as_path());
 
+        let _ = Command::new("make")
+            .arg("-j4")
+            .arg("native")
+            .current_dir(SDL2_DIR)
+            .output()
+            .expect("failed to make");
+
         println!(
             "cargo:rustc-link-search={}",
             root.join(SDL2_DIR)
