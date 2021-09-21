@@ -41,7 +41,13 @@ fn main() {
         let tmp_file = download_sdl2(LINK, "SDL2-2.0.16.tar.gz");
         extract_gzip(tmp_file, root.join(SDL2_DIR).as_path());
 
-        eprintln!("{:#?}", fs::read_dir(SDL2_DIR).expect("sdl2 dir not found"));
+        for entry in fs::read_dir(SDL2_DIR)
+            .expect("sdl2 dir not found")
+            .into_iter()
+            .flatten()
+        {
+            eprintln!("{:#?}", entry.path());
+        }
 
         println!(
             "cargo:rustc-link-search={}",
