@@ -25,22 +25,33 @@ fn main() {
             .current_dir(SDL2_DIR)
             .output()
             .expect("failed to make");
+
+        println!(
+            "cargo:rustc-link-search={}",
+            root.join(SDL2_DIR)
+                .join("build")
+                .join(".libs")
+                .as_path()
+                .to_string_lossy()
+        );
     }
     #[cfg(windows)]
     {
         const LINK: &str = "https://libsdl.org/release/SDL2-devel-2.0.16-VC.zip";
-        todo!()
+        let tmp_file = download_sdl2(LINK);
+        extract_zip(tmp_file, &root);
+
+        println!(
+            "cargo:rustc-link-search={}",
+            root.join(SDL2_DIR)
+                .join("lib")
+                .join("x64")
+                .as_path()
+                .to_string_lossy()
+        );
     }
 
     println!("cargo:rustc-link-lib=SDL2");
-    println!(
-        "cargo:rustc-link-search={}",
-        root.join(SDL2_DIR)
-            .join("build")
-            .join(".libs")
-            .as_path()
-            .to_string_lossy()
-    );
 
     let bindings = bindgen::Builder::default()
         .header_contents(
