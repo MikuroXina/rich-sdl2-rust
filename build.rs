@@ -126,10 +126,10 @@ fn extract_zip(file: fs::File, dst: &Path) {
 }
 
 fn extract_gzip(file: fs::File, dst: &Path) {
-    use libflate::gzip::Decoder;
+    use flate2::read::GzDecoder;
     use tar::Archive;
 
-    let gzip = Decoder::new(file).expect("got must be a gzip archive");
+    let gzip = GzDecoder::new(file);
     let mut archive = Archive::new(gzip);
-    archive.unpack(".").expect("failed to unpack tarball");
+    archive.unpack(dst).expect("failed to unpack tarball");
 }
