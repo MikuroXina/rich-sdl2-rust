@@ -1,6 +1,7 @@
 use reqwest::IntoUrl;
 use std::{
-    env, fs, io,
+    env, fs,
+    io::{self, Seek, SeekFrom},
     path::{Path, PathBuf},
     process::Command,
 };
@@ -102,6 +103,7 @@ fn download_sdl2(link: impl IntoUrl, file_name: impl AsRef<Path>) -> fs::File {
         .expect("Failed to create temporary file");
     let mut got = reqwest::blocking::get(link).expect("LINK url is invalid");
     io::copy(&mut got, &mut tmp_file).expect("failed to write to temporary file");
+    tmp_file.seek(SeekFrom::Start(0)).expect("failed to seek");
     tmp_file
 }
 
