@@ -11,7 +11,12 @@ env:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      matrix:
+        os: [windows-latest, ubuntu-latest]
+
     steps:
       - uses: actions/checkout@v2
         with:
@@ -38,9 +43,11 @@ jobs:
       - name: Test crate
         run: cargo test --verbose
       - name: Create docs
+        if: matrix.os == 'ubuntu-latest'
         run: cargo +nightly doc --all-features --no-deps
 
       - uses: actions/upload-artifact@v2
+        if: matrix.os == 'ubuntu-latest'
         with:
           name: doc-artifact
           path: target/doc/
