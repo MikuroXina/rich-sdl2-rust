@@ -7,29 +7,29 @@ use std::{
 };
 
 fn main() {
-    const SDL2_DIR: &str = "SDL2-2.0.16";
+    let mut sdl2_dir: &str = "SDL2-2.0.16";
 
     let root = PathBuf::from(env::var("CARGO_MANIFEST_DIR").expect("CARGO_MANIFEST_DIR not found"));
 
     #[cfg(unix)]
-    if fs::metadata(root.join(SDL2_DIR).join("build").join(".libs")).is_err() {
+    if fs::metadata(root.join(sdl2_dir).join("build").join(".libs")).is_err() {
         const LINK: &str = "https://libsdl.org/release/SDL2-2.0.16.zip";
         let tmp_file = download_sdl2(LINK, "SDL2-2.0.16.zip");
         extract_zip(tmp_file, &root);
 
         let _ = Command::new("./configure")
-            .current_dir(SDL2_DIR)
+            .current_dir(sdl2_dir)
             .output()
             .expect("failed to configure");
         let _ = Command::new("make")
             .arg("-j4")
-            .current_dir(SDL2_DIR)
+            .current_dir(sdl2_dir)
             .output()
             .expect("failed to make");
 
         println!(
             "cargo:rustc-link-search={}",
-            root.join(SDL2_DIR)
+            root.join(sdl2_dir)
                 .join("build")
                 .join(".libs")
                 .as_path()
@@ -38,7 +38,7 @@ fn main() {
     }
     #[cfg(windows)]
     {
-        let pack_dir = root.join(SDL2_DIR);
+        let pack_dir = root.join(sdl2_dir);
         fs::create_dir_all(&pack_dir).expect("failed to create pack directory");
 
         const LINK: &str = "https://libsdl.org/release/SDL2-devel-2.0.16-mingw.tar.gz";
@@ -48,18 +48,19 @@ fn main() {
         let _ = Command::new("make")
             .arg("-j4")
             .arg("native")
-            .current_dir(SDL2_DIR)
+            .current_dir(sdl2_dir)
             .output()
             .expect("failed to make");
 
         println!(
             "cargo:rustc-link-search={}",
-            root.join(SDL2_DIR)
+            root.join(sdl2_dir)
+                .join("x86_64-w64-mingw32")
                 .join("lib")
-                .join("x64")
                 .as_path()
                 .to_string_lossy()
         );
+        sdl2_dir = "SDL2-2.0.16/x86_64-w64-mingw32";
     }
 
     println!("cargo:rustc-link-lib=SDL2");
@@ -73,7 +74,7 @@ fn main() {
 #include "{0}/include/SDL.h"
 #include "{0}/include/SDL_vulkan.h"
 "#,
-                SDL2_DIR
+                sdl2_dir
             ),
         )
         .allowlist_function("SDL_.*")
