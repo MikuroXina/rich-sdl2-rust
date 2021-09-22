@@ -8,14 +8,14 @@ on:
 
 env:
   CARGO_TERM_COLOR: always
+  RUST_BACKTRACE: 1
 
 jobs:
-  build:
+  build-linux:
     runs-on: ubuntu-latest
+
     steps:
       - uses: actions/checkout@v2
-        with:
-          submodules: recursive
       - name: Nightly with rustfmt and clippy
         uses: actions-rs/toolchain@v1
         with:
@@ -30,9 +30,6 @@ jobs:
           toolchain: nightly
           args: --all-features
 
-      - name: Build SDL2 dependency
-        run: cd SDL2 && ./configure && make -j4 && cd ..
-
       - name: Build crate
         run: cargo build --verbose
       - name: Test crate
@@ -45,15 +42,35 @@ jobs:
           name: doc-artifact
           path: target/doc/
 
+  build-windows:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup path
+        shell: cmd
+        run: |
+          echo "C:\msys64\mingw64\bin" >> $GITHUB_PATH
+
+      - name: Nightly with rustfmt and clippy
+        uses: actions-rs/toolchain@v1
+        with:
+          profile: minimal
+          toolchain: nightly
+          components: rustfmt, clippy
+
+      - name: Test crate on Windows
+        shell: cmd
+        run: |
+          set PATH=C:\msys64\mingw64\bin;%PATH%
+          cargo test --verbose
+
   doc:
     runs-on: ubuntu-latest
-    needs: build
+    needs: build-linux
     if: github.event_name == 'push' || github.event.pull_request.merged == true
 
     steps:
       - uses: actions/checkout@v2
-        with:
-          submodules: recursive
       - uses: actions/download-artifact@v2
         with:
           name: doc-artifact
