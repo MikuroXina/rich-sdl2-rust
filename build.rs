@@ -43,37 +43,19 @@ fn main() {
     }
     #[cfg(windows)]
     {
-        let pack_dir = root.join(SDL2_INSTALL_DIR);
-        fs::create_dir_all(&pack_dir).expect("failed to create pack directory");
-
-        const LINK: &str = "https://libsdl.org/release/SDL2-devel-2.0.16-mingw.tar.gz";
+        const LINK: &str = "https://libsdl.org/release/SDL2-devel-2.0.16-VC.zip";
         let tmp_file = download_sdl2(LINK, "SDL2-2.0.16.tar.gz");
-        extract_gzip(tmp_file, pack_dir.as_path());
-
-        let _ = Command::new("make")
-            .arg("-j4")
-            .arg("native")
-            .current_dir(SDL2_INSTALL_DIR)
-            .output()
-            .expect("failed to make");
+        extract_zip(tmp_file, &root);
 
         println!(
             "cargo:rustc-link-search={}",
             root.join(SDL2_INSTALL_DIR)
-                .join("x86_64-w64-mingw32")
-                .join("bin")
-                .as_path()
-                .to_string_lossy()
-        );
-        println!(
-            "cargo:rustc-link-search={}",
-            root.join(SDL2_INSTALL_DIR)
-                .join("x86_64-w64-mingw32")
                 .join("lib")
+                .join("x64")
                 .as_path()
                 .to_string_lossy()
         );
-        sdl2_dir = "SDL2-2.0.16/x86_64-w64-mingw32/include/SDL2";
+        sdl2_dir = "SDL2-2.0.16/include";
     }
 
     println!("cargo:rustc-link-lib=SDL2");
