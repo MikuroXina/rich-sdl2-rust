@@ -15,7 +15,7 @@ fn main() {
     if fs::metadata(root.join(sdl2_dir).join("build").join(".libs")).is_err() {
         const LINK: &str = "https://libsdl.org/release/SDL2-2.0.16.zip";
         let tmp_file = download_sdl2(LINK, "SDL2-2.0.16.zip");
-        extract_zip(tmp_file, &root);
+        extract_zip(tmp_file, root.join("SDL2").as_path());
 
         let _ = Command::new("./configure")
             .current_dir(sdl2_dir)
@@ -60,7 +60,7 @@ fn main() {
                 .as_path()
                 .to_string_lossy()
         );
-        sdl2_dir = "SDL2-2.0.16/x86_64-w64-mingw32/SDL2";
+        sdl2_dir = "SDL2-2.0.16/x86_64-w64-mingw32/include";
     }
 
     println!("cargo:rustc-link-lib=SDL2");
@@ -71,8 +71,8 @@ fn main() {
             &format!(
                 r#"
 #define SDL_MAIN_HANDLED
-#include "{0}/include/SDL.h"
-#include "{0}/include/SDL_vulkan.h"
+#include "{0}/SDL2/SDL.h"
+#include "{0}/SDL2/SDL_vulkan.h"
 "#,
                 sdl2_dir
             ),
