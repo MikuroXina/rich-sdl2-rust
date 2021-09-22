@@ -61,6 +61,14 @@ fn main() {
             "cargo:rustc-link-search={}",
             root.join(SDL2_INSTALL_DIR)
                 .join("x86_64-w64-mingw32")
+                .join("bin")
+                .as_path()
+                .to_string_lossy()
+        );
+        println!(
+            "cargo:rustc-link-search={}",
+            root.join(SDL2_INSTALL_DIR)
+                .join("x86_64-w64-mingw32")
                 .join("lib")
                 .as_path()
                 .to_string_lossy()
