@@ -11,18 +11,42 @@ env:
   RUST_BACKTRACE: 1
 
 jobs:
-  build:
-    runs-on: ${{ matrix.os }}
-
-    strategy:
-      matrix:
-        os: [windows-latest, ubuntu-latest]
+  build-linux:
+    runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@v2
+      - name: Nightly with rustfmt and clippy
+        uses: actions-rs/toolchain@v1
+        with:
+          profile: minimal
+          toolchain: nightly
+          components: rustfmt, clippy
 
+      - name: Clippy Check
+        uses: actions-rs/clippy-check@v1
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          toolchain: nightly
+          args: --all-features
+
+      - name: Build crate
+        run: cargo build --verbose
+      - name: Test crate
+        run: cargo test --verbose
+      - name: Create docs
+        run: cargo +nightly doc --all-features --no-deps
+
+      - uses: actions/upload-artifact@v2
+        with:
+          name: doc-artifact
+          path: target/doc/
+
+  build-windows:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v2
       - name: Setup path
-        if: matrix.os == 'windows-latest'
         shell: cmd
         run: |
           echo "C:\msys64\mingw64\bin" >> $GITHUB_PATH
@@ -35,39 +59,14 @@ jobs:
           components: rustfmt, clippy
 
       - name: Test crate on Windows
-        if: matrix.os == 'windows-latest'
         shell: cmd
         run: |
           set PATH=C:\msys64\mingw64\bin;%PATH%
           cargo test --verbose
 
-      - name: Clippy Check
-        if: matrix.os == 'ubuntu-latest'
-        uses: actions-rs/clippy-check@v1
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          toolchain: nightly
-          args: --all-features
-
-      - name: Build crate
-        if: matrix.os == 'ubuntu-latest'
-        run: cargo build --verbose
-      - name: Test crate
-        if: matrix.os == 'ubuntu-latest'
-        run: cargo test --verbose
-      - name: Create docs
-        if: matrix.os == 'ubuntu-latest'
-        run: cargo +nightly doc --all-features --no-deps
-
-      - uses: actions/upload-artifact@v2
-        if: matrix.os == 'ubuntu-latest'
-        with:
-          name: doc-artifact
-          path: target/doc/
-
   doc:
     runs-on: ubuntu-latest
-    needs: build
+    needs: build-linux
     if: github.event_name == 'push' || github.event.pull_request.merged == true
 
     steps:
