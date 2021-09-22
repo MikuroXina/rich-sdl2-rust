@@ -55,7 +55,7 @@ impl<'callback> AudioSpec<'callback> {
                 samples: builder.samples,
                 padding: 0,
                 size: 0,
-                callback: Some(audio_spec_wrap_handler),
+                callback: builder.callback.as_ref().map(|_| audio_spec_wrap_handler),
                 userdata: builder.callback.map_or(std::ptr::null_mut(), |callback| {
                     Box::into_raw(Box::new(callback)).cast()
                 }),
