@@ -7,38 +7,43 @@ use std::{
 };
 
 fn main() {
-    let mut sdl2_dir: &str = "SDL2-2.0.16";
+    const SDL2_INSTALL_DIR: &str = "SDL2-2.0.16";
+    let sdl2_dir: &str;
 
     let root = PathBuf::from(env::var("CARGO_MANIFEST_DIR").expect("CARGO_MANIFEST_DIR not found"));
 
     #[cfg(unix)]
-    if fs::metadata(root.join(sdl2_dir).join("build").join(".libs")).is_err() {
-        const LINK: &str = "https://libsdl.org/release/SDL2-2.0.16.zip";
-        let tmp_file = download_sdl2(LINK, "SDL2-2.0.16.zip");
-        extract_zip(tmp_file, root.join("SDL2").as_path());
+    {
+        if fs::metadata(root.join(SDL2_INSTALL_DIR).join("build").join(".libs")).is_err() {
+            const LINK: &str = "https://libsdl.org/release/SDL2-2.0.16.zip";
+            let tmp_file = download_sdl2(LINK, "SDL2-2.0.16.zip");
+            extract_zip(tmp_file, &root);
 
-        let _ = Command::new("./configure")
-            .current_dir(sdl2_dir)
-            .output()
-            .expect("failed to configure");
-        let _ = Command::new("make")
-            .arg("-j4")
-            .current_dir(sdl2_dir)
-            .output()
-            .expect("failed to make");
+            let _ = Command::new("./configure")
+                .current_dir(SDL2_INSTALL_DIR)
+                .output()
+                .expect("failed to configure");
+            let _ = Command::new("make")
+                .arg("-j4")
+                .current_dir(SDL2_INSTALL_DIR)
+                .output()
+                .expect("failed to make");
+        }
 
         println!(
             "cargo:rustc-link-search={}",
-            root.join(sdl2_dir)
+            root.join(SDL2_INSTALL_DIR)
                 .join("build")
                 .join(".libs")
                 .as_path()
                 .to_string_lossy()
         );
+
+        sdl2_dir = "SDL2-2.0.16/include";
     }
     #[cfg(windows)]
     {
-        let pack_dir = root.join(sdl2_dir);
+        let pack_dir = root.join(SDL2_INSTALL_DIR);
         fs::create_dir_all(&pack_dir).expect("failed to create pack directory");
 
         const LINK: &str = "https://libsdl.org/release/SDL2-devel-2.0.16-mingw.tar.gz";
@@ -48,19 +53,19 @@ fn main() {
         let _ = Command::new("make")
             .arg("-j4")
             .arg("native")
-            .current_dir(sdl2_dir)
+            .current_dir(SDL2_INSTALL_DIR)
             .output()
             .expect("failed to make");
 
         println!(
             "cargo:rustc-link-search={}",
-            root.join(sdl2_dir)
+            root.join(SDL2_INSTALL_DIR)
                 .join("x86_64-w64-mingw32")
                 .join("lib")
                 .as_path()
                 .to_string_lossy()
         );
-        sdl2_dir = "SDL2-2.0.16/x86_64-w64-mingw32/include";
+        sdl2_dir = "SDL2-2.0.16/x86_64-w64-mingw32/include/SDL2";
     }
 
     println!("cargo:rustc-link-lib=SDL2");
@@ -71,8 +76,8 @@ fn main() {
             &format!(
                 r#"
 #define SDL_MAIN_HANDLED
-#include "{0}/SDL2/SDL.h"
-#include "{0}/SDL2/SDL_vulkan.h"
+#include "{0}/SDL.h"
+#include "{0}/SDL_vulkan.h"
 "#,
                 sdl2_dir
             ),
