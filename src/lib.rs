@@ -39,3 +39,8 @@ pub use event::{app, EventBox};
 pub use sdl::*;
 pub use timer::*;
 pub use video::*;
+
+#[cfg(not(windows))]
+type EnumInt = std::os::raw::c_uint;
+#[cfg(windows)]
+type EnumInt = std::os::raw::c_int;
