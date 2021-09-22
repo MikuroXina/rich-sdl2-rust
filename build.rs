@@ -3,7 +3,6 @@ use std::{
     env, fs,
     io::{self, Seek, SeekFrom},
     path::{Path, PathBuf},
-    process::Command,
 };
 
 fn main() {
@@ -14,6 +13,8 @@ fn main() {
 
     #[cfg(unix)]
     {
+        use std::process::Command;
+
         if fs::metadata(root.join(SDL2_INSTALL_DIR).join("build").join(".libs")).is_err() {
             const LINK: &str = "https://libsdl.org/release/SDL2-2.0.16.zip";
             let tmp_file = download_sdl2(LINK, "SDL2-2.0.16.zip");
@@ -131,25 +132,4 @@ fn extract_zip(file: fs::File, dst: &Path) {
             }
         }
     }
-}
-
-fn extract_gzip(file: fs::File, dst: &Path) {
-    use flate2::read::GzDecoder;
-    use tar::Archive;
-
-    let mut decoder = GzDecoder::new(file);
-    assert!(decoder.header().is_some());
-    let mut tar_file = fs::OpenOptions::new()
-        .read(true)
-        .write(true)
-        .create(true)
-        .open(dst.with_extension("tar"))
-        .expect("Failed to create temporary file");
-    io::copy(&mut decoder, &mut tar_file).expect("failed to decode gz file");
-    tar_file.seek(SeekFrom::Start(0)).expect("failed to seek");
-
-    let mut archive = Archive::new(tar_file);
-    archive
-        .unpack(dst.parent().unwrap())
-        .expect("failed to unpack tarball");
 }
