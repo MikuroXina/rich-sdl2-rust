@@ -111,50 +111,50 @@ impl From<bind::SDL_PixelFormatEnum> for PixelFormatKind {
             return FourCode(bytes.iter().map(|&c| c as char).collect());
         }
         match (raw >> 24) & 0xf {
-            bind::SDL_PixelType_SDL_PIXELTYPE_INDEX1 => Bitmap {
+            bind::SDL_PIXELTYPE_INDEX1 => Bitmap {
                 ty: BitmapPixelType::Index1,
                 order: raw.into(),
             },
-            bind::SDL_PixelType_SDL_PIXELTYPE_INDEX4 => Bitmap {
+            bind::SDL_PIXELTYPE_INDEX4 => Bitmap {
                 ty: BitmapPixelType::Index4,
                 order: raw.into(),
             },
-            bind::SDL_PixelType_SDL_PIXELTYPE_INDEX8 => Bitmap {
+            bind::SDL_PIXELTYPE_INDEX8 => Bitmap {
                 ty: BitmapPixelType::Index8,
                 order: raw.into(),
             },
-            bind::SDL_PixelType_SDL_PIXELTYPE_PACKED8 => Packed {
+            bind::SDL_PIXELTYPE_PACKED8 => Packed {
                 ty: PackedPixelType::_8,
                 order: raw.into(),
                 layout: raw.into(),
             },
-            bind::SDL_PixelType_SDL_PIXELTYPE_PACKED16 => Packed {
+            bind::SDL_PIXELTYPE_PACKED16 => Packed {
                 ty: PackedPixelType::_16,
                 order: raw.into(),
                 layout: raw.into(),
             },
-            bind::SDL_PixelType_SDL_PIXELTYPE_PACKED32 => Packed {
+            bind::SDL_PIXELTYPE_PACKED32 => Packed {
                 ty: PackedPixelType::_32,
                 order: raw.into(),
                 layout: raw.into(),
             },
-            bind::SDL_PixelType_SDL_PIXELTYPE_ARRAYU8 => Array {
+            bind::SDL_PIXELTYPE_ARRAYU8 => Array {
                 ty: ArrayPixelType::U8,
                 order: raw.into(),
             },
-            bind::SDL_PixelType_SDL_PIXELTYPE_ARRAYU16 => Array {
+            bind::SDL_PIXELTYPE_ARRAYU16 => Array {
                 ty: ArrayPixelType::U16,
                 order: raw.into(),
             },
-            bind::SDL_PixelType_SDL_PIXELTYPE_ARRAYU32 => Array {
+            bind::SDL_PIXELTYPE_ARRAYU32 => Array {
                 ty: ArrayPixelType::U32,
                 order: raw.into(),
             },
-            bind::SDL_PixelType_SDL_PIXELTYPE_ARRAYF16 => Array {
+            bind::SDL_PIXELTYPE_ARRAYF16 => Array {
                 ty: ArrayPixelType::F16,
                 order: raw.into(),
             },
-            bind::SDL_PixelType_SDL_PIXELTYPE_ARRAYF32 => Array {
+            bind::SDL_PIXELTYPE_ARRAYF32 => Array {
                 ty: ArrayPixelType::F32,
                 order: raw.into(),
             },

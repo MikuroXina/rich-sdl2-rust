@@ -135,11 +135,11 @@ impl From<bind::SDL_JoyDeviceEvent> for JoystickEvent<'_> {
             _phantom: PhantomData,
         };
         match raw.type_ {
-            bind::SDL_EventType_SDL_JOYDEVICEADDED => Self::DeviceAdded {
+            bind::SDL_JOYDEVICEADDED => Self::DeviceAdded {
                 timestamp: raw.timestamp,
                 joystick: Joystick::from_id(id).unwrap(),
             },
-            bind::SDL_EventType_SDL_JOYDEVICEREMOVED => Self::DeviceRemoved {
+            bind::SDL_JOYDEVICEREMOVED => Self::DeviceRemoved {
                 timestamp: raw.timestamp,
                 id,
             },

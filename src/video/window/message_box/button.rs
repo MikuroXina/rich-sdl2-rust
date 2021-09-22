@@ -13,12 +13,8 @@ impl ButtonKind {
     fn as_flags(&self) -> u32 {
         match self {
             ButtonKind::Normal => 0,
-            ButtonKind::Confirm => {
-                bind::SDL_MessageBoxButtonFlags_SDL_MESSAGEBOX_BUTTON_RETURNKEY_DEFAULT
-            }
-            ButtonKind::Cancel => {
-                bind::SDL_MessageBoxButtonFlags_SDL_MESSAGEBOX_BUTTON_ESCAPEKEY_DEFAULT
-            }
+            ButtonKind::Confirm => bind::SDL_MESSAGEBOX_BUTTON_RETURNKEY_DEFAULT,
+            ButtonKind::Cancel => bind::SDL_MESSAGEBOX_BUTTON_ESCAPEKEY_DEFAULT,
         }
     }
 }

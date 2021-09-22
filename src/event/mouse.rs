@@ -134,7 +134,7 @@ impl From<bind::SDL_MouseWheelEvent> for MouseWheelEvent {
             window_id: raw.windowID,
             mouse_id: raw.which,
             scroll_amount: Point { x: raw.x, y: raw.y },
-            is_flipped: raw.direction == bind::SDL_MouseWheelDirection_SDL_MOUSEWHEEL_FLIPPED,
+            is_flipped: raw.direction == bind::SDL_MOUSEWHEEL_FLIPPED,
         }
     }
 }

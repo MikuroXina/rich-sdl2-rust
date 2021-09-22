@@ -16,9 +16,9 @@ pub enum BitmapPixelType {
 impl BitmapPixelType {
     pub(super) fn as_raw(&self) -> u32 {
         match self {
-            BitmapPixelType::Index1 => bind::SDL_PixelType_SDL_PIXELTYPE_INDEX1,
-            BitmapPixelType::Index4 => bind::SDL_PixelType_SDL_PIXELTYPE_INDEX4,
-            BitmapPixelType::Index8 => bind::SDL_PixelType_SDL_PIXELTYPE_INDEX8,
+            BitmapPixelType::Index1 => bind::SDL_PIXELTYPE_INDEX1,
+            BitmapPixelType::Index4 => bind::SDL_PIXELTYPE_INDEX4,
+            BitmapPixelType::Index8 => bind::SDL_PIXELTYPE_INDEX8,
         }
     }
 
@@ -53,9 +53,9 @@ pub enum PackedPixelType {
 impl PackedPixelType {
     pub(super) fn as_raw(&self) -> u32 {
         match self {
-            PackedPixelType::_8 => bind::SDL_PixelType_SDL_PIXELTYPE_PACKED8,
-            PackedPixelType::_16 => bind::SDL_PixelType_SDL_PIXELTYPE_PACKED16,
-            PackedPixelType::_32 => bind::SDL_PixelType_SDL_PIXELTYPE_PACKED32,
+            PackedPixelType::_8 => bind::SDL_PIXELTYPE_PACKED8,
+            PackedPixelType::_16 => bind::SDL_PIXELTYPE_PACKED16,
+            PackedPixelType::_32 => bind::SDL_PIXELTYPE_PACKED32,
         }
     }
 
@@ -86,11 +86,11 @@ pub enum ArrayPixelType {
 impl ArrayPixelType {
     pub(super) fn as_raw(&self) -> u32 {
         match self {
-            ArrayPixelType::U8 => bind::SDL_PixelType_SDL_PIXELTYPE_ARRAYU8,
-            ArrayPixelType::U16 => bind::SDL_PixelType_SDL_PIXELTYPE_ARRAYU16,
-            ArrayPixelType::U32 => bind::SDL_PixelType_SDL_PIXELTYPE_ARRAYU32,
-            ArrayPixelType::F16 => bind::SDL_PixelType_SDL_PIXELTYPE_ARRAYF16,
-            ArrayPixelType::F32 => bind::SDL_PixelType_SDL_PIXELTYPE_ARRAYF32,
+            ArrayPixelType::U8 => bind::SDL_PIXELTYPE_ARRAYU8,
+            ArrayPixelType::U16 => bind::SDL_PIXELTYPE_ARRAYU16,
+            ArrayPixelType::U32 => bind::SDL_PIXELTYPE_ARRAYU32,
+            ArrayPixelType::F16 => bind::SDL_PIXELTYPE_ARRAYF16,
+            ArrayPixelType::F32 => bind::SDL_PIXELTYPE_ARRAYF32,
         }
     }
 }

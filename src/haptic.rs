@@ -79,7 +79,7 @@ impl Haptic {
         let mut raw = effect.clone().into_raw();
         unsafe {
             bind::SDL_HapticEffectSupported(self.ptr.as_ptr(), &mut raw as *mut _) as bind::SDL_bool
-                == bind::SDL_bool_SDL_TRUE
+                == bind::SDL_TRUE
         }
     }
 

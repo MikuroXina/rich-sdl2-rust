@@ -103,12 +103,8 @@ impl<'video> Window<'video> {
 
     /// Make the window full screen, or `Err` on failure.
     pub fn full_screen(&self) -> Result<()> {
-        let ret = unsafe {
-            bind::SDL_SetWindowFullscreen(
-                self.as_ptr(),
-                bind::SDL_WindowFlags_SDL_WINDOW_FULLSCREEN,
-            )
-        };
+        let ret =
+            unsafe { bind::SDL_SetWindowFullscreen(self.as_ptr(), bind::SDL_WINDOW_FULLSCREEN) };
         if ret != 0 {
             return Err(crate::SdlError::Others { msg: Sdl::error() });
         }

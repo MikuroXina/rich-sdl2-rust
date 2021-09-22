@@ -91,7 +91,7 @@ impl From<bind::SDL_MultiGestureEvent> for GestureEvent {
 
 impl From<bind::SDL_DollarGestureEvent> for GestureEvent {
     fn from(raw: bind::SDL_DollarGestureEvent) -> Self {
-        if raw.type_ == bind::SDL_EventType_SDL_DOLLARGESTURE {
+        if raw.type_ == bind::SDL_DOLLARGESTURE {
             Self::Dollar {
                 timestamp: raw.timestamp,
                 touch: TouchDevice(raw.touchId, PhantomData),
@@ -101,7 +101,7 @@ impl From<bind::SDL_DollarGestureEvent> for GestureEvent {
                 x: raw.x,
                 y: raw.y,
             }
-        } else if raw.type_ == bind::SDL_EventType_SDL_DOLLARRECORD {
+        } else if raw.type_ == bind::SDL_DOLLARRECORD {
             Self::DollarRecord {
                 touch: TouchDevice(raw.touchId, PhantomData),
                 gesture: Gesture(raw.gestureId),

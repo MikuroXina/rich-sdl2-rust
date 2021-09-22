@@ -44,21 +44,21 @@ pub enum DropEvent {
 impl From<bind::SDL_DropEvent> for DropEvent {
     fn from(raw: bind::SDL_DropEvent) -> Self {
         match raw.type_ {
-            bind::SDL_EventType_SDL_DROPFILE => Self::File {
+            bind::SDL_DROPFILE => Self::File {
                 timestamp: raw.timestamp,
                 file: unsafe { CStr::from_ptr(raw.file) }.to_string_lossy().into(),
                 window_id: raw.windowID,
             },
-            bind::SDL_EventType_SDL_DROPTEXT => Self::Text {
+            bind::SDL_DROPTEXT => Self::Text {
                 timestamp: raw.timestamp,
                 text: unsafe { CStr::from_ptr(raw.file) }.to_string_lossy().into(),
                 window_id: raw.windowID,
             },
-            bind::SDL_EventType_SDL_DROPBEGIN => Self::Begin {
+            bind::SDL_DROPBEGIN => Self::Begin {
                 timestamp: raw.timestamp,
                 window_id: raw.windowID,
             },
-            bind::SDL_EventType_SDL_DROPCOMPLETE => Self::Complete {
+            bind::SDL_DROPCOMPLETE => Self::Complete {
                 timestamp: raw.timestamp,
                 window_id: raw.windowID,
             },

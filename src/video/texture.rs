@@ -29,18 +29,18 @@ pub enum TextureAccess {
 impl TextureAccess {
     fn from_raw(raw: u32) -> Self {
         match raw {
-            bind::SDL_TextureAccess_SDL_TEXTUREACCESS_STATIC => TextureAccess::Static,
-            bind::SDL_TextureAccess_SDL_TEXTUREACCESS_STREAMING => TextureAccess::Streaming,
-            bind::SDL_TextureAccess_SDL_TEXTUREACCESS_TARGET => TextureAccess::Target,
+            bind::SDL_TEXTUREACCESS_STATIC => TextureAccess::Static,
+            bind::SDL_TEXTUREACCESS_STREAMING => TextureAccess::Streaming,
+            bind::SDL_TEXTUREACCESS_TARGET => TextureAccess::Target,
             _ => unreachable!(),
         }
     }
 
     fn as_raw(&self) -> u32 {
         match self {
-            TextureAccess::Static => bind::SDL_TextureAccess_SDL_TEXTUREACCESS_STATIC,
-            TextureAccess::Streaming => bind::SDL_TextureAccess_SDL_TEXTUREACCESS_STREAMING,
-            TextureAccess::Target => bind::SDL_TextureAccess_SDL_TEXTUREACCESS_TARGET,
+            TextureAccess::Static => bind::SDL_TEXTUREACCESS_STATIC,
+            TextureAccess::Streaming => bind::SDL_TEXTUREACCESS_STREAMING,
+            TextureAccess::Target => bind::SDL_TEXTUREACCESS_TARGET,
         }
     }
 }

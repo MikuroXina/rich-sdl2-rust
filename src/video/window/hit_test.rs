@@ -38,16 +38,16 @@ impl HitTestResult {
     fn into_arg(self) -> bind::SDL_HitTestResult {
         use HitTestResult::*;
         match self {
-            Normal => bind::SDL_HitTestResult_SDL_HITTEST_NORMAL,
-            Draggable => bind::SDL_HitTestResult_SDL_HITTEST_DRAGGABLE,
-            ResizeTopLeft => bind::SDL_HitTestResult_SDL_HITTEST_RESIZE_TOPLEFT,
-            ResizeTop => bind::SDL_HitTestResult_SDL_HITTEST_RESIZE_TOP,
-            ResizeTopRight => bind::SDL_HitTestResult_SDL_HITTEST_RESIZE_TOPRIGHT,
-            ResizeRight => bind::SDL_HitTestResult_SDL_HITTEST_RESIZE_RIGHT,
-            ResizeBottomRight => bind::SDL_HitTestResult_SDL_HITTEST_RESIZE_BOTTOMRIGHT,
-            ResizeBottom => bind::SDL_HitTestResult_SDL_HITTEST_RESIZE_BOTTOM,
-            ResizeBottomLeft => bind::SDL_HitTestResult_SDL_HITTEST_RESIZE_BOTTOMLEFT,
-            ResizeLeft => bind::SDL_HitTestResult_SDL_HITTEST_RESIZE_LEFT,
+            Normal => bind::SDL_HITTEST_NORMAL,
+            Draggable => bind::SDL_HITTEST_DRAGGABLE,
+            ResizeTopLeft => bind::SDL_HITTEST_RESIZE_TOPLEFT,
+            ResizeTop => bind::SDL_HITTEST_RESIZE_TOP,
+            ResizeTopRight => bind::SDL_HITTEST_RESIZE_TOPRIGHT,
+            ResizeRight => bind::SDL_HITTEST_RESIZE_RIGHT,
+            ResizeBottomRight => bind::SDL_HITTEST_RESIZE_BOTTOMRIGHT,
+            ResizeBottom => bind::SDL_HITTEST_RESIZE_BOTTOM,
+            ResizeBottomLeft => bind::SDL_HITTEST_RESIZE_BOTTOMLEFT,
+            ResizeLeft => bind::SDL_HITTEST_RESIZE_LEFT,
         }
     }
 }

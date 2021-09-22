@@ -48,9 +48,9 @@ impl Sensor {
     pub fn kind(&self) -> SensorKind {
         let ty = unsafe { bind::SDL_SensorGetType(self.ptr.as_ptr()) };
         match ty {
-            bind::SDL_SensorType_SDL_SENSOR_ACCEL => SensorKind::Accel,
-            bind::SDL_SensorType_SDL_SENSOR_GYRO => SensorKind::Gyro,
-            bind::SDL_SensorType_SDL_SENSOR_UNKNOWN => {
+            bind::SDL_SENSOR_ACCEL => SensorKind::Accel,
+            bind::SDL_SENSOR_GYRO => SensorKind::Gyro,
+            bind::SDL_SENSOR_UNKNOWN => {
                 let ty = unsafe { bind::SDL_SensorGetNonPortableType(self.ptr.as_ptr()) };
                 SensorKind::Others(ty)
             }
