@@ -108,13 +108,14 @@
 <span id="108">108</span>
 <span id="109">109</span>
 <span id="110">110</span>
+<span id="111">111</span>
 </pre><pre class="rust"><code><span class="doccomment">//! Configuration of an OpenGL context.</span>
 
 <span class="kw">use</span> <span class="ident">bitflags::bitflags</span>;
 <span class="kw">use</span> <span class="ident">static_assertions::assert_not_impl_all</span>;
 <span class="kw">use</span> <span class="ident">std::marker::PhantomData</span>;
 
-<span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">bind</span>, <span class="prelude-ty">Result</span>, <span class="ident">Sdl</span>, <span class="ident">SdlError</span>};
+<span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">bind</span>, <span class="ident">EnumInt</span>, <span class="prelude-ty">Result</span>, <span class="ident">Sdl</span>, <span class="ident">SdlError</span>};
 
 <span class="kw">use</span> <span class="ident"><span class="kw">super</span>::GlContext</span>;
 
@@ -122,55 +123,55 @@
     <span class="doccomment">/// An attribute for OpenGL.</span>
     <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">GlAttributeKind</span>: <span class="ident">u32</span> {
         <span class="doccomment">/// The minimum bits of the red channel in a color buffer.</span>
-        <span class="kw">const</span> <span class="ident">RED_SIZE</span> <span class="op">=</span> <span class="ident">bind::SDL_GLattr_SDL_GL_RED_SIZE</span>;
+        <span class="kw">const</span> <span class="ident">RED_SIZE</span> <span class="op">=</span> <span class="ident">bind::SDL_GL_RED_SIZE</span> <span class="kw">as</span> <span class="ident">u32</span>;
         <span class="doccomment">/// The minimum bits of the gree channel in a color buffer.</span>
-        <span class="kw">const</span> <span class="ident">GREEN_SIZE</span> <span class="op">=</span> <span class="ident">bind::SDL_GLattr_SDL_GL_GREEN_SIZE</span>;
+        <span class="kw">const</span> <span class="ident">GREEN_SIZE</span> <span class="op">=</span> <span class="ident">bind::SDL_GL_GREEN_SIZE</span> <span class="kw">as</span> <span class="ident">u32</span>;
         <span class="doccomment">/// The minimum bits of the blue channel in a color buffer.</span>
-        <span class="kw">const</span> <span class="ident">BLUE_SIZE</span> <span class="op">=</span> <span class="ident">bind::SDL_GLattr_SDL_GL_BLUE_SIZE</span>;
+        <span class="kw">const</span> <span class="ident">BLUE_SIZE</span> <span class="op">=</span> <span class="ident">bind::SDL_GL_BLUE_SIZE</span> <span class="kw">as</span> <span class="ident">u32</span>;
         <span class="doccomment">/// The minimum bits of the alpha channel in a color buffer.</span>
-        <span class="kw">const</span> <span class="ident">ALPHA_SIZE</span> <span class="op">=</span> <span class="ident">bind::SDL_GLattr_SDL_GL_ALPHA_SIZE</span>;
+        <span class="kw">const</span> <span class="ident">ALPHA_SIZE</span> <span class="op">=</span> <span class="ident">bind::SDL_GL_ALPHA_SIZE</span> <span class="kw">as</span> <span class="ident">u32</span>;
         <span class="doccomment">/// The minimum bits of the frame buffer.</span>
-        <span class="kw">const</span> <span class="ident">BUFFER_SIZE</span> <span class="op">=</span> <span class="ident">bind::SDL_GLattr_SDL_GL_BUFFER_SIZE</span>;
+        <span class="kw">const</span> <span class="ident">BUFFER_SIZE</span> <span class="op">=</span> <span class="ident">bind::SDL_GL_BUFFER_SIZE</span> <span class="kw">as</span> <span class="ident">u32</span>;
         <span class="doccomment">/// Whether the output is double buffered.</span>
-        <span class="kw">const</span> <span class="ident">DOUBLEBUFFER</span> <span class="op">=</span> <span class="ident">bind::SDL_GLattr_SDL_GL_DOUBLEBUFFER</span>;
+        <span class="kw">const</span> <span class="ident">DOUBLEBUFFER</span> <span class="op">=</span> <span class="ident">bind::SDL_GL_DOUBLEBUFFER</span> <span class="kw">as</span> <span class="ident">u32</span>;
         <span class="doccomment">/// The bits of the depth buffer.</span>
-        <span class="kw">const</span> <span class="ident">DEPTH_SIZE</span> <span class="op">=</span> <span class="ident">bind::SDL_GLattr_SDL_GL_DEPTH_SIZE</span>;
+        <span class="kw">const</span> <span class="ident">DEPTH_SIZE</span> <span class="op">=</span> <span class="ident">bind::SDL_GL_DEPTH_SIZE</span> <span class="kw">as</span> <span class="ident">u32</span>;
         <span class="doccomment">/// The bits of the stencil buffer.</span>
-        <span class="kw">const</span> <span class="ident">STENCIL_SIZE</span> <span class="op">=</span> <span class="ident">bind::SDL_GLattr_SDL_GL_STENCIL_SIZE</span>;
+        <span class="kw">const</span> <span class="ident">STENCIL_SIZE</span> <span class="op">=</span> <span class="ident">bind::SDL_GL_STENCIL_SIZE</span> <span class="kw">as</span> <span class="ident">u32</span>;
         <span class="doccomment">/// The minimum bits of the red channel in an accumulation buffer.</span>
-        <span class="kw">const</span> <span class="ident">ACCUM_RED_SIZE</span> <span class="op">=</span> <span class="ident">bind::SDL_GLattr_SDL_GL_ACCUM_RED_SIZE</span>;
+        <span class="kw">const</span> <span class="ident">ACCUM_RED_SIZE</span> <span class="op">=</span> <span class="ident">bind::SDL_GL_ACCUM_RED_SIZE</span> <span class="kw">as</span> <span class="ident">u32</span>;
         <span class="doccomment">/// The minimum bits of the gree channel in an accumulation buffer.</span>
-        <span class="kw">const</span> <span class="ident">ACCUM_GREEN_SIZE</span> <span class="op">=</span> <span class="ident">bind::SDL_GLattr_SDL_GL_ACCUM_GREEN_SIZE</span>;
+        <span class="kw">const</span> <span class="ident">ACCUM_GREEN_SIZE</span> <span class="op">=</span> <span class="ident">bind::SDL_GL_ACCUM_GREEN_SIZE</span> <span class="kw">as</span> <span class="ident">u32</span>;
         <span class="doccomment">/// The minimum bits of the blue channel in an accumulation buffer.</span>
-        <span class="kw">const</span> <span class="ident">ACCUM_BLUE_SIZE</span> <span class="op">=</span> <span class="ident">bind::SDL_GLattr_SDL_GL_ACCUM_BLUE_SIZE</span>;
+        <span class="kw">const</span> <span class="ident">ACCUM_BLUE_SIZE</span> <span class="op">=</span> <span class="ident">bind::SDL_GL_ACCUM_BLUE_SIZE</span> <span class="kw">as</span> <span class="ident">u32</span>;
         <span class="doccomment">/// The minimum bits of the alpha channel in an accumulation buffer.</span>
-        <span class="kw">const</span> <span class="ident">ACCUM_ALPHA_SIZE</span> <span class="op">=</span> <span class="ident">bind::SDL_GLattr_SDL_GL_ACCUM_ALPHA_SIZE</span>;
+        <span class="kw">const</span> <span class="ident">ACCUM_ALPHA_SIZE</span> <span class="op">=</span> <span class="ident">bind::SDL_GL_ACCUM_ALPHA_SIZE</span> <span class="kw">as</span> <span class="ident">u32</span>;
         <span class="doccomment">/// Whether the output is stereo 3D.</span>
-        <span class="kw">const</span> <span class="ident">STEREO</span> <span class="op">=</span> <span class="ident">bind::SDL_GLattr_SDL_GL_STEREO</span>;
+        <span class="kw">const</span> <span class="ident">STEREO</span> <span class="op">=</span> <span class="ident">bind::SDL_GL_STEREO</span> <span class="kw">as</span> <span class="ident">u32</span>;
         <span class="doccomment">/// The number of buffers used for multi-sample anti-aliasing.</span>
-        <span class="kw">const</span> <span class="ident">MULTISAMPLEBUFFERS</span> <span class="op">=</span> <span class="ident">bind::SDL_GLattr_SDL_GL_MULTISAMPLEBUFFERS</span>;
+        <span class="kw">const</span> <span class="ident">MULTISAMPLEBUFFERS</span> <span class="op">=</span> <span class="ident">bind::SDL_GL_MULTISAMPLEBUFFERS</span> <span class="kw">as</span> <span class="ident">u32</span>;
         <span class="doccomment">/// The number of samples used for multi-sample anti-aliasing.</span>
-        <span class="kw">const</span> <span class="ident">MULTISAMPLESAMPLES</span> <span class="op">=</span> <span class="ident">bind::SDL_GLattr_SDL_GL_MULTISAMPLESAMPLES</span>;
+        <span class="kw">const</span> <span class="ident">MULTISAMPLESAMPLES</span> <span class="op">=</span> <span class="ident">bind::SDL_GL_MULTISAMPLESAMPLES</span> <span class="kw">as</span> <span class="ident">u32</span>;
         <span class="doccomment">/// Whether the renderer uses hardware acceleration or force software rendering.</span>
-        <span class="kw">const</span> <span class="ident">ACCELERATED_VISUAL</span> <span class="op">=</span> <span class="ident">bind::SDL_GLattr_SDL_GL_ACCELERATED_VISUAL</span>;
+        <span class="kw">const</span> <span class="ident">ACCELERATED_VISUAL</span> <span class="op">=</span> <span class="ident">bind::SDL_GL_ACCELERATED_VISUAL</span> <span class="kw">as</span> <span class="ident">u32</span>;
         <span class="doccomment">/// OpenGL context major version.</span>
-        <span class="kw">const</span> <span class="ident">CONTEXT_MAJOR_VERSION</span> <span class="op">=</span> <span class="ident">bind::SDL_GLattr_SDL_GL_CONTEXT_MAJOR_VERSION</span>;
+        <span class="kw">const</span> <span class="ident">CONTEXT_MAJOR_VERSION</span> <span class="op">=</span> <span class="ident">bind::SDL_GL_CONTEXT_MAJOR_VERSION</span> <span class="kw">as</span> <span class="ident">u32</span>;
         <span class="doccomment">/// OpenGL context minor version.</span>
-        <span class="kw">const</span> <span class="ident">CONTEXT_MINOR_VERSION</span> <span class="op">=</span> <span class="ident">bind::SDL_GLattr_SDL_GL_CONTEXT_MINOR_VERSION</span>;
+        <span class="kw">const</span> <span class="ident">CONTEXT_MINOR_VERSION</span> <span class="op">=</span> <span class="ident">bind::SDL_GL_CONTEXT_MINOR_VERSION</span> <span class="kw">as</span> <span class="ident">u32</span>;
         <span class="doccomment">/// The value of a [`super::GlContextFlag`].</span>
-        <span class="kw">const</span> <span class="ident">CONTEXT_FLAGS</span> <span class="op">=</span> <span class="ident">bind::SDL_GLattr_SDL_GL_CONTEXT_FLAGS</span>;
+        <span class="kw">const</span> <span class="ident">CONTEXT_FLAGS</span> <span class="op">=</span> <span class="ident">bind::SDL_GL_CONTEXT_FLAGS</span> <span class="kw">as</span> <span class="ident">u32</span>;
         <span class="doccomment">/// The type of OpenGL context such as Core, Compatibility, ES, or etc.</span>
-        <span class="kw">const</span> <span class="ident">CONTEXT_PROFILE_MASK</span> <span class="op">=</span> <span class="ident">bind::SDL_GLattr_SDL_GL_CONTEXT_PROFILE_MASK</span>;
+        <span class="kw">const</span> <span class="ident">CONTEXT_PROFILE_MASK</span> <span class="op">=</span> <span class="ident">bind::SDL_GL_CONTEXT_PROFILE_MASK</span> <span class="kw">as</span> <span class="ident">u32</span>;
         <span class="doccomment">/// OpenGL context sharing.</span>
-        <span class="kw">const</span> <span class="ident">SHARE_WITH_CURRENT_CONTEXT</span> <span class="op">=</span> <span class="ident">bind::SDL_GLattr_SDL_GL_SHARE_WITH_CURRENT_CONTEXT</span>;
+        <span class="kw">const</span> <span class="ident">SHARE_WITH_CURRENT_CONTEXT</span> <span class="op">=</span> <span class="ident">bind::SDL_GL_SHARE_WITH_CURRENT_CONTEXT</span> <span class="kw">as</span> <span class="ident">u32</span>;
         <span class="doccomment">/// Whether to request sRGB capable visual.</span>
-        <span class="kw">const</span> <span class="ident">FRAMEBUFFER_SRGB_CAPABLE</span> <span class="op">=</span> <span class="ident">bind::SDL_GLattr_SDL_GL_FRAMEBUFFER_SRGB_CAPABLE</span>;
+        <span class="kw">const</span> <span class="ident">FRAMEBUFFER_SRGB_CAPABLE</span> <span class="op">=</span> <span class="ident">bind::SDL_GL_FRAMEBUFFER_SRGB_CAPABLE</span> <span class="kw">as</span> <span class="ident">u32</span>;
         <span class="doccomment">/// Setting what does on releasing OpenGL context. Can be set 0 (none) or 1 (flush).</span>
-        <span class="kw">const</span> <span class="ident">CONTEXT_RELEASE_BEHAVIOR</span> <span class="op">=</span> <span class="ident">bind::SDL_GLattr_SDL_GL_CONTEXT_RELEASE_BEHAVIOR</span>;
+        <span class="kw">const</span> <span class="ident">CONTEXT_RELEASE_BEHAVIOR</span> <span class="op">=</span> <span class="ident">bind::SDL_GL_CONTEXT_RELEASE_BEHAVIOR</span> <span class="kw">as</span> <span class="ident">u32</span>;
         <span class="doccomment">/// Whether to notify on reset the OpenGL context.</span>
-        <span class="kw">const</span> <span class="ident">CONTEXT_RESET_NOTIFICATION</span> <span class="op">=</span> <span class="ident">bind::SDL_GLattr_SDL_GL_CONTEXT_RESET_NOTIFICATION</span>;
+        <span class="kw">const</span> <span class="ident">CONTEXT_RESET_NOTIFICATION</span> <span class="op">=</span> <span class="ident">bind::SDL_GL_CONTEXT_RESET_NOTIFICATION</span> <span class="kw">as</span> <span class="ident">u32</span>;
         <span class="doccomment">/// Whether to disable all errors from OpenGL implementation. It might increase the performance and decrease power usage. But some inconsistency occurs the undefined behavior.</span>
-        <span class="kw">const</span> <span class="ident">CONTEXT_NO_ERROR</span> <span class="op">=</span> <span class="ident">bind::SDL_GLattr_SDL_GL_CONTEXT_NO_ERROR</span>;
+        <span class="kw">const</span> <span class="ident">CONTEXT_NO_ERROR</span> <span class="op">=</span> <span class="ident">bind::SDL_GL_CONTEXT_NO_ERROR</span> <span class="kw">as</span> <span class="ident">u32</span>;
     }
 }
 
@@ -201,7 +202,7 @@
 
     <span class="doccomment">/// Sets the attribute value, or `Err` on failure.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">value</span>: <span class="ident">i32</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="ident">ret</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">bind::SDL_GL_SetAttribute</span>(<span class="self">self</span>.<span class="ident">attr</span>.<span class="ident">bits</span>, <span class="ident">value</span>) };
+        <span class="kw">let</span> <span class="ident">ret</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">bind::SDL_GL_SetAttribute</span>(<span class="self">self</span>.<span class="ident">attr</span>.<span class="ident">bits</span> <span class="kw">as</span> <span class="ident">EnumInt</span>, <span class="ident">value</span>) };
         <span class="kw">if</span> <span class="ident">ret</span> <span class="op">!</span><span class="op">=</span> <span class="number">0</span> {
             <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">SdlError::Others</span> { <span class="ident">msg</span>: <span class="ident">Sdl::error</span>() });
         }
@@ -211,7 +212,8 @@
     <span class="doccomment">/// Gets the attribute value, or `Err` on failure.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">i32</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">value</span> <span class="op">=</span> <span class="number">0</span>;
-        <span class="kw">let</span> <span class="ident">ret</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">bind::SDL_GL_GetAttribute</span>(<span class="self">self</span>.<span class="ident">attr</span>.<span class="ident">bits</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">value</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="kw">_</span>) };
+        <span class="kw">let</span> <span class="ident">ret</span> <span class="op">=</span>
+            <span class="kw">unsafe</span> { <span class="ident">bind::SDL_GL_GetAttribute</span>(<span class="self">self</span>.<span class="ident">attr</span>.<span class="ident">bits</span> <span class="kw">as</span> <span class="ident">EnumInt</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">value</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="kw">_</span>) };
         <span class="kw">if</span> <span class="ident">ret</span> <span class="op">!</span><span class="op">=</span> <span class="number">0</span> {
             <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">SdlError::Others</span> { <span class="ident">msg</span>: <span class="ident">Sdl::error</span>() });
         }

@@ -172,8 +172,6 @@
 <span id="172">172</span>
 <span id="173">173</span>
 <span id="174">174</span>
-<span id="175">175</span>
-<span id="176">176</span>
 </pre><pre class="rust"><code><span class="doccomment">//! Pixel definitions for operating colors.</span>
 <span class="kw">use</span> <span class="ident">std::ptr::NonNull</span>;
 
@@ -182,7 +180,7 @@
 <span class="kw">use</span> <span class="ident">static_assertions::assert_not_impl_all</span>;
 
 <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::color</span>::{<span class="ident">Rgb</span>, <span class="ident">Rgba</span>};
-<span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">bind</span>, <span class="prelude-ty">Result</span>, <span class="ident">Sdl</span>, <span class="ident">SdlError</span>};
+<span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">bind</span>, <span class="ident">EnumInt</span>, <span class="prelude-ty">Result</span>, <span class="ident">Sdl</span>, <span class="ident">SdlError</span>};
 
 <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">kind</span>;
 <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">layout</span>;
@@ -243,7 +241,7 @@
 <span class="kw">impl</span> <span class="ident">PixelFormat</span> {
     <span class="doccomment">/// Constructs a pixel format from [`PixelFormatKind`], or `Err` on failure.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">kind</span>: <span class="ident">PixelFormatKind</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
-        <span class="ident">NonNull::new</span>(<span class="kw">unsafe</span> { <span class="ident">bind::SDL_AllocFormat</span>(<span class="ident">kind</span>.<span class="ident">into</span>()) }).<span class="ident">map_or_else</span>(
+        <span class="ident">NonNull::new</span>(<span class="kw">unsafe</span> { <span class="ident">bind::SDL_AllocFormat</span>(<span class="ident">kind</span>.<span class="ident">as_raw</span>()) }).<span class="ident">map_or_else</span>(
             <span class="op">|</span><span class="op">|</span> {
                 <span class="kw">let</span> <span class="ident">msg</span> <span class="op">=</span> <span class="ident">Sdl::error</span>();
                 <span class="prelude-val">Err</span>(<span class="kw">if</span> <span class="ident">msg</span> <span class="op">=</span><span class="op">=</span> <span class="string">&quot;Out of memory&quot;</span> {
@@ -258,7 +256,7 @@
 
     <span class="doccomment">/// Returns the kind of the format.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">kind</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">PixelFormatKind</span> {
-        <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">format</span>.<span class="ident">as_ref</span>() }.<span class="ident">format</span>.<span class="ident">into</span>()
+        <span class="ident">PixelFormatKind::from_raw</span>(<span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">format</span>.<span class="ident">as_ref</span>() }.<span class="ident">format</span> <span class="kw">as</span> <span class="ident">EnumInt</span>)
     }
 
     <span class="doccomment">/// Returns the bits per pixel of the format.</span>
@@ -281,9 +279,7 @@
                 <span class="ident">blue</span>: <span class="ident">PixelMask</span>(<span class="ident">raw</span>.<span class="ident">Bmask</span>),
                 <span class="ident">alpha</span>: <span class="ident">PixelMask</span>(<span class="ident">raw</span>.<span class="ident">Amask</span>),
             },
-            <span class="op">|</span><span class="ident">palette</span><span class="op">|</span><span class="ident">PixelFormatProperty::Palette</span>(<span class="ident">Palette</span>{
-                <span class="ident">palette</span>,
-            }),
+            <span class="op">|</span><span class="ident">palette</span><span class="op">|</span> <span class="ident">PixelFormatProperty::Palette</span>(<span class="ident">Palette</span> { <span class="ident">palette</span> }),
         )
     }
 

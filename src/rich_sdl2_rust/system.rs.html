@@ -117,59 +117,59 @@
 
     <span class="doccomment">/// Returns whether the system CPU has RDTSC.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">has_rdtsc</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
-        <span class="kw">unsafe</span> { <span class="ident">bind::SDL_HasRDTSC</span>() <span class="op">=</span><span class="op">=</span> <span class="ident">bind::SDL_bool_SDL_TRUE</span> }
+        <span class="kw">unsafe</span> { <span class="ident">bind::SDL_HasRDTSC</span>() <span class="op">=</span><span class="op">=</span> <span class="ident">bind::SDL_TRUE</span> }
     }
     <span class="doccomment">/// Returns whether the system CPU has AltiVec.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">has_alti_vec</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
-        <span class="kw">unsafe</span> { <span class="ident">bind::SDL_HasAltiVec</span>() <span class="op">=</span><span class="op">=</span> <span class="ident">bind::SDL_bool_SDL_TRUE</span> }
+        <span class="kw">unsafe</span> { <span class="ident">bind::SDL_HasAltiVec</span>() <span class="op">=</span><span class="op">=</span> <span class="ident">bind::SDL_TRUE</span> }
     }
     <span class="doccomment">/// Returns whether the system CPU has MMX.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">has_mmx</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
-        <span class="kw">unsafe</span> { <span class="ident">bind::SDL_HasMMX</span>() <span class="op">=</span><span class="op">=</span> <span class="ident">bind::SDL_bool_SDL_TRUE</span> }
+        <span class="kw">unsafe</span> { <span class="ident">bind::SDL_HasMMX</span>() <span class="op">=</span><span class="op">=</span> <span class="ident">bind::SDL_TRUE</span> }
     }
     <span class="doccomment">/// Returns whether the system CPU has 3DNow!.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">has_3d_now</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
-        <span class="kw">unsafe</span> { <span class="ident">bind::SDL_Has3DNow</span>() <span class="op">=</span><span class="op">=</span> <span class="ident">bind::SDL_bool_SDL_TRUE</span> }
+        <span class="kw">unsafe</span> { <span class="ident">bind::SDL_Has3DNow</span>() <span class="op">=</span><span class="op">=</span> <span class="ident">bind::SDL_TRUE</span> }
     }
     <span class="doccomment">/// Returns whether the system CPU has SSE.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">has_sse</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
-        <span class="kw">unsafe</span> { <span class="ident">bind::SDL_HasSSE</span>() <span class="op">=</span><span class="op">=</span> <span class="ident">bind::SDL_bool_SDL_TRUE</span> }
+        <span class="kw">unsafe</span> { <span class="ident">bind::SDL_HasSSE</span>() <span class="op">=</span><span class="op">=</span> <span class="ident">bind::SDL_TRUE</span> }
     }
     <span class="doccomment">/// Returns whether the system CPU has SSE2.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">has_sse2</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
-        <span class="kw">unsafe</span> { <span class="ident">bind::SDL_HasSSE2</span>() <span class="op">=</span><span class="op">=</span> <span class="ident">bind::SDL_bool_SDL_TRUE</span> }
+        <span class="kw">unsafe</span> { <span class="ident">bind::SDL_HasSSE2</span>() <span class="op">=</span><span class="op">=</span> <span class="ident">bind::SDL_TRUE</span> }
     }
     <span class="doccomment">/// Returns whether the system CPU has SSE3.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">has_sse3</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
-        <span class="kw">unsafe</span> { <span class="ident">bind::SDL_HasSSE3</span>() <span class="op">=</span><span class="op">=</span> <span class="ident">bind::SDL_bool_SDL_TRUE</span> }
+        <span class="kw">unsafe</span> { <span class="ident">bind::SDL_HasSSE3</span>() <span class="op">=</span><span class="op">=</span> <span class="ident">bind::SDL_TRUE</span> }
     }
     <span class="doccomment">/// Returns whether the system CPU has SSE4.1.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">has_sse41</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
-        <span class="kw">unsafe</span> { <span class="ident">bind::SDL_HasSSE41</span>() <span class="op">=</span><span class="op">=</span> <span class="ident">bind::SDL_bool_SDL_TRUE</span> }
+        <span class="kw">unsafe</span> { <span class="ident">bind::SDL_HasSSE41</span>() <span class="op">=</span><span class="op">=</span> <span class="ident">bind::SDL_TRUE</span> }
     }
     <span class="doccomment">/// Returns whether the system CPU has SSE4.2.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">has_sse42</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
-        <span class="kw">unsafe</span> { <span class="ident">bind::SDL_HasSSE42</span>() <span class="op">=</span><span class="op">=</span> <span class="ident">bind::SDL_bool_SDL_TRUE</span> }
+        <span class="kw">unsafe</span> { <span class="ident">bind::SDL_HasSSE42</span>() <span class="op">=</span><span class="op">=</span> <span class="ident">bind::SDL_TRUE</span> }
     }
     <span class="doccomment">/// Returns whether the system CPU has AVX.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">has_avx</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
-        <span class="kw">unsafe</span> { <span class="ident">bind::SDL_HasAVX</span>() <span class="op">=</span><span class="op">=</span> <span class="ident">bind::SDL_bool_SDL_TRUE</span> }
+        <span class="kw">unsafe</span> { <span class="ident">bind::SDL_HasAVX</span>() <span class="op">=</span><span class="op">=</span> <span class="ident">bind::SDL_TRUE</span> }
     }
     <span class="doccomment">/// Returns whether the system CPU has AVX2.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">has_avx2</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
-        <span class="kw">unsafe</span> { <span class="ident">bind::SDL_HasAVX2</span>() <span class="op">=</span><span class="op">=</span> <span class="ident">bind::SDL_bool_SDL_TRUE</span> }
+        <span class="kw">unsafe</span> { <span class="ident">bind::SDL_HasAVX2</span>() <span class="op">=</span><span class="op">=</span> <span class="ident">bind::SDL_TRUE</span> }
     }
     <span class="doccomment">/// Returns whether the system CPU has AVX-512F.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">has_avx512f</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
-        <span class="kw">unsafe</span> { <span class="ident">bind::SDL_HasAVX512F</span>() <span class="op">=</span><span class="op">=</span> <span class="ident">bind::SDL_bool_SDL_TRUE</span> }
+        <span class="kw">unsafe</span> { <span class="ident">bind::SDL_HasAVX512F</span>() <span class="op">=</span><span class="op">=</span> <span class="ident">bind::SDL_TRUE</span> }
     }
     <span class="doccomment">/// Returns whether the system CPU has ARM SIMD.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">has_arm_simd</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
-        <span class="kw">unsafe</span> { <span class="ident">bind::SDL_HasARMSIMD</span>() <span class="op">=</span><span class="op">=</span> <span class="ident">bind::SDL_bool_SDL_TRUE</span> }
+        <span class="kw">unsafe</span> { <span class="ident">bind::SDL_HasARMSIMD</span>() <span class="op">=</span><span class="op">=</span> <span class="ident">bind::SDL_TRUE</span> }
     }
     <span class="doccomment">/// Returns whether the system CPU has NEON, Advanced SIMD.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">has_neon</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
-        <span class="kw">unsafe</span> { <span class="ident">bind::SDL_HasNEON</span>() <span class="op">=</span><span class="op">=</span> <span class="ident">bind::SDL_bool_SDL_TRUE</span> }
+        <span class="kw">unsafe</span> { <span class="ident">bind::SDL_HasNEON</span>() <span class="op">=</span><span class="op">=</span> <span class="ident">bind::SDL_TRUE</span> }
     }
 }
 </code></pre></div>

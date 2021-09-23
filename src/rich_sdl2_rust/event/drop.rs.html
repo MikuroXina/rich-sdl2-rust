@@ -70,7 +70,7 @@
 
 <span class="kw">use</span> <span class="ident">std::ffi::CStr</span>;
 
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::bind</span>;
+<span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">bind</span>, <span class="ident">EnumInt</span>};
 
 <span class="doccomment">/// An event occurred when the item was dropped on a window.</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>)]</span>
@@ -111,22 +111,22 @@
 
 <span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">bind::SDL_DropEvent</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">DropEvent</span> {
     <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">raw</span>: <span class="ident">bind::SDL_DropEvent</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-        <span class="kw">match</span> <span class="ident">raw</span>.<span class="ident">type_</span> {
-            <span class="ident">bind::SDL_EventType_SDL_DROPFILE</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident"><span class="self">Self</span>::File</span> {
+        <span class="kw">match</span> <span class="ident">raw</span>.<span class="ident">type_</span> <span class="kw">as</span> <span class="ident">EnumInt</span> {
+            <span class="ident">bind::SDL_DROPFILE</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident"><span class="self">Self</span>::File</span> {
                 <span class="ident">timestamp</span>: <span class="ident">raw</span>.<span class="ident">timestamp</span>,
                 <span class="ident">file</span>: <span class="kw">unsafe</span> { <span class="ident">CStr::from_ptr</span>(<span class="ident">raw</span>.<span class="ident">file</span>) }.<span class="ident">to_string_lossy</span>().<span class="ident">into</span>(),
                 <span class="ident">window_id</span>: <span class="ident">raw</span>.<span class="ident">windowID</span>,
             },
-            <span class="ident">bind::SDL_EventType_SDL_DROPTEXT</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident"><span class="self">Self</span>::Text</span> {
+            <span class="ident">bind::SDL_DROPTEXT</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident"><span class="self">Self</span>::Text</span> {
                 <span class="ident">timestamp</span>: <span class="ident">raw</span>.<span class="ident">timestamp</span>,
                 <span class="ident">text</span>: <span class="kw">unsafe</span> { <span class="ident">CStr::from_ptr</span>(<span class="ident">raw</span>.<span class="ident">file</span>) }.<span class="ident">to_string_lossy</span>().<span class="ident">into</span>(),
                 <span class="ident">window_id</span>: <span class="ident">raw</span>.<span class="ident">windowID</span>,
             },
-            <span class="ident">bind::SDL_EventType_SDL_DROPBEGIN</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident"><span class="self">Self</span>::Begin</span> {
+            <span class="ident">bind::SDL_DROPBEGIN</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident"><span class="self">Self</span>::Begin</span> {
                 <span class="ident">timestamp</span>: <span class="ident">raw</span>.<span class="ident">timestamp</span>,
                 <span class="ident">window_id</span>: <span class="ident">raw</span>.<span class="ident">windowID</span>,
             },
-            <span class="ident">bind::SDL_EventType_SDL_DROPCOMPLETE</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident"><span class="self">Self</span>::Complete</span> {
+            <span class="ident">bind::SDL_DROPCOMPLETE</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident"><span class="self">Self</span>::Complete</span> {
                 <span class="ident">timestamp</span>: <span class="ident">raw</span>.<span class="ident">timestamp</span>,
                 <span class="ident">window_id</span>: <span class="ident">raw</span>.<span class="ident">windowID</span>,
             },

@@ -150,7 +150,6 @@
 <span id="150">150</span>
 <span id="151">151</span>
 <span id="152">152</span>
-<span id="153">153</span>
 </pre><pre class="rust"><code><span class="doccomment">//! Window managements, graphics and mouse controls.</span>
 
 <span class="kw">use</span> <span class="ident">static_assertions::assert_not_impl_all</span>;
@@ -159,7 +158,7 @@
 <span class="kw">use</span> <span class="kw">super</span>::{<span class="ident">color::pixel::kind::PixelFormatKind</span>, <span class="ident">display::Display</span>};
 <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::surface::window::WindowSurface</span>;
 <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::surface::Surface</span>;
-<span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">bind</span>, <span class="prelude-ty">Result</span>, <span class="ident">Sdl</span>, <span class="ident">SdlError</span>, <span class="ident">Video</span>};
+<span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">bind</span>, <span class="ident">EnumInt</span>, <span class="prelude-ty">Result</span>, <span class="ident">Sdl</span>, <span class="ident">SdlError</span>, <span class="ident">Video</span>};
 
 <span class="kw">mod</span> <span class="ident">border</span>;
 <span class="kw">mod</span> <span class="ident">brightness</span>;
@@ -236,7 +235,9 @@
 
     <span class="doccomment">/// Returns the pixel format of the window context.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">pixel_format</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">PixelFormatKind</span> {
-        <span class="kw">unsafe</span> { <span class="ident">bind::SDL_GetWindowPixelFormat</span>(<span class="self">self</span>.<span class="ident">as_ptr</span>()) }.<span class="ident">into</span>()
+        <span class="ident">PixelFormatKind::from_raw</span>(
+            (<span class="kw">unsafe</span> { <span class="ident">bind::SDL_GetWindowPixelFormat</span>(<span class="self">self</span>.<span class="ident">as_ptr</span>()) }) <span class="kw">as</span> <span class="ident">EnumInt</span>,
+        )
     }
 
     <span class="doccomment">/// Shows the window.</span>
@@ -257,10 +258,7 @@
     <span class="doccomment">/// Make the window full screen, or `Err` on failure.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">full_screen</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="ident">ret</span> <span class="op">=</span> <span class="kw">unsafe</span> {
-            <span class="ident">bind::SDL_SetWindowFullscreen</span>(
-                <span class="self">self</span>.<span class="ident">as_ptr</span>(),
-                <span class="ident">bind::SDL_WindowFlags_SDL_WINDOW_FULLSCREEN</span>,
-            )
+            <span class="ident">bind::SDL_SetWindowFullscreen</span>(<span class="self">self</span>.<span class="ident">as_ptr</span>(), <span class="ident">bind::SDL_WINDOW_FULLSCREEN</span> <span class="kw">as</span> <span class="ident">u32</span>)
         };
         <span class="kw">if</span> <span class="ident">ret</span> <span class="op">!</span><span class="op">=</span> <span class="number">0</span> {
             <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident"><span class="kw">crate</span>::SdlError::Others</span> { <span class="ident">msg</span>: <span class="ident">Sdl::error</span>() });

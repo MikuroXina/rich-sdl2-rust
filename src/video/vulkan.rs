@@ -40,7 +40,7 @@ impl<'window> VkInstance<'window> {
                 std::ptr::null_mut(),
             )
         };
-        if ret == bind::SDL_bool_SDL_FALSE {
+        if ret == bind::SDL_FALSE {
             return Err(SdlError::UnsupportedFeature);
         }
         let mut extensions = vec![std::ptr::null(); num as usize];
@@ -104,7 +104,7 @@ impl<'vk> VkSurface<'vk> {
                 surface.as_mut_ptr(),
             )
         };
-        if ret == bind::SDL_bool_SDL_FALSE {
+        if ret == bind::SDL_FALSE {
             Err(SdlError::UnsupportedFeature)
         } else {
             Ok(Self {

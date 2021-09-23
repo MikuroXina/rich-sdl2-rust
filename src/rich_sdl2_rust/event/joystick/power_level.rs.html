@@ -57,11 +57,11 @@
     <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">raw</span>: <span class="ident">bind::SDL_JoystickPowerLevel</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
         <span class="kw">use</span> <span class="ident">PowerLevel</span>::<span class="kw-2">*</span>;
         <span class="kw">match</span> <span class="ident">raw</span> {
-            <span class="ident">bind::SDL_JoystickPowerLevel_SDL_JOYSTICK_POWER_EMPTY</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Empty</span>,
-            <span class="ident">bind::SDL_JoystickPowerLevel_SDL_JOYSTICK_POWER_LOW</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Low</span>,
-            <span class="ident">bind::SDL_JoystickPowerLevel_SDL_JOYSTICK_POWER_MEDIUM</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Medium</span>,
-            <span class="ident">bind::SDL_JoystickPowerLevel_SDL_JOYSTICK_POWER_FULL</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Full</span>,
-            <span class="ident">bind::SDL_JoystickPowerLevel_SDL_JOYSTICK_POWER_WIRED</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Wired</span>,
+            <span class="ident">bind::SDL_JOYSTICK_POWER_EMPTY</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Empty</span>,
+            <span class="ident">bind::SDL_JOYSTICK_POWER_LOW</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Low</span>,
+            <span class="ident">bind::SDL_JOYSTICK_POWER_MEDIUM</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Medium</span>,
+            <span class="ident">bind::SDL_JOYSTICK_POWER_FULL</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Full</span>,
+            <span class="ident">bind::SDL_JOYSTICK_POWER_WIRED</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Wired</span>,
             <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Unknown</span>,
         }
     }

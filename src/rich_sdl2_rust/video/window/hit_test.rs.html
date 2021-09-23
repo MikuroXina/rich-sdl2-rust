@@ -140,16 +140,16 @@
     <span class="kw">fn</span> <span class="ident">into_arg</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bind::SDL_HitTestResult</span> {
         <span class="kw">use</span> <span class="ident">HitTestResult</span>::<span class="kw-2">*</span>;
         <span class="kw">match</span> <span class="self">self</span> {
-            <span class="ident">Normal</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">bind::SDL_HitTestResult_SDL_HITTEST_NORMAL</span>,
-            <span class="ident">Draggable</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">bind::SDL_HitTestResult_SDL_HITTEST_DRAGGABLE</span>,
-            <span class="ident">ResizeTopLeft</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">bind::SDL_HitTestResult_SDL_HITTEST_RESIZE_TOPLEFT</span>,
-            <span class="ident">ResizeTop</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">bind::SDL_HitTestResult_SDL_HITTEST_RESIZE_TOP</span>,
-            <span class="ident">ResizeTopRight</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">bind::SDL_HitTestResult_SDL_HITTEST_RESIZE_TOPRIGHT</span>,
-            <span class="ident">ResizeRight</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">bind::SDL_HitTestResult_SDL_HITTEST_RESIZE_RIGHT</span>,
-            <span class="ident">ResizeBottomRight</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">bind::SDL_HitTestResult_SDL_HITTEST_RESIZE_BOTTOMRIGHT</span>,
-            <span class="ident">ResizeBottom</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">bind::SDL_HitTestResult_SDL_HITTEST_RESIZE_BOTTOM</span>,
-            <span class="ident">ResizeBottomLeft</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">bind::SDL_HitTestResult_SDL_HITTEST_RESIZE_BOTTOMLEFT</span>,
-            <span class="ident">ResizeLeft</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">bind::SDL_HitTestResult_SDL_HITTEST_RESIZE_LEFT</span>,
+            <span class="ident">Normal</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">bind::SDL_HITTEST_NORMAL</span>,
+            <span class="ident">Draggable</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">bind::SDL_HITTEST_DRAGGABLE</span>,
+            <span class="ident">ResizeTopLeft</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">bind::SDL_HITTEST_RESIZE_TOPLEFT</span>,
+            <span class="ident">ResizeTop</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">bind::SDL_HITTEST_RESIZE_TOP</span>,
+            <span class="ident">ResizeTopRight</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">bind::SDL_HITTEST_RESIZE_TOPRIGHT</span>,
+            <span class="ident">ResizeRight</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">bind::SDL_HITTEST_RESIZE_RIGHT</span>,
+            <span class="ident">ResizeBottomRight</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">bind::SDL_HITTEST_RESIZE_BOTTOMRIGHT</span>,
+            <span class="ident">ResizeBottom</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">bind::SDL_HITTEST_RESIZE_BOTTOM</span>,
+            <span class="ident">ResizeBottomLeft</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">bind::SDL_HITTEST_RESIZE_BOTTOMLEFT</span>,
+            <span class="ident">ResizeLeft</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">bind::SDL_HITTEST_RESIZE_LEFT</span>,
         }
     }
 }

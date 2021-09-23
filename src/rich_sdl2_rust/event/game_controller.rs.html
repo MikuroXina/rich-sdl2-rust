@@ -137,8 +137,6 @@
 <span id="137">137</span>
 <span id="138">138</span>
 <span id="139">139</span>
-<span id="140">140</span>
-<span id="141">141</span>
 </pre><pre class="rust"><code><span class="doccomment">//! A logical game controller that attached to a physical device.</span>
 
 <span class="kw">use</span> <span class="ident">static_assertions::assert_not_impl_all</span>;
@@ -195,16 +193,14 @@
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">bind_for_axis</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">axis</span>: <span class="ident">Axis</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">MapInput</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="ident">ret</span> <span class="op">=</span>
             <span class="kw">unsafe</span> { <span class="ident">bind::SDL_GameControllerGetBindForAxis</span>(<span class="self">self</span>.<span class="ident">ptr</span>.<span class="ident">as_ptr</span>(), <span class="ident">axis</span>.<span class="ident">as_raw</span>()) };
-        (<span class="ident">ret</span>.<span class="ident">bindType</span> <span class="op">!</span><span class="op">=</span> <span class="ident">bind::SDL_GameControllerBindType_SDL_CONTROLLER_BINDTYPE_NONE</span>)
-            .<span class="ident">then</span>(<span class="op">|</span><span class="op">|</span> <span class="ident">ret</span>.<span class="ident">into</span>())
+        (<span class="ident">ret</span>.<span class="ident">bindType</span> <span class="op">!</span><span class="op">=</span> <span class="ident">bind::SDL_CONTROLLER_BINDTYPE_NONE</span>).<span class="ident">then</span>(<span class="op">|</span><span class="op">|</span> <span class="ident">ret</span>.<span class="ident">into</span>())
     }
 
     <span class="doccomment">/// Returns the bind for a button if exists.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">bind_for_button</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">button</span>: <span class="ident">Button</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">MapInput</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="ident">ret</span> <span class="op">=</span>
             <span class="kw">unsafe</span> { <span class="ident">bind::SDL_GameControllerGetBindForButton</span>(<span class="self">self</span>.<span class="ident">ptr</span>.<span class="ident">as_ptr</span>(), <span class="ident">button</span>.<span class="ident">as_raw</span>()) };
-        (<span class="ident">ret</span>.<span class="ident">bindType</span> <span class="op">!</span><span class="op">=</span> <span class="ident">bind::SDL_GameControllerBindType_SDL_CONTROLLER_BINDTYPE_NONE</span>)
-            .<span class="ident">then</span>(<span class="op">|</span><span class="op">|</span> <span class="ident">ret</span>.<span class="ident">into</span>())
+        (<span class="ident">ret</span>.<span class="ident">bindType</span> <span class="op">!</span><span class="op">=</span> <span class="ident">bind::SDL_CONTROLLER_BINDTYPE_NONE</span>).<span class="ident">then</span>(<span class="op">|</span><span class="op">|</span> <span class="ident">ret</span>.<span class="ident">into</span>())
     }
 }
 

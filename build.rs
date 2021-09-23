@@ -77,6 +77,7 @@ fn main() {
         .allowlist_type("SDL_.*")
         .allowlist_var("SDL_.*")
         .generate_comments(false)
+        .prepend_enum_name(false)
         .parse_callbacks(Box::new(bindgen::CargoCallbacks))
         .raw_line("//! Rust FFI to `SDL2/SDL.h`")
         .raw_line("")

@@ -161,7 +161,7 @@
                 <span class="ident">std::ptr::null_mut</span>(),
             )
         };
-        <span class="kw">if</span> <span class="ident">ret</span> <span class="op">=</span><span class="op">=</span> <span class="ident">bind::SDL_bool_SDL_FALSE</span> {
+        <span class="kw">if</span> <span class="ident">ret</span> <span class="op">=</span><span class="op">=</span> <span class="ident">bind::SDL_FALSE</span> {
             <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">SdlError::UnsupportedFeature</span>);
         }
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">extensions</span> <span class="op">=</span> <span class="macro">vec!</span>[<span class="ident">std::ptr::null</span>(); <span class="ident">num</span> <span class="kw">as</span> <span class="ident">usize</span>];
@@ -225,7 +225,7 @@
                 <span class="ident">surface</span>.<span class="ident">as_mut_ptr</span>(),
             )
         };
-        <span class="kw">if</span> <span class="ident">ret</span> <span class="op">=</span><span class="op">=</span> <span class="ident">bind::SDL_bool_SDL_FALSE</span> {
+        <span class="kw">if</span> <span class="ident">ret</span> <span class="op">=</span><span class="op">=</span> <span class="ident">bind::SDL_FALSE</span> {
             <span class="prelude-val">Err</span>(<span class="ident">SdlError::UnsupportedFeature</span>)
         } <span class="kw">else</span> {
             <span class="prelude-val">Ok</span>(<span class="self">Self</span> {

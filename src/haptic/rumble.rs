@@ -1,7 +1,7 @@
 //! Rumbling the haptic device.
 
 use crate::{
-    bind::{self, SDL_bool_SDL_TRUE},
+    bind::{self, SDL_TRUE},
     Result, Sdl, SdlError,
 };
 
@@ -17,8 +17,7 @@ impl<'haptic> HapticRumble<'haptic> {
     /// Constructs from a reference to [`Haptic`], or `Err` on failure.
     pub fn new(haptic: &'haptic Haptic) -> Result<Self> {
         let is_supported = unsafe {
-            bind::SDL_HapticRumbleSupported(haptic.ptr.as_ptr()) as bind::SDL_bool
-                == SDL_bool_SDL_TRUE
+            bind::SDL_HapticRumbleSupported(haptic.ptr.as_ptr()) as bind::SDL_bool == SDL_TRUE
         };
         if !is_supported {
             return Err(SdlError::UnsupportedFeature);

@@ -6,7 +6,7 @@ use palette::Palette;
 use static_assertions::assert_not_impl_all;
 
 use crate::color::{Rgb, Rgba};
-use crate::{bind, Result, Sdl, SdlError};
+use crate::{bind, EnumInt, Result, Sdl, SdlError};
 
 pub mod kind;
 pub mod layout;
@@ -67,7 +67,7 @@ assert_not_impl_all!(PixelFormat: Send, Sync);
 impl PixelFormat {
     /// Constructs a pixel format from [`PixelFormatKind`], or `Err` on failure.
     pub fn new(kind: PixelFormatKind) -> Result<Self> {
-        NonNull::new(unsafe { bind::SDL_AllocFormat(kind.into()) }).map_or_else(
+        NonNull::new(unsafe { bind::SDL_AllocFormat(kind.as_raw()) }).map_or_else(
             || {
                 let msg = Sdl::error();
                 Err(if msg == "Out of memory" {
@@ -82,7 +82,7 @@ impl PixelFormat {
 
     /// Returns the kind of the format.
     pub fn kind(&self) -> PixelFormatKind {
-        unsafe { self.format.as_ref() }.format.into()
+        PixelFormatKind::from_raw(unsafe { self.format.as_ref() }.format as EnumInt)
     }
 
     /// Returns the bits per pixel of the format.
@@ -105,9 +105,7 @@ impl PixelFormat {
                 blue: PixelMask(raw.Bmask),
                 alpha: PixelMask(raw.Amask),
             },
-            |palette|PixelFormatProperty::Palette(Palette{
-                palette,
-            }),
+            |palette| PixelFormatProperty::Palette(Palette { palette }),
         )
     }
 

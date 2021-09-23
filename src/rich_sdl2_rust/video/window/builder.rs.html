@@ -277,23 +277,23 @@
 <span class="macro">bitflags!</span> {
     <span class="doccomment">/// A flag for [`Window`].</span>
     <span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">struct</span> <span class="ident">WindowFlags</span>: <span class="ident">u32</span> {
-        <span class="kw">const</span> <span class="ident">FULLSCREEN</span> <span class="op">=</span> <span class="ident">bind::SDL_WindowFlags_SDL_WINDOW_FULLSCREEN</span>;
-        <span class="kw">const</span> <span class="ident">FULLSCREEN_DESKTOP</span> <span class="op">=</span> <span class="ident">bind::SDL_WindowFlags_SDL_WINDOW_FULLSCREEN_DESKTOP</span>;
-        <span class="kw">const</span> <span class="ident">OPENGL</span> <span class="op">=</span> <span class="ident">bind::SDL_WindowFlags_SDL_WINDOW_OPENGL</span>;
-        <span class="kw">const</span> <span class="ident">VULKAN</span> <span class="op">=</span> <span class="ident">bind::SDL_WindowFlags_SDL_WINDOW_VULKAN</span>;
-        <span class="kw">const</span> <span class="ident">METAL</span> <span class="op">=</span> <span class="ident">bind::SDL_WindowFlags_SDL_WINDOW_METAL</span>;
-        <span class="kw">const</span> <span class="ident">SHOWN</span> <span class="op">=</span> <span class="ident">bind::SDL_WindowFlags_SDL_WINDOW_SHOWN</span>;
-        <span class="kw">const</span> <span class="ident">HIDDEN</span> <span class="op">=</span> <span class="ident">bind::SDL_WindowFlags_SDL_WINDOW_HIDDEN</span>;
-        <span class="kw">const</span> <span class="ident">BORDERLESS</span> <span class="op">=</span> <span class="ident">bind::SDL_WindowFlags_SDL_WINDOW_BORDERLESS</span>;
-        <span class="kw">const</span> <span class="ident">RESIZABLE</span> <span class="op">=</span> <span class="ident">bind::SDL_WindowFlags_SDL_WINDOW_RESIZABLE</span>;
-        <span class="kw">const</span> <span class="ident">MINIMIZED</span> <span class="op">=</span> <span class="ident">bind::SDL_WindowFlags_SDL_WINDOW_MINIMIZED</span>;
-        <span class="kw">const</span> <span class="ident">MAXIMIZED</span> <span class="op">=</span> <span class="ident">bind::SDL_WindowFlags_SDL_WINDOW_MAXIMIZED</span>;
-        <span class="kw">const</span> <span class="ident">INPUT_GRABBED</span> <span class="op">=</span> <span class="ident">bind::SDL_WindowFlags_SDL_WINDOW_INPUT_GRABBED</span>;
-        <span class="kw">const</span> <span class="ident">INPUT_FOCUS</span> <span class="op">=</span> <span class="ident">bind::SDL_WindowFlags_SDL_WINDOW_INPUT_FOCUS</span>;
-        <span class="kw">const</span> <span class="ident">MOUSE_FOCUS</span> <span class="op">=</span> <span class="ident">bind::SDL_WindowFlags_SDL_WINDOW_MOUSE_FOCUS</span>;
-        <span class="kw">const</span> <span class="ident">FOREIGN</span> <span class="op">=</span> <span class="ident">bind::SDL_WindowFlags_SDL_WINDOW_FOREIGN</span>;
-        <span class="kw">const</span> <span class="ident">ALLOW_HIGHDPI</span> <span class="op">=</span> <span class="ident">bind::SDL_WindowFlags_SDL_WINDOW_ALLOW_HIGHDPI</span>;
-        <span class="kw">const</span> <span class="ident">MOUSE_CAPTURE</span> <span class="op">=</span> <span class="ident">bind::SDL_WindowFlags_SDL_WINDOW_MOUSE_CAPTURE</span>;
+        <span class="kw">const</span> <span class="ident">FULLSCREEN</span> <span class="op">=</span> <span class="ident">bind::SDL_WINDOW_FULLSCREEN</span> <span class="kw">as</span> <span class="ident">u32</span>;
+        <span class="kw">const</span> <span class="ident">FULLSCREEN_DESKTOP</span> <span class="op">=</span> <span class="ident">bind::SDL_WINDOW_FULLSCREEN_DESKTOP</span> <span class="kw">as</span> <span class="ident">u32</span>;
+        <span class="kw">const</span> <span class="ident">OPENGL</span> <span class="op">=</span> <span class="ident">bind::SDL_WINDOW_OPENGL</span> <span class="kw">as</span> <span class="ident">u32</span>;
+        <span class="kw">const</span> <span class="ident">VULKAN</span> <span class="op">=</span> <span class="ident">bind::SDL_WINDOW_VULKAN</span> <span class="kw">as</span> <span class="ident">u32</span>;
+        <span class="kw">const</span> <span class="ident">METAL</span> <span class="op">=</span> <span class="ident">bind::SDL_WINDOW_METAL</span> <span class="kw">as</span> <span class="ident">u32</span>;
+        <span class="kw">const</span> <span class="ident">SHOWN</span> <span class="op">=</span> <span class="ident">bind::SDL_WINDOW_SHOWN</span> <span class="kw">as</span> <span class="ident">u32</span>;
+        <span class="kw">const</span> <span class="ident">HIDDEN</span> <span class="op">=</span> <span class="ident">bind::SDL_WINDOW_HIDDEN</span> <span class="kw">as</span> <span class="ident">u32</span>;
+        <span class="kw">const</span> <span class="ident">BORDERLESS</span> <span class="op">=</span> <span class="ident">bind::SDL_WINDOW_BORDERLESS</span> <span class="kw">as</span> <span class="ident">u32</span>;
+        <span class="kw">const</span> <span class="ident">RESIZABLE</span> <span class="op">=</span> <span class="ident">bind::SDL_WINDOW_RESIZABLE</span> <span class="kw">as</span> <span class="ident">u32</span>;
+        <span class="kw">const</span> <span class="ident">MINIMIZED</span> <span class="op">=</span> <span class="ident">bind::SDL_WINDOW_MINIMIZED</span> <span class="kw">as</span> <span class="ident">u32</span>;
+        <span class="kw">const</span> <span class="ident">MAXIMIZED</span> <span class="op">=</span> <span class="ident">bind::SDL_WINDOW_MAXIMIZED</span> <span class="kw">as</span> <span class="ident">u32</span>;
+        <span class="kw">const</span> <span class="ident">INPUT_GRABBED</span> <span class="op">=</span> <span class="ident">bind::SDL_WINDOW_INPUT_GRABBED</span> <span class="kw">as</span> <span class="ident">u32</span>;
+        <span class="kw">const</span> <span class="ident">INPUT_FOCUS</span> <span class="op">=</span> <span class="ident">bind::SDL_WINDOW_INPUT_FOCUS</span> <span class="kw">as</span> <span class="ident">u32</span>;
+        <span class="kw">const</span> <span class="ident">MOUSE_FOCUS</span> <span class="op">=</span> <span class="ident">bind::SDL_WINDOW_MOUSE_FOCUS</span> <span class="kw">as</span> <span class="ident">u32</span>;
+        <span class="kw">const</span> <span class="ident">FOREIGN</span> <span class="op">=</span> <span class="ident">bind::SDL_WINDOW_FOREIGN</span> <span class="kw">as</span> <span class="ident">u32</span>;
+        <span class="kw">const</span> <span class="ident">ALLOW_HIGHDPI</span> <span class="op">=</span> <span class="ident">bind::SDL_WINDOW_ALLOW_HIGHDPI</span> <span class="kw">as</span> <span class="ident">u32</span>;
+        <span class="kw">const</span> <span class="ident">MOUSE_CAPTURE</span> <span class="op">=</span> <span class="ident">bind::SDL_WINDOW_MOUSE_CAPTURE</span> <span class="kw">as</span> <span class="ident">u32</span>;
     }
 }
 </code></pre></div>

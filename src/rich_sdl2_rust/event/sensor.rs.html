@@ -151,9 +151,9 @@
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">kind</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">SensorKind</span> {
         <span class="kw">let</span> <span class="ident">ty</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">bind::SDL_SensorGetType</span>(<span class="self">self</span>.<span class="ident">ptr</span>.<span class="ident">as_ptr</span>()) };
         <span class="kw">match</span> <span class="ident">ty</span> {
-            <span class="ident">bind::SDL_SensorType_SDL_SENSOR_ACCEL</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">SensorKind::Accel</span>,
-            <span class="ident">bind::SDL_SensorType_SDL_SENSOR_GYRO</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">SensorKind::Gyro</span>,
-            <span class="ident">bind::SDL_SensorType_SDL_SENSOR_UNKNOWN</span> <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="ident">bind::SDL_SENSOR_ACCEL</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">SensorKind::Accel</span>,
+            <span class="ident">bind::SDL_SENSOR_GYRO</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">SensorKind::Gyro</span>,
+            <span class="ident">bind::SDL_SENSOR_UNKNOWN</span> <span class="op">=</span><span class="op">&gt;</span> {
                 <span class="kw">let</span> <span class="ident">ty</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">bind::SDL_SensorGetNonPortableType</span>(<span class="self">self</span>.<span class="ident">ptr</span>.<span class="ident">as_ptr</span>()) };
                 <span class="ident">SensorKind::Others</span>(<span class="ident">ty</span>)
             }

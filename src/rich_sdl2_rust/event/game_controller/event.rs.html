@@ -107,6 +107,7 @@
 <span id="107">107</span>
 <span id="108">108</span>
 <span id="109">109</span>
+<span id="110">110</span>
 </pre><pre class="rust"><code><span class="doccomment">//! An event related on a game controller.</span>
 
 <span class="kw">use</span> <span class="ident">std::marker::PhantomData</span>;
@@ -115,6 +116,7 @@
 <span class="kw">use</span> <span class="kw">crate</span>::{
     <span class="ident">bind</span>,
     <span class="ident">event::joystick</span>::{<span class="ident">Joystick</span>, <span class="ident">JoystickId</span>},
+    <span class="ident">EnumInt</span>,
 };
 
 <span class="doccomment">/// An event occurs on inputted from a game controller or changed a game controller.</span>
@@ -199,16 +201,16 @@
             <span class="ident">id</span>: <span class="ident">raw</span>.<span class="ident">which</span> <span class="kw">as</span> <span class="ident">u32</span>,
             <span class="ident">_phantom</span>: <span class="ident">PhantomData</span>,
         };
-        <span class="kw">match</span> <span class="ident">raw</span>.<span class="ident">type_</span> {
-            <span class="ident">bind::SDL_EventType_SDL_CONTROLLERDEVICEADDED</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident"><span class="self">Self</span>::DeviceAdded</span> {
+        <span class="kw">match</span> <span class="ident">raw</span>.<span class="ident">type_</span> <span class="kw">as</span> <span class="ident">EnumInt</span> {
+            <span class="ident">bind::SDL_CONTROLLERDEVICEADDED</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident"><span class="self">Self</span>::DeviceAdded</span> {
                 <span class="ident">timestamp</span>: <span class="ident">raw</span>.<span class="ident">timestamp</span>,
                 <span class="ident">joystick</span>: <span class="ident">Joystick::from_id</span>(<span class="ident">id</span>).<span class="ident">unwrap</span>(),
             },
-            <span class="ident">bind::SDL_EventType_SDL_CONTROLLERDEVICEREMOVED</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident"><span class="self">Self</span>::DeviceRemoved</span> {
+            <span class="ident">bind::SDL_CONTROLLERDEVICEREMOVED</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident"><span class="self">Self</span>::DeviceRemoved</span> {
                 <span class="ident">timestamp</span>: <span class="ident">raw</span>.<span class="ident">timestamp</span>,
                 <span class="ident">id</span>,
             },
-            <span class="ident">bind::SDL_EventType_SDL_CONTROLLERDEVICEREMAPPED</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident"><span class="self">Self</span>::DeviceRemapped</span> {
+            <span class="ident">bind::SDL_CONTROLLERDEVICEREMAPPED</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident"><span class="self">Self</span>::DeviceRemapped</span> {
                 <span class="ident">timestamp</span>: <span class="ident">raw</span>.<span class="ident">timestamp</span>,
                 <span class="ident">id</span>,
             },

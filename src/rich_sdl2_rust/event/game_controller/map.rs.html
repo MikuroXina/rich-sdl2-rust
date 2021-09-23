@@ -72,13 +72,13 @@
     <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">raw</span>: <span class="ident">bind::SDL_GameControllerButtonBind</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
         <span class="kw">use</span> <span class="ident">MapInput</span>::<span class="kw-2">*</span>;
         <span class="kw">match</span> <span class="ident">raw</span>.<span class="ident">bindType</span> {
-            <span class="ident">bind::SDL_GameControllerBindType_SDL_CONTROLLER_BINDTYPE_BUTTON</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Button</span> {
+            <span class="ident">bind::SDL_CONTROLLER_BINDTYPE_BUTTON</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Button</span> {
                 <span class="ident">index</span>: <span class="kw">unsafe</span> { <span class="ident">raw</span>.<span class="ident">value</span>.<span class="ident">button</span> } <span class="kw">as</span> <span class="ident">u32</span>,
             },
-            <span class="ident">bind::SDL_GameControllerBindType_SDL_CONTROLLER_BINDTYPE_AXIS</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Axis</span> {
+            <span class="ident">bind::SDL_CONTROLLER_BINDTYPE_AXIS</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Axis</span> {
                 <span class="ident">index</span>: <span class="kw">unsafe</span> { <span class="ident">raw</span>.<span class="ident">value</span>.<span class="ident">axis</span> } <span class="kw">as</span> <span class="ident">u32</span>,
             },
-            <span class="ident">bind::SDL_GameControllerBindType_SDL_CONTROLLER_BINDTYPE_HAT</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Hat</span> {
+            <span class="ident">bind::SDL_CONTROLLER_BINDTYPE_HAT</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Hat</span> {
                 <span class="ident">index</span>: <span class="kw">unsafe</span> { <span class="ident">raw</span>.<span class="ident">value</span>.<span class="ident">hat</span>.<span class="ident">hat</span> } <span class="kw">as</span> <span class="ident">u32</span>,
                 <span class="ident">mask</span>: <span class="kw">unsafe</span> { <span class="ident">raw</span>.<span class="ident">value</span>.<span class="ident">hat</span>.<span class="ident">hat_mask</span> } <span class="kw">as</span> <span class="ident">u32</span>,
             },

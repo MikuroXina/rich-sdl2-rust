@@ -80,7 +80,7 @@
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">joystick</span>: <span class="kw">impl</span> <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">Joystick</span><span class="op">&gt;</span> <span class="op">+</span> <span class="lifetime">&#39;joystick</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="ident">is_supported</span> <span class="op">=</span> <span class="kw">unsafe</span> {
             <span class="ident">bind::SDL_JoystickIsHaptic</span>(<span class="ident">joystick</span>.<span class="ident">as_ref</span>().<span class="ident">ptr</span>().<span class="ident">as_ptr</span>()) <span class="kw">as</span> <span class="ident">bind::SDL_bool</span>
-                <span class="op">=</span><span class="op">=</span> <span class="ident">bind::SDL_bool_SDL_TRUE</span>
+                <span class="op">=</span><span class="op">=</span> <span class="ident">bind::SDL_TRUE</span>
         };
         <span class="kw">if</span> <span class="op">!</span><span class="ident">is_supported</span> {
             <span class="kw">return</span> <span class="prelude-val">None</span>;

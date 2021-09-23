@@ -8,7 +8,7 @@ use crate::color::Rgb;
 use crate::geo::{Rect, Size};
 use crate::renderer::Renderer;
 use crate::surface::Surface;
-use crate::{bind, Result, Sdl, SdlError};
+use crate::{bind, EnumInt, Result, Sdl, SdlError};
 
 pub mod lock;
 mod query;
@@ -28,20 +28,20 @@ pub enum TextureAccess {
 
 impl TextureAccess {
     fn from_raw(raw: u32) -> Self {
-        match raw {
-            bind::SDL_TextureAccess_SDL_TEXTUREACCESS_STATIC => TextureAccess::Static,
-            bind::SDL_TextureAccess_SDL_TEXTUREACCESS_STREAMING => TextureAccess::Streaming,
-            bind::SDL_TextureAccess_SDL_TEXTUREACCESS_TARGET => TextureAccess::Target,
+        match raw as EnumInt {
+            bind::SDL_TEXTUREACCESS_STATIC => TextureAccess::Static,
+            bind::SDL_TEXTUREACCESS_STREAMING => TextureAccess::Streaming,
+            bind::SDL_TEXTUREACCESS_TARGET => TextureAccess::Target,
             _ => unreachable!(),
         }
     }
 
     fn as_raw(&self) -> u32 {
-        match self {
-            TextureAccess::Static => bind::SDL_TextureAccess_SDL_TEXTUREACCESS_STATIC,
-            TextureAccess::Streaming => bind::SDL_TextureAccess_SDL_TEXTUREACCESS_STREAMING,
-            TextureAccess::Target => bind::SDL_TextureAccess_SDL_TEXTUREACCESS_TARGET,
-        }
+        (match self {
+            TextureAccess::Static => bind::SDL_TEXTUREACCESS_STATIC,
+            TextureAccess::Streaming => bind::SDL_TEXTUREACCESS_STREAMING,
+            TextureAccess::Target => bind::SDL_TEXTUREACCESS_TARGET,
+        }) as u32
     }
 }
 
@@ -72,7 +72,7 @@ impl<'renderer> Texture<'renderer> {
         NonNull::new(unsafe {
             bind::SDL_CreateTexture(
                 renderer.as_ptr(),
-                pixel_format.into(),
+                pixel_format.as_raw() as u32,
                 access.as_raw() as i32,
                 width as i32,
                 height as i32,

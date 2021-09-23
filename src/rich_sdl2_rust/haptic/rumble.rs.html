@@ -50,11 +50,10 @@
 <span id="50">50</span>
 <span id="51">51</span>
 <span id="52">52</span>
-<span id="53">53</span>
 </pre><pre class="rust"><code><span class="doccomment">//! Rumbling the haptic device.</span>
 
 <span class="kw">use</span> <span class="kw">crate</span>::{
-    <span class="ident">bind</span>::{<span class="self">self</span>, <span class="ident">SDL_bool_SDL_TRUE</span>},
+    <span class="ident">bind</span>::{<span class="self">self</span>, <span class="ident">SDL_TRUE</span>},
     <span class="prelude-ty">Result</span>, <span class="ident">Sdl</span>, <span class="ident">SdlError</span>,
 };
 
@@ -70,8 +69,7 @@
     <span class="doccomment">/// Constructs from a reference to [`Haptic`], or `Err` on failure.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">haptic</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;haptic</span> <span class="ident">Haptic</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="ident">is_supported</span> <span class="op">=</span> <span class="kw">unsafe</span> {
-            <span class="ident">bind::SDL_HapticRumbleSupported</span>(<span class="ident">haptic</span>.<span class="ident">ptr</span>.<span class="ident">as_ptr</span>()) <span class="kw">as</span> <span class="ident">bind::SDL_bool</span>
-                <span class="op">=</span><span class="op">=</span> <span class="ident">SDL_bool_SDL_TRUE</span>
+            <span class="ident">bind::SDL_HapticRumbleSupported</span>(<span class="ident">haptic</span>.<span class="ident">ptr</span>.<span class="ident">as_ptr</span>()) <span class="kw">as</span> <span class="ident">bind::SDL_bool</span> <span class="op">=</span><span class="op">=</span> <span class="ident">SDL_TRUE</span>
         };
         <span class="kw">if</span> <span class="op">!</span><span class="ident">is_supported</span> {
             <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">SdlError::UnsupportedFeature</span>);

@@ -94,7 +94,7 @@
 
 <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::geo</span>::{<span class="ident">Point</span>, <span class="ident">Rect</span>};
 <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::texture::Texture</span>;
-<span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">bind</span>, <span class="ident">Sdl</span>};
+<span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">bind</span>, <span class="ident">EnumInt</span>, <span class="ident">Sdl</span>};
 
 <span class="kw">use</span> <span class="ident"><span class="kw">super</span>::Renderer</span>;
 
@@ -102,9 +102,9 @@
     <span class="doccomment">/// Flip mode on pasting from another texture.</span>
     <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">PasteExFlip</span>: <span class="ident">u32</span> {
         <span class="doccomment">/// Flips horizontal.</span>
-        <span class="kw">const</span> <span class="ident">HORIZONTAL</span> <span class="op">=</span> <span class="ident">bind::SDL_RendererFlip_SDL_FLIP_HORIZONTAL</span>;
+        <span class="kw">const</span> <span class="ident">HORIZONTAL</span> <span class="op">=</span> <span class="ident">bind::SDL_FLIP_HORIZONTAL</span> <span class="kw">as</span> <span class="ident">u32</span>;
         <span class="doccomment">/// Flips vertical.</span>
-        <span class="kw">const</span> <span class="ident">VERTICAL</span> <span class="op">=</span> <span class="ident">bind::SDL_RendererFlip_SDL_FLIP_VERTICAL</span>;
+        <span class="kw">const</span> <span class="ident">VERTICAL</span> <span class="op">=</span> <span class="ident">bind::SDL_FLIP_VERTICAL</span> <span class="kw">as</span> <span class="ident">u32</span>;
         <span class="doccomment">/// Flips both horizontal and vertical.</span>
         <span class="kw">const</span> <span class="ident">BOTH</span> <span class="op">=</span> <span class="ident"><span class="self">Self</span>::HORIZONTAL</span>.<span class="ident">bits</span> <span class="op">|</span> <span class="ident"><span class="self">Self</span>::VERTICAL</span>.<span class="ident">bits</span>;
     }
@@ -174,7 +174,7 @@
                 <span class="ident">target_area</span>.<span class="ident">map_or</span>(<span class="ident">std::ptr::null</span>(), <span class="op">|</span><span class="ident">rect</span><span class="op">|</span> <span class="kw-2">&amp;</span><span class="ident">rect</span>.<span class="ident">into</span>() <span class="kw">as</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="kw">_</span>),
                 <span class="ident">rotation_degrees</span>,
                 <span class="ident">center</span>.<span class="ident">map_or</span>(<span class="ident">std::ptr::null</span>(), <span class="op">|</span><span class="ident">p</span><span class="op">|</span> <span class="kw-2">&amp;</span><span class="ident">p</span>.<span class="ident">into</span>() <span class="kw">as</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="kw">_</span>),
-                <span class="ident">flip</span>.<span class="ident">bits</span>,
+                <span class="ident">flip</span>.<span class="ident">bits</span> <span class="kw">as</span> <span class="ident">EnumInt</span>,
             )
         };
         <span class="kw">if</span> <span class="ident">ret</span> <span class="op">!</span><span class="op">=</span> <span class="number">0</span> {

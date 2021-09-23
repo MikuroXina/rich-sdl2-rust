@@ -128,22 +128,22 @@ impl WindowBuilder {
 bitflags! {
     /// A flag for [`Window`].
     pub(super) struct WindowFlags: u32 {
-        const FULLSCREEN = bind::SDL_WindowFlags_SDL_WINDOW_FULLSCREEN;
-        const FULLSCREEN_DESKTOP = bind::SDL_WindowFlags_SDL_WINDOW_FULLSCREEN_DESKTOP;
-        const OPENGL = bind::SDL_WindowFlags_SDL_WINDOW_OPENGL;
-        const VULKAN = bind::SDL_WindowFlags_SDL_WINDOW_VULKAN;
-        const METAL = bind::SDL_WindowFlags_SDL_WINDOW_METAL;
-        const SHOWN = bind::SDL_WindowFlags_SDL_WINDOW_SHOWN;
-        const HIDDEN = bind::SDL_WindowFlags_SDL_WINDOW_HIDDEN;
-        const BORDERLESS = bind::SDL_WindowFlags_SDL_WINDOW_BORDERLESS;
-        const RESIZABLE = bind::SDL_WindowFlags_SDL_WINDOW_RESIZABLE;
-        const MINIMIZED = bind::SDL_WindowFlags_SDL_WINDOW_MINIMIZED;
-        const MAXIMIZED = bind::SDL_WindowFlags_SDL_WINDOW_MAXIMIZED;
-        const INPUT_GRABBED = bind::SDL_WindowFlags_SDL_WINDOW_INPUT_GRABBED;
-        const INPUT_FOCUS = bind::SDL_WindowFlags_SDL_WINDOW_INPUT_FOCUS;
-        const MOUSE_FOCUS = bind::SDL_WindowFlags_SDL_WINDOW_MOUSE_FOCUS;
-        const FOREIGN = bind::SDL_WindowFlags_SDL_WINDOW_FOREIGN;
-        const ALLOW_HIGHDPI = bind::SDL_WindowFlags_SDL_WINDOW_ALLOW_HIGHDPI;
-        const MOUSE_CAPTURE = bind::SDL_WindowFlags_SDL_WINDOW_MOUSE_CAPTURE;
+        const FULLSCREEN = bind::SDL_WINDOW_FULLSCREEN as u32;
+        const FULLSCREEN_DESKTOP = bind::SDL_WINDOW_FULLSCREEN_DESKTOP as u32;
+        const OPENGL = bind::SDL_WINDOW_OPENGL as u32;
+        const VULKAN = bind::SDL_WINDOW_VULKAN as u32;
+        const METAL = bind::SDL_WINDOW_METAL as u32;
+        const SHOWN = bind::SDL_WINDOW_SHOWN as u32;
+        const HIDDEN = bind::SDL_WINDOW_HIDDEN as u32;
+        const BORDERLESS = bind::SDL_WINDOW_BORDERLESS as u32;
+        const RESIZABLE = bind::SDL_WINDOW_RESIZABLE as u32;
+        const MINIMIZED = bind::SDL_WINDOW_MINIMIZED as u32;
+        const MAXIMIZED = bind::SDL_WINDOW_MAXIMIZED as u32;
+        const INPUT_GRABBED = bind::SDL_WINDOW_INPUT_GRABBED as u32;
+        const INPUT_FOCUS = bind::SDL_WINDOW_INPUT_FOCUS as u32;
+        const MOUSE_FOCUS = bind::SDL_WINDOW_MOUSE_FOCUS as u32;
+        const FOREIGN = bind::SDL_WINDOW_FOREIGN as u32;
+        const ALLOW_HIGHDPI = bind::SDL_WINDOW_ALLOW_HIGHDPI as u32;
+        const MOUSE_CAPTURE = bind::SDL_WINDOW_MOUSE_CAPTURE as u32;
     }
 }

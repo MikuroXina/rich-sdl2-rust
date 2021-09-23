@@ -61,7 +61,7 @@
 <span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;video</span><span class="op">&gt;</span> <span class="ident">RelativeMouse</span><span class="op">&lt;</span><span class="lifetime">&#39;video</span><span class="op">&gt;</span> {
     <span class="doccomment">/// Starts the relative mouse mode, but returns `Err(UnsupportedFeature)` if this is not supported.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="kw">_</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;video</span> <span class="ident">Video</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="ident">SdlError</span><span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="ident">ret</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">bind::SDL_SetRelativeMouseMode</span>(<span class="ident">bind::SDL_bool_SDL_TRUE</span>) };
+        <span class="kw">let</span> <span class="ident">ret</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">bind::SDL_SetRelativeMouseMode</span>(<span class="ident">bind::SDL_TRUE</span>) };
         <span class="kw">if</span> <span class="ident">ret</span> <span class="op">=</span><span class="op">=</span> <span class="op">-</span><span class="number">1</span> {
             <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">SdlError::UnsupportedFeature</span>);
         }
@@ -72,7 +72,7 @@
 <span class="kw">impl</span> <span class="ident">Drop</span> <span class="kw">for</span> <span class="ident">RelativeMouse</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span> {
     <span class="kw">fn</span> <span class="ident">drop</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) {
         <span class="kw">unsafe</span> {
-            <span class="kw">let</span> <span class="kw">_</span> <span class="op">=</span> <span class="ident">bind::SDL_SetRelativeMouseMode</span>(<span class="ident">bind::SDL_bool_SDL_FALSE</span>);
+            <span class="kw">let</span> <span class="kw">_</span> <span class="op">=</span> <span class="ident">bind::SDL_SetRelativeMouseMode</span>(<span class="ident">bind::SDL_FALSE</span>);
         }
     }
 }

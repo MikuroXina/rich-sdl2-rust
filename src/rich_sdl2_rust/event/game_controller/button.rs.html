@@ -120,24 +120,6 @@
 <span id="120">120</span>
 <span id="121">121</span>
 <span id="122">122</span>
-<span id="123">123</span>
-<span id="124">124</span>
-<span id="125">125</span>
-<span id="126">126</span>
-<span id="127">127</span>
-<span id="128">128</span>
-<span id="129">129</span>
-<span id="130">130</span>
-<span id="131">131</span>
-<span id="132">132</span>
-<span id="133">133</span>
-<span id="134">134</span>
-<span id="135">135</span>
-<span id="136">136</span>
-<span id="137">137</span>
-<span id="138">138</span>
-<span id="139">139</span>
-<span id="140">140</span>
 </pre><pre class="rust"><code><span class="doccomment">//! Buttons for a game controller.</span>
 
 <span class="kw">use</span> <span class="ident">std</span>::{
@@ -188,28 +170,20 @@
     <span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn</span> <span class="ident">from_raw</span>(<span class="ident">raw</span>: <span class="ident">bind::SDL_GameControllerButton</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
         <span class="kw">use</span> <span class="ident">Button</span>::<span class="kw-2">*</span>;
         <span class="kw">let</span> <span class="ident">val</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">raw</span> {
-            <span class="ident">bind::SDL_GameControllerButton_SDL_CONTROLLER_BUTTON_A</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">RightFour</span>(<span class="ident">FourButton::Down</span>),
-            <span class="ident">bind::SDL_GameControllerButton_SDL_CONTROLLER_BUTTON_B</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">RightFour</span>(<span class="ident">FourButton::Right</span>),
-            <span class="ident">bind::SDL_GameControllerButton_SDL_CONTROLLER_BUTTON_X</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">RightFour</span>(<span class="ident">FourButton::Left</span>),
-            <span class="ident">bind::SDL_GameControllerButton_SDL_CONTROLLER_BUTTON_Y</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">RightFour</span>(<span class="ident">FourButton::Up</span>),
-            <span class="ident">bind::SDL_GameControllerButton_SDL_CONTROLLER_BUTTON_BACK</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Back</span>,
-            <span class="ident">bind::SDL_GameControllerButton_SDL_CONTROLLER_BUTTON_GUIDE</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Guide</span>,
-            <span class="ident">bind::SDL_GameControllerButton_SDL_CONTROLLER_BUTTON_START</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Start</span>,
-            <span class="ident">bind::SDL_GameControllerButton_SDL_CONTROLLER_BUTTON_LEFTSTICK</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">LeftStick</span>,
-            <span class="ident">bind::SDL_GameControllerButton_SDL_CONTROLLER_BUTTON_RIGHTSTICK</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">RightStick</span>,
-            <span class="ident">bind::SDL_GameControllerButton_SDL_CONTROLLER_BUTTON_LEFTSHOULDER</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">LeftShoulder</span>,
-            <span class="ident">bind::SDL_GameControllerButton_SDL_CONTROLLER_BUTTON_DPAD_DOWN</span> <span class="op">=</span><span class="op">&gt;</span> {
-                <span class="ident">LeftFour</span>(<span class="ident">FourButton::Down</span>)
-            }
-            <span class="ident">bind::SDL_GameControllerButton_SDL_CONTROLLER_BUTTON_DPAD_RIGHT</span> <span class="op">=</span><span class="op">&gt;</span> {
-                <span class="ident">LeftFour</span>(<span class="ident">FourButton::Right</span>)
-            }
-            <span class="ident">bind::SDL_GameControllerButton_SDL_CONTROLLER_BUTTON_DPAD_LEFT</span> <span class="op">=</span><span class="op">&gt;</span> {
-                <span class="ident">LeftFour</span>(<span class="ident">FourButton::Left</span>)
-            }
-            <span class="ident">bind::SDL_GameControllerButton_SDL_CONTROLLER_BUTTON_DPAD_UP</span> <span class="op">=</span><span class="op">&gt;</span> {
-                <span class="ident">LeftFour</span>(<span class="ident">FourButton::Up</span>)
-            }
+            <span class="ident">bind::SDL_CONTROLLER_BUTTON_A</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">RightFour</span>(<span class="ident">FourButton::Down</span>),
+            <span class="ident">bind::SDL_CONTROLLER_BUTTON_B</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">RightFour</span>(<span class="ident">FourButton::Right</span>),
+            <span class="ident">bind::SDL_CONTROLLER_BUTTON_X</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">RightFour</span>(<span class="ident">FourButton::Left</span>),
+            <span class="ident">bind::SDL_CONTROLLER_BUTTON_Y</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">RightFour</span>(<span class="ident">FourButton::Up</span>),
+            <span class="ident">bind::SDL_CONTROLLER_BUTTON_BACK</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Back</span>,
+            <span class="ident">bind::SDL_CONTROLLER_BUTTON_GUIDE</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Guide</span>,
+            <span class="ident">bind::SDL_CONTROLLER_BUTTON_START</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Start</span>,
+            <span class="ident">bind::SDL_CONTROLLER_BUTTON_LEFTSTICK</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">LeftStick</span>,
+            <span class="ident">bind::SDL_CONTROLLER_BUTTON_RIGHTSTICK</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">RightStick</span>,
+            <span class="ident">bind::SDL_CONTROLLER_BUTTON_LEFTSHOULDER</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">LeftShoulder</span>,
+            <span class="ident">bind::SDL_CONTROLLER_BUTTON_DPAD_DOWN</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">LeftFour</span>(<span class="ident">FourButton::Down</span>),
+            <span class="ident">bind::SDL_CONTROLLER_BUTTON_DPAD_RIGHT</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">LeftFour</span>(<span class="ident">FourButton::Right</span>),
+            <span class="ident">bind::SDL_CONTROLLER_BUTTON_DPAD_LEFT</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">LeftFour</span>(<span class="ident">FourButton::Left</span>),
+            <span class="ident">bind::SDL_CONTROLLER_BUTTON_DPAD_UP</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">LeftFour</span>(<span class="ident">FourButton::Up</span>),
             <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="kw">return</span> <span class="prelude-val">None</span>,
         };
         <span class="prelude-val">Some</span>(<span class="ident">val</span>)
@@ -218,31 +192,21 @@
     <span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn</span> <span class="ident">as_raw</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bind::SDL_GameControllerButton</span> {
         <span class="kw">use</span> <span class="ident">FourButton</span>::<span class="kw-2">*</span>;
         <span class="kw">match</span> <span class="self">self</span> {
-            <span class="ident">Button::LeftFour</span>(<span class="ident">Up</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">bind::SDL_GameControllerButton_SDL_CONTROLLER_BUTTON_Y</span>,
-            <span class="ident">Button::LeftFour</span>(<span class="ident">Right</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">bind::SDL_GameControllerButton_SDL_CONTROLLER_BUTTON_B</span>,
-            <span class="ident">Button::LeftFour</span>(<span class="ident">Down</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">bind::SDL_GameControllerButton_SDL_CONTROLLER_BUTTON_A</span>,
-            <span class="ident">Button::LeftFour</span>(<span class="ident">Left</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">bind::SDL_GameControllerButton_SDL_CONTROLLER_BUTTON_X</span>,
-            <span class="ident">Button::RightFour</span>(<span class="ident">Up</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">bind::SDL_GameControllerButton_SDL_CONTROLLER_BUTTON_DPAD_UP</span>,
-            <span class="ident">Button::RightFour</span>(<span class="ident">Right</span>) <span class="op">=</span><span class="op">&gt;</span> {
-                <span class="ident">bind::SDL_GameControllerButton_SDL_CONTROLLER_BUTTON_DPAD_RIGHT</span>
-            }
-            <span class="ident">Button::RightFour</span>(<span class="ident">Down</span>) <span class="op">=</span><span class="op">&gt;</span> {
-                <span class="ident">bind::SDL_GameControllerButton_SDL_CONTROLLER_BUTTON_DPAD_DOWN</span>
-            }
-            <span class="ident">Button::RightFour</span>(<span class="ident">Left</span>) <span class="op">=</span><span class="op">&gt;</span> {
-                <span class="ident">bind::SDL_GameControllerButton_SDL_CONTROLLER_BUTTON_DPAD_LEFT</span>
-            }
-            <span class="ident">Button::Back</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">bind::SDL_GameControllerButton_SDL_CONTROLLER_BUTTON_BACK</span>,
-            <span class="ident">Button::Guide</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">bind::SDL_GameControllerButton_SDL_CONTROLLER_BUTTON_GUIDE</span>,
-            <span class="ident">Button::Start</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">bind::SDL_GameControllerButton_SDL_CONTROLLER_BUTTON_START</span>,
-            <span class="ident">Button::LeftStick</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">bind::SDL_GameControllerButton_SDL_CONTROLLER_BUTTON_LEFTSTICK</span>,
-            <span class="ident">Button::RightStick</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">bind::SDL_GameControllerButton_SDL_CONTROLLER_BUTTON_RIGHTSTICK</span>,
-            <span class="ident">Button::LeftShoulder</span> <span class="op">=</span><span class="op">&gt;</span> {
-                <span class="ident">bind::SDL_GameControllerButton_SDL_CONTROLLER_BUTTON_LEFTSHOULDER</span>
-            }
-            <span class="ident">Button::RightShoulder</span> <span class="op">=</span><span class="op">&gt;</span> {
-                <span class="ident">bind::SDL_GameControllerButton_SDL_CONTROLLER_BUTTON_RIGHTSHOULDER</span>
-            }
+            <span class="ident">Button::LeftFour</span>(<span class="ident">Up</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">bind::SDL_CONTROLLER_BUTTON_Y</span>,
+            <span class="ident">Button::LeftFour</span>(<span class="ident">Right</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">bind::SDL_CONTROLLER_BUTTON_B</span>,
+            <span class="ident">Button::LeftFour</span>(<span class="ident">Down</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">bind::SDL_CONTROLLER_BUTTON_A</span>,
+            <span class="ident">Button::LeftFour</span>(<span class="ident">Left</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">bind::SDL_CONTROLLER_BUTTON_X</span>,
+            <span class="ident">Button::RightFour</span>(<span class="ident">Up</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">bind::SDL_CONTROLLER_BUTTON_DPAD_UP</span>,
+            <span class="ident">Button::RightFour</span>(<span class="ident">Right</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">bind::SDL_CONTROLLER_BUTTON_DPAD_RIGHT</span>,
+            <span class="ident">Button::RightFour</span>(<span class="ident">Down</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">bind::SDL_CONTROLLER_BUTTON_DPAD_DOWN</span>,
+            <span class="ident">Button::RightFour</span>(<span class="ident">Left</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">bind::SDL_CONTROLLER_BUTTON_DPAD_LEFT</span>,
+            <span class="ident">Button::Back</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">bind::SDL_CONTROLLER_BUTTON_BACK</span>,
+            <span class="ident">Button::Guide</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">bind::SDL_CONTROLLER_BUTTON_GUIDE</span>,
+            <span class="ident">Button::Start</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">bind::SDL_CONTROLLER_BUTTON_START</span>,
+            <span class="ident">Button::LeftStick</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">bind::SDL_CONTROLLER_BUTTON_LEFTSTICK</span>,
+            <span class="ident">Button::RightStick</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">bind::SDL_CONTROLLER_BUTTON_RIGHTSTICK</span>,
+            <span class="ident">Button::LeftShoulder</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">bind::SDL_CONTROLLER_BUTTON_LEFTSHOULDER</span>,
+            <span class="ident">Button::RightShoulder</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">bind::SDL_CONTROLLER_BUTTON_RIGHTSHOULDER</span>,
         }
     }
 

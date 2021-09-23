@@ -1,6 +1,6 @@
 //! An event related on an audio device.
 
-use crate::bind;
+use crate::{bind, EnumInt};
 
 /// An event occurs on an audio device was added/removed.
 #[derive(Debug, Clone)]
@@ -27,13 +27,13 @@ pub enum AudioDeviceEvent {
 
 impl From<bind::SDL_AudioDeviceEvent> for AudioDeviceEvent {
     fn from(raw: bind::SDL_AudioDeviceEvent) -> Self {
-        match raw.type_ {
-            bind::SDL_EventType_SDL_AUDIODEVICEADDED => AudioDeviceEvent::Added {
+        match raw.type_ as EnumInt {
+            bind::SDL_AUDIODEVICEADDED => AudioDeviceEvent::Added {
                 timestamp: raw.timestamp,
                 device_id: raw.which,
                 is_microphone: raw.iscapture != 0,
             },
-            bind::SDL_EventType_SDL_AUDIODEVICEREMOVED => AudioDeviceEvent::Removed {
+            bind::SDL_AUDIODEVICEREMOVED => AudioDeviceEvent::Removed {
                 timestamp: raw.timestamp,
                 device_id: raw.which,
                 is_microphone: raw.iscapture != 0,

@@ -58,37 +58,37 @@
     <span class="doccomment">/// A key modification flag.</span>
     <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">KeyMod</span> : <span class="ident">u16</span> {
         <span class="doccomment">/// No mod key pressed.</span>
-        <span class="kw">const</span> <span class="ident">NONE</span> <span class="op">=</span> <span class="ident">bind::SDL_Keymod_KMOD_NONE</span> <span class="kw">as</span> <span class="ident">u16</span>;
+        <span class="kw">const</span> <span class="ident">NONE</span> <span class="op">=</span> <span class="ident">bind::KMOD_NONE</span> <span class="kw">as</span> <span class="ident">u16</span>;
         <span class="doccomment">/// Left shift pressed.</span>
-        <span class="kw">const</span> <span class="ident">LSHIFT</span> <span class="op">=</span> <span class="ident">bind::SDL_Keymod_KMOD_LSHIFT</span> <span class="kw">as</span> <span class="ident">u16</span>;
+        <span class="kw">const</span> <span class="ident">LSHIFT</span> <span class="op">=</span> <span class="ident">bind::KMOD_LSHIFT</span> <span class="kw">as</span> <span class="ident">u16</span>;
         <span class="doccomment">/// Right shift pressed.</span>
-        <span class="kw">const</span> <span class="ident">RSHIFT</span> <span class="op">=</span> <span class="ident">bind::SDL_Keymod_KMOD_RSHIFT</span> <span class="kw">as</span> <span class="ident">u16</span>;
+        <span class="kw">const</span> <span class="ident">RSHIFT</span> <span class="op">=</span> <span class="ident">bind::KMOD_RSHIFT</span> <span class="kw">as</span> <span class="ident">u16</span>;
         <span class="doccomment">/// Left control pressed.</span>
-        <span class="kw">const</span> <span class="ident">LCTRL</span> <span class="op">=</span> <span class="ident">bind::SDL_Keymod_KMOD_LCTRL</span> <span class="kw">as</span> <span class="ident">u16</span>;
+        <span class="kw">const</span> <span class="ident">LCTRL</span> <span class="op">=</span> <span class="ident">bind::KMOD_LCTRL</span> <span class="kw">as</span> <span class="ident">u16</span>;
         <span class="doccomment">/// Right control pressed.</span>
-        <span class="kw">const</span> <span class="ident">RCTRL</span> <span class="op">=</span> <span class="ident">bind::SDL_Keymod_KMOD_RCTRL</span> <span class="kw">as</span> <span class="ident">u16</span>;
+        <span class="kw">const</span> <span class="ident">RCTRL</span> <span class="op">=</span> <span class="ident">bind::KMOD_RCTRL</span> <span class="kw">as</span> <span class="ident">u16</span>;
         <span class="doccomment">/// Left alt pressed.</span>
-        <span class="kw">const</span> <span class="ident">LALT</span> <span class="op">=</span> <span class="ident">bind::SDL_Keymod_KMOD_LALT</span> <span class="kw">as</span> <span class="ident">u16</span>;
+        <span class="kw">const</span> <span class="ident">LALT</span> <span class="op">=</span> <span class="ident">bind::KMOD_LALT</span> <span class="kw">as</span> <span class="ident">u16</span>;
         <span class="doccomment">/// Right alt pressed.</span>
-        <span class="kw">const</span> <span class="ident">RALT</span> <span class="op">=</span> <span class="ident">bind::SDL_Keymod_KMOD_RALT</span> <span class="kw">as</span> <span class="ident">u16</span>;
+        <span class="kw">const</span> <span class="ident">RALT</span> <span class="op">=</span> <span class="ident">bind::KMOD_RALT</span> <span class="kw">as</span> <span class="ident">u16</span>;
         <span class="doccomment">/// Left meta pressed.</span>
-        <span class="kw">const</span> <span class="ident">LGUI</span> <span class="op">=</span> <span class="ident">bind::SDL_Keymod_KMOD_LGUI</span> <span class="kw">as</span> <span class="ident">u16</span>;
+        <span class="kw">const</span> <span class="ident">LGUI</span> <span class="op">=</span> <span class="ident">bind::KMOD_LGUI</span> <span class="kw">as</span> <span class="ident">u16</span>;
         <span class="doccomment">/// Right meta pressed.</span>
-        <span class="kw">const</span> <span class="ident">RGUI</span> <span class="op">=</span> <span class="ident">bind::SDL_Keymod_KMOD_RGUI</span> <span class="kw">as</span> <span class="ident">u16</span>;
+        <span class="kw">const</span> <span class="ident">RGUI</span> <span class="op">=</span> <span class="ident">bind::KMOD_RGUI</span> <span class="kw">as</span> <span class="ident">u16</span>;
         <span class="doccomment">/// Num lock pressed.</span>
-        <span class="kw">const</span> <span class="ident">NUM</span> <span class="op">=</span> <span class="ident">bind::SDL_Keymod_KMOD_NUM</span> <span class="kw">as</span> <span class="ident">u16</span>;
+        <span class="kw">const</span> <span class="ident">NUM</span> <span class="op">=</span> <span class="ident">bind::KMOD_NUM</span> <span class="kw">as</span> <span class="ident">u16</span>;
         <span class="doccomment">/// Caps lock pressed.</span>
-        <span class="kw">const</span> <span class="ident">CAPS</span> <span class="op">=</span> <span class="ident">bind::SDL_Keymod_KMOD_CAPS</span> <span class="kw">as</span> <span class="ident">u16</span>;
+        <span class="kw">const</span> <span class="ident">CAPS</span> <span class="op">=</span> <span class="ident">bind::KMOD_CAPS</span> <span class="kw">as</span> <span class="ident">u16</span>;
         <span class="doccomment">/// Alt graphic pressed.</span>
-        <span class="kw">const</span> <span class="ident">MODE</span> <span class="op">=</span> <span class="ident">bind::SDL_Keymod_KMOD_MODE</span> <span class="kw">as</span> <span class="ident">u16</span>;
+        <span class="kw">const</span> <span class="ident">MODE</span> <span class="op">=</span> <span class="ident">bind::KMOD_MODE</span> <span class="kw">as</span> <span class="ident">u16</span>;
         <span class="doccomment">/// Left or right control pressed.</span>
-        <span class="kw">const</span> <span class="ident">CTRL</span> <span class="op">=</span> <span class="ident">bind::SDL_Keymod_KMOD_CTRL</span> <span class="kw">as</span> <span class="ident">u16</span>;
+        <span class="kw">const</span> <span class="ident">CTRL</span> <span class="op">=</span> <span class="ident">bind::KMOD_CTRL</span> <span class="kw">as</span> <span class="ident">u16</span>;
         <span class="doccomment">/// Left or right shift pressed.</span>
-        <span class="kw">const</span> <span class="ident">SHIFT</span> <span class="op">=</span> <span class="ident">bind::SDL_Keymod_KMOD_SHIFT</span> <span class="kw">as</span> <span class="ident">u16</span>;
+        <span class="kw">const</span> <span class="ident">SHIFT</span> <span class="op">=</span> <span class="ident">bind::KMOD_SHIFT</span> <span class="kw">as</span> <span class="ident">u16</span>;
         <span class="doccomment">/// Left or right alt pressed.</span>
-        <span class="kw">const</span> <span class="ident">ALT</span> <span class="op">=</span> <span class="ident">bind::SDL_Keymod_KMOD_ALT</span> <span class="kw">as</span> <span class="ident">u16</span>;
+        <span class="kw">const</span> <span class="ident">ALT</span> <span class="op">=</span> <span class="ident">bind::KMOD_ALT</span> <span class="kw">as</span> <span class="ident">u16</span>;
         <span class="doccomment">/// Left or right meta pressed.</span>
-        <span class="kw">const</span> <span class="ident">GUI</span> <span class="op">=</span> <span class="ident">bind::SDL_Keymod_KMOD_GUI</span> <span class="kw">as</span> <span class="ident">u16</span>;
+        <span class="kw">const</span> <span class="ident">GUI</span> <span class="op">=</span> <span class="ident">bind::KMOD_GUI</span> <span class="kw">as</span> <span class="ident">u16</span>;
     }
 }
 
