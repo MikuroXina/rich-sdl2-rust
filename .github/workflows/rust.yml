@@ -47,6 +47,12 @@ jobs:
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v2
+
+      - name: Setup path
+        shell: cmd
+        run: |
+          echo "C:\msys64\mingw64\bin" >> $GITHUB_PATH
+
       - uses: ilammy/msvc-dev-cmd@v1
       - name: Nightly with rustfmt and clippy
         uses: actions-rs/toolchain@v1
