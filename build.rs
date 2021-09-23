@@ -7,9 +7,8 @@ use std::{
 
 fn main() {
     const SDL2_INSTALL_DIR: &str = "SDL2-2.0.16";
-    let sdl2_dir: &str;
 
-    let root = PathBuf::from(env::var("CARGO_MANIFEST_DIR").expect("CARGO_MANIFEST_DIR not found"));
+    let root = PathBuf::from(env::var("OUT_DIR").expect("OUT_DIR not found"));
 
     #[cfg(unix)]
     {
@@ -21,12 +20,12 @@ fn main() {
             extract_zip(tmp_file, &root);
 
             let _ = Command::new("./configure")
-                .current_dir(SDL2_INSTALL_DIR)
+                .current_dir(root.join(SDL2_INSTALL_DIR))
                 .output()
                 .expect("failed to configure");
             let _ = Command::new("make")
                 .arg("-j4")
-                .current_dir(SDL2_INSTALL_DIR)
+                .current_dir(root.join(SDL2_INSTALL_DIR))
                 .output()
                 .expect("failed to make");
         }
@@ -39,8 +38,6 @@ fn main() {
                 .as_path()
                 .to_string_lossy()
         );
-
-        sdl2_dir = "SDL2-2.0.16/include";
     }
     #[cfg(windows)]
     {
@@ -56,38 +53,25 @@ fn main() {
                 .as_path()
                 .to_string_lossy()
         );
-        sdl2_dir = "SDL2-2.0.16/include";
     }
 
     println!("cargo:rustc-link-lib=SDL2");
+    println!("cargo:rerun-if-changed=wrapper.h");
 
     let bindings = bindgen::Builder::default()
-        .header_contents(
-            "wrapper.h",
-            &format!(
-                r#"
-#define SDL_MAIN_HANDLED
-#include "{0}/SDL.h"
-#include "{0}/SDL_vulkan.h"
-"#,
-                sdl2_dir
-            ),
-        )
+        .header("wrapper.h")
         .allowlist_function("SDL_.*")
         .allowlist_type("SDL_.*")
         .allowlist_var("SDL_.*")
         .generate_comments(false)
         .prepend_enum_name(false)
         .parse_callbacks(Box::new(bindgen::CargoCallbacks))
-        .raw_line("//! Rust FFI to `SDL2/SDL.h`")
-        .raw_line("")
-        .raw_line(r"#![allow(warnings)]")
         .generate()
         .expect("bindgen builder was invalid");
 
     bindings
-        .write_to_file(root.join("src/bind.rs"))
-        .expect("`src` directory not found");
+        .write_to_file(root.join("bind.rs"))
+        .expect("writing `bind.rs` failed");
 }
 
 fn download_sdl2(link: impl IntoUrl, file_name: impl AsRef<Path>) -> fs::File {

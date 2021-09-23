@@ -22,6 +22,8 @@
 //!   - `simd_allocator`: The wrapper of SIMD-friendly allocator.
 
 pub mod audio;
+/// Rust FFI to `SDL2/SDL.h`
+#[allow(warnings)]
 mod bind;
 mod error;
 pub mod event;
