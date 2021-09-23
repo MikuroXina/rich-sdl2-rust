@@ -58,7 +58,13 @@ jobs:
           toolchain: nightly
           components: rustfmt, clippy
 
-      - name: Test crate on Windows
+      - name: Build crate
+        shell: cmd
+        run: |
+          set PATH=C:\msys64\mingw64\bin;%PATH%
+          cargo build --verbose
+
+      - name: Test crate
         shell: cmd
         run: |
           set PATH=C:\msys64\mingw64\bin;%PATH%
