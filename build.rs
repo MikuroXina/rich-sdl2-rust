@@ -60,6 +60,7 @@ fn main() {
 
     let bindings = bindgen::Builder::default()
         .header("wrapper.h")
+        .clang_arg(&format!("-I{}/{}/include", root_dir, SDL2_INSTALL_DIR))
         .allowlist_function("SDL_.*")
         .allowlist_type("SDL_.*")
         .allowlist_var("SDL_.*")
