@@ -160,7 +160,7 @@ impl PixelFormatKind {
         }
     }
 
-    pub(crate) fn as_raw(self) -> u32 {
+    pub(crate) fn as_raw(&self) -> u32 {
         (match self {
             PixelFormatKind::Unknown => 0,
             PixelFormatKind::Bitmap { ty, order } => calc_bits(
