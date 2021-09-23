@@ -40,7 +40,7 @@ pub use sdl::*;
 pub use timer::*;
 pub use video::*;
 
-#[cfg(not(windows))]
+#[cfg(not(target_env = "msvc"))]
 type EnumInt = std::os::raw::c_uint;
-#[cfg(windows)]
+#[cfg(target_env = "msvc")]
 type EnumInt = std::os::raw::c_int;
