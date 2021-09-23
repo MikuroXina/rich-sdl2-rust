@@ -56,11 +56,11 @@ jobs:
 
       - name: Build crate
         shell: cmd
-        run: cargo build --verbose
+        run: cargo build --verbose --target=x86_64-pc-windows-msvc
 
       - name: Test crate
         shell: cmd
-        run: cargo test --verbose
+        run: cargo test --verbose --target=x86_64-pc-windows-msvc
 
   doc:
     runs-on: ubuntu-latest
