@@ -46,11 +46,7 @@ jobs:
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v2
-      - name: Setup path
-        shell: cmd
-        run: |
-          echo "C:\msys64\mingw64\bin" >> $GITHUB_PATH
-
+      - uses: ilammy/msvc-dev-cmd@v1
       - name: Nightly with rustfmt and clippy
         uses: actions-rs/toolchain@v1
         with:
@@ -60,15 +56,11 @@ jobs:
 
       - name: Build crate
         shell: cmd
-        run: |
-          set PATH=C:\msys64\mingw64\bin;%PATH%
-          cargo build --verbose
+        run: cargo build --verbose
 
       - name: Test crate
         shell: cmd
-        run: |
-          set PATH=C:\msys64\mingw64\bin;%PATH%
-          cargo test --verbose
+        run: cargo test --verbose
 
   doc:
     runs-on: ubuntu-latest
