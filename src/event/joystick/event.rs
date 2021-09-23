@@ -2,7 +2,7 @@
 
 use std::{marker::PhantomData, os::raw::c_int};
 
-use crate::bind;
+use crate::{bind, EnumInt};
 
 use super::{hat::PovHat, InputIndex, Joystick, JoystickId};
 
@@ -134,7 +134,7 @@ impl From<bind::SDL_JoyDeviceEvent> for JoystickEvent<'_> {
             id: raw.which as u32,
             _phantom: PhantomData,
         };
-        match raw.type_ {
+        match raw.type_ as EnumInt {
             bind::SDL_JOYDEVICEADDED => Self::DeviceAdded {
                 timestamp: raw.timestamp,
                 joystick: Joystick::from_id(id).unwrap(),

@@ -3,6 +3,7 @@
 use crate::{
     bind,
     geo::{Point, Size},
+    EnumInt,
 };
 
 /// The details what occurred in [`WindowEvent`].
@@ -64,7 +65,7 @@ impl From<bind::SDL_WindowEvent> for WindowEvent {
         Self {
             timestamp,
             window_id,
-            details: match event as u32 {
+            details: match event as EnumInt {
                 bind::SDL_WINDOWEVENT_SHOWN => Shown,
                 bind::SDL_WINDOWEVENT_HIDDEN => Hidden,
                 bind::SDL_WINDOWEVENT_EXPOSED => Exposed,

@@ -17,7 +17,7 @@ use self::{
     window::WindowEvent,
 };
 
-use crate::{audio::event::AudioDeviceEvent, bind, Sdl, Video};
+use crate::{audio::event::AudioDeviceEvent, bind, EnumInt, Sdl, Video};
 
 pub mod app;
 pub mod drop;
@@ -149,7 +149,7 @@ impl<'video> EventBox<'video> {
 
     fn handle_event(&self, event: bind::SDL_Event) {
         let ty = unsafe { event.type_ };
-        match ty {
+        match ty as EnumInt {
             bind::SDL_QUIT => {
                 let quit: QuitEvent = unsafe { event.quit }.into();
                 self.quit_event_handlers.call_handlers(quit);

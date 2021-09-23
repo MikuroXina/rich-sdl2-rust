@@ -2,7 +2,7 @@
 
 use std::ffi::CStr;
 
-use crate::bind;
+use crate::{bind, EnumInt};
 
 /// An event occurred when the item was dropped on a window.
 #[derive(Debug, Clone)]
@@ -43,7 +43,7 @@ pub enum DropEvent {
 
 impl From<bind::SDL_DropEvent> for DropEvent {
     fn from(raw: bind::SDL_DropEvent) -> Self {
-        match raw.type_ {
+        match raw.type_ as EnumInt {
             bind::SDL_DROPFILE => Self::File {
                 timestamp: raw.timestamp,
                 file: unsafe { CStr::from_ptr(raw.file) }.to_string_lossy().into(),

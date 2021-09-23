@@ -6,7 +6,7 @@ use std::ptr::NonNull;
 use super::{color::pixel::kind::PixelFormatKind, display::Display};
 use crate::surface::window::WindowSurface;
 use crate::surface::Surface;
-use crate::{bind, Result, Sdl, SdlError, Video};
+use crate::{bind, EnumInt, Result, Sdl, SdlError, Video};
 
 mod border;
 mod brightness;
@@ -83,7 +83,9 @@ impl<'video> Window<'video> {
 
     /// Returns the pixel format of the window context.
     pub fn pixel_format(&self) -> PixelFormatKind {
-        unsafe { bind::SDL_GetWindowPixelFormat(self.as_ptr()) }.into()
+        PixelFormatKind::from_raw(
+            (unsafe { bind::SDL_GetWindowPixelFormat(self.as_ptr()) }) as EnumInt,
+        )
     }
 
     /// Shows the window.
@@ -103,8 +105,9 @@ impl<'video> Window<'video> {
 
     /// Make the window full screen, or `Err` on failure.
     pub fn full_screen(&self) -> Result<()> {
-        let ret =
-            unsafe { bind::SDL_SetWindowFullscreen(self.as_ptr(), bind::SDL_WINDOW_FULLSCREEN) };
+        let ret = unsafe {
+            bind::SDL_SetWindowFullscreen(self.as_ptr(), bind::SDL_WINDOW_FULLSCREEN as u32)
+        };
         if ret != 0 {
             return Err(crate::SdlError::Others { msg: Sdl::error() });
         }

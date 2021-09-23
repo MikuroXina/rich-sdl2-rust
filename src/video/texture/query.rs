@@ -1,6 +1,6 @@
 use crate::color::pixel::kind::PixelFormatKind;
 use crate::geo::Size;
-use crate::{bind, Sdl};
+use crate::{bind, EnumInt, Sdl};
 
 use super::{Texture, TextureAccess};
 
@@ -17,7 +17,7 @@ pub trait QueryExt {
 impl QueryExt for Texture<'_> {
     fn format(&self) -> PixelFormatKind {
         use std::ptr::null_mut;
-        let mut raw_format = 0;
+        let mut raw_format = 0u32;
         let ret = unsafe {
             bind::SDL_QueryTexture(
                 self.as_ptr(),
@@ -30,7 +30,7 @@ impl QueryExt for Texture<'_> {
         if ret != 0 {
             Sdl::error_then_panic("Getting texture format");
         }
-        raw_format.into()
+        PixelFormatKind::from_raw(raw_format as EnumInt)
     }
 
     fn access(&self) -> TextureAccess {

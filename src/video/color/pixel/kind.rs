@@ -2,7 +2,7 @@
 
 use std::ffi::CStr;
 
-use crate::bind;
+use crate::{bind, EnumInt};
 
 use super::{layout::*, order::*, ty::*};
 
@@ -65,7 +65,7 @@ impl PixelFormatKind {
         }: BppMask,
     ) -> Self {
         let raw = unsafe { bind::SDL_MasksToPixelFormatEnum(bpp, r_mask, g_mask, b_mask, a_mask) };
-        raw.into()
+        Self::from_raw(raw as EnumInt)
     }
 
     /// Converts to [`BppMask`], if able to do.
@@ -80,7 +80,7 @@ impl PixelFormatKind {
         } = bpp_mask;
         let ret = unsafe {
             bind::SDL_PixelFormatEnumToMasks(
-                self.clone().into(),
+                self.clone().as_raw(),
                 bpp as *mut _,
                 r_mask as *mut _,
                 g_mask as *mut _,
@@ -97,14 +97,12 @@ impl PixelFormatKind {
 
     /// Returns the name for the pixel format, or empty string if does not exist.
     pub fn name(&self) -> &'static str {
-        unsafe { CStr::from_ptr(bind::SDL_GetPixelFormatName(self.clone().into())) }
+        unsafe { CStr::from_ptr(bind::SDL_GetPixelFormatName(self.clone().as_raw())) }
             .to_str()
             .unwrap_or_default()
     }
-}
 
-impl From<bind::SDL_PixelFormatEnum> for PixelFormatKind {
-    fn from(raw: bind::SDL_PixelFormatEnum) -> Self {
+    pub(crate) fn from_raw(raw: EnumInt) -> Self {
         use PixelFormatKind::*;
         if (raw >> 28) & 0x0F != 1 {
             let bytes = ((raw >> 24) & 0xf).to_le_bytes();
@@ -161,6 +159,34 @@ impl From<bind::SDL_PixelFormatEnum> for PixelFormatKind {
             _ => Unknown,
         }
     }
+
+    pub(crate) fn as_raw(self) -> u32 {
+        (match self {
+            PixelFormatKind::Unknown => 0,
+            PixelFormatKind::Bitmap { ty, order } => calc_bits(
+                ty.as_raw(),
+                order.as_raw(),
+                0,
+                ty.bits_per_pixel(),
+                ty.bytes_per_pixel(),
+            ),
+            PixelFormatKind::Packed { ty, order, layout } => calc_bits(
+                ty.as_raw(),
+                order.as_raw(),
+                layout.as_raw(),
+                bits_per_packed_pixel(order, layout),
+                ty.bytes_per_pixel(),
+            ),
+            PixelFormatKind::Array { ty, order } => {
+                let bits = bytes_per_array_pixel(&ty, &order);
+                calc_bits(ty.as_raw(), order.as_raw(), 0, bits, bits / 8)
+            }
+            PixelFormatKind::FourCode(code) => {
+                let bytes: Vec<_> = code.bytes().map(|byte| byte as u32).collect();
+                bytes[0] | bytes[1] << 8 | bytes[2] << 16 | bytes[3] << 24
+            }
+        }) as u32
+    }
 }
 
 fn bits_per_packed_pixel(order: PackedPixelOrder, layout: PackedPixelLayout) -> u32 {
@@ -214,34 +240,4 @@ fn bytes_per_array_pixel(ty: &ArrayPixelType, order: &ArrayPixelOrder) -> u32 {
 
 fn calc_bits(ty: u32, order: u32, layout: u32, bits_per_pixel: u32, bytes_per_pixel: u32) -> u32 {
     1 << 28 | ty << 24 | order << 20 | layout << 16 | bits_per_pixel << 8 | bytes_per_pixel
-}
-
-impl From<PixelFormatKind> for bind::SDL_PixelFormatEnum {
-    fn from(kind: PixelFormatKind) -> Self {
-        match kind {
-            PixelFormatKind::Unknown => 0,
-            PixelFormatKind::Bitmap { ty, order } => calc_bits(
-                ty.as_raw(),
-                order.as_raw(),
-                0,
-                ty.bits_per_pixel(),
-                ty.bytes_per_pixel(),
-            ),
-            PixelFormatKind::Packed { ty, order, layout } => calc_bits(
-                ty.as_raw(),
-                order.as_raw(),
-                layout.as_raw(),
-                bits_per_packed_pixel(order, layout),
-                ty.bytes_per_pixel(),
-            ),
-            PixelFormatKind::Array { ty, order } => {
-                let bits = bytes_per_array_pixel(&ty, &order);
-                calc_bits(ty.as_raw(), order.as_raw(), 0, bits, bits / 8)
-            }
-            PixelFormatKind::FourCode(code) => {
-                let bytes: Vec<_> = code.bytes().map(|byte| byte as u32).collect();
-                bytes[0] | bytes[1] << 8 | bytes[2] << 16 | bytes[3] << 24
-            }
-        }
-    }
 }

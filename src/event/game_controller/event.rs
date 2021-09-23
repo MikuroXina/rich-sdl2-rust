@@ -6,6 +6,7 @@ use super::{axis::Axis, button::Button};
 use crate::{
     bind,
     event::joystick::{Joystick, JoystickId},
+    EnumInt,
 };
 
 /// An event occurs on inputted from a game controller or changed a game controller.
@@ -90,7 +91,7 @@ impl From<bind::SDL_ControllerDeviceEvent> for ControllerEvent<'_> {
             id: raw.which as u32,
             _phantom: PhantomData,
         };
-        match raw.type_ {
+        match raw.type_ as EnumInt {
             bind::SDL_CONTROLLERDEVICEADDED => Self::DeviceAdded {
                 timestamp: raw.timestamp,
                 joystick: Joystick::from_id(id).unwrap(),

@@ -13,10 +13,10 @@ pub enum BitmapPixelOrder {
 
 impl BitmapPixelOrder {
     pub(super) fn as_raw(&self) -> u32 {
-        match self {
+        (match self {
             BitmapPixelOrder::_4321 => bind::SDL_BITMAPORDER_4321,
             BitmapPixelOrder::_1234 => bind::SDL_BITMAPORDER_1234,
-        }
+        }) as u32
     }
 }
 
@@ -54,7 +54,7 @@ pub enum PackedPixelOrder {
 
 impl PackedPixelOrder {
     pub(super) fn as_raw(&self) -> u32 {
-        match self {
+        (match self {
             PackedPixelOrder::Xrgb => bind::SDL_PACKEDORDER_XRGB,
             PackedPixelOrder::Rgbx => bind::SDL_PACKEDORDER_RGBX,
             PackedPixelOrder::Argb => bind::SDL_PACKEDORDER_ARGB,
@@ -63,7 +63,7 @@ impl PackedPixelOrder {
             PackedPixelOrder::Bgrx => bind::SDL_PACKEDORDER_BGRX,
             PackedPixelOrder::Abgr => bind::SDL_PACKEDORDER_ABGR,
             PackedPixelOrder::Bgra => bind::SDL_PACKEDORDER_BGRA,
-        }
+        }) as u32
     }
 }
 
@@ -103,14 +103,14 @@ pub enum ArrayPixelOrder {
 
 impl ArrayPixelOrder {
     pub(super) fn as_raw(&self) -> u32 {
-        match self {
+        (match self {
             ArrayPixelOrder::Rgb => bind::SDL_ARRAYORDER_RGB,
             ArrayPixelOrder::Rgba => bind::SDL_ARRAYORDER_RGBA,
             ArrayPixelOrder::Argb => bind::SDL_ARRAYORDER_ARGB,
             ArrayPixelOrder::Bgr => bind::SDL_ARRAYORDER_BGR,
             ArrayPixelOrder::Bgra => bind::SDL_ARRAYORDER_BGRA,
             ArrayPixelOrder::Abgr => bind::SDL_ARRAYORDER_ABGR,
-        }
+        }) as u32
     }
 }
 

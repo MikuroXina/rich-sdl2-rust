@@ -2,7 +2,7 @@
 
 use std::marker::PhantomData;
 
-use crate::{bind, file::RwOps, Result, Sdl, SdlError};
+use crate::{bind, file::RwOps, EnumInt, Result, Sdl, SdlError};
 
 use super::TouchDevice;
 
@@ -91,8 +91,8 @@ impl From<bind::SDL_MultiGestureEvent> for GestureEvent {
 
 impl From<bind::SDL_DollarGestureEvent> for GestureEvent {
     fn from(raw: bind::SDL_DollarGestureEvent) -> Self {
-        if raw.type_ == bind::SDL_DOLLARGESTURE {
-            Self::Dollar {
+        match raw.type_ as EnumInt {
+            bind::SDL_DOLLARGESTURE => Self::Dollar {
                 timestamp: raw.timestamp,
                 touch: TouchDevice(raw.touchId, PhantomData),
                 gesture: Gesture(raw.gestureId),
@@ -100,14 +100,12 @@ impl From<bind::SDL_DollarGestureEvent> for GestureEvent {
                 error: raw.error,
                 x: raw.x,
                 y: raw.y,
-            }
-        } else if raw.type_ == bind::SDL_DOLLARRECORD {
-            Self::DollarRecord {
+            },
+            bind::SDL_DOLLARRECORD => Self::DollarRecord {
                 touch: TouchDevice(raw.touchId, PhantomData),
                 gesture: Gesture(raw.gestureId),
-            }
-        } else {
-            unreachable!()
+            },
+            _ => unreachable!(),
         }
     }
 }

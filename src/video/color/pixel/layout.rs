@@ -57,7 +57,7 @@ pub enum PackedPixelLayout {
 
 impl PackedPixelLayout {
     pub(super) fn as_raw(&self) -> u32 {
-        match self {
+        (match self {
             PackedPixelLayout::_332 => bind::SDL_PACKEDLAYOUT_332,
             PackedPixelLayout::_4444 => bind::SDL_PACKEDLAYOUT_4444,
             PackedPixelLayout::_1555 => bind::SDL_PACKEDLAYOUT_1555,
@@ -66,7 +66,7 @@ impl PackedPixelLayout {
             PackedPixelLayout::_8888 => bind::SDL_PACKEDLAYOUT_8888,
             PackedPixelLayout::_2101010 => bind::SDL_PACKEDLAYOUT_2101010,
             PackedPixelLayout::_1010102 => bind::SDL_PACKEDLAYOUT_1010102,
-        }
+        }) as u32
     }
 }
 

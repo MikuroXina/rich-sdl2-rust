@@ -5,7 +5,7 @@ use std::mem::MaybeUninit;
 
 use crate::color::pixel::kind::PixelFormatKind;
 use crate::geo::Size;
-use crate::{bind, Sdl};
+use crate::{bind, EnumInt, Sdl};
 
 use super::Renderer;
 
@@ -37,7 +37,7 @@ pub struct RendererInfo {
 
 impl From<bind::SDL_RendererInfo> for RendererInfo {
     fn from(info: bind::SDL_RendererInfo) -> Self {
-        let kind = if info.flags & bind::SDL_RENDERER_SOFTWARE != 0 {
+        let kind = if info.flags & bind::SDL_RENDERER_SOFTWARE as u32 != 0 {
             RendererKind::Software
         } else {
             RendererKind::Accelerated
@@ -46,7 +46,8 @@ impl From<bind::SDL_RendererInfo> for RendererInfo {
             .texture_formats
             .iter()
             .take(info.num_texture_formats as usize)
-            .map(|&format| format.into())
+            .map(|&raw| raw as EnumInt)
+            .map(PixelFormatKind::from_raw)
             .collect();
         Self {
             name: unsafe { CStr::from_ptr(info.name) }
@@ -54,8 +55,8 @@ impl From<bind::SDL_RendererInfo> for RendererInfo {
                 .unwrap_or_default()
                 .into(),
             kind,
-            is_v_sync: info.flags & bind::SDL_RENDERER_PRESENTVSYNC != 0,
-            supported_texture: info.flags & bind::SDL_RENDERER_TARGETTEXTURE != 0,
+            is_v_sync: info.flags & bind::SDL_RENDERER_PRESENTVSYNC as u32 != 0,
+            supported_texture: info.flags & bind::SDL_RENDERER_TARGETTEXTURE as u32 != 0,
             supported_formats,
             max_texture_size: Size {
                 width: info.max_texture_width as u32,

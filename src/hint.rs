@@ -5,7 +5,7 @@ use std::{
     os::raw::c_uint,
 };
 
-use crate::{bind, Result, SdlError};
+use crate::{bind, EnumInt, Result, SdlError};
 
 mod observer;
 
@@ -53,7 +53,7 @@ pub enum HintPriority {
 }
 
 impl HintPriority {
-    fn into_raw(self) -> c_uint {
+    fn into_raw(self) -> EnumInt {
         match self {
             HintPriority::Default => 0,
             HintPriority::Normal => 1,

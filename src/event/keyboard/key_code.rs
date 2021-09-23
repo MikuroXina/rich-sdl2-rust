@@ -4,7 +4,7 @@
 
 use std::ffi::{CStr, CString};
 
-use crate::bind;
+use crate::{bind, EnumInt};
 
 use super::scan_code::ScanCode;
 
@@ -523,7 +523,7 @@ impl From<ScanCode> for KeyCode {
 impl From<bind::SDL_Keycode> for KeyCode {
     fn from(code: bind::SDL_Keycode) -> Self {
         use KeyCode::*;
-        match code as u32 {
+        match code as EnumInt {
             bind::SDLK_RETURN => Return,
             bind::SDLK_ESCAPE => Escape,
             bind::SDLK_BACKSPACE => Backspace,
