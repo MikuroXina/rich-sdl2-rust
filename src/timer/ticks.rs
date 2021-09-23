@@ -1,6 +1,6 @@
 use std::ops;
 
-use crate::{Sdl, bind};
+use crate::{bind, Sdl};
 
 /// An elapsed time from when SDL2 has initialized. Please note that the value formed 32-bit, overflowing after about 49 days.
 #[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord)]
