@@ -2,8 +2,6 @@
 
 The sdl2 wrapper for Rust.
 
-Currently **Windows** platform is not supported.
-
 ## Concept
 
 It won't be the binding, but the wrapper library for SDL2.
