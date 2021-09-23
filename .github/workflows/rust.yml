@@ -55,14 +55,18 @@ jobs:
           toolchain: nightly
           components: rustfmt, clippy
           override: true
+          target: x86_64-pc-windows-msvc
 
-      - name: Build crate
-        shell: cmd
-        run: cargo build --verbose --target=x86_64-pc-windows-msvc
-
-      - name: Test crate
-        shell: cmd
-        run: cargo test --verbose --target=x86_64-pc-windows-msvc
+      - name: Run cargo build
+        uses: actions-rs/cargo@v1
+        with:
+          command: build
+          args: --verbose
+      - name: Run cargo test
+        uses: actions-rs/cargo@v1
+        with:
+          command: test
+          args: --verbose
 
   doc:
     runs-on: ubuntu-latest
