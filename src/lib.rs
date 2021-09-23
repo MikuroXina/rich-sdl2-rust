@@ -22,7 +22,6 @@
 //!   - `simd_allocator`: The wrapper of SIMD-friendly allocator.
 
 pub mod audio;
-mod bind;
 mod error;
 pub mod event;
 pub mod file;
@@ -39,6 +38,8 @@ pub use event::{app, EventBox};
 pub use sdl::*;
 pub use timer::*;
 pub use video::*;
+
+use rich_sdl2_sys::sys as bind;
 
 #[cfg(not(target_env = "msvc"))]
 type EnumInt = std::os::raw::c_uint;
