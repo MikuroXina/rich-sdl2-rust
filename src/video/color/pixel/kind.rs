@@ -178,7 +178,7 @@ impl PixelFormatKind {
                 ty.bytes_per_pixel(),
             ),
             PixelFormatKind::Array { ty, order } => {
-                let bits = bytes_per_array_pixel(&ty, &order);
+                let bits = bytes_per_array_pixel(ty, order);
                 calc_bits(ty.as_raw(), order.as_raw(), 0, bits, bits / 8)
             }
             PixelFormatKind::FourCode(code) => {
@@ -189,7 +189,7 @@ impl PixelFormatKind {
     }
 }
 
-fn bits_per_packed_pixel(order: PackedPixelOrder, layout: PackedPixelLayout) -> u32 {
+fn bits_per_packed_pixel(order: &PackedPixelOrder, layout: &PackedPixelLayout) -> u32 {
     match (order, layout) {
         (PackedPixelOrder::Xrgb, PackedPixelLayout::_332) => 8,
         (PackedPixelOrder::Xrgb, PackedPixelLayout::_4444) => 12,
