@@ -1,5 +1,5 @@
-use crate::bind;
 use crate::color::pixel::kind::PixelFormatKind;
+use crate::{bind, EnumInt};
 
 /// A mode of the display.
 #[derive(Debug, Clone)]
@@ -17,7 +17,7 @@ pub struct Mode {
 impl Mode {
     pub(super) fn new(mode: bind::SDL_DisplayMode) -> Self {
         Self {
-            pixel_format: mode.format.into(),
+            pixel_format: PixelFormatKind::from_raw(mode.format as EnumInt),
             width: mode.w as u32,
             height: mode.h as u32,
             refresh_rate: mode.refresh_rate as u32,

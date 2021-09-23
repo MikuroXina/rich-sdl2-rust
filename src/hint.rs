@@ -5,7 +5,7 @@ use std::{
     os::raw::c_uint,
 };
 
-use crate::{bind, Result, SdlError};
+use crate::{bind, EnumInt, Result, SdlError};
 
 mod observer;
 
@@ -26,7 +26,7 @@ pub fn get_hint(key: &str) -> Option<String> {
 pub fn get_hint_bool(key: &str) -> Option<bool> {
     let cstr = CString::new(key).expect("key must not be empty");
     let ret = unsafe { bind::SDL_GetHintBoolean(cstr.as_ptr(), 2) };
-    (ret != 2).then(|| ret == bind::SDL_bool_SDL_TRUE)
+    (ret != 2).then(|| ret == bind::SDL_TRUE)
 }
 
 /// Sets the hint value of the key, or `Err` if does not exist.
@@ -34,7 +34,7 @@ pub fn set_hint(key: &str, value: &str) -> Result<()> {
     let key_cstr = CString::new(key).expect("key must not be empty");
     let value_cstr = CString::new(value).expect("value must not be empty");
     let ret = unsafe { bind::SDL_SetHint(key_cstr.as_ptr(), value_cstr.as_ptr()) };
-    if ret == bind::SDL_bool_SDL_TRUE {
+    if ret == bind::SDL_TRUE {
         Ok(())
     } else {
         Err(SdlError::UnsupportedFeature)
@@ -53,7 +53,7 @@ pub enum HintPriority {
 }
 
 impl HintPriority {
-    fn into_raw(self) -> c_uint {
+    fn into_raw(self) -> EnumInt {
         match self {
             HintPriority::Default => 0,
             HintPriority::Normal => 1,
@@ -75,7 +75,7 @@ pub fn set_hint_with_priority(key: &str, value: &str, priority: HintPriority) ->
     let ret = unsafe {
         bind::SDL_SetHintWithPriority(key_cstr.as_ptr(), value_cstr.as_ptr(), priority.into_raw())
     };
-    if ret == bind::SDL_bool_SDL_TRUE {
+    if ret == bind::SDL_TRUE {
         Ok(())
     } else {
         Err(SdlError::UnsupportedFeature)

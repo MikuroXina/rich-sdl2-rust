@@ -2,7 +2,7 @@ use bitflags::bitflags;
 
 use crate::geo::{Point, Rect};
 use crate::texture::Texture;
-use crate::{bind, Sdl};
+use crate::{bind, EnumInt, Sdl};
 
 use super::Renderer;
 
@@ -10,9 +10,9 @@ bitflags! {
     /// Flip mode on pasting from another texture.
     pub struct PasteExFlip: u32 {
         /// Flips horizontal.
-        const HORIZONTAL = bind::SDL_RendererFlip_SDL_FLIP_HORIZONTAL;
+        const HORIZONTAL = bind::SDL_FLIP_HORIZONTAL as u32;
         /// Flips vertical.
-        const VERTICAL = bind::SDL_RendererFlip_SDL_FLIP_VERTICAL;
+        const VERTICAL = bind::SDL_FLIP_VERTICAL as u32;
         /// Flips both horizontal and vertical.
         const BOTH = Self::HORIZONTAL.bits | Self::VERTICAL.bits;
     }
@@ -82,7 +82,7 @@ impl PasteExt for Renderer<'_> {
                 target_area.map_or(std::ptr::null(), |rect| &rect.into() as *const _),
                 rotation_degrees,
                 center.map_or(std::ptr::null(), |p| &p.into() as *const _),
-                flip.bits,
+                flip.bits as EnumInt,
             )
         };
         if ret != 0 {

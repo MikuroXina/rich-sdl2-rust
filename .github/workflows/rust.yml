@@ -22,6 +22,7 @@ jobs:
           profile: minimal
           toolchain: nightly
           components: rustfmt, clippy
+          override: true
 
       - name: Clippy Check
         uses: actions-rs/clippy-check@v1
@@ -46,10 +47,9 @@ jobs:
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v2
-      - name: Setup path
-        shell: cmd
-        run: |
-          echo "C:\msys64\mingw64\bin" >> $GITHUB_PATH
+      - uses: KyleMayes/install-llvm-action@v1
+        with:
+          version: "10.0"
 
       - name: Nightly with rustfmt and clippy
         uses: actions-rs/toolchain@v1
@@ -57,12 +57,24 @@ jobs:
           profile: minimal
           toolchain: nightly
           components: rustfmt, clippy
+          override: true
+          target: x86_64-pc-windows-msvc
 
-      - name: Test crate on Windows
-        shell: cmd
-        run: |
-          set PATH=C:\msys64\mingw64\bin;%PATH%
-          cargo test --verbose
+      - name: Run cargo build
+        uses: actions-rs/cargo@v1
+        with:
+          command: build
+          args: --verbose
+        env:
+          LIBCLANG_PATH: C:\Program Files\LLVM\lib
+
+      - name: Run cargo test
+        uses: actions-rs/cargo@v1
+        with:
+          command: test
+          args: --verbose
+        env:
+          LIBCLANG_PATH: C:\Program Files\LLVM\lib
 
   doc:
     runs-on: ubuntu-latest

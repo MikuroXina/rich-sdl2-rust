@@ -22,7 +22,7 @@ assert_not_impl_all!(RelativeMouse: Send, Sync);
 impl<'video> RelativeMouse<'video> {
     /// Starts the relative mouse mode, but returns `Err(UnsupportedFeature)` if this is not supported.
     pub fn new(_: &'video Video) -> Result<Self, SdlError> {
-        let ret = unsafe { bind::SDL_SetRelativeMouseMode(bind::SDL_bool_SDL_TRUE) };
+        let ret = unsafe { bind::SDL_SetRelativeMouseMode(bind::SDL_TRUE) };
         if ret == -1 {
             return Err(SdlError::UnsupportedFeature);
         }
@@ -33,7 +33,7 @@ impl<'video> RelativeMouse<'video> {
 impl Drop for RelativeMouse<'_> {
     fn drop(&mut self) {
         unsafe {
-            let _ = bind::SDL_SetRelativeMouseMode(bind::SDL_bool_SDL_FALSE);
+            let _ = bind::SDL_SetRelativeMouseMode(bind::SDL_FALSE);
         }
     }
 }

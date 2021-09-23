@@ -41,18 +41,18 @@ impl SystemCursorKind {
     pub(crate) fn as_raw(&self) -> bind::SDL_SystemCursor {
         use SystemCursorKind::*;
         match self {
-            Arrow => bind::SDL_SystemCursor_SDL_SYSTEM_CURSOR_ARROW,
-            IBeam => bind::SDL_SystemCursor_SDL_SYSTEM_CURSOR_IBEAM,
-            Wait => bind::SDL_SystemCursor_SDL_SYSTEM_CURSOR_WAIT,
-            Crosshair => bind::SDL_SystemCursor_SDL_SYSTEM_CURSOR_CROSSHAIR,
-            WaitArrow => bind::SDL_SystemCursor_SDL_SYSTEM_CURSOR_WAITARROW,
-            SizeNwse => bind::SDL_SystemCursor_SDL_SYSTEM_CURSOR_SIZENWSE,
-            SizeNesw => bind::SDL_SystemCursor_SDL_SYSTEM_CURSOR_SIZENESW,
-            SizeWe => bind::SDL_SystemCursor_SDL_SYSTEM_CURSOR_SIZEWE,
-            SizeNs => bind::SDL_SystemCursor_SDL_SYSTEM_CURSOR_SIZENS,
-            SizeAll => bind::SDL_SystemCursor_SDL_SYSTEM_CURSOR_SIZEALL,
-            No => bind::SDL_SystemCursor_SDL_SYSTEM_CURSOR_NO,
-            Hand => bind::SDL_SystemCursor_SDL_SYSTEM_CURSOR_HAND,
+            Arrow => bind::SDL_SYSTEM_CURSOR_ARROW,
+            IBeam => bind::SDL_SYSTEM_CURSOR_IBEAM,
+            Wait => bind::SDL_SYSTEM_CURSOR_WAIT,
+            Crosshair => bind::SDL_SYSTEM_CURSOR_CROSSHAIR,
+            WaitArrow => bind::SDL_SYSTEM_CURSOR_WAITARROW,
+            SizeNwse => bind::SDL_SYSTEM_CURSOR_SIZENWSE,
+            SizeNesw => bind::SDL_SYSTEM_CURSOR_SIZENESW,
+            SizeWe => bind::SDL_SYSTEM_CURSOR_SIZEWE,
+            SizeNs => bind::SDL_SYSTEM_CURSOR_SIZENS,
+            SizeAll => bind::SDL_SYSTEM_CURSOR_SIZEALL,
+            No => bind::SDL_SYSTEM_CURSOR_NO,
+            Hand => bind::SDL_SYSTEM_CURSOR_HAND,
         }
     }
 }

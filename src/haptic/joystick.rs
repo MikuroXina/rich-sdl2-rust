@@ -25,7 +25,7 @@ impl<'joystick> JoystickHaptic<'joystick> {
     pub fn new(joystick: impl AsRef<Joystick> + 'joystick) -> Option<Self> {
         let is_supported = unsafe {
             bind::SDL_JoystickIsHaptic(joystick.as_ref().ptr().as_ptr()) as bind::SDL_bool
-                == bind::SDL_bool_SDL_TRUE
+                == bind::SDL_TRUE
         };
         if !is_supported {
             return None;
