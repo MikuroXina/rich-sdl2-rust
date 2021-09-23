@@ -8,7 +8,8 @@ use std::{
 fn main() {
     const SDL2_INSTALL_DIR: &str = "SDL2-2.0.16";
 
-    let root = PathBuf::from(env::var("OUT_DIR").expect("OUT_DIR not found"));
+    let root_dir = env::var("OUT_DIR").expect("OUT_DIR not found");
+    let root = PathBuf::from(&root_dir);
 
     #[cfg(unix)]
     {
