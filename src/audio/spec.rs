@@ -55,7 +55,10 @@ impl<'callback> AudioSpec<'callback> {
                 samples: builder.samples,
                 padding: 0,
                 size: 0,
-                callback: builder.callback.as_ref().map(|_| audio_spec_wrap_handler),
+                callback: builder
+                    .callback
+                    .as_ref()
+                    .map(|_| audio_spec_wrap_handler as _),
                 userdata: builder.callback.map_or(std::ptr::null_mut(), |callback| {
                     Box::into_raw(Box::new(callback)).cast()
                 }),
@@ -80,9 +83,12 @@ impl Drop for AudioSpec<'_> {
     }
 }
 
-extern "C" fn audio_spec_wrap_handler(userdata: *mut c_void, stream: *mut u8, len: c_int) {
-    let func = unsafe { &mut *(userdata as *mut Box<dyn AudioCallback>) };
-    let slice = unsafe { std::slice::from_raw_parts_mut(stream, len as usize) };
+unsafe extern "C" fn audio_spec_wrap_handler(userdata: *mut c_void, stream: *mut u8, len: c_int) {
+    if userdata.is_null() {
+        return;
+    }
+    let func = &mut *(userdata as *mut Box<dyn AudioCallback>);
+    let slice = std::slice::from_raw_parts_mut(stream, len as usize);
     slice.fill(0);
     func(slice);
 }
