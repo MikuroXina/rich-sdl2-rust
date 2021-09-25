@@ -15,6 +15,7 @@ pub mod bmp;
 pub mod clipped;
 pub mod cloned;
 pub mod color;
+pub mod owned;
 pub mod rle;
 pub mod window;
 
