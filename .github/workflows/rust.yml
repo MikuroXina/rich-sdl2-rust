@@ -47,11 +47,6 @@ jobs:
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v2
-      - uses: KyleMayes/install-llvm-action@v1
-        with:
-          version: "12.0"
-          directory: ${{ runner.temp }}\llvm
-
       - name: Nightly with rustfmt and clippy
         uses: actions-rs/toolchain@v1
         with:
@@ -67,7 +62,7 @@ jobs:
           command: build
           args: --verbose
         env:
-          LIBCLANG_PATH: ${{ runner.temp }}\llvm
+          LIBCLANG_PATH: C:\Program Files\LLVM\lib
 
       - name: Run cargo test
         uses: actions-rs/cargo@v1
@@ -75,7 +70,7 @@ jobs:
           command: test
           args: --verbose
         env:
-          LIBCLANG_PATH: ${{ runner.temp }}\llvm
+          LIBCLANG_PATH: C:\Program Files\LLVM\lib
 
   doc:
     runs-on: ubuntu-latest
