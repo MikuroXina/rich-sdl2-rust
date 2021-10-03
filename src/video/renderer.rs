@@ -82,9 +82,7 @@ impl Renderer<'_> {
         let ret = unsafe {
             bind::SDL_GetRendererOutputSize(self.as_ptr(), &mut w as *mut _, &mut h as *mut _)
         };
-        if ret != 0 {
-            panic!("Getting output size failed");
-        }
+        assert!(ret == 0, "Getting output size failed");
         Size {
             width: w as u32,
             height: h as u32,
