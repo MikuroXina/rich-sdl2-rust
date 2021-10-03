@@ -92,9 +92,7 @@ fn download_sdl2(link: impl IntoUrl + Clone, file_name: impl AsRef<Path>) -> fs:
             break result;
         }
         retry -= 1;
-        if retry == 0 {
-            panic!("invalid link url: {:?}", link.as_str());
-        }
+        assert!(retry != 0, "invalid link url: {:?}", link.as_str());
     };
 
     io::copy(&mut got, &mut tmp_file).expect("failed to write to temporary file");
