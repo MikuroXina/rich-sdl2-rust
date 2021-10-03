@@ -24,13 +24,10 @@ jobs:
           components: rustfmt, clippy
           override: true
 
+      - name: Build crate
+        run: cargo build --verbose
       - name: Clippy Check
-        uses: actions-rs/clippy-check@v1
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          toolchain: nightly
-          args: --all-features
-
+        run: cargo clippy --verbose
       - name: Build crate
         run: cargo build --verbose
       - name: Test crate
