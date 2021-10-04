@@ -23,3 +23,19 @@ jobs:
       - uses: katyo/publish-crates@v1
         with:
           registry-token: ${{ secrets.CARGO_REGISTRY_TOKEN }}
+
+  doc:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: dawidd6/action-download-artifact@v2
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          workflow: rust.yml
+          name: doc-artifact
+
+      - name: Deploy docs
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: .

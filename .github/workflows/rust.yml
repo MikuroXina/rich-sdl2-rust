@@ -66,20 +66,3 @@ jobs:
           args: --verbose
         env:
           LIBCLANG_PATH: C:\Program Files\LLVM\lib
-
-  doc:
-    runs-on: ubuntu-latest
-    needs: build-linux
-    if: github.event_name == 'push' || github.event.pull_request.merged == true
-
-    steps:
-      - uses: actions/checkout@v2
-      - uses: actions/download-artifact@v2
-        with:
-          name: doc-artifact
-
-      - name: Deploy docs
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: .
