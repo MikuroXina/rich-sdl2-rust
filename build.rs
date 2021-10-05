@@ -1,3 +1,6 @@
+#![allow(dead_code)]
+
+use git2::Repository;
 use reqwest::IntoUrl;
 use std::{
     env, fs,
@@ -16,9 +19,10 @@ fn main() {
         use std::process::Command;
 
         if fs::metadata(root.join(SDL2_INSTALL_DIR).join("build").join(".libs")).is_err() {
-            const LINK: &str = "https://libsdl.org/release/SDL2-2.0.16.zip";
-            let tmp_file = download_sdl2(LINK, "SDL2-2.0.16.zip");
-            extract_zip(tmp_file, &root);
+            let _ = Repository::clone(
+                "https://github.com/libsdl-org/SDL",
+                root.join(SDL2_INSTALL_DIR),
+            );
 
             let _ = Command::new("./configure")
                 .current_dir(root.join(SDL2_INSTALL_DIR))
