@@ -189,8 +189,6 @@
 <span id="189">189</span>
 <span id="190">190</span>
 <span id="191">191</span>
-<span id="192">192</span>
-<span id="193">193</span>
 </pre><pre class="rust"><code><span class="doccomment">//! Renderer for a window, to render some geometries or query driver information.</span>
 
 <span class="kw">use</span> <span class="ident">static_assertions::assert_not_impl_all</span>;
@@ -254,9 +252,7 @@
         <span class="kw">let</span> <span class="ident">ret</span> <span class="op">=</span> <span class="kw">unsafe</span> {
             <span class="ident">bind::SDL_GetRendererOutputSize</span>(<span class="self">self</span>.<span class="ident">as_ptr</span>(), <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">w</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="kw">_</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">h</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="kw">_</span>)
         };
-        <span class="kw">if</span> <span class="ident">ret</span> <span class="op">!</span><span class="op">=</span> <span class="number">0</span> {
-            <span class="macro">panic!</span>(<span class="string">&quot;Getting output size failed&quot;</span>);
-        }
+        <span class="macro">assert!</span>(<span class="ident">ret</span> <span class="op">=</span><span class="op">=</span> <span class="number">0</span>, <span class="string">&quot;Getting output size failed&quot;</span>);
         <span class="ident">Size</span> {
             <span class="ident">width</span>: <span class="ident">w</span> <span class="kw">as</span> <span class="ident">u32</span>,
             <span class="ident">height</span>: <span class="ident">h</span> <span class="kw">as</span> <span class="ident">u32</span>,

@@ -1,3 +1,6 @@
+#![allow(dead_code)]
+
+use git2::Repository;
 use reqwest::IntoUrl;
 use std::{
     env, fs,
@@ -16,9 +19,10 @@ fn main() {
         use std::process::Command;
 
         if fs::metadata(root.join(SDL2_INSTALL_DIR).join("build").join(".libs")).is_err() {
-            const LINK: &str = "https://libsdl.org/release/SDL2-2.0.16.zip";
-            let tmp_file = download_sdl2(LINK, "SDL2-2.0.16.zip");
-            extract_zip(tmp_file, &root);
+            let _ = Repository::clone(
+                "https://github.com/libsdl-org/SDL",
+                root.join(SDL2_INSTALL_DIR),
+            );
 
             let _ = Command::new("./configure")
                 .current_dir(root.join(SDL2_INSTALL_DIR))
@@ -76,7 +80,7 @@ fn main() {
         .expect("writing `bind.rs` failed");
 }
 
-fn download_sdl2(link: impl IntoUrl, file_name: impl AsRef<Path>) -> fs::File {
+fn download_sdl2(link: impl IntoUrl + Clone, file_name: impl AsRef<Path>) -> fs::File {
     let tmp_dir = env::temp_dir();
     let mut tmp_file = fs::OpenOptions::new()
         .read(true)
@@ -84,7 +88,17 @@ fn download_sdl2(link: impl IntoUrl, file_name: impl AsRef<Path>) -> fs::File {
         .create(true)
         .open(tmp_dir.join(file_name))
         .expect("Failed to create temporary file");
-    let mut got = reqwest::blocking::get(link).expect("LINK url is invalid");
+
+    let mut retry = 3;
+    let mut got = loop {
+        let result = reqwest::blocking::get(link.clone());
+        if let Ok(result) = result {
+            break result;
+        }
+        retry -= 1;
+        assert!(retry != 0, "invalid link url: {:?}", link.as_str());
+    };
+
     io::copy(&mut got, &mut tmp_file).expect("failed to write to temporary file");
     tmp_file.seek(SeekFrom::Start(0)).expect("failed to seek");
     tmp_file
