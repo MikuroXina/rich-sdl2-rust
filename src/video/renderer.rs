@@ -23,7 +23,7 @@ pub use paste::*;
 /// A SDL2 renderer. This is often used for rendering with [`pen::Pen`].
 pub struct Renderer<'window> {
     renderer: NonNull<bind::SDL_Renderer>,
-    window: Window<'window>,
+    window: &'window Window<'window>,
 }
 
 impl std::fmt::Debug for Renderer<'_> {
@@ -36,15 +36,9 @@ impl std::fmt::Debug for Renderer<'_> {
 
 assert_not_impl_all!(Renderer: Send, Sync);
 
-impl<'window> From<Window<'window>> for Renderer<'window> {
-    fn from(window: Window<'window>) -> Self {
-        Renderer::new(window)
-    }
-}
-
 impl<'window> Renderer<'window> {
     /// Constructs a renderer from the window.
-    pub fn new(window: Window<'window>) -> Self {
+    pub fn new(window: &'window Window) -> Self {
         let raw = unsafe { bind::SDL_CreateRenderer(window.as_ptr(), -1, 0) };
         NonNull::new(raw).map_or_else(
             || Sdl::error_then_panic("Sdl renderer"),
@@ -52,28 +46,13 @@ impl<'window> Renderer<'window> {
         )
     }
 
-    /// Clips the renderer by `area`.
-    pub fn clip(&'window mut self, area: Rect) -> ClippedRenderer<'window> {
-        ClippedRenderer::new(self, area)
-    }
-
-    /// Sets the render target to the texture.
-    pub fn set_target<'texture: 'window>(&'window self, texture: &'texture Texture) {
-        let ret = unsafe { bind::SDL_SetRenderTarget(self.as_ptr(), texture.as_ptr()) };
-        if ret != 0 {
-            Sdl::error_then_panic("Setting renderer target texture");
-        }
-    }
-}
-
-impl Renderer<'_> {
     pub(crate) fn as_ptr(&self) -> *mut bind::SDL_Renderer {
         self.renderer.as_ptr()
     }
 
-    /// Returns the reference of [`Window`].
+    /// Returns the borrowing window.
     pub fn window(&self) -> &Window {
-        &self.window
+        self.window
     }
 
     /// Returns the geometry size of the output from the renderer.
@@ -87,6 +66,11 @@ impl Renderer<'_> {
             width: w as u32,
             height: h as u32,
         }
+    }
+
+    /// Clips the renderer by `area`.
+    pub fn clip(&'window mut self, area: Rect) -> ClippedRenderer<'window> {
+        ClippedRenderer::new(self, area)
     }
 
     /// Returns the logical size of the renderer if available.
@@ -180,6 +164,14 @@ impl Renderer<'_> {
         };
         if ret != 0 {
             Sdl::error_then_panic("Setting renderer viewport");
+        }
+    }
+
+    /// Sets the render target to the texture.
+    pub fn set_target<'texture: 'window>(&'window self, texture: &'texture Texture) {
+        let ret = unsafe { bind::SDL_SetRenderTarget(self.as_ptr(), texture.as_ptr()) };
+        if ret != 0 {
+            Sdl::error_then_panic("Setting renderer target texture");
         }
     }
 
