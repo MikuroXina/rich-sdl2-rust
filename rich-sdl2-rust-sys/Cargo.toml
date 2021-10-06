@@ -1,0 +1,20 @@
+[package]
+name = "rich-sdl2-rust-sys"
+version = "0.1.0"
+edition = "2018"
+description = "The sdl2 binding for Rust."
+repository = "https://github.com/MikuroXina/rich-sdl2-rust"
+license = "Apache-2.0"
+keywords = ["sdl2", "binding"]
+categories = ["graphics", "gui", "multimedia", "rendering"]
+
+[dependencies]
+
+
+[build-dependencies]
+bindgen = "0.59.1"
+flate2 = "1.0.22"
+git2 = "0.13.23"
+reqwest = {version = "0.11.4", features = ["blocking"]}
+tar = "0.4.37"
+zip = "0.5.13"

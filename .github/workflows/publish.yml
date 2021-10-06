@@ -22,6 +22,10 @@ jobs:
           override: true
       - uses: katyo/publish-crates@v1
         with:
+          path: ./rich-sdl2-rust-sys
+          registry-token: ${{ secrets.CARGO_REGISTRY_TOKEN }}
+      - uses: katyo/publish-crates@v1
+        with:
           registry-token: ${{ secrets.CARGO_REGISTRY_TOKEN }}
 
   doc:
