@@ -1,6 +1,6 @@
 [package]
 name = "rich-sdl2-rust"
-version = "0.7.2"
+version = "0.7.3"
 authors = ["MikuroXina <ryosukadnak@gmail.com>"]
 edition = "2018"
 description = "The sdl2 wrapper for Rust."
