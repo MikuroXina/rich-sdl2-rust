@@ -45,7 +45,6 @@
 <span id="45">45</span>
 <span id="46">46</span>
 <span id="47">47</span>
-<span id="48">48</span>
 </pre><pre class="rust"><code><span class="attribute">#![<span class="ident">allow</span>(<span class="ident">unused</span>)]</span>
 <span class="attribute">#![<span class="ident">warn</span>(<span class="ident">missing_docs</span>)]</span>
 <span class="attribute">#![<span class="ident">warn</span>(<span class="ident">rustdoc::broken_intra_doc_links</span>)]</span>
@@ -70,9 +69,6 @@
 <span class="doccomment">//!   - `simd_allocator`: The wrapper of SIMD-friendly allocator.</span>
 
 <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">audio</span>;
-<span class="doccomment">/// Rust FFI to `SDL2/SDL.h`</span>
-<span class="attribute">#[<span class="ident">allow</span>(<span class="ident">warnings</span>)]</span>
-<span class="kw">mod</span> <span class="ident">bind</span>;
 <span class="kw">mod</span> <span class="ident">error</span>;
 <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">event</span>;
 <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">file</span>;
@@ -83,6 +79,8 @@
 <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">system</span>;
 <span class="kw">mod</span> <span class="ident">timer</span>;
 <span class="kw">mod</span> <span class="ident">video</span>;
+
+<span class="kw">use</span> <span class="ident">rich_sdl2_rust_sys</span> <span class="kw">as</span> <span class="ident">bind</span>;
 
 <span class="kw">pub</span> <span class="kw">use</span> <span class="ident">error</span>::<span class="kw-2">*</span>;
 <span class="kw">pub</span> <span class="kw">use</span> <span class="ident">event</span>::{<span class="ident">app</span>, <span class="ident">EventBox</span>};
