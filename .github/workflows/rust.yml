@@ -9,13 +9,26 @@ on:
 env:
   CARGO_TERM_COLOR: always
   RUST_BACKTRACE: 1
+  BUILD_DIR: "${{ github.workspace }}/build/"
 
 jobs:
   build-linux:
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [macos-latest, ubuntu-latest, windows-latest]
 
     steps:
       - uses: actions/checkout@v2
+      - uses: lukka/get-cmake@latest
+      - name: Setup vcpkg
+        uses: lukka/run-vcpkg@v7
+        with:
+          setupOnly: true
+          vcpkgDirectory: "${{ github.workspace }}/vcpkg"
+          appendedCacheKey: ${{ hashFiles( '**/vcpkg_manifest/vcpkg.json' ) }}
+          additionalCachedPaths: ${{ env.BUILD_DIR }}/vcpkg_installed
+
       - name: Nightly with rustfmt and clippy
         uses: actions-rs/toolchain@v1
         with:
@@ -23,6 +36,12 @@ jobs:
           toolchain: nightly
           components: rustfmt, clippy
           override: true
+
+      - name: Install cargo-vcpkg
+        run: cargo install cargo-vcpkg
+      - name: Install dependencies
+        run: cargo vcpkg -v build
+        working-directory: ./rich-sdl2-rust-sys
 
       - name: Build crate
         run: cargo build --verbose
@@ -31,38 +50,11 @@ jobs:
       - name: Test crate
         run: cargo test --verbose
       - name: Create docs
+        if: matrix.os == ubuntu-latest
         run: cargo +nightly doc --all-features --no-deps
 
       - uses: actions/upload-artifact@v2
+        if: matrix.os == ubuntu-latest
         with:
           name: doc-artifact
           path: target/doc/
-
-  build-windows:
-    runs-on: windows-latest
-    steps:
-      - uses: actions/checkout@v2
-      - name: Nightly with rustfmt and clippy
-        uses: actions-rs/toolchain@v1
-        with:
-          profile: minimal
-          toolchain: nightly
-          components: rustfmt, clippy
-          override: true
-          target: x86_64-pc-windows-msvc
-
-      - name: Run cargo build
-        uses: actions-rs/cargo@v1
-        with:
-          command: build
-          args: --verbose
-        env:
-          LIBCLANG_PATH: C:\Program Files\LLVM\lib
-
-      - name: Run cargo test
-        uses: actions-rs/cargo@v1
-        with:
-          command: test
-          args: --verbose
-        env:
-          LIBCLANG_PATH: C:\Program Files\LLVM\lib
