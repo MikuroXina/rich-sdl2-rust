@@ -28,6 +28,7 @@ jobs:
           vcpkgDirectory: "${{ github.workspace }}/vcpkg"
           appendedCacheKey: ${{ hashFiles( '**/vcpkg_manifest/vcpkg.json' ) }}
           additionalCachedPaths: ${{ env.BUILD_DIR }}/vcpkg_installed
+          vcpkgGitCommitId: 5568f110b509a9fd90711978a7cb76bae75bb092
 
       - name: Nightly with rustfmt and clippy
         uses: actions-rs/toolchain@v1
