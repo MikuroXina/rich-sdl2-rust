@@ -12,7 +12,7 @@ env:
   BUILD_DIR: "${{ github.workspace }}/build/"
 
 jobs:
-  build-linux:
+  build:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
