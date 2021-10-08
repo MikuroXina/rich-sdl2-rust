@@ -9,7 +9,7 @@ fn main() {
     let includes: Vec<_> = sdl2
         .include_paths
         .into_iter()
-        .map(|path| format!("-I{:?}", path))
+        .map(|path| format!("-I{}", path.to_string_lossy()))
         .collect();
 
     println!("cargo:rerun-if-changed=wrapper.h");
