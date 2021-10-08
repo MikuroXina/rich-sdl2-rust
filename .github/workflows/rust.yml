@@ -44,7 +44,7 @@ jobs:
 
       - name: Add LLVM PATH
         if: matrix.os == 'windows-latest'
-        run: set LIBCLANG_PATH=C:\Program Files\LLVM\lib
+        run: echo "LIBCLANG_PATH=$((gcm clang).source -replace "clang.exe")" >> $env:GITHUB_ENV
 
       - name: Install cargo-vcpkg
         run: cargo install cargo-vcpkg
