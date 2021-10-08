@@ -42,6 +42,10 @@ jobs:
           components: rustfmt, clippy
           override: true
 
+      - name: Add LLVM PATH
+        if: matrix.os == 'windows-latest'
+        run: set LIBCLANG_PATH=C:\Program Files\LLVM\lib
+
       - name: Install cargo-vcpkg
         run: cargo install cargo-vcpkg
       - name: Install dependencies
