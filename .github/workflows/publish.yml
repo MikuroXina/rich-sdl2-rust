@@ -8,6 +8,7 @@ on:
 env:
   CARGO_TERM_COLOR: always
   RUST_BACKTRACE: 1
+  BUILD_DIR: "${{ github.workspace }}/build/"
 
 jobs:
   publish:
@@ -15,6 +16,18 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
+
+      - uses: lukka/get-cmake@latest
+      - name: Setup vcpkg
+        uses: lukka/run-vcpkg@v7
+        with:
+          setupOnly: true
+          vcpkgDirectory: "${{ github.workspace }}/vcpkg"
+          appendedCacheKey: ${{ hashFiles( '**/vcpkg_manifest/vcpkg.json' ) }}
+          additionalCachedPaths: ${{ env.BUILD_DIR }}/vcpkg_installed
+          vcpkgTriplet: ${{ matrix.triplet }}
+          vcpkgGitCommitId: 5568f110b509a9fd90711978a7cb76bae75bb092
+
       - uses: actions-rs/toolchain@v1
         with:
           profile: minimal
