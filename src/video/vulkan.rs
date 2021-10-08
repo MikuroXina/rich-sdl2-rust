@@ -89,7 +89,7 @@ pub struct VkSurface<'vk> {
 
 impl std::fmt::Debug for VkSurface<'_> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        f.debug_struct("VkSurface").finish()
+        f.debug_struct("VkSurface").finish_non_exhaustive()
     }
 }
 

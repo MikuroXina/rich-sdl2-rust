@@ -74,7 +74,7 @@ impl std::fmt::Debug for GlAttribute<'_> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         f.debug_struct("GlAttribute")
             .field("attr", &self.attr)
-            .finish()
+            .finish_non_exhaustive()
     }
 }
 

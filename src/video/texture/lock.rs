@@ -20,7 +20,7 @@ impl std::fmt::Debug for Lock<'_> {
         f.debug_struct("Lock")
             .field("texture", &self.texture)
             .field("len", &self.len)
-            .finish()
+            .finish_non_exhaustive()
     }
 }
 

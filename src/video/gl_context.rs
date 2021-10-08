@@ -28,7 +28,7 @@ impl std::fmt::Debug for GlContext<'_> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         f.debug_struct("GlContext")
             .field("window", &self.window)
-            .finish()
+            .finish_non_exhaustive()
     }
 }
 

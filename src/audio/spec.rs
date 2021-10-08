@@ -39,7 +39,7 @@ pub struct AudioSpec<'callback> {
 
 impl std::fmt::Debug for AudioSpec<'_> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        f.debug_struct("AudioSpec").finish()
+        f.debug_struct("AudioSpec").finish_non_exhaustive()
     }
 }
 

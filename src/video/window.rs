@@ -35,7 +35,9 @@ pub struct Window<'video> {
 
 impl std::fmt::Debug for Window<'_> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        f.debug_struct("Window").field("id", &self.id()).finish()
+        f.debug_struct("Window")
+            .field("id", &self.id())
+            .finish_non_exhaustive()
     }
 }
 
