@@ -8,13 +8,14 @@ license = "Apache-2.0"
 keywords = ["sdl2", "binding"]
 categories = ["graphics", "gui", "multimedia", "rendering"]
 
-[dependencies]
+[package.metadata.vcpkg]
+dependencies = ["sdl2"]
+git = "https://github.com/microsoft/vcpkg"
+rev = "5568f110b509a9fd90711978a7cb76bae75bb092"
 
+[package.metadata.vcpkg.target]
+x86_64-pc-windows-msvc = { triplet = "x64-windows-static-md" }
 
 [build-dependencies]
 bindgen = "0.59.1"
-flate2 = "1.0.22"
-git2 = "0.13.23"
-reqwest = {version = "0.11.4", features = ["blocking"]}
-tar = "0.4.37"
-zip = "0.5.13"
+vcpkg = "0.2.15"
