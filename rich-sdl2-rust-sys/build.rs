@@ -9,7 +9,7 @@ fn main() {
     let includes: Vec<_> = sdl2
         .include_paths
         .into_iter()
-        .map(|path| format!("-I{}", path.to_string_lossy()))
+        .map(|path| format!("-I{}", path.display()))
         .collect();
 
     let target = env::var("TARGET").expect("Cargo build scripts always have TARGET");
