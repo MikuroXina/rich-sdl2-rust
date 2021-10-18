@@ -15,7 +15,7 @@ pub struct Bmp {
 
 impl std::fmt::Debug for Bmp {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        f.debug_struct("Bmp").finish()
+        f.debug_struct("Bmp").finish_non_exhaustive()
     }
 }
 

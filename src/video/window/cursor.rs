@@ -65,7 +65,7 @@ pub struct Cursor<'window> {
 
 impl std::fmt::Debug for Cursor<'_> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        f.debug_struct("Cursor").finish()
+        f.debug_struct("Cursor").finish_non_exhaustive()
     }
 }
 

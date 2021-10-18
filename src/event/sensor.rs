@@ -24,7 +24,7 @@ impl std::fmt::Debug for Sensor {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         f.debug_struct("Sensor")
             .field("name", &self.name())
-            .finish()
+            .finish_non_exhaustive()
     }
 }
 
