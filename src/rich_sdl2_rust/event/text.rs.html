@@ -112,7 +112,7 @@
 }
 
 <span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">bind::SDL_TextInputEvent</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">TextInputEvent</span> {
-    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">raw</span>: <span class="ident">bind::SDL_TextInputEvent</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">raw</span>: <span class="ident">bind::SDL_TextInputEvent</span>) -&gt; <span class="self">Self</span> {
         <span class="self">Self</span> {
             <span class="ident">timestamp</span>: <span class="ident">raw</span>.<span class="ident">timestamp</span>,
             <span class="ident">window_id</span>: <span class="ident">raw</span>.<span class="ident">windowID</span>,
@@ -139,7 +139,7 @@
 }
 
 <span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">bind::SDL_TextEditingEvent</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">TextEditingEvent</span> {
-    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">raw</span>: <span class="ident">bind::SDL_TextEditingEvent</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">raw</span>: <span class="ident">bind::SDL_TextEditingEvent</span>) -&gt; <span class="self">Self</span> {
         <span class="self">Self</span> {
             <span class="ident">timestamp</span>: <span class="ident">raw</span>.<span class="ident">timestamp</span>,
             <span class="ident">window_id</span>: <span class="ident">raw</span>.<span class="ident">windowID</span>,
@@ -158,7 +158,7 @@
 }
 
 <span class="kw">impl</span> <span class="ident">std::fmt::Debug</span> <span class="kw">for</span> <span class="ident">TextInput</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">std::fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">std::fmt::Result</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">std::fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">std::fmt::Result</span> {
         <span class="ident">f</span>.<span class="ident">debug_struct</span>(<span class="string">&quot;TextInput&quot;</span>).<span class="ident">finish</span>()
     }
 }
@@ -167,7 +167,7 @@
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;video</span><span class="op">&gt;</span> <span class="ident">TextInput</span><span class="op">&lt;</span><span class="lifetime">&#39;video</span><span class="op">&gt;</span> {
     <span class="doccomment">/// Starts to input the text on area `input_rect`.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="kw">_</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;video</span> <span class="ident">Video</span>, <span class="ident">input_rect</span>: <span class="ident">Rect</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="kw">_</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;video</span> <span class="ident">Video</span>, <span class="ident">input_rect</span>: <span class="ident">Rect</span>) -&gt; <span class="self">Self</span> {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">raw_rect</span> <span class="op">=</span> <span class="ident">input_rect</span>.<span class="ident">into</span>();
         <span class="kw">unsafe</span> {
             <span class="ident">bind::SDL_SetTextInputRect</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">raw_rect</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="kw">_</span>);

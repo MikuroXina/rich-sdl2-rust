@@ -56,7 +56,7 @@
 }
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;joystick</span><span class="op">&gt;</span> <span class="ident">Axis</span><span class="op">&lt;</span><span class="lifetime">&#39;joystick</span><span class="op">&gt;</span> {
-    <span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">index</span>: <span class="ident">InputIndex</span>, <span class="ident">joystick</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;joystick</span> <span class="ident">Joystick</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">index</span>: <span class="ident">InputIndex</span>, <span class="ident">joystick</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;joystick</span> <span class="ident">Joystick</span>) -&gt; <span class="self">Self</span> {
         <span class="self">Self</span> {
             <span class="ident">index</span>: <span class="ident">index</span>.<span class="number">0</span>,
             <span class="ident">joystick</span>,
@@ -64,7 +64,7 @@
     }
 
     <span class="doccomment">/// Returns the state of axis.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">state</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">i16</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">state</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">i16</span> {
         <span class="kw">unsafe</span> { <span class="ident">bind::SDL_JoystickGetAxis</span>(<span class="self">self</span>.<span class="ident">joystick</span>.<span class="ident">ptr</span>.<span class="ident">as_ptr</span>(), <span class="self">self</span>.<span class="ident">index</span>) }
     }
 }
@@ -74,7 +74,7 @@
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Axes</span><span class="op">&lt;</span><span class="lifetime">&#39;joystick</span><span class="op">&gt;</span>(<span class="kw">pub</span> <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">Axis</span><span class="op">&lt;</span><span class="lifetime">&#39;joystick</span><span class="op">&gt;</span><span class="op">&gt;</span>);
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;joystick</span><span class="op">&gt;</span> <span class="ident">Axes</span><span class="op">&lt;</span><span class="lifetime">&#39;joystick</span><span class="op">&gt;</span> {
-    <span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">joystick</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;joystick</span> <span class="ident">Joystick</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">joystick</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;joystick</span> <span class="ident">Joystick</span>) -&gt; <span class="self">Self</span> {
         <span class="kw">let</span> <span class="ident">num_axes</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">bind::SDL_JoystickNumAxes</span>(<span class="ident">joystick</span>.<span class="ident">ptr</span>.<span class="ident">as_ptr</span>()) };
         <span class="kw">let</span> <span class="ident">axes</span> <span class="op">=</span> (<span class="number">0</span>..<span class="ident">num_axes</span>)
             .<span class="ident">map</span>(<span class="op">|</span><span class="ident">index</span><span class="op">|</span> <span class="ident">Axis</span> { <span class="ident">index</span>, <span class="ident">joystick</span> })

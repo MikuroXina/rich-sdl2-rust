@@ -110,23 +110,23 @@
 }
 
 <span class="kw">impl</span> <span class="ident">BitmapPixelType</span> {
-    <span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn</span> <span class="ident">as_raw</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">u32</span> {
+    <span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn</span> <span class="ident">as_raw</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">u32</span> {
         (<span class="kw">match</span> <span class="self">self</span> {
-            <span class="ident">BitmapPixelType::Index1</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">bind::SDL_PIXELTYPE_INDEX1</span>,
-            <span class="ident">BitmapPixelType::Index4</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">bind::SDL_PIXELTYPE_INDEX4</span>,
-            <span class="ident">BitmapPixelType::Index8</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">bind::SDL_PIXELTYPE_INDEX8</span>,
+            <span class="ident">BitmapPixelType::Index1</span> =&gt; <span class="ident">bind::SDL_PIXELTYPE_INDEX1</span>,
+            <span class="ident">BitmapPixelType::Index4</span> =&gt; <span class="ident">bind::SDL_PIXELTYPE_INDEX4</span>,
+            <span class="ident">BitmapPixelType::Index8</span> =&gt; <span class="ident">bind::SDL_PIXELTYPE_INDEX8</span>,
         }) <span class="kw">as</span> <span class="ident">u32</span>
     }
 
-    <span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn</span> <span class="ident">bits_per_pixel</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">u32</span> {
+    <span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn</span> <span class="ident">bits_per_pixel</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">u32</span> {
         <span class="kw">match</span> <span class="self">self</span> {
-            <span class="ident">BitmapPixelType::Index1</span> <span class="op">=</span><span class="op">&gt;</span> <span class="number">1</span>,
-            <span class="ident">BitmapPixelType::Index4</span> <span class="op">=</span><span class="op">&gt;</span> <span class="number">4</span>,
-            <span class="ident">BitmapPixelType::Index8</span> <span class="op">=</span><span class="op">&gt;</span> <span class="number">8</span>,
+            <span class="ident">BitmapPixelType::Index1</span> =&gt; <span class="number">1</span>,
+            <span class="ident">BitmapPixelType::Index4</span> =&gt; <span class="number">4</span>,
+            <span class="ident">BitmapPixelType::Index8</span> =&gt; <span class="number">8</span>,
         }
     }
 
-    <span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn</span> <span class="ident">bytes_per_pixel</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">u32</span> {
+    <span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn</span> <span class="ident">bytes_per_pixel</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">u32</span> {
         <span class="kw">if</span> <span class="kw">let</span> <span class="ident">BitmapPixelType::Index8</span> <span class="op">=</span> <span class="self">self</span> {
             <span class="number">1</span>
         } <span class="kw">else</span> {
@@ -147,19 +147,19 @@
 }
 
 <span class="kw">impl</span> <span class="ident">PackedPixelType</span> {
-    <span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn</span> <span class="ident">as_raw</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">u32</span> {
+    <span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn</span> <span class="ident">as_raw</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">u32</span> {
         (<span class="kw">match</span> <span class="self">self</span> {
-            <span class="ident">PackedPixelType::_8</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">bind::SDL_PIXELTYPE_PACKED8</span>,
-            <span class="ident">PackedPixelType::_16</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">bind::SDL_PIXELTYPE_PACKED16</span>,
-            <span class="ident">PackedPixelType::_32</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">bind::SDL_PIXELTYPE_PACKED32</span>,
+            <span class="ident">PackedPixelType::_8</span> =&gt; <span class="ident">bind::SDL_PIXELTYPE_PACKED8</span>,
+            <span class="ident">PackedPixelType::_16</span> =&gt; <span class="ident">bind::SDL_PIXELTYPE_PACKED16</span>,
+            <span class="ident">PackedPixelType::_32</span> =&gt; <span class="ident">bind::SDL_PIXELTYPE_PACKED32</span>,
         }) <span class="kw">as</span> <span class="ident">u32</span>
     }
 
-    <span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn</span> <span class="ident">bytes_per_pixel</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">u32</span> {
+    <span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn</span> <span class="ident">bytes_per_pixel</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">u32</span> {
         <span class="kw">match</span> <span class="self">self</span> {
-            <span class="ident">PackedPixelType::_8</span> <span class="op">=</span><span class="op">&gt;</span> <span class="number">1</span>,
-            <span class="ident">PackedPixelType::_16</span> <span class="op">=</span><span class="op">&gt;</span> <span class="number">2</span>,
-            <span class="ident">PackedPixelType::_32</span> <span class="op">=</span><span class="op">&gt;</span> <span class="number">4</span>,
+            <span class="ident">PackedPixelType::_8</span> =&gt; <span class="number">1</span>,
+            <span class="ident">PackedPixelType::_16</span> =&gt; <span class="number">2</span>,
+            <span class="ident">PackedPixelType::_32</span> =&gt; <span class="number">4</span>,
         }
     }
 }
@@ -180,13 +180,13 @@
 }
 
 <span class="kw">impl</span> <span class="ident">ArrayPixelType</span> {
-    <span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn</span> <span class="ident">as_raw</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">u32</span> {
+    <span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn</span> <span class="ident">as_raw</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">u32</span> {
         (<span class="kw">match</span> <span class="self">self</span> {
-            <span class="ident">ArrayPixelType::U8</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">bind::SDL_PIXELTYPE_ARRAYU8</span>,
-            <span class="ident">ArrayPixelType::U16</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">bind::SDL_PIXELTYPE_ARRAYU16</span>,
-            <span class="ident">ArrayPixelType::U32</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">bind::SDL_PIXELTYPE_ARRAYU32</span>,
-            <span class="ident">ArrayPixelType::F16</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">bind::SDL_PIXELTYPE_ARRAYF16</span>,
-            <span class="ident">ArrayPixelType::F32</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">bind::SDL_PIXELTYPE_ARRAYF32</span>,
+            <span class="ident">ArrayPixelType::U8</span> =&gt; <span class="ident">bind::SDL_PIXELTYPE_ARRAYU8</span>,
+            <span class="ident">ArrayPixelType::U16</span> =&gt; <span class="ident">bind::SDL_PIXELTYPE_ARRAYU16</span>,
+            <span class="ident">ArrayPixelType::U32</span> =&gt; <span class="ident">bind::SDL_PIXELTYPE_ARRAYU32</span>,
+            <span class="ident">ArrayPixelType::F16</span> =&gt; <span class="ident">bind::SDL_PIXELTYPE_ARRAYF16</span>,
+            <span class="ident">ArrayPixelType::F32</span> =&gt; <span class="ident">bind::SDL_PIXELTYPE_ARRAYF32</span>,
         }) <span class="kw">as</span> <span class="ident">u32</span>
     }
 }

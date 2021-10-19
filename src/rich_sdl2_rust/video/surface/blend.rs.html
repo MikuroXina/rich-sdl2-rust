@@ -53,13 +53,13 @@
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">S</span><span class="op">&gt;</span> <span class="ident">Blended</span><span class="op">&lt;</span><span class="ident">S</span><span class="op">&gt;</span> {
     <span class="doccomment">/// Returns the blend mode.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">blend_mode</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="ident">BlendMode</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">blend_mode</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="ident">BlendMode</span> {
         <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">mode</span>
     }
 }
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">S</span>: <span class="ident">Surface</span><span class="op">&gt;</span> <span class="ident">Blended</span><span class="op">&lt;</span><span class="ident">S</span><span class="op">&gt;</span> {
-    <span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">surface</span>: <span class="ident">S</span>, <span class="ident">mode</span>: <span class="ident">BlendMode</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">surface</span>: <span class="ident">S</span>, <span class="ident">mode</span>: <span class="ident">BlendMode</span>) -&gt; <span class="self">Self</span> {
         <span class="kw">let</span> <span class="ident">raw_mode</span> <span class="op">=</span> <span class="ident">mode</span>.<span class="ident">into</span>();
         <span class="kw">unsafe</span> {
             <span class="kw">let</span> <span class="ident">ret</span> <span class="op">=</span> <span class="ident">bind::SDL_SetSurfaceBlendMode</span>(<span class="ident">surface</span>.<span class="ident">as_ptr</span>().<span class="ident">as_ptr</span>(), <span class="ident">raw_mode</span>);
@@ -72,7 +72,7 @@
 }
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">S</span>: <span class="ident">Surface</span><span class="op">&gt;</span> <span class="ident">Surface</span> <span class="kw">for</span> <span class="ident">Blended</span><span class="op">&lt;</span><span class="ident">S</span><span class="op">&gt;</span> {
-    <span class="kw">fn</span> <span class="ident">as_ptr</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">std::ptr::NonNull</span><span class="op">&lt;</span><span class="ident">RawSurface</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">as_ptr</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">std::ptr::NonNull</span><span class="op">&lt;</span><span class="ident">RawSurface</span><span class="op">&gt;</span> {
         <span class="self">self</span>.<span class="ident">surface</span>.<span class="ident">as_ptr</span>()
     }
 }

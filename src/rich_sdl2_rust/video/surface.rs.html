@@ -168,15 +168,15 @@
 <span class="doccomment">/// A trait that provides flexible modification methods.</span>
 <span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">Surface</span> {
     <span class="doccomment">/// Returns the raw non-null pointer.</span>
-    <span class="kw">fn</span> <span class="ident">as_ptr</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">NonNull</span><span class="op">&lt;</span><span class="ident">RawSurface</span><span class="op">&gt;</span>;
+    <span class="kw">fn</span> <span class="ident">as_ptr</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">NonNull</span><span class="op">&lt;</span><span class="ident">RawSurface</span><span class="op">&gt;</span>;
 
     <span class="doccomment">/// Clones the surface.</span>
-    <span class="kw">fn</span> <span class="ident">cloned</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Cloned</span> {
+    <span class="kw">fn</span> <span class="ident">cloned</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">Cloned</span> {
         <span class="ident">Cloned::new</span>(<span class="self">self</span>.<span class="ident">as_ptr</span>())
     }
 
     <span class="doccomment">/// Clips the surface by `area`.</span>
-    <span class="kw">fn</span> <span class="ident">clipped</span>(<span class="self">self</span>, <span class="ident">area</span>: <span class="ident">Rect</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Clipped</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span>
+    <span class="kw">fn</span> <span class="ident">clipped</span>(<span class="self">self</span>, <span class="ident">area</span>: <span class="ident">Rect</span>) -&gt; <span class="ident">Clipped</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span>
     <span class="kw">where</span>
         <span class="self">Self</span>: <span class="ident">Sized</span>,
     {
@@ -184,7 +184,7 @@
     }
 
     <span class="doccomment">/// Changes blend mode of the surface.</span>
-    <span class="kw">fn</span> <span class="ident">blend</span>(<span class="self">self</span>, <span class="ident">mode</span>: <span class="ident">BlendMode</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Blended</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span>
+    <span class="kw">fn</span> <span class="ident">blend</span>(<span class="self">self</span>, <span class="ident">mode</span>: <span class="ident">BlendMode</span>) -&gt; <span class="ident">Blended</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span>
     <span class="kw">where</span>
         <span class="self">Self</span>: <span class="ident">Sized</span>,
     {
@@ -192,7 +192,7 @@
     }
 
     <span class="doccomment">/// Modifies the alpha of the surface.</span>
-    <span class="kw">fn</span> <span class="ident">alpha_mod</span>(<span class="self">self</span>, <span class="ident">alpha</span>: <span class="ident">u8</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">AlphaMod</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span>
+    <span class="kw">fn</span> <span class="ident">alpha_mod</span>(<span class="self">self</span>, <span class="ident">alpha</span>: <span class="ident">u8</span>) -&gt; <span class="ident">AlphaMod</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span>
     <span class="kw">where</span>
         <span class="self">Self</span>: <span class="ident">Sized</span>,
     {
@@ -200,7 +200,7 @@
     }
 
     <span class="doccomment">/// Modifies the color of the surface.</span>
-    <span class="kw">fn</span> <span class="ident">color_mod</span>(<span class="self">self</span>, <span class="ident">color</span>: <span class="ident">Rgb</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ColorMod</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span>
+    <span class="kw">fn</span> <span class="ident">color_mod</span>(<span class="self">self</span>, <span class="ident">color</span>: <span class="ident">Rgb</span>) -&gt; <span class="ident">ColorMod</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span>
     <span class="kw">where</span>
         <span class="self">Self</span>: <span class="ident">Sized</span>,
     {
@@ -269,7 +269,7 @@
     }
 
     <span class="doccomment">/// Run-length encodes the surface.</span>
-    <span class="kw">fn</span> <span class="ident">rle</span>(<span class="kw-2">&amp;</span><span class="lifetime">&#39;_</span> <span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Rle</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span>, <span class="self">Self</span><span class="op">&gt;</span>
+    <span class="kw">fn</span> <span class="ident">rle</span>(<span class="kw-2">&amp;</span><span class="lifetime">&#39;_</span> <span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="ident">Rle</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span>, <span class="self">Self</span><span class="op">&gt;</span>
     <span class="kw">where</span>
         <span class="self">Self</span>: <span class="ident">Sized</span>,
     {

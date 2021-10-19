@@ -26,7 +26,7 @@
 }
 
 <span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">bind::SDL_QuitEvent</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">QuitEvent</span> {
-    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">bind::SDL_QuitEvent</span> { <span class="ident">timestamp</span>, .. }: <span class="ident">bind::SDL_QuitEvent</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">bind::SDL_QuitEvent</span> { <span class="ident">timestamp</span>, .. }: <span class="ident">bind::SDL_QuitEvent</span>) -&gt; <span class="self">Self</span> {
         <span class="self">Self</span> { <span class="ident">timestamp</span> }
     }
 }

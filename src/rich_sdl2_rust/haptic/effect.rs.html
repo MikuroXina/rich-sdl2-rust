@@ -528,9 +528,9 @@
 }
 
 <span class="kw">impl</span> <span class="ident">HapticEffect</span> {
-    <span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn</span> <span class="ident">into_raw</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bind::SDL_HapticEffect</span> {
+    <span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn</span> <span class="ident">into_raw</span>(<span class="self">self</span>) -&gt; <span class="ident">bind::SDL_HapticEffect</span> {
         <span class="kw">match</span> <span class="self">self</span> {
-            <span class="ident">HapticEffect::Constant</span>(<span class="ident">dir</span>, <span class="ident">play</span>, <span class="ident">trigger</span>, <span class="ident">level</span>, <span class="ident">env</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">bind::SDL_HapticEffect</span> {
+            <span class="ident">HapticEffect::Constant</span>(<span class="ident">dir</span>, <span class="ident">play</span>, <span class="ident">trigger</span>, <span class="ident">level</span>, <span class="ident">env</span>) =&gt; <span class="ident">bind::SDL_HapticEffect</span> {
                 <span class="ident">constant</span>: <span class="ident">bind::SDL_HapticConstant</span> {
                     <span class="ident">type_</span>: <span class="ident">bind::SDL_HAPTIC_CONSTANT</span> <span class="kw">as</span> <span class="ident">u16</span>,
                     <span class="ident">direction</span>: <span class="ident">dir</span>.<span class="ident">into_raw</span>(),
@@ -545,7 +545,7 @@
                     <span class="ident">fade_level</span>: <span class="ident">env</span>.<span class="ident">fade_level</span>,
                 },
             },
-            <span class="ident">HapticEffect::Periodic</span>(<span class="ident">dir</span>, <span class="ident">play</span>, <span class="ident">trigger</span>, <span class="ident">wave</span>, <span class="ident">env</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">bind::SDL_HapticEffect</span> {
+            <span class="ident">HapticEffect::Periodic</span>(<span class="ident">dir</span>, <span class="ident">play</span>, <span class="ident">trigger</span>, <span class="ident">wave</span>, <span class="ident">env</span>) =&gt; <span class="ident">bind::SDL_HapticEffect</span> {
                 <span class="ident">periodic</span>: <span class="ident">bind::SDL_HapticPeriodic</span> {
                     <span class="ident">type_</span>: <span class="ident">wave</span>.<span class="ident">kind</span>.<span class="ident">to_raw</span>(),
                     <span class="ident">direction</span>: <span class="ident">dir</span>.<span class="ident">into_raw</span>(),
@@ -563,7 +563,7 @@
                     <span class="ident">fade_level</span>: <span class="ident">env</span>.<span class="ident">fade_level</span>,
                 },
             },
-            <span class="ident">HapticEffect::Condition</span>(<span class="ident">play</span>, <span class="ident">trigger</span>, <span class="ident">condition</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">bind::SDL_HapticEffect</span> {
+            <span class="ident">HapticEffect::Condition</span>(<span class="ident">play</span>, <span class="ident">trigger</span>, <span class="ident">condition</span>) =&gt; <span class="ident">bind::SDL_HapticEffect</span> {
                 <span class="ident">condition</span>: <span class="ident">bind::SDL_HapticCondition</span> {
                     <span class="ident">type_</span>: <span class="number">0</span>,
                     <span class="ident">direction</span>: <span class="ident">bind::SDL_HapticDirection</span> {
@@ -582,7 +582,7 @@
                     <span class="ident">center</span>: <span class="ident">condition</span>.<span class="ident">center</span>.<span class="number">0</span>,
                 },
             },
-            <span class="ident">HapticEffect::Ramp</span>(<span class="ident">dir</span>, <span class="ident">play</span>, <span class="ident">trigger</span>, <span class="ident">ramp</span>, <span class="ident">env</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">bind::SDL_HapticEffect</span> {
+            <span class="ident">HapticEffect::Ramp</span>(<span class="ident">dir</span>, <span class="ident">play</span>, <span class="ident">trigger</span>, <span class="ident">ramp</span>, <span class="ident">env</span>) =&gt; <span class="ident">bind::SDL_HapticEffect</span> {
                 <span class="ident">ramp</span>: <span class="ident">bind::SDL_HapticRamp</span> {
                     <span class="ident">type_</span>: <span class="ident">bind::SDL_HAPTIC_RAMP</span> <span class="kw">as</span> <span class="ident">u16</span>,
                     <span class="ident">direction</span>: <span class="ident">dir</span>.<span class="ident">into_raw</span>(),
@@ -602,7 +602,7 @@
                 <span class="ident">length</span>,
                 <span class="ident">large_magnitude</span>,
                 <span class="ident">small_magnitude</span>,
-            } <span class="op">=</span><span class="op">&gt;</span> <span class="ident">bind::SDL_HapticEffect</span> {
+            } =&gt; <span class="ident">bind::SDL_HapticEffect</span> {
                 <span class="ident">leftright</span>: <span class="ident">bind::SDL_HapticLeftRight</span> {
                     <span class="ident">type_</span>: <span class="ident">bind::SDL_HAPTIC_LEFTRIGHT</span> <span class="kw">as</span> <span class="ident">u16</span>,
                     <span class="ident">length</span>,
@@ -610,7 +610,7 @@
                     <span class="ident">small_magnitude</span>,
                 },
             },
-            <span class="ident">HapticEffect::Custom</span>(<span class="ident">dir</span>, <span class="ident">play</span>, <span class="ident">trigger</span>, <span class="kw-2">mut</span> <span class="ident">custom</span>, <span class="ident">env</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">bind::SDL_HapticEffect</span> {
+            <span class="ident">HapticEffect::Custom</span>(<span class="ident">dir</span>, <span class="ident">play</span>, <span class="ident">trigger</span>, <span class="kw-2">mut</span> <span class="ident">custom</span>, <span class="ident">env</span>) =&gt; <span class="ident">bind::SDL_HapticEffect</span> {
                 <span class="ident">custom</span>: <span class="ident">bind::SDL_HapticCustom</span> {
                     <span class="ident">type_</span>: <span class="ident">bind::SDL_HAPTIC_CUSTOM</span> <span class="kw">as</span> <span class="ident">u16</span>,
                     <span class="ident">direction</span>: <span class="ident">dir</span>.<span class="ident">into_raw</span>(),
@@ -633,9 +633,9 @@
 }
 
 <span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">bind::SDL_HapticEffect</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">HapticEffect</span> {
-    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">raw</span>: <span class="ident">bind::SDL_HapticEffect</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">raw</span>: <span class="ident">bind::SDL_HapticEffect</span>) -&gt; <span class="self">Self</span> {
         <span class="kw">match</span> <span class="kw">unsafe</span> { <span class="ident">raw</span>.<span class="ident">type_</span> } <span class="kw">as</span> <span class="ident">u32</span> {
-            <span class="ident">bind::SDL_HAPTIC_CONSTANT</span> <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="ident">bind::SDL_HAPTIC_CONSTANT</span> =&gt; {
                 <span class="kw">let</span> <span class="ident">bind::SDL_HapticConstant</span> {
                     <span class="ident">direction</span>,
                     <span class="ident">length</span>,
@@ -665,7 +665,7 @@
             <span class="ident">bind::SDL_HAPTIC_SINE</span>
             <span class="op">|</span> <span class="ident">bind::SDL_HAPTIC_TRIANGLE</span>
             <span class="op">|</span> <span class="ident">bind::SDL_HAPTIC_SAWTOOTHUP</span>
-            <span class="op">|</span> <span class="ident">bind::SDL_HAPTIC_SAWTOOTHDOWN</span> <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="op">|</span> <span class="ident">bind::SDL_HAPTIC_SAWTOOTHDOWN</span> =&gt; {
                 <span class="kw">let</span> <span class="ident">bind::SDL_HapticPeriodic</span> {
                     <span class="ident">type_</span>,
                     <span class="ident">direction</span>,
@@ -705,7 +705,7 @@
             <span class="ident">bind::SDL_HAPTIC_SPRING</span>
             <span class="op">|</span> <span class="ident">bind::SDL_HAPTIC_DAMPER</span>
             <span class="op">|</span> <span class="ident">bind::SDL_HAPTIC_INERTIA</span>
-            <span class="op">|</span> <span class="ident">bind::SDL_HAPTIC_FRICTION</span> <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="op">|</span> <span class="ident">bind::SDL_HAPTIC_FRICTION</span> =&gt; {
                 <span class="kw">let</span> <span class="ident">bind::SDL_HapticCondition</span> {
                     <span class="ident">type_</span>,
                     <span class="ident">length</span>,
@@ -733,7 +733,7 @@
                     },
                 )
             }
-            <span class="ident">bind::SDL_HAPTIC_RAMP</span> <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="ident">bind::SDL_HAPTIC_RAMP</span> =&gt; {
                 <span class="kw">let</span> <span class="ident">bind::SDL_HapticRamp</span> {
                     <span class="ident">direction</span>,
                     <span class="ident">length</span>,
@@ -764,7 +764,7 @@
                     },
                 )
             }
-            <span class="ident">bind::SDL_HAPTIC_LEFTRIGHT</span> <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="ident">bind::SDL_HAPTIC_LEFTRIGHT</span> =&gt; {
                 <span class="kw">let</span> <span class="ident">bind::SDL_HapticLeftRight</span> {
                     <span class="ident">length</span>,
                     <span class="ident">large_magnitude</span>,
@@ -777,7 +777,7 @@
                     <span class="ident">small_magnitude</span>,
                 }
             }
-            <span class="ident">bind::SDL_HAPTIC_CUSTOM</span> <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="ident">bind::SDL_HAPTIC_CUSTOM</span> =&gt; {
                 <span class="kw">let</span> <span class="ident">bind::SDL_HapticCustom</span> {
                     <span class="ident">direction</span>,
                     <span class="ident">length</span>,
@@ -818,7 +818,7 @@
                     },
                 )
             }
-            <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">unreachable!</span>(),
+            <span class="kw">_</span> =&gt; <span class="macro">unreachable!</span>(),
         }
     }
 }
@@ -932,24 +932,24 @@
 }
 
 <span class="kw">impl</span> <span class="ident">WaveKind</span> {
-    <span class="kw">fn</span> <span class="ident">to_raw</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">u16</span> {
+    <span class="kw">fn</span> <span class="ident">to_raw</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">u16</span> {
         (<span class="kw">match</span> <span class="kw-2">*</span><span class="self">self</span> {
-            <span class="ident">WaveKind::Sine</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">bind::SDL_HAPTIC_SINE</span>,
-            <span class="ident">WaveKind::Triangle</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">bind::SDL_HAPTIC_TRIANGLE</span>,
-            <span class="ident">WaveKind::SawToothUp</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">bind::SDL_HAPTIC_SAWTOOTHUP</span>,
-            <span class="ident">WaveKind::SwaToothDown</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">bind::SDL_HAPTIC_SAWTOOTHDOWN</span>,
+            <span class="ident">WaveKind::Sine</span> =&gt; <span class="ident">bind::SDL_HAPTIC_SINE</span>,
+            <span class="ident">WaveKind::Triangle</span> =&gt; <span class="ident">bind::SDL_HAPTIC_TRIANGLE</span>,
+            <span class="ident">WaveKind::SawToothUp</span> =&gt; <span class="ident">bind::SDL_HAPTIC_SAWTOOTHUP</span>,
+            <span class="ident">WaveKind::SwaToothDown</span> =&gt; <span class="ident">bind::SDL_HAPTIC_SAWTOOTHDOWN</span>,
         }) <span class="kw">as</span> <span class="ident">u16</span>
     }
 }
 
 <span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">u16</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">WaveKind</span> {
-    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">raw</span>: <span class="ident">u16</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">raw</span>: <span class="ident">u16</span>) -&gt; <span class="self">Self</span> {
         <span class="kw">match</span> <span class="ident">raw</span> <span class="kw">as</span> <span class="ident">u32</span> {
-            <span class="ident">bind::SDL_HAPTIC_SINE</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident"><span class="self">Self</span>::Sine</span>,
-            <span class="ident">bind::SDL_HAPTIC_TRIANGLE</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident"><span class="self">Self</span>::Triangle</span>,
-            <span class="ident">bind::SDL_HAPTIC_SAWTOOTHUP</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident"><span class="self">Self</span>::SawToothUp</span>,
-            <span class="ident">bind::SDL_HAPTIC_SAWTOOTHDOWN</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident"><span class="self">Self</span>::SwaToothDown</span>,
-            <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">unreachable!</span>(),
+            <span class="ident">bind::SDL_HAPTIC_SINE</span> =&gt; <span class="ident"><span class="self">Self</span>::Sine</span>,
+            <span class="ident">bind::SDL_HAPTIC_TRIANGLE</span> =&gt; <span class="ident"><span class="self">Self</span>::Triangle</span>,
+            <span class="ident">bind::SDL_HAPTIC_SAWTOOTHUP</span> =&gt; <span class="ident"><span class="self">Self</span>::SawToothUp</span>,
+            <span class="ident">bind::SDL_HAPTIC_SAWTOOTHDOWN</span> =&gt; <span class="ident"><span class="self">Self</span>::SwaToothDown</span>,
+            <span class="kw">_</span> =&gt; <span class="macro">unreachable!</span>(),
         }
     }
 }

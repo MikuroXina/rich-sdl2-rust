@@ -81,7 +81,7 @@
 }
 
 <span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">bind::SDL_Keysym</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">KeySymbol</span> {
-    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">sym</span>: <span class="ident">bind::SDL_Keysym</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">sym</span>: <span class="ident">bind::SDL_Keysym</span>) -&gt; <span class="self">Self</span> {
         <span class="self">Self</span> {
             <span class="ident">scan_code</span>: <span class="ident">sym</span>.<span class="ident">scancode</span>.<span class="ident">into</span>(),
             <span class="ident">key_code</span>: <span class="ident">sym</span>.<span class="ident">sym</span>.<span class="ident">into</span>(),
@@ -106,11 +106,11 @@
 }
 
 <span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">bind::SDL_KeyboardEvent</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">KeyboardEvent</span> {
-    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">raw</span>: <span class="ident">bind::SDL_KeyboardEvent</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">raw</span>: <span class="ident">bind::SDL_KeyboardEvent</span>) -&gt; <span class="self">Self</span> {
         <span class="self">Self</span> {
             <span class="ident">timestamp</span>: <span class="ident">raw</span>.<span class="ident">timestamp</span>,
             <span class="ident">window_id</span>: <span class="ident">raw</span>.<span class="ident">windowID</span>,
-            <span class="ident">is_pressed</span>: <span class="ident">raw</span>.<span class="ident">state</span> <span class="kw">as</span> <span class="ident">u32</span> <span class="op">=</span><span class="op">=</span> <span class="ident">bind::SDL_PRESSED</span>,
+            <span class="ident">is_pressed</span>: <span class="ident">raw</span>.<span class="ident">state</span> <span class="kw">as</span> <span class="ident">u32</span> <span class="op">==</span> <span class="ident">bind::SDL_PRESSED</span>,
             <span class="ident">is_repeated</span>: <span class="ident">raw</span>.<span class="ident">repeat</span> <span class="op">!</span><span class="op">=</span> <span class="number">0</span>,
             <span class="ident">symbol</span>: <span class="ident">raw</span>.<span class="ident">keysym</span>.<span class="ident">into</span>(),
         }

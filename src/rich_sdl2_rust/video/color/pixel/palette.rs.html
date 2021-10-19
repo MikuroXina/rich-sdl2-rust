@@ -84,7 +84,7 @@
 }
 
 <span class="kw">impl</span> <span class="ident">std::fmt::Debug</span> <span class="kw">for</span> <span class="ident">Palette</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">std::fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">std::fmt::Result</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">std::fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">std::fmt::Result</span> {
         <span class="ident">f</span>.<span class="ident">debug_struct</span>(<span class="string">&quot;Palette&quot;</span>).<span class="ident">finish_non_exhaustive</span>()
     }
 }
@@ -93,11 +93,11 @@
 
 <span class="kw">impl</span> <span class="ident">Palette</span> {
     <span class="doccomment">/// Constructs a palette with numbers of colors.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">num_colors</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">num_colors</span>: <span class="ident">usize</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
         <span class="ident">NonNull::new</span>(<span class="kw">unsafe</span> { <span class="ident">bind::SDL_AllocPalette</span>(<span class="ident">num_colors</span> <span class="kw">as</span> <span class="ident">c_int</span>) }).<span class="ident">map_or_else</span>(
             <span class="op">|</span><span class="op">|</span> {
                 <span class="kw">let</span> <span class="ident">msg</span> <span class="op">=</span> <span class="ident">Sdl::error</span>();
-                <span class="prelude-val">Err</span>(<span class="kw">if</span> <span class="ident">msg</span> <span class="op">=</span><span class="op">=</span> <span class="string">&quot;Out of memory&quot;</span> {
+                <span class="prelude-val">Err</span>(<span class="kw">if</span> <span class="ident">msg</span> <span class="op">==</span> <span class="string">&quot;Out of memory&quot;</span> {
                     <span class="ident">SdlError::OutOfMemory</span>
                 } <span class="kw">else</span> {
                     <span class="ident">SdlError::Others</span> { <span class="ident">msg</span> }
@@ -107,12 +107,12 @@
         )
     }
 
-    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">as_ptr</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">bind::SDL_Palette</span> {
+    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">as_ptr</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">bind::SDL_Palette</span> {
         <span class="self">self</span>.<span class="ident">palette</span>.<span class="ident">as_ptr</span>()
     }
 
     <span class="doccomment">/// Returns the numbers of colors in the palette.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">num_colors</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">usize</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">num_colors</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">usize</span> {
         <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">palette</span>.<span class="ident">as_ref</span>() }.<span class="ident">ncolors</span> <span class="kw">as</span> <span class="kw">_</span>
     }
 

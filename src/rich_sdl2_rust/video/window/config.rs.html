@@ -207,7 +207,7 @@
 
 <span class="kw">impl</span> <span class="ident">Opacity</span> {
     <span class="doccomment">/// Constructs from opacity, or `None` if the value is not in `0.0..=1.0`.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">opacity</span>: <span class="ident">f32</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">opacity</span>: <span class="ident">f32</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
         <span class="kw">if</span> (<span class="number">0.0</span>..<span class="op">=</span><span class="number">1.0</span>).<span class="ident">contains</span>(<span class="kw-2">&amp;</span><span class="ident">opacity</span>) {
             <span class="kw">return</span> <span class="prelude-val">None</span>;
         }
@@ -215,14 +215,14 @@
     }
 
     <span class="doccomment">/// Constructs from opacity, clamping to `0.0,,=1.0`.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">with_clamped</span>(<span class="ident">opacity</span>: <span class="ident">f32</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">with_clamped</span>(<span class="ident">opacity</span>: <span class="ident">f32</span>) -&gt; <span class="self">Self</span> {
         <span class="self">Self</span> {
             <span class="ident">opacity</span>: <span class="ident">opacity</span>.<span class="ident">clamp</span>(<span class="number">0.0</span>, <span class="number">1.0</span>),
         }
     }
 
     <span class="doccomment">/// Converts into `f32`</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">as_f32</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">f32</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">as_f32</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">f32</span> {
         <span class="self">self</span>.<span class="ident">opacity</span>
     }
 }
@@ -230,17 +230,17 @@
 <span class="doccomment">/// An extension for [`Window`] to configure its properties.</span>
 <span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">ConfigExt</span> {
     <span class="doccomment">/// Returns the maximum size of the window.</span>
-    <span class="kw">fn</span> <span class="ident">max_size</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Size</span>;
+    <span class="kw">fn</span> <span class="ident">max_size</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">Size</span>;
     <span class="doccomment">/// Returns the minimum size of the window.</span>
-    <span class="kw">fn</span> <span class="ident">min_size</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Size</span>;
+    <span class="kw">fn</span> <span class="ident">min_size</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">Size</span>;
     <span class="doccomment">/// Returns the current size of the window.</span>
-    <span class="kw">fn</span> <span class="ident">size</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Size</span>;
+    <span class="kw">fn</span> <span class="ident">size</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">Size</span>;
     <span class="doccomment">/// Returns the opacity of the window.</span>
-    <span class="kw">fn</span> <span class="ident">opacity</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Opacity</span>;
+    <span class="kw">fn</span> <span class="ident">opacity</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">Opacity</span>;
     <span class="doccomment">/// Returns the position of the window.</span>
-    <span class="kw">fn</span> <span class="ident">pos</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Point</span>;
+    <span class="kw">fn</span> <span class="ident">pos</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">Point</span>;
     <span class="doccomment">/// Returns the title of the window.</span>
-    <span class="kw">fn</span> <span class="ident">title</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="ident">str</span>;
+    <span class="kw">fn</span> <span class="ident">title</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="ident">str</span>;
 
     <span class="doccomment">/// Sets the maximum size of the window.</span>
     <span class="kw">fn</span> <span class="ident">set_max_size</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">max_size</span>: <span class="ident">Size</span>);
@@ -249,7 +249,7 @@
     <span class="doccomment">/// Sets the current size of the window.</span>
     <span class="kw">fn</span> <span class="ident">set_size</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">size</span>: <span class="ident">Size</span>);
     <span class="doccomment">/// Sets the opacity of the window.</span>
-    <span class="kw">fn</span> <span class="ident">set_opacity</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">opacity</span>: <span class="ident">Opacity</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span>;
+    <span class="kw">fn</span> <span class="ident">set_opacity</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">opacity</span>: <span class="ident">Opacity</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span>;
     <span class="doccomment">/// Sets the position of the window.</span>
     <span class="kw">fn</span> <span class="ident">set_pos</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">pos</span>: <span class="ident">Position</span>);
     <span class="doccomment">/// Sets the title of the window.</span>
@@ -264,7 +264,7 @@
 }
 
 <span class="kw">impl</span> <span class="ident">ConfigExt</span> <span class="kw">for</span> <span class="ident">Window</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span> {
-    <span class="kw">fn</span> <span class="ident">max_size</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Size</span> {
+    <span class="kw">fn</span> <span class="ident">max_size</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">Size</span> {
         <span class="kw">let</span> (<span class="kw-2">mut</span> <span class="ident">width</span>, <span class="kw-2">mut</span> <span class="ident">height</span>) <span class="op">=</span> (<span class="ident">MaybeUninit::uninit</span>(), <span class="ident">MaybeUninit::uninit</span>());
         <span class="kw">unsafe</span> {
             <span class="ident">bind::SDL_GetWindowMaximumSize</span>(<span class="self">self</span>.<span class="ident">as_ptr</span>(), <span class="ident">width</span>.<span class="ident">as_mut_ptr</span>(), <span class="ident">height</span>.<span class="ident">as_mut_ptr</span>())
@@ -275,7 +275,7 @@
         }
     }
 
-    <span class="kw">fn</span> <span class="ident">min_size</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Size</span> {
+    <span class="kw">fn</span> <span class="ident">min_size</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">Size</span> {
         <span class="kw">let</span> (<span class="kw-2">mut</span> <span class="ident">width</span>, <span class="kw-2">mut</span> <span class="ident">height</span>) <span class="op">=</span> (<span class="ident">MaybeUninit::uninit</span>(), <span class="ident">MaybeUninit::uninit</span>());
         <span class="kw">unsafe</span> {
             <span class="ident">bind::SDL_GetWindowMinimumSize</span>(<span class="self">self</span>.<span class="ident">as_ptr</span>(), <span class="ident">width</span>.<span class="ident">as_mut_ptr</span>(), <span class="ident">height</span>.<span class="ident">as_mut_ptr</span>())
@@ -286,7 +286,7 @@
         }
     }
 
-    <span class="kw">fn</span> <span class="ident">size</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Size</span> {
+    <span class="kw">fn</span> <span class="ident">size</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">Size</span> {
         <span class="kw">let</span> (<span class="kw-2">mut</span> <span class="ident">width</span>, <span class="kw-2">mut</span> <span class="ident">height</span>) <span class="op">=</span> (<span class="ident">MaybeUninit::uninit</span>(), <span class="ident">MaybeUninit::uninit</span>());
         <span class="kw">unsafe</span> { <span class="ident">bind::SDL_GetWindowSize</span>(<span class="self">self</span>.<span class="ident">as_ptr</span>(), <span class="ident">width</span>.<span class="ident">as_mut_ptr</span>(), <span class="ident">height</span>.<span class="ident">as_mut_ptr</span>()) }
         <span class="ident">Size</span> {
@@ -295,7 +295,7 @@
         }
     }
 
-    <span class="kw">fn</span> <span class="ident">opacity</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Opacity</span> {
+    <span class="kw">fn</span> <span class="ident">opacity</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">Opacity</span> {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">opacity</span> <span class="op">=</span> <span class="ident">MaybeUninit::uninit</span>();
         <span class="kw">let</span> <span class="ident">ret</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">bind::SDL_GetWindowOpacity</span>(<span class="self">self</span>.<span class="ident">as_ptr</span>(), <span class="ident">opacity</span>.<span class="ident">as_mut_ptr</span>()) };
         <span class="kw">let</span> <span class="ident">opacity</span> <span class="op">=</span> <span class="kw">if</span> <span class="ident">ret</span> <span class="op">!</span><span class="op">=</span> <span class="number">0</span> {
@@ -306,7 +306,7 @@
         <span class="ident">Opacity</span> { <span class="ident">opacity</span> }
     }
 
-    <span class="kw">fn</span> <span class="ident">pos</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Point</span> {
+    <span class="kw">fn</span> <span class="ident">pos</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">Point</span> {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">point</span> <span class="op">=</span> <span class="ident">Point::default</span>();
         <span class="kw">unsafe</span> {
             <span class="ident">bind::SDL_GetWindowPosition</span>(
@@ -318,7 +318,7 @@
         <span class="ident">point</span>
     }
 
-    <span class="kw">fn</span> <span class="ident">title</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="ident">str</span> {
+    <span class="kw">fn</span> <span class="ident">title</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="ident">str</span> {
         <span class="kw">let</span> <span class="ident">raw</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">bind::SDL_GetWindowTitle</span>(<span class="self">self</span>.<span class="ident">as_ptr</span>()) };
         <span class="kw">unsafe</span> { <span class="ident">CStr::from_ptr</span>(<span class="ident">raw</span>) }
             .<span class="ident">to_str</span>()
@@ -337,7 +337,7 @@
         <span class="kw">unsafe</span> { <span class="ident">bind::SDL_SetWindowSize</span>(<span class="self">self</span>.<span class="ident">as_ptr</span>(), <span class="ident">width</span> <span class="kw">as</span> <span class="kw">_</span>, <span class="ident">height</span> <span class="kw">as</span> <span class="kw">_</span>) }
     }
 
-    <span class="kw">fn</span> <span class="ident">set_opacity</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">opacity</span>: <span class="ident">Opacity</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">set_opacity</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">opacity</span>: <span class="ident">Opacity</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="ident">ret</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">bind::SDL_SetWindowOpacity</span>(<span class="self">self</span>.<span class="ident">as_ptr</span>(), <span class="ident">opacity</span>.<span class="ident">opacity</span>) };
         <span class="kw">if</span> <span class="ident">ret</span> <span class="op">!</span><span class="op">=</span> <span class="number">0</span> {
             <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">SdlError::UnsupportedFeature</span>);

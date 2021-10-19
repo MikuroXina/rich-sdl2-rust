@@ -59,19 +59,19 @@
 <span class="doccomment">/// An extension for [`GlContext`] to add methods for control buffers.</span>
 <span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">BufferExt</span> {
     <span class="doccomment">/// Sets the interval mode of swapping buffers.</span>
-    <span class="kw">fn</span> <span class="ident">set_swap_interval</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">interval_kind</span>: <span class="ident">IntervalKind</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span>;
+    <span class="kw">fn</span> <span class="ident">set_swap_interval</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">interval_kind</span>: <span class="ident">IntervalKind</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span>;
 
     <span class="doccomment">/// Swaps buffers immediately.</span>
     <span class="kw">fn</span> <span class="ident">swap_buffer</span>(<span class="kw-2">&amp;</span><span class="self">self</span>);
 }
 
 <span class="kw">impl</span> <span class="ident">BufferExt</span> <span class="kw">for</span> <span class="ident">GlContext</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span> {
-    <span class="kw">fn</span> <span class="ident">set_swap_interval</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">interval_kind</span>: <span class="ident">IntervalKind</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">set_swap_interval</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">interval_kind</span>: <span class="ident">IntervalKind</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="ident">ret</span> <span class="op">=</span> <span class="kw">unsafe</span> {
             <span class="ident">bind::SDL_GL_SetSwapInterval</span>(<span class="kw">match</span> <span class="ident">interval_kind</span> {
-                <span class="ident">IntervalKind::AdaptiveVerticalSync</span> <span class="op">=</span><span class="op">&gt;</span> <span class="op">-</span><span class="number">1</span>,
-                <span class="ident">IntervalKind::Immediate</span> <span class="op">=</span><span class="op">&gt;</span> <span class="number">0</span>,
-                <span class="ident">IntervalKind::VerticalSync</span> <span class="op">=</span><span class="op">&gt;</span> <span class="number">1</span>,
+                <span class="ident">IntervalKind::AdaptiveVerticalSync</span> =&gt; <span class="op">-</span><span class="number">1</span>,
+                <span class="ident">IntervalKind::Immediate</span> =&gt; <span class="number">0</span>,
+                <span class="ident">IntervalKind::VerticalSync</span> =&gt; <span class="number">1</span>,
             })
         };
         <span class="kw">if</span> <span class="ident">ret</span> <span class="op">!</span><span class="op">=</span> <span class="number">0</span> {

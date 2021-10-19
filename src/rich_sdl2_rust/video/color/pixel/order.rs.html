@@ -142,21 +142,21 @@
 }
 
 <span class="kw">impl</span> <span class="ident">BitmapPixelOrder</span> {
-    <span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn</span> <span class="ident">as_raw</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">u32</span> {
+    <span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn</span> <span class="ident">as_raw</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">u32</span> {
         (<span class="kw">match</span> <span class="self">self</span> {
-            <span class="ident">BitmapPixelOrder::_4321</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">bind::SDL_BITMAPORDER_4321</span>,
-            <span class="ident">BitmapPixelOrder::_1234</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">bind::SDL_BITMAPORDER_1234</span>,
+            <span class="ident">BitmapPixelOrder::_4321</span> =&gt; <span class="ident">bind::SDL_BITMAPORDER_4321</span>,
+            <span class="ident">BitmapPixelOrder::_1234</span> =&gt; <span class="ident">bind::SDL_BITMAPORDER_1234</span>,
         }) <span class="kw">as</span> <span class="ident">u32</span>
     }
 }
 
 <span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">bind::SDL_PixelFormatEnum</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">BitmapPixelOrder</span> {
-    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">raw</span>: <span class="ident">bind::SDL_PixelFormatEnum</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">raw</span>: <span class="ident">bind::SDL_PixelFormatEnum</span>) -&gt; <span class="self">Self</span> {
         <span class="kw">use</span> <span class="ident">BitmapPixelOrder</span>::<span class="kw-2">*</span>;
         <span class="kw">match</span> (<span class="ident">raw</span> <span class="op">&gt;</span><span class="op">&gt;</span> <span class="number">20</span>) <span class="op">&amp;</span> <span class="number">0xf</span> {
-            <span class="ident">bind::SDL_BITMAPORDER_4321</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">_4321</span>,
-            <span class="ident">bind::SDL_BITMAPORDER_1234</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">_1234</span>,
-            <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">unreachable!</span>(),
+            <span class="ident">bind::SDL_BITMAPORDER_4321</span> =&gt; <span class="ident">_4321</span>,
+            <span class="ident">bind::SDL_BITMAPORDER_1234</span> =&gt; <span class="ident">_1234</span>,
+            <span class="kw">_</span> =&gt; <span class="macro">unreachable!</span>(),
         }
     }
 }
@@ -183,33 +183,33 @@
 }
 
 <span class="kw">impl</span> <span class="ident">PackedPixelOrder</span> {
-    <span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn</span> <span class="ident">as_raw</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">u32</span> {
+    <span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn</span> <span class="ident">as_raw</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">u32</span> {
         (<span class="kw">match</span> <span class="self">self</span> {
-            <span class="ident">PackedPixelOrder::Xrgb</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">bind::SDL_PACKEDORDER_XRGB</span>,
-            <span class="ident">PackedPixelOrder::Rgbx</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">bind::SDL_PACKEDORDER_RGBX</span>,
-            <span class="ident">PackedPixelOrder::Argb</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">bind::SDL_PACKEDORDER_ARGB</span>,
-            <span class="ident">PackedPixelOrder::Rgba</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">bind::SDL_PACKEDORDER_RGBA</span>,
-            <span class="ident">PackedPixelOrder::Xbgr</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">bind::SDL_PACKEDORDER_XBGR</span>,
-            <span class="ident">PackedPixelOrder::Bgrx</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">bind::SDL_PACKEDORDER_BGRX</span>,
-            <span class="ident">PackedPixelOrder::Abgr</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">bind::SDL_PACKEDORDER_ABGR</span>,
-            <span class="ident">PackedPixelOrder::Bgra</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">bind::SDL_PACKEDORDER_BGRA</span>,
+            <span class="ident">PackedPixelOrder::Xrgb</span> =&gt; <span class="ident">bind::SDL_PACKEDORDER_XRGB</span>,
+            <span class="ident">PackedPixelOrder::Rgbx</span> =&gt; <span class="ident">bind::SDL_PACKEDORDER_RGBX</span>,
+            <span class="ident">PackedPixelOrder::Argb</span> =&gt; <span class="ident">bind::SDL_PACKEDORDER_ARGB</span>,
+            <span class="ident">PackedPixelOrder::Rgba</span> =&gt; <span class="ident">bind::SDL_PACKEDORDER_RGBA</span>,
+            <span class="ident">PackedPixelOrder::Xbgr</span> =&gt; <span class="ident">bind::SDL_PACKEDORDER_XBGR</span>,
+            <span class="ident">PackedPixelOrder::Bgrx</span> =&gt; <span class="ident">bind::SDL_PACKEDORDER_BGRX</span>,
+            <span class="ident">PackedPixelOrder::Abgr</span> =&gt; <span class="ident">bind::SDL_PACKEDORDER_ABGR</span>,
+            <span class="ident">PackedPixelOrder::Bgra</span> =&gt; <span class="ident">bind::SDL_PACKEDORDER_BGRA</span>,
         }) <span class="kw">as</span> <span class="ident">u32</span>
     }
 }
 
 <span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">bind::SDL_PixelFormatEnum</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">PackedPixelOrder</span> {
-    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">raw</span>: <span class="ident">bind::SDL_PixelFormatEnum</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">raw</span>: <span class="ident">bind::SDL_PixelFormatEnum</span>) -&gt; <span class="self">Self</span> {
         <span class="kw">use</span> <span class="ident">PackedPixelOrder</span>::<span class="kw-2">*</span>;
         <span class="kw">match</span> (<span class="ident">raw</span> <span class="op">&gt;</span><span class="op">&gt;</span> <span class="number">20</span>) <span class="op">&amp;</span> <span class="number">0xf</span> {
-            <span class="ident">bind::SDL_PACKEDORDER_XRGB</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Xrgb</span>,
-            <span class="ident">bind::SDL_PACKEDORDER_RGBX</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Rgbx</span>,
-            <span class="ident">bind::SDL_PACKEDORDER_ARGB</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Argb</span>,
-            <span class="ident">bind::SDL_PACKEDORDER_RGBA</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Rgba</span>,
-            <span class="ident">bind::SDL_PACKEDORDER_XBGR</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Xbgr</span>,
-            <span class="ident">bind::SDL_PACKEDORDER_BGRX</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Bgrx</span>,
-            <span class="ident">bind::SDL_PACKEDORDER_ABGR</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Abgr</span>,
-            <span class="ident">bind::SDL_PACKEDORDER_BGRA</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Bgra</span>,
-            <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">unreachable!</span>(),
+            <span class="ident">bind::SDL_PACKEDORDER_XRGB</span> =&gt; <span class="ident">Xrgb</span>,
+            <span class="ident">bind::SDL_PACKEDORDER_RGBX</span> =&gt; <span class="ident">Rgbx</span>,
+            <span class="ident">bind::SDL_PACKEDORDER_ARGB</span> =&gt; <span class="ident">Argb</span>,
+            <span class="ident">bind::SDL_PACKEDORDER_RGBA</span> =&gt; <span class="ident">Rgba</span>,
+            <span class="ident">bind::SDL_PACKEDORDER_XBGR</span> =&gt; <span class="ident">Xbgr</span>,
+            <span class="ident">bind::SDL_PACKEDORDER_BGRX</span> =&gt; <span class="ident">Bgrx</span>,
+            <span class="ident">bind::SDL_PACKEDORDER_ABGR</span> =&gt; <span class="ident">Abgr</span>,
+            <span class="ident">bind::SDL_PACKEDORDER_BGRA</span> =&gt; <span class="ident">Bgra</span>,
+            <span class="kw">_</span> =&gt; <span class="macro">unreachable!</span>(),
         }
     }
 }
@@ -232,29 +232,29 @@
 }
 
 <span class="kw">impl</span> <span class="ident">ArrayPixelOrder</span> {
-    <span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn</span> <span class="ident">as_raw</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">u32</span> {
+    <span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn</span> <span class="ident">as_raw</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">u32</span> {
         (<span class="kw">match</span> <span class="self">self</span> {
-            <span class="ident">ArrayPixelOrder::Rgb</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">bind::SDL_ARRAYORDER_RGB</span>,
-            <span class="ident">ArrayPixelOrder::Rgba</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">bind::SDL_ARRAYORDER_RGBA</span>,
-            <span class="ident">ArrayPixelOrder::Argb</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">bind::SDL_ARRAYORDER_ARGB</span>,
-            <span class="ident">ArrayPixelOrder::Bgr</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">bind::SDL_ARRAYORDER_BGR</span>,
-            <span class="ident">ArrayPixelOrder::Bgra</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">bind::SDL_ARRAYORDER_BGRA</span>,
-            <span class="ident">ArrayPixelOrder::Abgr</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">bind::SDL_ARRAYORDER_ABGR</span>,
+            <span class="ident">ArrayPixelOrder::Rgb</span> =&gt; <span class="ident">bind::SDL_ARRAYORDER_RGB</span>,
+            <span class="ident">ArrayPixelOrder::Rgba</span> =&gt; <span class="ident">bind::SDL_ARRAYORDER_RGBA</span>,
+            <span class="ident">ArrayPixelOrder::Argb</span> =&gt; <span class="ident">bind::SDL_ARRAYORDER_ARGB</span>,
+            <span class="ident">ArrayPixelOrder::Bgr</span> =&gt; <span class="ident">bind::SDL_ARRAYORDER_BGR</span>,
+            <span class="ident">ArrayPixelOrder::Bgra</span> =&gt; <span class="ident">bind::SDL_ARRAYORDER_BGRA</span>,
+            <span class="ident">ArrayPixelOrder::Abgr</span> =&gt; <span class="ident">bind::SDL_ARRAYORDER_ABGR</span>,
         }) <span class="kw">as</span> <span class="ident">u32</span>
     }
 }
 
 <span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">bind::SDL_PixelFormatEnum</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">ArrayPixelOrder</span> {
-    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">raw</span>: <span class="ident">bind::SDL_PixelFormatEnum</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">raw</span>: <span class="ident">bind::SDL_PixelFormatEnum</span>) -&gt; <span class="self">Self</span> {
         <span class="kw">use</span> <span class="ident">ArrayPixelOrder</span>::<span class="kw-2">*</span>;
         <span class="kw">match</span> (<span class="ident">raw</span> <span class="op">&gt;</span><span class="op">&gt;</span> <span class="number">20</span>) <span class="op">&amp;</span> <span class="number">0xf</span> {
-            <span class="ident">bind::SDL_ARRAYORDER_RGB</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Rgb</span>,
-            <span class="ident">bind::SDL_ARRAYORDER_RGBA</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Rgba</span>,
-            <span class="ident">bind::SDL_ARRAYORDER_ARGB</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Argb</span>,
-            <span class="ident">bind::SDL_ARRAYORDER_BGR</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Bgr</span>,
-            <span class="ident">bind::SDL_ARRAYORDER_BGRA</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Bgra</span>,
-            <span class="ident">bind::SDL_ARRAYORDER_ABGR</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Abgr</span>,
-            <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">unreachable!</span>(),
+            <span class="ident">bind::SDL_ARRAYORDER_RGB</span> =&gt; <span class="ident">Rgb</span>,
+            <span class="ident">bind::SDL_ARRAYORDER_RGBA</span> =&gt; <span class="ident">Rgba</span>,
+            <span class="ident">bind::SDL_ARRAYORDER_ARGB</span> =&gt; <span class="ident">Argb</span>,
+            <span class="ident">bind::SDL_ARRAYORDER_BGR</span> =&gt; <span class="ident">Bgr</span>,
+            <span class="ident">bind::SDL_ARRAYORDER_BGRA</span> =&gt; <span class="ident">Bgra</span>,
+            <span class="ident">bind::SDL_ARRAYORDER_ABGR</span> =&gt; <span class="ident">Abgr</span>,
+            <span class="kw">_</span> =&gt; <span class="macro">unreachable!</span>(),
         }
     }
 }

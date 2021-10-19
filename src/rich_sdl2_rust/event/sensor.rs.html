@@ -124,7 +124,7 @@
 }
 
 <span class="kw">impl</span> <span class="ident">std::fmt::Debug</span> <span class="kw">for</span> <span class="ident">Sensor</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">std::fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">std::fmt::Result</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">std::fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">std::fmt::Result</span> {
         <span class="ident">f</span>.<span class="ident">debug_struct</span>(<span class="string">&quot;Sensor&quot;</span>)
             .<span class="ident">field</span>(<span class="string">&quot;name&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">name</span>())
             .<span class="ident">finish_non_exhaustive</span>()
@@ -133,7 +133,7 @@
 
 <span class="kw">impl</span> <span class="ident">Sensor</span> {
     <span class="doccomment">/// Reads some `f32` data by count</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">data</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">read_count</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">f32</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">data</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">read_count</span>: <span class="ident">usize</span>) -&gt; <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">f32</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">data</span> <span class="op">=</span> <span class="macro">vec!</span>[<span class="number">0.0</span>; <span class="ident">read_count</span>];
         <span class="kw">unsafe</span> {
             <span class="ident">bind::SDL_SensorGetData</span>(<span class="self">self</span>.<span class="ident">ptr</span>.<span class="ident">as_ptr</span>(), <span class="ident">data</span>.<span class="ident">as_mut_ptr</span>(), <span class="ident">read_count</span> <span class="kw">as</span> <span class="ident">c_int</span>);
@@ -142,22 +142,22 @@
     }
 
     <span class="doccomment">/// Returns the name of the sensor</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">name</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="ident">str</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">name</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="ident">str</span> {
         <span class="kw">let</span> <span class="ident">cstr</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">CStr::from_ptr</span>(<span class="ident">bind::SDL_SensorGetName</span>(<span class="self">self</span>.<span class="ident">ptr</span>.<span class="ident">as_ptr</span>())) };
         <span class="ident">cstr</span>.<span class="ident">to_str</span>().<span class="ident">unwrap</span>()
     }
 
     <span class="doccomment">/// Returns the kind of the sensor</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">kind</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">SensorKind</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">kind</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">SensorKind</span> {
         <span class="kw">let</span> <span class="ident">ty</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">bind::SDL_SensorGetType</span>(<span class="self">self</span>.<span class="ident">ptr</span>.<span class="ident">as_ptr</span>()) };
         <span class="kw">match</span> <span class="ident">ty</span> {
-            <span class="ident">bind::SDL_SENSOR_ACCEL</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">SensorKind::Accel</span>,
-            <span class="ident">bind::SDL_SENSOR_GYRO</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">SensorKind::Gyro</span>,
-            <span class="ident">bind::SDL_SENSOR_UNKNOWN</span> <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="ident">bind::SDL_SENSOR_ACCEL</span> =&gt; <span class="ident">SensorKind::Accel</span>,
+            <span class="ident">bind::SDL_SENSOR_GYRO</span> =&gt; <span class="ident">SensorKind::Gyro</span>,
+            <span class="ident">bind::SDL_SENSOR_UNKNOWN</span> =&gt; {
                 <span class="kw">let</span> <span class="ident">ty</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">bind::SDL_SensorGetNonPortableType</span>(<span class="self">self</span>.<span class="ident">ptr</span>.<span class="ident">as_ptr</span>()) };
                 <span class="ident">SensorKind::Others</span>(<span class="ident">ty</span>)
             }
-            <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">unreachable!</span>(),
+            <span class="kw">_</span> =&gt; <span class="macro">unreachable!</span>(),
         }
     }
 }
@@ -168,7 +168,7 @@
 
 <span class="kw">impl</span> <span class="ident">SensorSet</span> {
     <span class="doccomment">/// Setup the system and recognizes the sensors.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>() -&gt; <span class="self">Self</span> {
         <span class="kw">let</span> <span class="ident">sensor_count</span> <span class="op">=</span> <span class="kw">unsafe</span> {
             <span class="ident">bind::SDL_InitSubSystem</span>(<span class="ident">bind::SDL_INIT_SENSOR</span>);
             <span class="ident">bind::SDL_NumSensors</span>()
@@ -186,13 +186,13 @@
     }
 
     <span class="doccomment">/// Returns the sensors slice.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">sensors</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span>[<span class="ident">Sensor</span>] {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">sensors</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>[<span class="ident">Sensor</span>] {
         <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="number">0</span>
     }
 }
 
 <span class="kw">impl</span> <span class="ident">Default</span> <span class="kw">for</span> <span class="ident">SensorSet</span> {
-    <span class="kw">fn</span> <span class="ident">default</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">fn</span> <span class="ident">default</span>() -&gt; <span class="self">Self</span> {
         <span class="ident"><span class="self">Self</span>::new</span>()
     }
 }

@@ -50,13 +50,13 @@
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">S</span><span class="op">&gt;</span> <span class="ident">Clipped</span><span class="op">&lt;</span><span class="ident">S</span><span class="op">&gt;</span> {
     <span class="doccomment">/// Returns the clipped area.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">area</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Rect</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">area</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">Rect</span> {
         <span class="self">self</span>.<span class="ident">area</span>
     }
 }
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">S</span>: <span class="ident">Surface</span><span class="op">&gt;</span> <span class="ident">Clipped</span><span class="op">&lt;</span><span class="ident">S</span><span class="op">&gt;</span> {
-    <span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">surface</span>: <span class="ident">S</span>, <span class="ident">area</span>: <span class="ident">Rect</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">surface</span>: <span class="ident">S</span>, <span class="ident">area</span>: <span class="ident">Rect</span>) -&gt; <span class="self">Self</span> {
         <span class="kw">let</span> <span class="ident">raw_rect</span> <span class="op">=</span> <span class="ident">area</span>.<span class="ident">into</span>();
         <span class="kw">unsafe</span> {
             <span class="kw">let</span> <span class="kw">_</span> <span class="op">=</span> <span class="ident">bind::SDL_SetClipRect</span>(<span class="ident">surface</span>.<span class="ident">as_ptr</span>().<span class="ident">as_ptr</span>(), <span class="kw-2">&amp;</span><span class="ident">raw_rect</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="kw">_</span>);
@@ -66,7 +66,7 @@
 }
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">S</span>: <span class="ident">Surface</span><span class="op">&gt;</span> <span class="ident">Surface</span> <span class="kw">for</span> <span class="ident">Clipped</span><span class="op">&lt;</span><span class="ident">S</span><span class="op">&gt;</span> {
-    <span class="kw">fn</span> <span class="ident">as_ptr</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">std::ptr::NonNull</span><span class="op">&lt;</span><span class="ident">RawSurface</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">as_ptr</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">std::ptr::NonNull</span><span class="op">&lt;</span><span class="ident">RawSurface</span><span class="op">&gt;</span> {
         <span class="self">self</span>.<span class="ident">surface</span>.<span class="ident">as_ptr</span>()
     }
 }

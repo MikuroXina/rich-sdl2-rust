@@ -100,20 +100,20 @@
 }
 
 <span class="kw">impl</span> <span class="ident">Direction</span> {
-    <span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn</span> <span class="ident">into_raw</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bind::SDL_HapticDirection</span> {
+    <span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn</span> <span class="ident">into_raw</span>(<span class="self">self</span>) -&gt; <span class="ident">bind::SDL_HapticDirection</span> {
         <span class="kw">match</span> <span class="self">self</span> {
-            <span class="ident">Direction::Polar</span> { <span class="ident">degree_100</span> } <span class="op">=</span><span class="op">&gt;</span> <span class="ident">bind::SDL_HapticDirection</span> {
+            <span class="ident">Direction::Polar</span> { <span class="ident">degree_100</span> } =&gt; <span class="ident">bind::SDL_HapticDirection</span> {
                 <span class="ident">type_</span>: <span class="ident">bind::SDL_HAPTIC_POLAR</span> <span class="kw">as</span> <span class="ident">u8</span>,
                 <span class="ident">dir</span>: [<span class="ident">degree_100</span>, <span class="number">0</span>, <span class="number">0</span>],
             },
-            <span class="ident">Direction::Cartesian</span> { <span class="ident">x</span>, <span class="ident">y</span>, <span class="ident">z</span> } <span class="op">=</span><span class="op">&gt;</span> <span class="ident">bind::SDL_HapticDirection</span> {
+            <span class="ident">Direction::Cartesian</span> { <span class="ident">x</span>, <span class="ident">y</span>, <span class="ident">z</span> } =&gt; <span class="ident">bind::SDL_HapticDirection</span> {
                 <span class="ident">type_</span>: <span class="ident">bind::SDL_HAPTIC_CARTESIAN</span> <span class="kw">as</span> <span class="ident">u8</span>,
                 <span class="ident">dir</span>: [<span class="ident">x</span>, <span class="ident">y</span>, <span class="ident">z</span>],
             },
             <span class="ident">Direction::Spherical</span> {
                 <span class="ident">z_degree_100</span>,
                 <span class="ident">elevation_degree_100</span>,
-            } <span class="op">=</span><span class="op">&gt;</span> <span class="ident">bind::SDL_HapticDirection</span> {
+            } =&gt; <span class="ident">bind::SDL_HapticDirection</span> {
                 <span class="ident">type_</span>: <span class="ident">bind::SDL_HAPTIC_SPHERICAL</span> <span class="kw">as</span> <span class="ident">u8</span>,
                 <span class="ident">dir</span>: [<span class="ident">z_degree_100</span>, <span class="ident">elevation_degree_100</span>, <span class="number">0</span>],
             },
@@ -122,21 +122,21 @@
 }
 
 <span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">bind::SDL_HapticDirection</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Direction</span> {
-    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">raw</span>: <span class="ident">bind::SDL_HapticDirection</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">raw</span>: <span class="ident">bind::SDL_HapticDirection</span>) -&gt; <span class="self">Self</span> {
         <span class="kw">match</span> <span class="ident">raw</span>.<span class="ident">type_</span> <span class="kw">as</span> <span class="ident">u32</span> {
-            <span class="ident">bind::SDL_HAPTIC_POLAR</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident"><span class="self">Self</span>::Polar</span> {
+            <span class="ident">bind::SDL_HAPTIC_POLAR</span> =&gt; <span class="ident"><span class="self">Self</span>::Polar</span> {
                 <span class="ident">degree_100</span>: <span class="ident">raw</span>.<span class="ident">dir</span>[<span class="number">0</span>],
             },
-            <span class="ident">bind::SDL_HAPTIC_CARTESIAN</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident"><span class="self">Self</span>::Cartesian</span> {
+            <span class="ident">bind::SDL_HAPTIC_CARTESIAN</span> =&gt; <span class="ident"><span class="self">Self</span>::Cartesian</span> {
                 <span class="ident">x</span>: <span class="ident">raw</span>.<span class="ident">dir</span>[<span class="number">0</span>],
                 <span class="ident">y</span>: <span class="ident">raw</span>.<span class="ident">dir</span>[<span class="number">0</span>],
                 <span class="ident">z</span>: <span class="ident">raw</span>.<span class="ident">dir</span>[<span class="number">0</span>],
             },
-            <span class="ident">bind::SDL_HAPTIC_SPHERICAL</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident"><span class="self">Self</span>::Spherical</span> {
+            <span class="ident">bind::SDL_HAPTIC_SPHERICAL</span> =&gt; <span class="ident"><span class="self">Self</span>::Spherical</span> {
                 <span class="ident">z_degree_100</span>: <span class="ident">raw</span>.<span class="ident">dir</span>[<span class="number">0</span>],
                 <span class="ident">elevation_degree_100</span>: <span class="ident">raw</span>.<span class="ident">dir</span>[<span class="number">1</span>],
             },
-            <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">unreachable!</span>(),
+            <span class="kw">_</span> =&gt; <span class="macro">unreachable!</span>(),
         }
     }
 }

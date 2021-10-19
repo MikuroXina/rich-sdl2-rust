@@ -36,7 +36,7 @@
     <span class="doccomment">/// Ungrabs the mouse.</span>
     <span class="kw">fn</span> <span class="ident">ungrab</span>(<span class="kw-2">&amp;</span><span class="self">self</span>);
     <span class="doccomment">/// Returns whether the window is grabbing the mouse.</span>
-    <span class="kw">fn</span> <span class="ident">is_grabbed</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span>;
+    <span class="kw">fn</span> <span class="ident">is_grabbed</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span>;
 }
 
 <span class="kw">impl</span> <span class="ident">MouseGrabExt</span> <span class="kw">for</span> <span class="ident">Window</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span> {
@@ -48,7 +48,7 @@
         <span class="kw">unsafe</span> { <span class="ident">bind::SDL_SetWindowGrab</span>(<span class="self">self</span>.<span class="ident">as_ptr</span>(), <span class="number">0</span>) }
     }
 
-    <span class="kw">fn</span> <span class="ident">is_grabbed</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">fn</span> <span class="ident">is_grabbed</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
         <span class="kw">unsafe</span> { <span class="ident">bind::SDL_GetWindowGrab</span>(<span class="self">self</span>.<span class="ident">as_ptr</span>()) <span class="op">!</span><span class="op">=</span> <span class="number">0</span> }
     }
 }

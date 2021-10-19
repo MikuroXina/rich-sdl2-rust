@@ -139,7 +139,7 @@
             <span class="ident">minor</span>,
             <span class="ident">patch</span>,
         }: <span class="ident">bind::SDL_version</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    ) -&gt; <span class="self">Self</span> {
         <span class="self">Self</span> {
             <span class="ident">major</span>,
             <span class="ident">minor</span>,
@@ -161,7 +161,7 @@
     <span class="doccomment">/// # Panics</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// Panics if SDL2 system is already initialized such as there are existing `Sdl` instances</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>() -&gt; <span class="self">Self</span> {
         <span class="kw">let</span> <span class="ident">ret</span> <span class="op">=</span> <span class="kw">unsafe</span> {
             <span class="ident">bind::SDL_SetMainReady</span>();
             <span class="ident">bind::SDL_Init</span>(<span class="number">0</span>)
@@ -175,7 +175,7 @@
     }
 
     <span class="doccomment">/// Returns the version of SDL2.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">version</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">SdlVersion</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">version</span>() -&gt; <span class="ident">SdlVersion</span> {
         <span class="kw">use</span> <span class="ident">bind::SDL_version</span>;
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">ver</span> <span class="op">=</span> <span class="ident">SDL_version</span> {
             <span class="ident">major</span>: <span class="number">0</span>,
@@ -187,7 +187,7 @@
     }
 
     <span class="doccomment">/// Returns the revision string.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">revision_str</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">revision_str</span>() -&gt; <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span> {
         <span class="kw">let</span> <span class="ident">raw_str</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">bind::SDL_GetRevision</span>() };
         <span class="kw">unsafe</span> { <span class="ident">std::ffi::CStr::from_ptr</span>(<span class="ident">raw_str</span>) }
             .<span class="ident">to_str</span>()
@@ -195,24 +195,24 @@
     }
 
     <span class="doccomment">/// REturns the revision number.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">revision_num</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">u32</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">revision_num</span>() -&gt; <span class="ident">u32</span> {
         (<span class="kw">unsafe</span> { <span class="ident">bind::SDL_GetRevisionNumber</span>() }) <span class="kw">as</span> <span class="ident">u32</span>
     }
 
     <span class="doccomment">/// Gets the platform string.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">platform</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">platform</span>() -&gt; <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span> {
         <span class="kw">let</span> <span class="ident">cstr</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">CStr::from_ptr</span>(<span class="ident">bind::SDL_GetPlatform</span>()) };
         <span class="ident">cstr</span>.<span class="ident">to_str</span>().<span class="ident">unwrap</span>()
     }
 
     <span class="doccomment">/// On an unrecoverable error detected, panics with the provided `context`.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">error_then_panic</span>(<span class="ident">context</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="op">!</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">error_then_panic</span>(<span class="ident">context</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span>) -&gt; <span class="op">!</span> {
         <span class="macro">eprintln!</span>(<span class="string">&quot;{} error: {}&quot;</span>, <span class="ident">context</span>, <span class="ident"><span class="self">Self</span>::error</span>());
         <span class="macro">panic!</span>(<span class="string">&quot;Unrecoverable Sdl error occurred&quot;</span>);
     }
 
     <span class="doccomment">/// Reads the error string from SDL2.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">error</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">String</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">error</span>() -&gt; <span class="ident">String</span> {
         <span class="kw">let</span> <span class="ident">raw_str</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">bind::SDL_GetError</span>() };
         <span class="kw">let</span> <span class="ident">error</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">std::ffi::CStr::from_ptr</span>(<span class="ident">raw_str</span>) }
             .<span class="ident">to_str</span>()
@@ -224,7 +224,7 @@
 }
 
 <span class="kw">impl</span> <span class="ident">Default</span> <span class="kw">for</span> <span class="ident">Sdl</span> {
-    <span class="kw">fn</span> <span class="ident">default</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">fn</span> <span class="ident">default</span>() -&gt; <span class="self">Self</span> {
         <span class="ident"><span class="self">Self</span>::new</span>()
     }
 }

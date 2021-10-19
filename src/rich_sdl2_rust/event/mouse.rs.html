@@ -162,15 +162,15 @@
 }
 
 <span class="kw">impl</span> <span class="ident">MouseButton</span> {
-    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">from_bits</span>(<span class="ident">bits</span>: <span class="ident">u8</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">from_bits</span>(<span class="ident">bits</span>: <span class="ident">u8</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
         <span class="kw">use</span> <span class="ident">MouseButton</span>::<span class="kw-2">*</span>;
         <span class="prelude-val">Some</span>(<span class="kw">match</span> <span class="ident">bits</span> {
-            <span class="number">1</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Left</span>,
-            <span class="number">2</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Middle</span>,
-            <span class="number">3</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Right</span>,
-            <span class="number">4</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">X1</span>,
-            <span class="number">5</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">X2</span>,
-            <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="kw">return</span> <span class="prelude-val">None</span>,
+            <span class="number">1</span> =&gt; <span class="ident">Left</span>,
+            <span class="number">2</span> =&gt; <span class="ident">Middle</span>,
+            <span class="number">3</span> =&gt; <span class="ident">Right</span>,
+            <span class="number">4</span> =&gt; <span class="ident">X1</span>,
+            <span class="number">5</span> =&gt; <span class="ident">X2</span>,
+            <span class="kw">_</span> =&gt; <span class="kw">return</span> <span class="prelude-val">None</span>,
         })
     }
 }
@@ -204,7 +204,7 @@
 }
 
 <span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">bind::SDL_MouseMotionEvent</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">MouseMotionEvent</span> {
-    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">raw</span>: <span class="ident">bind::SDL_MouseMotionEvent</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">raw</span>: <span class="ident">bind::SDL_MouseMotionEvent</span>) -&gt; <span class="self">Self</span> {
         <span class="self">Self</span> {
             <span class="ident">timestamp</span>: <span class="ident">raw</span>.<span class="ident">timestamp</span>,
             <span class="ident">window_id</span>: <span class="ident">raw</span>.<span class="ident">windowID</span>,
@@ -239,13 +239,13 @@
 }
 
 <span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">bind::SDL_MouseButtonEvent</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">MouseButtonEvent</span> {
-    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">raw</span>: <span class="ident">bind::SDL_MouseButtonEvent</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">raw</span>: <span class="ident">bind::SDL_MouseButtonEvent</span>) -&gt; <span class="self">Self</span> {
         <span class="self">Self</span> {
             <span class="ident">timestamp</span>: <span class="ident">raw</span>.<span class="ident">timestamp</span>,
             <span class="ident">window_id</span>: <span class="ident">raw</span>.<span class="ident">windowID</span>,
             <span class="ident">mouse_id</span>: <span class="ident">raw</span>.<span class="ident">which</span>,
             <span class="ident">button</span>: <span class="ident">MouseButton::from_bits</span>(<span class="ident">raw</span>.<span class="ident">button</span>),
-            <span class="ident">is_pressed</span>: <span class="ident">raw</span>.<span class="ident">state</span> <span class="kw">as</span> <span class="ident">u32</span> <span class="op">=</span><span class="op">=</span> <span class="ident">bind::SDL_PRESSED</span>,
+            <span class="ident">is_pressed</span>: <span class="ident">raw</span>.<span class="ident">state</span> <span class="kw">as</span> <span class="ident">u32</span> <span class="op">==</span> <span class="ident">bind::SDL_PRESSED</span>,
             <span class="ident">clicks</span>: <span class="ident">raw</span>.<span class="ident">clicks</span>,
             <span class="ident">pos</span>: <span class="ident">Point</span> { <span class="ident">x</span>: <span class="ident">raw</span>.<span class="ident">x</span>, <span class="ident">y</span>: <span class="ident">raw</span>.<span class="ident">y</span> },
         }
@@ -268,13 +268,13 @@
 }
 
 <span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">bind::SDL_MouseWheelEvent</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">MouseWheelEvent</span> {
-    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">raw</span>: <span class="ident">bind::SDL_MouseWheelEvent</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">raw</span>: <span class="ident">bind::SDL_MouseWheelEvent</span>) -&gt; <span class="self">Self</span> {
         <span class="self">Self</span> {
             <span class="ident">timestamp</span>: <span class="ident">raw</span>.<span class="ident">timestamp</span>,
             <span class="ident">window_id</span>: <span class="ident">raw</span>.<span class="ident">windowID</span>,
             <span class="ident">mouse_id</span>: <span class="ident">raw</span>.<span class="ident">which</span>,
             <span class="ident">scroll_amount</span>: <span class="ident">Point</span> { <span class="ident">x</span>: <span class="ident">raw</span>.<span class="ident">x</span>, <span class="ident">y</span>: <span class="ident">raw</span>.<span class="ident">y</span> },
-            <span class="ident">is_flipped</span>: <span class="ident">raw</span>.<span class="ident">direction</span> <span class="kw">as</span> <span class="ident">EnumInt</span> <span class="op">=</span><span class="op">=</span> <span class="ident">bind::SDL_MOUSEWHEEL_FLIPPED</span>,
+            <span class="ident">is_flipped</span>: <span class="ident">raw</span>.<span class="ident">direction</span> <span class="kw">as</span> <span class="ident">EnumInt</span> <span class="op">==</span> <span class="ident">bind::SDL_MOUSEWHEEL_FLIPPED</span>,
         }
     }
 }

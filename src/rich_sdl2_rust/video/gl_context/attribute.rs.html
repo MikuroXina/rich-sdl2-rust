@@ -182,7 +182,7 @@
 }
 
 <span class="kw">impl</span> <span class="ident">std::fmt::Debug</span> <span class="kw">for</span> <span class="ident">GlAttribute</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">std::fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">std::fmt::Result</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">std::fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">std::fmt::Result</span> {
         <span class="ident">f</span>.<span class="ident">debug_struct</span>(<span class="string">&quot;GlAttribute&quot;</span>)
             .<span class="ident">field</span>(<span class="string">&quot;attr&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">attr</span>)
             .<span class="ident">finish_non_exhaustive</span>()
@@ -193,7 +193,7 @@
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;gl</span><span class="op">&gt;</span> <span class="ident">GlAttribute</span><span class="op">&lt;</span><span class="lifetime">&#39;gl</span><span class="op">&gt;</span> {
     <span class="doccomment">/// Constructs an attribute from context and kind.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="kw">_</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;gl</span> <span class="ident">GlContext</span><span class="op">&lt;</span><span class="lifetime">&#39;gl</span><span class="op">&gt;</span>, <span class="ident">attr</span>: <span class="ident">GlAttributeKind</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="kw">_</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;gl</span> <span class="ident">GlContext</span><span class="op">&lt;</span><span class="lifetime">&#39;gl</span><span class="op">&gt;</span>, <span class="ident">attr</span>: <span class="ident">GlAttributeKind</span>) -&gt; <span class="self">Self</span> {
         <span class="self">Self</span> {
             <span class="ident">attr</span>,
             <span class="ident">_phantom</span>: <span class="ident">PhantomData</span>,
@@ -201,7 +201,7 @@
     }
 
     <span class="doccomment">/// Sets the attribute value, or `Err` on failure.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">value</span>: <span class="ident">i32</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">value</span>: <span class="ident">i32</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="ident">ret</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">bind::SDL_GL_SetAttribute</span>(<span class="self">self</span>.<span class="ident">attr</span>.<span class="ident">bits</span> <span class="kw">as</span> <span class="ident">EnumInt</span>, <span class="ident">value</span>) };
         <span class="kw">if</span> <span class="ident">ret</span> <span class="op">!</span><span class="op">=</span> <span class="number">0</span> {
             <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">SdlError::Others</span> { <span class="ident">msg</span>: <span class="ident">Sdl::error</span>() });
@@ -210,7 +210,7 @@
     }
 
     <span class="doccomment">/// Gets the attribute value, or `Err` on failure.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">i32</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">i32</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">value</span> <span class="op">=</span> <span class="number">0</span>;
         <span class="kw">let</span> <span class="ident">ret</span> <span class="op">=</span>
             <span class="kw">unsafe</span> { <span class="ident">bind::SDL_GL_GetAttribute</span>(<span class="self">self</span>.<span class="ident">attr</span>.<span class="ident">bits</span> <span class="kw">as</span> <span class="ident">EnumInt</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">value</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="kw">_</span>) };

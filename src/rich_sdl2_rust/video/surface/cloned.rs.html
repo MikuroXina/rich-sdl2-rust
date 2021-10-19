@@ -65,7 +65,7 @@
 <span class="macro">assert_not_impl_all!</span>(<span class="ident">Cloned</span>: <span class="ident">Send</span>, <span class="ident">Sync</span>);
 
 <span class="kw">impl</span> <span class="ident">Cloned</span> {
-    <span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">src</span>: <span class="ident">NonNull</span><span class="op">&lt;</span><span class="ident">RawSurface</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">src</span>: <span class="ident">NonNull</span><span class="op">&lt;</span><span class="ident">RawSurface</span><span class="op">&gt;</span>) -&gt; <span class="self">Self</span> {
         <span class="kw">let</span> <span class="ident">raw</span> <span class="op">=</span> <span class="kw">unsafe</span> {
             <span class="kw">let</span> <span class="ident">src</span> <span class="op">=</span> <span class="ident">src</span>.<span class="ident">as_ref</span>();
             <span class="ident">bind::SDL_CreateRGBSurface</span>(
@@ -86,7 +86,7 @@
 }
 
 <span class="kw">impl</span> <span class="ident">Surface</span> <span class="kw">for</span> <span class="ident">Cloned</span> {
-    <span class="kw">fn</span> <span class="ident">as_ptr</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">NonNull</span><span class="op">&lt;</span><span class="ident">RawSurface</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">as_ptr</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">NonNull</span><span class="op">&lt;</span><span class="ident">RawSurface</span><span class="op">&gt;</span> {
         <span class="self">self</span>.<span class="ident">surface</span>
     }
 }

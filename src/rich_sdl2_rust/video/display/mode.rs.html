@@ -41,7 +41,7 @@
 }
 
 <span class="kw">impl</span> <span class="ident">Mode</span> {
-    <span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">mode</span>: <span class="ident">bind::SDL_DisplayMode</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">mode</span>: <span class="ident">bind::SDL_DisplayMode</span>) -&gt; <span class="self">Self</span> {
         <span class="self">Self</span> {
             <span class="ident">pixel_format</span>: <span class="ident">PixelFormatKind::from_raw</span>(<span class="ident">mode</span>.<span class="ident">format</span> <span class="kw">as</span> <span class="ident">EnumInt</span>),
             <span class="ident">width</span>: <span class="ident">mode</span>.<span class="ident">w</span> <span class="kw">as</span> <span class="ident">u32</span>,

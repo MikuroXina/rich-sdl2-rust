@@ -70,19 +70,19 @@
 }
 
 <span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">bind::SDL_AudioDeviceEvent</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">AudioDeviceEvent</span> {
-    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">raw</span>: <span class="ident">bind::SDL_AudioDeviceEvent</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">raw</span>: <span class="ident">bind::SDL_AudioDeviceEvent</span>) -&gt; <span class="self">Self</span> {
         <span class="kw">match</span> <span class="ident">raw</span>.<span class="ident">type_</span> <span class="kw">as</span> <span class="ident">EnumInt</span> {
-            <span class="ident">bind::SDL_AUDIODEVICEADDED</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">AudioDeviceEvent::Added</span> {
+            <span class="ident">bind::SDL_AUDIODEVICEADDED</span> =&gt; <span class="ident">AudioDeviceEvent::Added</span> {
                 <span class="ident">timestamp</span>: <span class="ident">raw</span>.<span class="ident">timestamp</span>,
                 <span class="ident">device_id</span>: <span class="ident">raw</span>.<span class="ident">which</span>,
                 <span class="ident">is_microphone</span>: <span class="ident">raw</span>.<span class="ident">iscapture</span> <span class="op">!</span><span class="op">=</span> <span class="number">0</span>,
             },
-            <span class="ident">bind::SDL_AUDIODEVICEREMOVED</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">AudioDeviceEvent::Removed</span> {
+            <span class="ident">bind::SDL_AUDIODEVICEREMOVED</span> =&gt; <span class="ident">AudioDeviceEvent::Removed</span> {
                 <span class="ident">timestamp</span>: <span class="ident">raw</span>.<span class="ident">timestamp</span>,
                 <span class="ident">device_id</span>: <span class="ident">raw</span>.<span class="ident">which</span>,
                 <span class="ident">is_microphone</span>: <span class="ident">raw</span>.<span class="ident">iscapture</span> <span class="op">!</span><span class="op">=</span> <span class="number">0</span>,
             },
-            <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">unreachable!</span>(),
+            <span class="kw">_</span> =&gt; <span class="macro">unreachable!</span>(),
         }
     }
 }

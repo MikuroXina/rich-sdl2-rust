@@ -125,7 +125,7 @@
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;sdl</span><span class="op">&gt;</span> <span class="ident">Video</span><span class="op">&lt;</span><span class="lifetime">&#39;sdl</span><span class="op">&gt;</span> {
     <span class="doccomment">/// Constructs a video controller from a root controller.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="kw">_</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;sdl</span> <span class="ident">Sdl</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="kw">_</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;sdl</span> <span class="ident">Sdl</span>) -&gt; <span class="self">Self</span> {
         <span class="kw">let</span> <span class="ident">ret</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">bind::SDL_InitSubSystem</span>(<span class="ident">bind::SDL_INIT_VIDEO</span>) };
         <span class="kw">if</span> <span class="ident">ret</span> <span class="op">!</span><span class="op">=</span> <span class="number">0</span> {
             <span class="ident">Sdl::error_then_panic</span>(<span class="string">&quot;Sdl video&quot;</span>)
@@ -136,7 +136,7 @@
     }
 
     <span class="doccomment">/// Returns a list of displays.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">displays</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">Display</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">displays</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">Display</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="ident">ret</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">bind::SDL_GetNumVideoDisplays</span>() };
         <span class="kw">if</span> <span class="ident">ret</span> <span class="op">&lt;</span><span class="op">=</span> <span class="number">0</span> {
             <span class="kw">return</span> <span class="macro">vec!</span>[];
@@ -145,7 +145,7 @@
     }
 
     <span class="doccomment">/// Returns the names of the video drivers.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">video_drivers</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Vec</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">str</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">video_drivers</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">Vec</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">str</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="ident">num_drivers</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">bind::SDL_GetNumVideoDrivers</span>() };
         <span class="kw">if</span> <span class="ident">num_drivers</span> <span class="op">&lt;</span><span class="op">=</span> <span class="number">0</span> {
             <span class="ident">Sdl::error_then_panic</span>(<span class="string">&quot;Getting number of drivers&quot;</span>);
@@ -161,7 +161,7 @@
     }
 
     <span class="doccomment">/// Returns the name of the current video driver.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">current_driver</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="ident">str</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">current_driver</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="ident">str</span> {
         <span class="kw">let</span> <span class="ident">raw_str</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">bind::SDL_GetCurrentVideoDriver</span>() };
         <span class="kw">unsafe</span> { <span class="ident">CStr::from_ptr</span>(<span class="ident">raw_str</span>) }
             .<span class="ident">to_str</span>()
@@ -169,7 +169,7 @@
     }
 
     <span class="doccomment">/// Returns whether the screen keyboard is supported.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">has_screen_keyboard</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">has_screen_keyboard</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
         <span class="kw">unsafe</span> { <span class="ident">bind::SDL_HasScreenKeyboardSupport</span>() <span class="op">!</span><span class="op">=</span> <span class="number">0</span> }
     }
 

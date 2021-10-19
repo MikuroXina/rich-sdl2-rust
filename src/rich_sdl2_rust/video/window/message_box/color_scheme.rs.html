@@ -52,13 +52,13 @@
 }
 
 <span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">Rgb</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">bind::SDL_MessageBoxColor</span> {
-    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">Rgb</span> { <span class="ident">r</span>, <span class="ident">g</span>, <span class="ident">b</span> }: <span class="ident">Rgb</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">Rgb</span> { <span class="ident">r</span>, <span class="ident">g</span>, <span class="ident">b</span> }: <span class="ident">Rgb</span>) -&gt; <span class="self">Self</span> {
         <span class="self">Self</span> { <span class="ident">r</span>, <span class="ident">g</span>, <span class="ident">b</span> }
     }
 }
 
 <span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">ColorScheme</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">bind::SDL_MessageBoxColorScheme</span> {
-    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">scheme</span>: <span class="ident">ColorScheme</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">scheme</span>: <span class="ident">ColorScheme</span>) -&gt; <span class="self">Self</span> {
         <span class="self">Self</span> {
             <span class="ident">colors</span>: [
                 <span class="ident">scheme</span>.<span class="ident">background</span>.<span class="ident">into</span>(),

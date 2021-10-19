@@ -79,7 +79,7 @@
 <span class="kw">pub</span> <span class="kw">use</span> <span class="ident">ticks</span>::<span class="kw-2">*</span>;
 
 <span class="doccomment">/// A callback for [`Timer`], that returns an interval for next calling.</span>
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">TimerCallback</span><span class="op">&lt;</span><span class="lifetime">&#39;callback</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">Box</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">FnMut</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">u32</span> <span class="op">+</span> <span class="lifetime">&#39;callback</span><span class="op">&gt;</span>;
+<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">TimerCallback</span><span class="op">&lt;</span><span class="lifetime">&#39;callback</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">Box</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">FnMut</span>() -&gt; <span class="ident">u32</span> <span class="op">+</span> <span class="lifetime">&#39;callback</span><span class="op">&gt;</span>;
 
 <span class="doccomment">/// A timer invokes a [`TimerCallback`] with the interval.</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Timer</span><span class="op">&lt;</span><span class="lifetime">&#39;callback</span><span class="op">&gt;</span> {
@@ -88,7 +88,7 @@
 }
 
 <span class="kw">impl</span> <span class="ident">std::fmt::Debug</span> <span class="kw">for</span> <span class="ident">Timer</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">std::fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">std::fmt::Result</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">std::fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">std::fmt::Result</span> {
         <span class="ident">f</span>.<span class="ident">debug_struct</span>(<span class="string">&quot;Timer&quot;</span>)
             .<span class="ident">field</span>(<span class="string">&quot;id&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">id</span>)
             .<span class="ident">finish_non_exhaustive</span>()
@@ -97,10 +97,10 @@
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;callback</span><span class="op">&gt;</span> <span class="ident">Timer</span><span class="op">&lt;</span><span class="lifetime">&#39;callback</span><span class="op">&gt;</span> {
     <span class="doccomment">/// Constructs a timer with initial interval and callback.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">interval</span>: <span class="ident">u32</span>, <span class="ident">callback</span>: <span class="ident">TimerCallback</span><span class="op">&lt;</span><span class="lifetime">&#39;callback</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">interval</span>: <span class="ident">u32</span>, <span class="ident">callback</span>: <span class="ident">TimerCallback</span><span class="op">&lt;</span><span class="lifetime">&#39;callback</span><span class="op">&gt;</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="ident">wrapped</span> <span class="op">=</span> <span class="ident">Box::into_raw</span>(<span class="ident">Box::new</span>(<span class="ident">callback</span>));
         <span class="kw">let</span> <span class="ident">id</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">bind::SDL_AddTimer</span>(<span class="ident">interval</span>, <span class="prelude-val">Some</span>(<span class="ident">timer_wrap_handler</span>), <span class="ident">wrapped</span>.<span class="ident">cast</span>()) };
-        <span class="kw">if</span> <span class="ident">id</span> <span class="op">=</span><span class="op">=</span> <span class="number">0</span> {
+        <span class="kw">if</span> <span class="ident">id</span> <span class="op">==</span> <span class="number">0</span> {
             <span class="prelude-val">Err</span>(<span class="ident">SdlError::Others</span> { <span class="ident">msg</span>: <span class="ident">Sdl::error</span>() })
         } <span class="kw">else</span> {
             <span class="prelude-val">Ok</span>(<span class="self">Self</span> {
@@ -111,7 +111,7 @@
     }
 }
 
-<span class="kw">extern</span> <span class="string">&quot;C&quot;</span> <span class="kw">fn</span> <span class="ident">timer_wrap_handler</span>(<span class="kw">_</span>: <span class="ident">u32</span>, <span class="ident">param</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">c_void</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">u32</span> {
+<span class="kw">extern</span> <span class="string">&quot;C&quot;</span> <span class="kw">fn</span> <span class="ident">timer_wrap_handler</span>(<span class="kw">_</span>: <span class="ident">u32</span>, <span class="ident">param</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">c_void</span>) -&gt; <span class="ident">u32</span> {
     <span class="kw">let</span> <span class="ident">callback</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="kw-2">*</span>(<span class="ident">param</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">TimerCallback</span>) };
     <span class="ident">callback</span>()
 }
@@ -133,12 +133,12 @@
     <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::bind</span>;
 
     <span class="doccomment">/// Returns current counts of the high resolution counter.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">counter</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">u64</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">counter</span>() -&gt; <span class="ident">u64</span> {
         <span class="kw">unsafe</span> { <span class="ident">bind::SDL_GetPerformanceCounter</span>() }
     }
 
     <span class="doccomment">/// Returns the numbers of counts per one seconds of the high resolution counter.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">frequency</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">u64</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">frequency</span>() -&gt; <span class="ident">u64</span> {
         <span class="kw">unsafe</span> { <span class="ident">bind::SDL_GetPerformanceFrequency</span>() }
     }
 }

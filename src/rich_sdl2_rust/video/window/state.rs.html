@@ -122,7 +122,7 @@
 }
 
 <span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">WindowFlags</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">WindowFormat</span> {
-    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">flags</span>: <span class="ident">WindowFlags</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">flags</span>: <span class="ident">WindowFlags</span>) -&gt; <span class="self">Self</span> {
         <span class="kw">use</span> <span class="ident">WindowFormat</span>::<span class="kw-2">*</span>;
         <span class="kw">if</span> <span class="ident">flags</span>.<span class="ident">contains</span>(<span class="ident">WindowFlags::FULLSCREEN</span>) {
             <span class="ident">FullScreen</span>
@@ -152,7 +152,7 @@
 }
 
 <span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">WindowFlags</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">WindowContextKind</span> {
-    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">flags</span>: <span class="ident">WindowFlags</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">flags</span>: <span class="ident">WindowFlags</span>) -&gt; <span class="self">Self</span> {
         <span class="kw">use</span> <span class="ident">WindowContextKind</span>::<span class="kw-2">*</span>;
         <span class="kw">if</span> <span class="ident">flags</span>.<span class="ident">contains</span>(<span class="ident">WindowFlags::OPENGL</span>) {
             <span class="ident">OpenGl</span>
@@ -194,7 +194,7 @@
 }
 
 <span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">WindowFlags</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">WindowState</span> {
-    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">flags</span>: <span class="ident">WindowFlags</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">flags</span>: <span class="ident">WindowFlags</span>) -&gt; <span class="self">Self</span> {
         <span class="self">Self</span> {
             <span class="ident">format</span>: <span class="ident">flags</span>.<span class="ident">into</span>(),
             <span class="ident">context_kind</span>: <span class="ident">flags</span>.<span class="ident">into</span>(),

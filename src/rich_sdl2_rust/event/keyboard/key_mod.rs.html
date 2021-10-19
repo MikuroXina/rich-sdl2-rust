@@ -94,7 +94,7 @@
 
 <span class="kw">impl</span> <span class="ident">KeyMod</span> {
     <span class="doccomment">/// Returns the current modification status on the keyboard.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">current</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">current</span>() -&gt; <span class="self">Self</span> {
         <span class="ident"><span class="self">Self</span>::from_bits</span>(<span class="kw">unsafe</span> { <span class="ident">bind::SDL_GetModState</span>() } <span class="kw">as</span> <span class="ident">u16</span>).<span class="ident">unwrap</span>()
     }
 }

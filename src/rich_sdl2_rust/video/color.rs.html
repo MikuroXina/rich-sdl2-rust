@@ -109,7 +109,7 @@
 }
 
 <span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">u32</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Rgb</span> {
-    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">color_code</span>: <span class="ident">u32</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">color_code</span>: <span class="ident">u32</span>) -&gt; <span class="self">Self</span> {
         <span class="self">Self</span> {
             <span class="ident">r</span>: (<span class="ident">color_code</span> <span class="op">&gt;</span><span class="op">&gt;</span> <span class="number">16</span>) <span class="kw">as</span> <span class="ident">u8</span>,
             <span class="ident">g</span>: (<span class="ident">color_code</span> <span class="op">&gt;</span><span class="op">&gt;</span> <span class="number">8</span>) <span class="kw">as</span> <span class="ident">u8</span>,
@@ -132,7 +132,7 @@
 }
 
 <span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">u32</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Rgba</span> {
-    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">color_code</span>: <span class="ident">u32</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">color_code</span>: <span class="ident">u32</span>) -&gt; <span class="self">Self</span> {
         <span class="self">Self</span> {
             <span class="ident">r</span>: (<span class="ident">color_code</span> <span class="op">&gt;</span><span class="op">&gt;</span> <span class="number">24</span>) <span class="kw">as</span> <span class="ident">u8</span>,
             <span class="ident">g</span>: (<span class="ident">color_code</span> <span class="op">&gt;</span><span class="op">&gt;</span> <span class="number">16</span>) <span class="kw">as</span> <span class="ident">u8</span>,
@@ -143,7 +143,7 @@
 }
 
 <span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">Rgba</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">bind::SDL_Color</span> {
-    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">Rgba</span> { <span class="ident">r</span>, <span class="ident">g</span>, <span class="ident">b</span>, <span class="ident">a</span> }: <span class="ident">Rgba</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">Rgba</span> { <span class="ident">r</span>, <span class="ident">g</span>, <span class="ident">b</span>, <span class="ident">a</span> }: <span class="ident">Rgba</span>) -&gt; <span class="self">Self</span> {
         <span class="self">Self</span> { <span class="ident">r</span>, <span class="ident">g</span>, <span class="ident">b</span>, <span class="ident">a</span> }
     }
 }
@@ -162,25 +162,25 @@
 }
 
 <span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">bind::SDL_BlendMode</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">BlendMode</span> {
-    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">raw</span>: <span class="ident">bind::SDL_BlendMode</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">raw</span>: <span class="ident">bind::SDL_BlendMode</span>) -&gt; <span class="self">Self</span> {
         <span class="kw">use</span> <span class="ident">BlendMode</span>::<span class="kw-2">*</span>;
         <span class="kw">match</span> <span class="ident">raw</span> {
-            <span class="ident">bind::SDL_BLENDMODE_BLEND</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">AlphaBlend</span>,
-            <span class="ident">bind::SDL_BLENDMODE_ADD</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Add</span>,
-            <span class="ident">bind::SDL_BLENDMODE_MOD</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Mul</span>,
-            <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">None</span>,
+            <span class="ident">bind::SDL_BLENDMODE_BLEND</span> =&gt; <span class="ident">AlphaBlend</span>,
+            <span class="ident">bind::SDL_BLENDMODE_ADD</span> =&gt; <span class="ident">Add</span>,
+            <span class="ident">bind::SDL_BLENDMODE_MOD</span> =&gt; <span class="ident">Mul</span>,
+            <span class="kw">_</span> =&gt; <span class="prelude-val">None</span>,
         }
     }
 }
 
 <span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">BlendMode</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">bind::SDL_BlendMode</span> {
-    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">raw</span>: <span class="ident">BlendMode</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">raw</span>: <span class="ident">BlendMode</span>) -&gt; <span class="self">Self</span> {
         <span class="kw">use</span> <span class="ident">BlendMode</span>::<span class="kw-2">*</span>;
         <span class="kw">match</span> <span class="ident">raw</span> {
-            <span class="ident">AlphaBlend</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">bind::SDL_BLENDMODE_BLEND</span>,
-            <span class="ident">Add</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">bind::SDL_BLENDMODE_ADD</span>,
-            <span class="ident">Mul</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">bind::SDL_BLENDMODE_MOD</span>,
-            <span class="prelude-val">None</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">bind::SDL_BLENDMODE_NONE</span>,
+            <span class="ident">AlphaBlend</span> =&gt; <span class="ident">bind::SDL_BLENDMODE_BLEND</span>,
+            <span class="ident">Add</span> =&gt; <span class="ident">bind::SDL_BLENDMODE_ADD</span>,
+            <span class="ident">Mul</span> =&gt; <span class="ident">bind::SDL_BLENDMODE_MOD</span>,
+            <span class="prelude-val">None</span> =&gt; <span class="ident">bind::SDL_BLENDMODE_NONE</span>,
         }
     }
 }

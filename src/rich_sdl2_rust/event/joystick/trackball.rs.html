@@ -68,7 +68,7 @@
 }
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;joystick</span><span class="op">&gt;</span> <span class="ident">Trackball</span><span class="op">&lt;</span><span class="lifetime">&#39;joystick</span><span class="op">&gt;</span> {
-    <span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">index</span>: <span class="ident">InputIndex</span>, <span class="ident">joystick</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;joystick</span> <span class="ident">Joystick</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">index</span>: <span class="ident">InputIndex</span>, <span class="ident">joystick</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;joystick</span> <span class="ident">Joystick</span>) -&gt; <span class="self">Self</span> {
         <span class="self">Self</span> {
             <span class="ident">index</span>: <span class="ident">index</span>.<span class="number">0</span>,
             <span class="ident">joystick</span>,
@@ -76,7 +76,7 @@
     }
 
     <span class="doccomment">/// Returns the delta between the current ball position and previously invoking this method.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">delta</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Point</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">delta</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">Point</span> {
         <span class="kw">let</span> (<span class="kw-2">mut</span> <span class="ident">dx</span>, <span class="kw-2">mut</span> <span class="ident">dy</span>): (<span class="ident">c_int</span>, <span class="ident">c_int</span>) <span class="op">=</span> (<span class="number">0</span>, <span class="number">0</span>);
         <span class="kw">let</span> <span class="ident">ret</span> <span class="op">=</span> <span class="kw">unsafe</span> {
             <span class="ident">bind::SDL_JoystickGetBall</span>(
@@ -96,7 +96,7 @@
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Trackballs</span><span class="op">&lt;</span><span class="lifetime">&#39;joystick</span><span class="op">&gt;</span>(<span class="kw">pub</span> <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">Trackball</span><span class="op">&lt;</span><span class="lifetime">&#39;joystick</span><span class="op">&gt;</span><span class="op">&gt;</span>);
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;joystick</span><span class="op">&gt;</span> <span class="ident">Trackballs</span><span class="op">&lt;</span><span class="lifetime">&#39;joystick</span><span class="op">&gt;</span> {
-    <span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">joystick</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;joystick</span> <span class="ident">Joystick</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">joystick</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;joystick</span> <span class="ident">Joystick</span>) -&gt; <span class="self">Self</span> {
         <span class="kw">let</span> <span class="ident">num_balls</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">bind::SDL_JoystickNumBalls</span>(<span class="ident">joystick</span>.<span class="ident">ptr</span>.<span class="ident">as_ptr</span>()) };
         <span class="kw">let</span> <span class="ident">balls</span> <span class="op">=</span> (<span class="number">0</span>..<span class="ident">num_balls</span>)
             .<span class="ident">map</span>(<span class="op">|</span><span class="ident">index</span><span class="op">|</span> <span class="ident">Trackball</span> { <span class="ident">index</span>, <span class="ident">joystick</span> })

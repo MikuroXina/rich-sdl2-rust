@@ -252,7 +252,7 @@
 }
 
 <span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">bind::SDL_Rect</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Rect</span> {
-    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">bind::SDL_Rect</span> { <span class="ident">x</span>, <span class="ident">y</span>, <span class="ident">w</span>, <span class="ident">h</span> }: <span class="ident">bind::SDL_Rect</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">bind::SDL_Rect</span> { <span class="ident">x</span>, <span class="ident">y</span>, <span class="ident">w</span>, <span class="ident">h</span> }: <span class="ident">bind::SDL_Rect</span>) -&gt; <span class="self">Self</span> {
         <span class="self">Self</span> {
             <span class="ident">up_left</span>: <span class="ident">Point</span> { <span class="ident">x</span>, <span class="ident">y</span> },
             <span class="ident">size</span>: <span class="ident">Size</span> {
@@ -264,7 +264,7 @@
 }
 
 <span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">Rect</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">bind::SDL_Rect</span> {
-    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">Rect</span> { <span class="ident">up_left</span>, <span class="ident">size</span> }: <span class="ident">Rect</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">Rect</span> { <span class="ident">up_left</span>, <span class="ident">size</span> }: <span class="ident">Rect</span>) -&gt; <span class="self">Self</span> {
         <span class="kw">use</span> <span class="ident">std::os::raw::c_int</span>;
         <span class="self">Self</span> {
             <span class="ident">x</span>: <span class="ident">up_left</span>.<span class="ident">x</span> <span class="kw">as</span> <span class="ident">c_int</span>,
@@ -277,7 +277,7 @@
 
 <span class="kw">impl</span> <span class="ident">Rect</span> {
     <span class="doccomment">/// Constructs a rect from the center.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">from_center</span>(<span class="ident">center</span>: <span class="ident">Point</span>, <span class="ident">size</span>: <span class="ident">Size</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">from_center</span>(<span class="ident">center</span>: <span class="ident">Point</span>, <span class="ident">size</span>: <span class="ident">Size</span>) -&gt; <span class="self">Self</span> {
         <span class="self">Self</span> {
             <span class="ident">up_left</span>: <span class="ident">Point</span> {
                 <span class="ident">x</span>: <span class="ident">center</span>.<span class="ident">x</span> <span class="op">-</span> <span class="ident">size</span>.<span class="ident">width</span> <span class="kw">as</span> <span class="ident">i32</span> <span class="op">/</span> <span class="number">2</span>,
@@ -287,7 +287,7 @@
         }
     }
     <span class="doccomment">/// Constructs a rect from the bottom right.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">from_bottom_right</span>(<span class="ident">bottom_right</span>: <span class="ident">Point</span>, <span class="ident">size</span>: <span class="ident">Size</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">from_bottom_right</span>(<span class="ident">bottom_right</span>: <span class="ident">Point</span>, <span class="ident">size</span>: <span class="ident">Size</span>) -&gt; <span class="self">Self</span> {
         <span class="self">Self</span> {
             <span class="ident">up_left</span>: <span class="ident">Point</span> {
                 <span class="ident">x</span>: (<span class="ident">bottom_right</span>.<span class="ident">x</span> <span class="op">-</span> <span class="ident">size</span>.<span class="ident">width</span> <span class="kw">as</span> <span class="ident">i32</span>),
@@ -298,7 +298,7 @@
     }
 
     <span class="doccomment">/// Constructs a rect from x and y coordinates.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">from_xs_ys</span>(<span class="kw-2">mut</span> <span class="ident">xs</span>: [<span class="ident">i32</span>; <span class="number">2</span>], <span class="kw-2">mut</span> <span class="ident">ys</span>: [<span class="ident">i32</span>; <span class="number">2</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">from_xs_ys</span>(<span class="kw-2">mut</span> <span class="ident">xs</span>: [<span class="ident">i32</span>; <span class="number">2</span>], <span class="kw-2">mut</span> <span class="ident">ys</span>: [<span class="ident">i32</span>; <span class="number">2</span>]) -&gt; <span class="self">Self</span> {
         <span class="kw">if</span> <span class="ident">xs</span>[<span class="number">1</span>] <span class="op">&lt;</span> <span class="ident">xs</span>[<span class="number">0</span>] {
             <span class="ident">xs</span>.<span class="ident">swap</span>(<span class="number">0</span>, <span class="number">1</span>);
         }
@@ -315,28 +315,28 @@
     }
 
     <span class="doccomment">/// Returns the bottom right point of the rectangle.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">bottom_right</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Point</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">bottom_right</span>(<span class="self">self</span>) -&gt; <span class="ident">Point</span> {
         <span class="ident">Point</span> {
             <span class="ident">x</span>: <span class="self">self</span>.<span class="ident">up_left</span>.<span class="ident">x</span> <span class="op">+</span> <span class="self">self</span>.<span class="ident">size</span>.<span class="ident">width</span> <span class="kw">as</span> <span class="ident">i32</span>,
             <span class="ident">y</span>: <span class="self">self</span>.<span class="ident">up_left</span>.<span class="ident">y</span> <span class="op">+</span> <span class="self">self</span>.<span class="ident">size</span>.<span class="ident">height</span> <span class="kw">as</span> <span class="ident">i32</span>,
         }
     }
     <span class="doccomment">/// Returns the top right point of the rectangle.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">top_right</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Point</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">top_right</span>(<span class="self">self</span>) -&gt; <span class="ident">Point</span> {
         <span class="ident">Point</span> {
             <span class="ident">x</span>: <span class="self">self</span>.<span class="ident">up_left</span>.<span class="ident">x</span> <span class="op">+</span> <span class="self">self</span>.<span class="ident">size</span>.<span class="ident">width</span> <span class="kw">as</span> <span class="ident">i32</span>,
             <span class="ident">y</span>: <span class="self">self</span>.<span class="ident">up_left</span>.<span class="ident">y</span>,
         }
     }
     <span class="doccomment">/// Returns the bottom left point of the rectangle.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">bottom_left</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Point</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">bottom_left</span>(<span class="self">self</span>) -&gt; <span class="ident">Point</span> {
         <span class="ident">Point</span> {
             <span class="ident">x</span>: <span class="self">self</span>.<span class="ident">up_left</span>.<span class="ident">x</span>,
             <span class="ident">y</span>: <span class="self">self</span>.<span class="ident">up_left</span>.<span class="ident">y</span> <span class="op">+</span> <span class="self">self</span>.<span class="ident">size</span>.<span class="ident">height</span> <span class="kw">as</span> <span class="ident">i32</span>,
         }
     }
     <span class="doccomment">/// Returns the center point of the rectangle.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">center</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Point</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">center</span>(<span class="self">self</span>) -&gt; <span class="ident">Point</span> {
         <span class="ident">Point</span> {
             <span class="ident">x</span>: <span class="self">self</span>.<span class="ident">up_left</span>.<span class="ident">x</span> <span class="op">+</span> (<span class="self">self</span>.<span class="ident">size</span>.<span class="ident">width</span> <span class="op">/</span> <span class="number">2</span>) <span class="kw">as</span> <span class="ident">i32</span>,
             <span class="ident">y</span>: <span class="self">self</span>.<span class="ident">up_left</span>.<span class="ident">y</span> <span class="op">+</span> (<span class="self">self</span>.<span class="ident">size</span>.<span class="ident">height</span> <span class="op">/</span> <span class="number">2</span>) <span class="kw">as</span> <span class="ident">i32</span>,
@@ -344,24 +344,24 @@
     }
 
     <span class="doccomment">/// Returns the left x of the rect.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">left</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">i32</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">left</span>(<span class="self">self</span>) -&gt; <span class="ident">i32</span> {
         <span class="self">self</span>.<span class="ident">up_left</span>.<span class="ident">x</span>
     }
     <span class="doccomment">/// Returns the right x of the rect.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">right</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">i32</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">right</span>(<span class="self">self</span>) -&gt; <span class="ident">i32</span> {
         <span class="self">self</span>.<span class="ident">up_left</span>.<span class="ident">x</span> <span class="op">+</span> <span class="self">self</span>.<span class="ident">size</span>.<span class="ident">width</span> <span class="kw">as</span> <span class="ident">i32</span>
     }
     <span class="doccomment">/// Returns the top y of the rect.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">top</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">i32</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">top</span>(<span class="self">self</span>) -&gt; <span class="ident">i32</span> {
         <span class="self">self</span>.<span class="ident">up_left</span>.<span class="ident">y</span>
     }
     <span class="doccomment">/// Returns the bottom y of the rect.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">bottom</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">i32</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">bottom</span>(<span class="self">self</span>) -&gt; <span class="ident">i32</span> {
         <span class="self">self</span>.<span class="ident">up_left</span>.<span class="ident">y</span> <span class="op">+</span> <span class="self">self</span>.<span class="ident">size</span>.<span class="ident">height</span> <span class="kw">as</span> <span class="ident">i32</span>
     }
 
     <span class="doccomment">/// Returns the enclosed rectangle of the points, with the clip region.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">enclosed</span>(<span class="ident">points</span>: <span class="kw">impl</span> <span class="ident">IntoIterator</span><span class="op">&lt;</span><span class="ident">Item</span> <span class="op">=</span> <span class="ident">Point</span><span class="op">&gt;</span>, <span class="ident">clip</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Rect</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">enclosed</span>(<span class="ident">points</span>: <span class="kw">impl</span> <span class="ident">IntoIterator</span><span class="op">&lt;</span><span class="ident">Item</span> <span class="op">=</span> <span class="ident">Point</span><span class="op">&gt;</span>, <span class="ident">clip</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Rect</span><span class="op">&gt;</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
         <span class="kw">use</span> <span class="ident">std::os::raw::c_int</span>;
         <span class="kw">let</span> <span class="ident">points</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="kw">_</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">points</span>.<span class="ident">into_iter</span>().<span class="ident">map</span>(<span class="ident">From::from</span>).<span class="ident">collect</span>();
 
@@ -379,14 +379,14 @@
     }
 
     <span class="doccomment">/// Returns whether two rectangles intersected.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">has_intersection</span>(<span class="self">self</span>, <span class="ident">other</span>: <span class="self">Self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">has_intersection</span>(<span class="self">self</span>, <span class="ident">other</span>: <span class="self">Self</span>) -&gt; <span class="ident">bool</span> {
         <span class="kw">unsafe</span> {
             <span class="ident">bind::SDL_HasIntersection</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">into</span>() <span class="kw">as</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="kw">_</span>, <span class="kw-2">&amp;</span><span class="ident">other</span>.<span class="ident">into</span>() <span class="kw">as</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="kw">_</span>) <span class="op">!</span><span class="op">=</span> <span class="number">0</span>
         }
     }
 
     <span class="doccomment">/// Returns the intersection rectangle of two rectangles.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">intersect</span>(<span class="self">self</span>, <span class="ident">other</span>: <span class="self">Self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">intersect</span>(<span class="self">self</span>, <span class="ident">other</span>: <span class="self">Self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">raw</span> <span class="op">=</span> <span class="ident">MaybeUninit::uninit</span>();
         <span class="kw">let</span> <span class="ident">ret</span> <span class="op">=</span> <span class="kw">unsafe</span> {
             <span class="ident">bind::SDL_IntersectRect</span>(
@@ -399,12 +399,12 @@
     }
 
     <span class="doccomment">/// Returns whether the rectangle is empty.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_empty</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
-        <span class="self">self</span>.<span class="ident">size</span>.<span class="ident">width</span> <span class="op">=</span><span class="op">=</span> <span class="number">0</span> <span class="op">|</span><span class="op">|</span> <span class="self">self</span>.<span class="ident">size</span>.<span class="ident">height</span> <span class="op">=</span><span class="op">=</span> <span class="number">0</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_empty</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
+        <span class="self">self</span>.<span class="ident">size</span>.<span class="ident">width</span> <span class="op">==</span> <span class="number">0</span> <span class="op">|</span><span class="op">|</span> <span class="self">self</span>.<span class="ident">size</span>.<span class="ident">height</span> <span class="op">==</span> <span class="number">0</span>
     }
 
     <span class="doccomment">/// Returns the union of two rectangles.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">union</span>(<span class="self">self</span>, <span class="ident">other</span>: <span class="self">Self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">union</span>(<span class="self">self</span>, <span class="ident">other</span>: <span class="self">Self</span>) -&gt; <span class="self">Self</span> {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">raw</span> <span class="op">=</span> <span class="ident">MaybeUninit::uninit</span>();
         <span class="kw">unsafe</span> {
             <span class="ident">bind::SDL_UnionRect</span>(
@@ -417,7 +417,7 @@
     }
 
     <span class="doccomment">/// Creates a new rect from the rect with overwriting the new top y position.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">with_top</span>(<span class="self">self</span>, <span class="ident">y</span>: <span class="ident">i32</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">with_top</span>(<span class="self">self</span>, <span class="ident">y</span>: <span class="ident">i32</span>) -&gt; <span class="self">Self</span> {
         <span class="ident"><span class="self">Self</span>::from_bottom_right</span>(
             <span class="self">self</span>.<span class="ident">bottom_right</span>(),
             <span class="ident">Size</span> {
@@ -427,7 +427,7 @@
         )
     }
     <span class="doccomment">/// Creates a new rect from the rect with overwriting the new right x position.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">with_right</span>(<span class="self">self</span>, <span class="ident">x</span>: <span class="ident">i32</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">with_right</span>(<span class="self">self</span>, <span class="ident">x</span>: <span class="ident">i32</span>) -&gt; <span class="self">Self</span> {
         <span class="self">Self</span> {
             <span class="ident">size</span>: <span class="ident">Size</span> {
                 <span class="ident">width</span>: <span class="ident">x</span>.<span class="ident">saturating_sub</span>(<span class="self">self</span>.<span class="ident">left</span>()).<span class="ident">max</span>(<span class="number">0</span>) <span class="kw">as</span> <span class="ident">u32</span>,
@@ -437,7 +437,7 @@
         }
     }
     <span class="doccomment">/// Creates a new rect from the rect with overwriting the new bottom y position.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">with_bottom</span>(<span class="self">self</span>, <span class="ident">y</span>: <span class="ident">i32</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">with_bottom</span>(<span class="self">self</span>, <span class="ident">y</span>: <span class="ident">i32</span>) -&gt; <span class="self">Self</span> {
         <span class="self">Self</span> {
             <span class="ident">size</span>: <span class="ident">Size</span> {
                 <span class="ident">width</span>: <span class="self">self</span>.<span class="ident">size</span>.<span class="ident">width</span>,
@@ -447,7 +447,7 @@
         }
     }
     <span class="doccomment">/// Creates a new rect from the rect with overwriting the new left x position.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">with_left</span>(<span class="self">self</span>, <span class="ident">x</span>: <span class="ident">i32</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">with_left</span>(<span class="self">self</span>, <span class="ident">x</span>: <span class="ident">i32</span>) -&gt; <span class="self">Self</span> {
         <span class="ident"><span class="self">Self</span>::from_bottom_right</span>(
             <span class="self">self</span>.<span class="ident">bottom_right</span>(),
             <span class="ident">Size</span> {
@@ -458,19 +458,19 @@
     }
 
     <span class="doccomment">/// Creates a new rect that increased the top from the rect.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">extend_top</span>(<span class="self">self</span>, <span class="ident">increase</span>: <span class="ident">u32</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">extend_top</span>(<span class="self">self</span>, <span class="ident">increase</span>: <span class="ident">u32</span>) -&gt; <span class="self">Self</span> {
         <span class="self">self</span>.<span class="ident">with_top</span>(<span class="self">self</span>.<span class="ident">top</span>() <span class="op">-</span> <span class="ident">increase</span> <span class="kw">as</span> <span class="ident">i32</span>)
     }
     <span class="doccomment">/// Creates a new rect that increased the right from the rect.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">extend_right</span>(<span class="self">self</span>, <span class="ident">increase</span>: <span class="ident">u32</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">extend_right</span>(<span class="self">self</span>, <span class="ident">increase</span>: <span class="ident">u32</span>) -&gt; <span class="self">Self</span> {
         <span class="self">self</span>.<span class="ident">with_right</span>(<span class="self">self</span>.<span class="ident">right</span>() <span class="op">+</span> <span class="ident">increase</span> <span class="kw">as</span> <span class="ident">i32</span>)
     }
     <span class="doccomment">/// Creates a new rect that increased the bottom from the rect.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">extend_bottom</span>(<span class="self">self</span>, <span class="ident">increase</span>: <span class="ident">u32</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">extend_bottom</span>(<span class="self">self</span>, <span class="ident">increase</span>: <span class="ident">u32</span>) -&gt; <span class="self">Self</span> {
         <span class="self">self</span>.<span class="ident">with_bottom</span>(<span class="self">self</span>.<span class="ident">bottom</span>() <span class="op">+</span> <span class="ident">increase</span> <span class="kw">as</span> <span class="ident">i32</span>)
     }
     <span class="doccomment">/// Creates a new rect that increased the left from the rect.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">extend_left</span>(<span class="self">self</span>, <span class="ident">increase</span>: <span class="ident">u32</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">extend_left</span>(<span class="self">self</span>, <span class="ident">increase</span>: <span class="ident">u32</span>) -&gt; <span class="self">Self</span> {
         <span class="self">self</span>.<span class="ident">with_left</span>(<span class="self">self</span>.<span class="ident">left</span>() <span class="op">-</span> <span class="ident">increase</span> <span class="kw">as</span> <span class="ident">i32</span>)
     }
 }

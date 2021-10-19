@@ -149,7 +149,7 @@
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;window</span><span class="op">&gt;</span> <span class="ident">VkInstance</span><span class="op">&lt;</span><span class="lifetime">&#39;window</span><span class="op">&gt;</span> {
     <span class="doccomment">/// Constructs an instance from the window, or `Err` on failure.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">window</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;window</span> <span class="ident">Window</span><span class="op">&lt;</span><span class="lifetime">&#39;window</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">window</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;window</span> <span class="ident">Window</span><span class="op">&lt;</span><span class="lifetime">&#39;window</span><span class="op">&gt;</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
         <span class="kw">if</span> <span class="ident">window</span>.<span class="ident">state</span>().<span class="ident">context_kind</span> <span class="op">!</span><span class="op">=</span> <span class="ident">WindowContextKind::Vulkan</span> {
             <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">SdlError::UnsupportedFeature</span>);
         }
@@ -161,7 +161,7 @@
                 <span class="ident">std::ptr::null_mut</span>(),
             )
         };
-        <span class="kw">if</span> <span class="ident">ret</span> <span class="op">=</span><span class="op">=</span> <span class="ident">bind::SDL_FALSE</span> {
+        <span class="kw">if</span> <span class="ident">ret</span> <span class="op">==</span> <span class="ident">bind::SDL_FALSE</span> {
             <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">SdlError::UnsupportedFeature</span>);
         }
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">extensions</span> <span class="op">=</span> <span class="macro">vec!</span>[<span class="ident">std::ptr::null</span>(); <span class="ident">num</span> <span class="kw">as</span> <span class="ident">usize</span>];
@@ -180,12 +180,12 @@
     }
 
     <span class="doccomment">/// Returns the names of the supported extensions.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">extensions</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span>[<span class="ident">String</span>] {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">extensions</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>[<span class="ident">String</span>] {
         <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">extensions</span>
     }
 
     <span class="doccomment">/// Returns the drawable region size.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">drawable_size</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Size</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">drawable_size</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">Size</span> {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">width</span> <span class="op">=</span> <span class="number">0</span>;
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">height</span> <span class="op">=</span> <span class="number">0</span>;
         <span class="kw">unsafe</span> {
@@ -209,14 +209,14 @@
 }
 
 <span class="kw">impl</span> <span class="ident">std::fmt::Debug</span> <span class="kw">for</span> <span class="ident">VkSurface</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">std::fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">std::fmt::Result</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">std::fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">std::fmt::Result</span> {
         <span class="ident">f</span>.<span class="ident">debug_struct</span>(<span class="string">&quot;VkSurface&quot;</span>).<span class="ident">finish_non_exhaustive</span>()
     }
 }
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;vk</span><span class="op">&gt;</span> <span class="ident">VkSurface</span><span class="op">&lt;</span><span class="lifetime">&#39;vk</span><span class="op">&gt;</span> {
     <span class="doccomment">/// Constructs a surface from instances, or `Err` on failure.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">vk</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;vk</span> <span class="ident">VkInstance</span><span class="op">&lt;</span><span class="lifetime">&#39;vk</span><span class="op">&gt;</span>, <span class="ident">instance</span>: <span class="ident">Instance</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">vk</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;vk</span> <span class="ident">VkInstance</span><span class="op">&lt;</span><span class="lifetime">&#39;vk</span><span class="op">&gt;</span>, <span class="ident">instance</span>: <span class="ident">Instance</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">surface</span> <span class="op">=</span> <span class="ident">MaybeUninit::uninit</span>();
         <span class="kw">let</span> <span class="ident">ret</span> <span class="op">=</span> <span class="kw">unsafe</span> {
             <span class="ident">bind::SDL_Vulkan_CreateSurface</span>(
@@ -225,7 +225,7 @@
                 <span class="ident">surface</span>.<span class="ident">as_mut_ptr</span>(),
             )
         };
-        <span class="kw">if</span> <span class="ident">ret</span> <span class="op">=</span><span class="op">=</span> <span class="ident">bind::SDL_FALSE</span> {
+        <span class="kw">if</span> <span class="ident">ret</span> <span class="op">==</span> <span class="ident">bind::SDL_FALSE</span> {
             <span class="prelude-val">Err</span>(<span class="ident">SdlError::UnsupportedFeature</span>)
         } <span class="kw">else</span> {
             <span class="prelude-val">Ok</span>(<span class="self">Self</span> {
@@ -236,7 +236,7 @@
     }
 
     <span class="doccomment">/// Returns the raw pointer to the surface.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">as_raw_surface</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">c_void</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">as_raw_surface</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">c_void</span> {
         <span class="self">self</span>.<span class="ident">ptr</span>.<span class="ident">as_ptr</span>().<span class="ident">cast</span>()
     }
 }

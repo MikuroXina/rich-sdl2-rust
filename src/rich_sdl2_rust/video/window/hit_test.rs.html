@@ -137,25 +137,25 @@
 }
 
 <span class="kw">impl</span> <span class="ident">HitTestResult</span> {
-    <span class="kw">fn</span> <span class="ident">into_arg</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bind::SDL_HitTestResult</span> {
+    <span class="kw">fn</span> <span class="ident">into_arg</span>(<span class="self">self</span>) -&gt; <span class="ident">bind::SDL_HitTestResult</span> {
         <span class="kw">use</span> <span class="ident">HitTestResult</span>::<span class="kw-2">*</span>;
         <span class="kw">match</span> <span class="self">self</span> {
-            <span class="ident">Normal</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">bind::SDL_HITTEST_NORMAL</span>,
-            <span class="ident">Draggable</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">bind::SDL_HITTEST_DRAGGABLE</span>,
-            <span class="ident">ResizeTopLeft</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">bind::SDL_HITTEST_RESIZE_TOPLEFT</span>,
-            <span class="ident">ResizeTop</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">bind::SDL_HITTEST_RESIZE_TOP</span>,
-            <span class="ident">ResizeTopRight</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">bind::SDL_HITTEST_RESIZE_TOPRIGHT</span>,
-            <span class="ident">ResizeRight</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">bind::SDL_HITTEST_RESIZE_RIGHT</span>,
-            <span class="ident">ResizeBottomRight</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">bind::SDL_HITTEST_RESIZE_BOTTOMRIGHT</span>,
-            <span class="ident">ResizeBottom</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">bind::SDL_HITTEST_RESIZE_BOTTOM</span>,
-            <span class="ident">ResizeBottomLeft</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">bind::SDL_HITTEST_RESIZE_BOTTOMLEFT</span>,
-            <span class="ident">ResizeLeft</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">bind::SDL_HITTEST_RESIZE_LEFT</span>,
+            <span class="ident">Normal</span> =&gt; <span class="ident">bind::SDL_HITTEST_NORMAL</span>,
+            <span class="ident">Draggable</span> =&gt; <span class="ident">bind::SDL_HITTEST_DRAGGABLE</span>,
+            <span class="ident">ResizeTopLeft</span> =&gt; <span class="ident">bind::SDL_HITTEST_RESIZE_TOPLEFT</span>,
+            <span class="ident">ResizeTop</span> =&gt; <span class="ident">bind::SDL_HITTEST_RESIZE_TOP</span>,
+            <span class="ident">ResizeTopRight</span> =&gt; <span class="ident">bind::SDL_HITTEST_RESIZE_TOPRIGHT</span>,
+            <span class="ident">ResizeRight</span> =&gt; <span class="ident">bind::SDL_HITTEST_RESIZE_RIGHT</span>,
+            <span class="ident">ResizeBottomRight</span> =&gt; <span class="ident">bind::SDL_HITTEST_RESIZE_BOTTOMRIGHT</span>,
+            <span class="ident">ResizeBottom</span> =&gt; <span class="ident">bind::SDL_HITTEST_RESIZE_BOTTOM</span>,
+            <span class="ident">ResizeBottomLeft</span> =&gt; <span class="ident">bind::SDL_HITTEST_RESIZE_BOTTOMLEFT</span>,
+            <span class="ident">ResizeLeft</span> =&gt; <span class="ident">bind::SDL_HITTEST_RESIZE_LEFT</span>,
         }
     }
 }
 
 <span class="doccomment">/// A callback to hit test with the mouse position.</span>
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">HitTester</span><span class="op">&lt;</span><span class="lifetime">&#39;window</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">Box</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">FnMut</span>(<span class="ident">Point</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">HitTestResult</span> <span class="op">+</span> <span class="lifetime">&#39;window</span><span class="op">&gt;</span>;
+<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">HitTester</span><span class="op">&lt;</span><span class="lifetime">&#39;window</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">Box</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">FnMut</span>(<span class="ident">Point</span>) -&gt; <span class="ident">HitTestResult</span> <span class="op">+</span> <span class="lifetime">&#39;window</span><span class="op">&gt;</span>;
 
 <span class="doccomment">/// A hit tester for a window.</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>)]</span>
@@ -168,7 +168,7 @@
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;window</span><span class="op">&gt;</span> <span class="ident">HitTest</span><span class="op">&lt;</span><span class="lifetime">&#39;window</span><span class="op">&gt;</span> {
     <span class="doccomment">/// Constructs a hit test from the window and a callback.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">window</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;window</span> <span class="ident">Window</span><span class="op">&lt;</span><span class="lifetime">&#39;window</span><span class="op">&gt;</span>, <span class="ident">callback</span>: <span class="ident">HitTester</span><span class="op">&lt;</span><span class="lifetime">&#39;window</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">window</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;window</span> <span class="ident">Window</span><span class="op">&lt;</span><span class="lifetime">&#39;window</span><span class="op">&gt;</span>, <span class="ident">callback</span>: <span class="ident">HitTester</span><span class="op">&lt;</span><span class="lifetime">&#39;window</span><span class="op">&gt;</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="ident">wrapped</span> <span class="op">=</span> <span class="ident">Box::new</span>(<span class="ident">callback</span>);
         <span class="kw">let</span> <span class="ident">tester_raw</span> <span class="op">=</span> <span class="ident">Box::into_raw</span>(<span class="ident">wrapped</span>);
         <span class="kw">let</span> <span class="ident">ret</span> <span class="op">=</span> <span class="kw">unsafe</span> {
@@ -198,7 +198,7 @@
     <span class="ident">win</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">bind::SDL_Window</span>,
     <span class="ident">area</span>: <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">bind::SDL_Point</span>,
     <span class="ident">data</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">c_void</span>,
-) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bind::SDL_HitTestResult</span> {
+) -&gt; <span class="ident">bind::SDL_HitTestResult</span> {
     <span class="kw">let</span> <span class="ident">callback</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="kw-2">*</span>(<span class="ident">data</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">HitTester</span>) };
     <span class="ident">callback</span>((<span class="kw-2">*</span><span class="ident">area</span>).<span class="ident">into</span>()).<span class="ident">into_arg</span>()
 }

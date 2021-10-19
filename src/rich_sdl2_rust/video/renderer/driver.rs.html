@@ -27,7 +27,7 @@
 <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::bind</span>;
 
 <span class="doccomment">/// Returns the list of render driver information.</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">drivers</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">RendererInfo</span><span class="op">&gt;</span> {
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">drivers</span>() -&gt; <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">RendererInfo</span><span class="op">&gt;</span> {
     <span class="kw">let</span> <span class="ident">num</span> <span class="op">=</span> <span class="kw">unsafe</span> {
         <span class="ident">bind::SDL_InitSubSystem</span>(<span class="ident">bind::SDL_INIT_VIDEO</span>);
         <span class="ident">bind::SDL_GetNumRenderDrivers</span>()

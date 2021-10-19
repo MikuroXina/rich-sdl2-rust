@@ -79,7 +79,7 @@
 }
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;surface</span>, <span class="ident">S</span>: <span class="ident">Surface</span><span class="op">&gt;</span> <span class="ident">Rle</span><span class="op">&lt;</span><span class="lifetime">&#39;surface</span>, <span class="ident">S</span><span class="op">&gt;</span> {
-    <span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">surface</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;surface</span> <span class="kw-2">mut</span> <span class="ident">S</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">surface</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;surface</span> <span class="kw-2">mut</span> <span class="ident">S</span>) -&gt; <span class="self">Self</span> {
         <span class="kw">let</span> <span class="ident">ret</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">bind::SDL_SetSurfaceRLE</span>(<span class="ident">surface</span>.<span class="ident">as_ptr</span>().<span class="ident">as_ptr</span>(), <span class="number">1</span>) };
         <span class="kw">if</span> <span class="ident">ret</span> <span class="op">!</span><span class="op">=</span> <span class="number">0</span> {
             <span class="ident">Sdl::error_then_panic</span>(<span class="string">&quot;invalid surface&quot;</span>);
@@ -88,7 +88,7 @@
     }
 
     <span class="doccomment">/// Locks the surface and Convert into [`RleLock`].</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">lock</span>(<span class="kw-2">&amp;</span><span class="lifetime">&#39;surface</span> <span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">RleLock</span><span class="op">&lt;</span><span class="lifetime">&#39;surface</span>, <span class="ident">S</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">lock</span>(<span class="kw-2">&amp;</span><span class="lifetime">&#39;surface</span> <span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="ident">RleLock</span><span class="op">&lt;</span><span class="lifetime">&#39;surface</span>, <span class="ident">S</span><span class="op">&gt;</span> {
         <span class="ident">RleLock::new</span>(<span class="self">self</span>)
     }
 }
@@ -100,7 +100,7 @@
 }
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;surface</span>, <span class="ident">S</span>: <span class="ident">Surface</span><span class="op">&gt;</span> <span class="ident">RleLock</span><span class="op">&lt;</span><span class="lifetime">&#39;surface</span>, <span class="ident">S</span><span class="op">&gt;</span> {
-    <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">src</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;surface</span> <span class="kw-2">mut</span> <span class="ident">Rle</span><span class="op">&lt;</span><span class="lifetime">&#39;surface</span>, <span class="ident">S</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">src</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;surface</span> <span class="kw-2">mut</span> <span class="ident">Rle</span><span class="op">&lt;</span><span class="lifetime">&#39;surface</span>, <span class="ident">S</span><span class="op">&gt;</span>) -&gt; <span class="self">Self</span> {
         <span class="kw">let</span> <span class="ident">ret</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">bind::SDL_LockSurface</span>(<span class="ident">src</span>.<span class="ident">surface</span>.<span class="ident">as_ptr</span>().<span class="ident">as_ptr</span>()) };
         <span class="kw">if</span> <span class="ident">ret</span> <span class="op">!</span><span class="op">=</span> <span class="number">0</span> {
             <span class="ident">Sdl::error_then_panic</span>(<span class="string">&quot;failed to lock RLE surface&quot;</span>);
@@ -109,14 +109,14 @@
     }
 
     <span class="doccomment">/// Returns the raw pixels data.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">pixels</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span>[<span class="ident">u8</span>] {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">pixels</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>[<span class="ident">u8</span>] {
         <span class="kw">let</span> <span class="ident">surface</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">src</span>.<span class="ident">surface</span>.<span class="ident">as_ptr</span>().<span class="ident">as_ref</span>() };
         <span class="kw">let</span> <span class="ident">len</span> <span class="op">=</span> <span class="ident">surface</span>.<span class="ident">h</span> <span class="kw">as</span> <span class="ident">usize</span> <span class="op">*</span> <span class="ident">surface</span>.<span class="ident">pitch</span> <span class="kw">as</span> <span class="ident">usize</span>;
         <span class="kw">unsafe</span> { <span class="ident">std::slice::from_raw_parts</span>(<span class="ident">surface</span>.<span class="ident">pixels</span>.<span class="ident">cast</span>(), <span class="ident">len</span>) }
     }
 
     <span class="doccomment">/// Returns the raw pixels data for mutating.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">pixels_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">u8</span>] {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">pixels_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">u8</span>] {
         <span class="kw">let</span> <span class="ident">surface</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">src</span>.<span class="ident">surface</span>.<span class="ident">as_ptr</span>().<span class="ident">as_mut</span>() };
         <span class="kw">let</span> <span class="ident">len</span> <span class="op">=</span> <span class="ident">surface</span>.<span class="ident">h</span> <span class="kw">as</span> <span class="ident">usize</span> <span class="op">*</span> <span class="ident">surface</span>.<span class="ident">pitch</span> <span class="kw">as</span> <span class="ident">usize</span>;
         <span class="kw">unsafe</span> { <span class="ident">std::slice::from_raw_parts_mut</span>(<span class="ident">surface</span>.<span class="ident">pixels</span>.<span class="ident">cast</span>(), <span class="ident">len</span>) }
@@ -124,7 +124,7 @@
 }
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;surface</span>, <span class="ident">S</span>: <span class="ident">Surface</span><span class="op">&gt;</span> <span class="ident">Surface</span> <span class="kw">for</span> <span class="ident">RleLock</span><span class="op">&lt;</span><span class="lifetime">&#39;surface</span>, <span class="ident">S</span><span class="op">&gt;</span> {
-    <span class="kw">fn</span> <span class="ident">as_ptr</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">std::ptr::NonNull</span><span class="op">&lt;</span><span class="ident"><span class="kw">crate</span>::bind::SDL_Surface</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">as_ptr</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">std::ptr::NonNull</span><span class="op">&lt;</span><span class="ident"><span class="kw">crate</span>::bind::SDL_Surface</span><span class="op">&gt;</span> {
         <span class="self">self</span>.<span class="ident">src</span>.<span class="ident">surface</span>.<span class="ident">as_ptr</span>()
     }
 }
