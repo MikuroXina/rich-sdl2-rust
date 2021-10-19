@@ -22,7 +22,7 @@ jobs:
         uses: lukka/run-vcpkg@v7
         with:
           setupOnly: true
-          vcpkgDirectory: /home/vcpkg
+          vcpkgDirectory: ${{ runner.temp }}/vcpkg
           appendedCacheKey: ${{ hashFiles( '**/vcpkg_manifest/vcpkg.json' ) }}
           additionalCachedPaths: ${{ env.BUILD_DIR }}/vcpkg_installed
           vcpkgTriplet: ${{ matrix.triplet }}
