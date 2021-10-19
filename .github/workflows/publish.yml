@@ -22,7 +22,7 @@ jobs:
         uses: lukka/run-vcpkg@v7
         with:
           setupOnly: true
-          vcpkgDirectory: /vcpkg
+          vcpkgDirectory: /home/vcpkg
           appendedCacheKey: ${{ hashFiles( '**/vcpkg_manifest/vcpkg.json' ) }}
           additionalCachedPaths: ${{ env.BUILD_DIR }}/vcpkg_installed
           vcpkgTriplet: ${{ matrix.triplet }}
@@ -33,6 +33,13 @@ jobs:
           profile: minimal
           toolchain: nightly
           override: true
+
+      - name: Install cargo-vcpkg
+        run: cargo install cargo-vcpkg
+      - name: Install dependencies
+        run: cargo vcpkg -v build
+        working-directory: ./rich-sdl2-rust-sys
+
       - uses: katyo/publish-crates@v1
         with:
           path: ./rich-sdl2-rust-sys
