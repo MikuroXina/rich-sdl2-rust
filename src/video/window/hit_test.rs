@@ -77,6 +77,7 @@ impl<'window> HitTest<'window> {
             )
         };
         if ret != 0 {
+            let _ = unsafe { Box::from_raw(tester_raw) };
             Err(crate::SdlError::UnsupportedFeature)
         } else {
             Ok(Self { window, tester_raw })
