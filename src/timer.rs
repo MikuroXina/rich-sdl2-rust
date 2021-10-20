@@ -29,6 +29,7 @@ impl<'callback> Timer<'callback> {
         let wrapped = Box::into_raw(Box::new(callback));
         let id = unsafe { bind::SDL_AddTimer(interval, Some(timer_wrap_handler), wrapped.cast()) };
         if id == 0 {
+            let _ = unsafe { Box::from_raw(wrapped) };
             Err(SdlError::Others { msg: Sdl::error() })
         } else {
             Ok(Self {
