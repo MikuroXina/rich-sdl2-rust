@@ -70,6 +70,7 @@
 <span id="70">70</span>
 <span id="71">71</span>
 <span id="72">72</span>
+<span id="73">73</span>
 </pre><pre class="rust"><code><span class="kw">use</span> <span class="ident">std</span>::{<span class="ident">ffi::c_void</span>, <span class="ident">num::NonZeroU32</span>, <span class="ident">ops</span>};
 
 <span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">bind</span>, <span class="prelude-ty">Result</span>, <span class="ident">Sdl</span>, <span class="ident">SdlError</span>};
@@ -101,6 +102,7 @@
         <span class="kw">let</span> <span class="ident">wrapped</span> <span class="op">=</span> <span class="ident">Box::into_raw</span>(<span class="ident">Box::new</span>(<span class="ident">callback</span>));
         <span class="kw">let</span> <span class="ident">id</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">bind::SDL_AddTimer</span>(<span class="ident">interval</span>, <span class="prelude-val">Some</span>(<span class="ident">timer_wrap_handler</span>), <span class="ident">wrapped</span>.<span class="ident">cast</span>()) };
         <span class="kw">if</span> <span class="ident">id</span> <span class="op">==</span> <span class="number">0</span> {
+            <span class="kw">let</span> <span class="kw">_</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">Box::from_raw</span>(<span class="ident">wrapped</span>) };
             <span class="prelude-val">Err</span>(<span class="ident">SdlError::Others</span> { <span class="ident">msg</span>: <span class="ident">Sdl::error</span>() })
         } <span class="kw">else</span> {
             <span class="prelude-val">Ok</span>(<span class="self">Self</span> {

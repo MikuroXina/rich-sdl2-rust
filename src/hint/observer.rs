@@ -1,5 +1,6 @@
 use std::{
     ffi::{c_void, CStr, CString},
+    marker::PhantomData,
     os::raw::c_char,
 };
 
@@ -14,15 +15,16 @@ pub struct HintEvent<'a> {
 }
 
 /// A callback invoked on updated the hint.
-pub type HintCallback<'callback> = Box<dyn FnMut(HintEvent<'callback>) + 'callback>;
+pub trait HintCallback<'callback>: FnMut(HintEvent<'callback>) + 'callback {}
 
 /// An hint update observer.
-pub struct HintObserver<'callback> {
+pub struct HintObserver<'callback, T: HintCallback<'callback>> {
     key: CString,
-    callback_raw: *mut HintCallback<'callback>,
+    callback: T,
+    _phantom: PhantomData<&'callback mut ()>,
 }
 
-impl std::fmt::Debug for HintObserver<'_> {
+impl<'c, T: HintCallback<'c>> std::fmt::Debug for HintObserver<'c, T> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         f.debug_struct("HintObserver")
             .field("key", &self.key)
@@ -30,43 +32,46 @@ impl std::fmt::Debug for HintObserver<'_> {
     }
 }
 
-impl<'callback> HintObserver<'callback> {
+impl<'c, T: HintCallback<'c>> HintObserver<'c, T> {
     /// Constructs an observer to observe by the key and callback.
-    pub fn new(key: &str, callback: HintCallback<'callback>) -> Self {
+    pub fn new(key: &str, mut callback: T) -> Self {
         let key = CString::new(key).expect("key must not be empty");
-        let wrapped = Box::new(callback);
-        let callback_raw = Box::into_raw(wrapped);
+        let data = &mut callback as *mut T;
         unsafe {
             bind::SDL_AddHintCallback(
                 key.as_ptr(),
-                Some(hint_observer_wrap_handler),
-                callback_raw.cast(),
+                Some(hint_observer_wrap_handler::<T>),
+                data.cast(),
             )
         }
-        Self { key, callback_raw }
+        Self {
+            key,
+            callback,
+            _phantom: PhantomData,
+        }
     }
 }
 
-impl Drop for HintObserver<'_> {
+impl<'c, T: HintCallback<'c>> Drop for HintObserver<'c, T> {
     fn drop(&mut self) {
+        let data = &mut self.callback as *mut T;
         unsafe {
             bind::SDL_DelHintCallback(
                 self.key.as_ptr(),
-                Some(hint_observer_wrap_handler),
-                self.callback_raw.cast(),
+                Some(hint_observer_wrap_handler::<T>),
+                data.cast(),
             )
         }
-        let _ = unsafe { Box::from_raw(self.callback_raw) };
     }
 }
 
-extern "C" fn hint_observer_wrap_handler(
+extern "C" fn hint_observer_wrap_handler<'callback, T: HintCallback<'callback>>(
     userdata: *mut c_void,
     name: *const c_char,
     old_value: *const c_char,
     new_value: *const c_char,
 ) {
-    let callback = unsafe { &mut *(userdata as *mut HintCallback) };
+    let callback = unsafe { &mut *(userdata as *mut T) };
     let name = unsafe { CStr::from_ptr(name) }.to_str().unwrap();
     let old_value = unsafe { CStr::from_ptr(old_value) }.to_str().unwrap();
     let new_value = unsafe { CStr::from_ptr(new_value) }.to_str().unwrap();

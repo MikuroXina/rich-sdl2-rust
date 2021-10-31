@@ -11,7 +11,7 @@ use std::{
 
 use self::{
     format::AudioFormat,
-    spec::{AudioSpec, FallbackFlag},
+    spec::{AudioCallback, AudioSpec, FallbackFlag},
     status::AudioStatus,
 };
 use crate::{bind, Result, Sdl, SdlError};
@@ -92,9 +92,9 @@ impl SpeakerDevice {
 
     /// Opens the audio device named `device` with the specification and fallback flag.
     /// If device is `None`, the default audio device is used.
-    pub fn open(
+    pub fn open<'callback, T: AudioCallback<'callback>>(
         device: Option<String>,
-        spec: &AudioSpec,
+        spec: &'callback AudioSpec<'callback, T>,
         fallback: FallbackFlag,
     ) -> Result<(Self, AudioDeviceProperty)> {
         let (id, prop) = open(false, device, spec, fallback)?;
@@ -144,9 +144,9 @@ impl MicrophoneDevice {
 
     /// Opens the audio device named `device` with the specification and fallback flag.
     /// If device is `None`, the default audio device is used.
-    pub fn open(
+    pub fn open<'callback, T: AudioCallback<'callback>>(
         device: Option<String>,
-        spec: &AudioSpec,
+        spec: &'callback AudioSpec<'callback, T>,
         fallback: FallbackFlag,
     ) -> Result<(Self, AudioDeviceProperty)> {
         let (id, prop) = open(true, device, spec, fallback)?;
@@ -186,10 +186,10 @@ fn devices(is_capture: bool) -> impl Iterator<Item = String> {
     })
 }
 
-fn open(
+fn open<'callback, T: AudioCallback<'callback>>(
     is_capture: bool,
     device: Option<String>,
-    spec: &AudioSpec,
+    spec: &'callback AudioSpec<'callback, T>,
     fallback: FallbackFlag,
 ) -> Result<(u32, AudioDeviceProperty)> {
     let is_capture_raw = if is_capture { 1 } else { 0 };

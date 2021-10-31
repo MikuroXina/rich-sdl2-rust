@@ -53,51 +53,46 @@ impl HitTestResult {
 }
 
 /// A callback to hit test with the mouse position.
-pub type HitTester<'window> = Box<dyn FnMut(Point) -> HitTestResult + 'window>;
+pub trait HitTester<'window>: FnMut(Point) -> HitTestResult + 'window {}
 
 /// A hit tester for a window.
 #[derive(Debug)]
-pub struct HitTest<'window> {
+pub struct HitTest<'window, T> {
     window: &'window Window<'window>,
-    tester_raw: *mut HitTester<'window>,
+    tester: T,
 }
 
-assert_not_impl_all!(HitTest: Send, Sync);
-
-impl<'window> HitTest<'window> {
+impl<'window, T: HitTester<'window>> HitTest<'window, T> {
     /// Constructs a hit test from the window and a callback.
-    pub fn new(window: &'window Window<'window>, callback: HitTester<'window>) -> Result<Self> {
-        let wrapped = Box::new(callback);
-        let tester_raw = Box::into_raw(wrapped);
+    pub fn new(window: &'window Window<'window>, mut tester: T) -> Result<Self> {
+        let data = &mut tester as *mut T;
         let ret = unsafe {
             bind::SDL_SetWindowHitTest(
                 window.as_ptr(),
-                Some(hit_test_wrap_handler),
-                tester_raw.cast(),
+                Some(hit_test_wrap_handler::<T>),
+                data.cast(),
             )
         };
         if ret != 0 {
-            let _ = unsafe { Box::from_raw(tester_raw) };
             Err(crate::SdlError::UnsupportedFeature)
         } else {
-            Ok(Self { window, tester_raw })
+            Ok(Self { window, tester })
         }
     }
 }
 
-impl Drop for HitTest<'_> {
+impl<T> Drop for HitTest<'_, T> {
     fn drop(&mut self) {
         let _ =
             unsafe { bind::SDL_SetWindowHitTest(self.window.as_ptr(), None, std::ptr::null_mut()) };
-        let _ = unsafe { Box::from_raw(self.tester_raw) };
     }
 }
 
-unsafe extern "C" fn hit_test_wrap_handler(
+unsafe extern "C" fn hit_test_wrap_handler<'window, T: HitTester<'window>>(
     win: *mut bind::SDL_Window,
     area: *const bind::SDL_Point,
     data: *mut c_void,
 ) -> bind::SDL_HitTestResult {
-    let callback = unsafe { &mut *(data as *mut HitTester) };
+    let callback = unsafe { &mut *(data as *mut T) };
     callback((*area).into()).into_arg()
 }
