@@ -82,8 +82,8 @@
             <span class="ident">bind::SDL_JoystickGetBall</span>(
                 <span class="self">self</span>.<span class="ident">joystick</span>.<span class="ident">ptr</span>.<span class="ident">as_ptr</span>(),
                 <span class="self">self</span>.<span class="ident">index</span>,
-                <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">dx</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="kw">_</span>,
-                <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">dy</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="kw">_</span>,
+                <span class="kw-2">&amp;mut</span> <span class="ident">dx</span> <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="kw">_</span>,
+                <span class="kw-2">&amp;mut</span> <span class="ident">dy</span> <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="kw">_</span>,
             )
         };
         <span class="macro">debug_assert_eq!</span>(<span class="ident">ret</span>, <span class="number">0</span>);

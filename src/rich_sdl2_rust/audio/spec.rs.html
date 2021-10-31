@@ -123,7 +123,7 @@
 
 <span class="doccomment">/// A builder to build an information representing what specification is required for an audio device.</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">TypedBuilder</span>)]</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">AudioSpecBuilder</span><span class="op">&lt;</span><span class="lifetime">&#39;callback</span><span class="op">&gt;</span> {
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">AudioSpecBuilder</span><span class="op">&lt;</span><span class="lifetime">&#39;callback</span>, <span class="ident">T</span>: <span class="ident">AudioCallback</span><span class="op">&lt;</span><span class="lifetime">&#39;callback</span><span class="op">&gt;</span><span class="op">&gt;</span> {
     <span class="attribute">#[<span class="ident">builder</span>(<span class="ident">default</span> <span class="op">=</span> <span class="number">44100</span>)]</span>
     <span class="ident">sample_freq</span>: <span class="ident">u32</span>,
     <span class="attribute">#[<span class="ident">builder</span>(<span class="ident">default</span> <span class="op">=</span> <span class="ident">AudioFormat::signed32_lsb</span>())]</span>
@@ -133,27 +133,28 @@
     <span class="attribute">#[<span class="ident">builder</span>(<span class="ident">default</span> <span class="op">=</span> <span class="number">4096</span>)]</span>
     <span class="ident">samples</span>: <span class="ident">u16</span>,
     <span class="attribute">#[<span class="ident">builder</span>(<span class="ident">default</span>, <span class="ident">setter</span>(<span class="ident">strip_option</span>))]</span>
-    <span class="ident">callback</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Box</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">AudioCallback</span> <span class="op">+</span> <span class="lifetime">&#39;callback</span><span class="op">&gt;</span><span class="op">&gt;</span>,
+    <span class="ident">callback</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>,
+    <span class="ident">_phantom</span>: <span class="ident">PhantomData</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;callback</span> <span class="kw-2">mut</span> <span class="ident">T</span><span class="op">&gt;</span>,
 }
 
 <span class="doccomment">/// A type of the callback to interact with the raw audio buffer.</span>
-<span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">AudioCallback</span>: <span class="ident">FnMut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">u8</span>]) {}
+<span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">AudioCallback</span><span class="op">&lt;</span><span class="lifetime">&#39;callback</span><span class="op">&gt;</span>: <span class="ident">FnMut</span>(<span class="kw-2">&amp;mut</span> [<span class="ident">u8</span>]) <span class="op">+</span> <span class="lifetime">&#39;callback</span> {}
 
 <span class="doccomment">/// A specification to require what an audio device is.</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">AudioSpec</span><span class="op">&lt;</span><span class="lifetime">&#39;callback</span><span class="op">&gt;</span> {
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">AudioSpec</span><span class="op">&lt;</span><span class="lifetime">&#39;callback</span>, <span class="ident">T</span><span class="op">&gt;</span> {
     <span class="ident">raw</span>: <span class="ident">bind::SDL_AudioSpec</span>,
-    <span class="ident">_phantom</span>: <span class="ident">PhantomData</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;callback</span> <span class="kw-2">mut</span> <span class="kw">dyn</span> <span class="ident">AudioCallback</span><span class="op">&gt;</span>,
+    <span class="ident">_phantom</span>: <span class="ident">PhantomData</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;callback</span> <span class="kw-2">mut</span> <span class="ident">T</span><span class="op">&gt;</span>,
 }
 
-<span class="kw">impl</span> <span class="ident">std::fmt::Debug</span> <span class="kw">for</span> <span class="ident">AudioSpec</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">std::fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">std::fmt::Result</span> {
+<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> <span class="ident">std::fmt::Debug</span> <span class="kw">for</span> <span class="ident">AudioSpec</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span>, <span class="ident">T</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;mut</span> <span class="ident">std::fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">std::fmt::Result</span> {
         <span class="ident">f</span>.<span class="ident">debug_struct</span>(<span class="string">&quot;AudioSpec&quot;</span>).<span class="ident">finish_non_exhaustive</span>()
     }
 }
 
-<span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;callback</span><span class="op">&gt;</span> <span class="ident">AudioSpec</span><span class="op">&lt;</span><span class="lifetime">&#39;callback</span><span class="op">&gt;</span> {
+<span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;callback</span>, <span class="ident">T</span>: <span class="ident">AudioCallback</span><span class="op">&lt;</span><span class="lifetime">&#39;callback</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="ident">AudioSpec</span><span class="op">&lt;</span><span class="lifetime">&#39;callback</span>, <span class="ident">T</span><span class="op">&gt;</span> {
     <span class="doccomment">/// Constructs an audio specification with the optional callback.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">builder</span>: <span class="ident">AudioSpecBuilder</span>) -&gt; <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">builder</span>: <span class="ident">AudioSpecBuilder</span><span class="op">&lt;</span><span class="lifetime">&#39;callback</span>, <span class="ident">T</span><span class="op">&gt;</span>) -&gt; <span class="self">Self</span> {
         <span class="self">Self</span> {
             <span class="ident">raw</span>: <span class="ident">bind::SDL_AudioSpec</span> {
                 <span class="ident">freq</span>: <span class="ident">builder</span>.<span class="ident">sample_freq</span> <span class="kw">as</span> <span class="ident">c_int</span>,
@@ -166,10 +167,12 @@
                 <span class="ident">callback</span>: <span class="ident">builder</span>
                     .<span class="ident">callback</span>
                     .<span class="ident">as_ref</span>()
-                    .<span class="ident">map</span>(<span class="op">|</span><span class="kw">_</span><span class="op">|</span> <span class="ident">audio_spec_wrap_handler</span> <span class="kw">as</span> <span class="kw">_</span>),
-                <span class="ident">userdata</span>: <span class="ident">builder</span>.<span class="ident">callback</span>.<span class="ident">map_or</span>(<span class="ident">std::ptr::null_mut</span>(), <span class="op">|</span><span class="ident">callback</span><span class="op">|</span> {
-                    <span class="ident">Box::into_raw</span>(<span class="ident">Box::new</span>(<span class="ident">callback</span>)).<span class="ident">cast</span>()
-                }),
+                    .<span class="ident">map</span>(<span class="op">|</span><span class="kw">_</span><span class="op">|</span> <span class="ident">audio_spec_wrap_handler</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> <span class="kw">as</span> <span class="kw">_</span>),
+                <span class="ident">userdata</span>: <span class="ident">builder</span>
+                    .<span class="ident">callback</span>
+                    .<span class="ident">map_or</span>(<span class="ident">std::ptr::null_mut</span>(), <span class="op">|</span><span class="kw-2">mut</span> <span class="ident">callback</span><span class="op">|</span> {
+                        <span class="kw-2">&amp;mut</span> <span class="ident">callback</span> <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="ident">T</span> <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="kw">_</span>
+                    }),
             },
             <span class="ident">_phantom</span>: <span class="ident">PhantomData</span>,
         }
@@ -179,23 +182,20 @@
         <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">raw</span>
     }
 
-    <span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn</span> <span class="ident">raw_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">bind::SDL_AudioSpec</span> {
-        <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>.<span class="ident">raw</span>
+    <span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn</span> <span class="ident">raw_mut</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) -&gt; <span class="kw-2">&amp;mut</span> <span class="ident">bind::SDL_AudioSpec</span> {
+        <span class="kw-2">&amp;mut</span> <span class="self">self</span>.<span class="ident">raw</span>
     }
 }
 
-<span class="kw">impl</span> <span class="ident">Drop</span> <span class="kw">for</span> <span class="ident">AudioSpec</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span> {
-    <span class="kw">fn</span> <span class="ident">drop</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) {
-        <span class="kw">let</span> <span class="ident">func</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">raw</span>.<span class="ident">userdata</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">Box</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">AudioCallback</span><span class="op">&gt;</span> };
-        <span class="kw">let</span> <span class="kw">_</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">Box::from_raw</span>(<span class="ident">func</span>) };
-    }
-}
-
-<span class="kw">unsafe</span> <span class="kw">extern</span> <span class="string">&quot;C&quot;</span> <span class="kw">fn</span> <span class="ident">audio_spec_wrap_handler</span>(<span class="ident">userdata</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">c_void</span>, <span class="ident">stream</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">u8</span>, <span class="ident">len</span>: <span class="ident">c_int</span>) {
+<span class="kw">unsafe</span> <span class="kw">extern</span> <span class="string">&quot;C&quot;</span> <span class="kw">fn</span> <span class="ident">audio_spec_wrap_handler</span><span class="op">&lt;</span><span class="lifetime">&#39;callback</span>, <span class="ident">T</span>: <span class="ident">AudioCallback</span><span class="op">&lt;</span><span class="lifetime">&#39;callback</span><span class="op">&gt;</span><span class="op">&gt;</span>(
+    <span class="ident">userdata</span>: <span class="kw-2">*mut</span> <span class="ident">c_void</span>,
+    <span class="ident">stream</span>: <span class="kw-2">*mut</span> <span class="ident">u8</span>,
+    <span class="ident">len</span>: <span class="ident">c_int</span>,
+) {
     <span class="kw">if</span> <span class="ident">userdata</span>.<span class="ident">is_null</span>() {
         <span class="kw">return</span>;
     }
-    <span class="kw">let</span> <span class="ident">func</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="kw-2">*</span>(<span class="ident">userdata</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">Box</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">AudioCallback</span><span class="op">&gt;</span>);
+    <span class="kw">let</span> <span class="ident">func</span> <span class="op">=</span> <span class="kw-2">&amp;mut</span> <span class="kw-2">*</span>(<span class="ident">userdata</span> <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="ident">T</span>);
     <span class="kw">let</span> <span class="ident">slice</span> <span class="op">=</span> <span class="ident">std::slice::from_raw_parts_mut</span>(<span class="ident">stream</span>, <span class="ident">len</span> <span class="kw">as</span> <span class="ident">usize</span>);
     <span class="ident">slice</span>.<span class="ident">fill</span>(<span class="number">0</span>);
     <span class="ident">func</span>(<span class="ident">slice</span>);

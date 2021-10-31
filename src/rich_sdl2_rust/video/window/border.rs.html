@@ -73,10 +73,10 @@
         <span class="kw">let</span> <span class="ident">ret</span> <span class="op">=</span> <span class="kw">unsafe</span> {
             <span class="ident">bind::SDL_GetWindowBordersSize</span>(
                 <span class="self">self</span>.<span class="ident">as_ptr</span>(),
-                <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">top</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="kw">_</span>,
-                <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">left</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="kw">_</span>,
-                <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">bottom</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="kw">_</span>,
-                <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">right</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="kw">_</span>,
+                <span class="kw-2">&amp;mut</span> <span class="ident">top</span> <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="kw">_</span>,
+                <span class="kw-2">&amp;mut</span> <span class="ident">left</span> <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="kw">_</span>,
+                <span class="kw-2">&amp;mut</span> <span class="ident">bottom</span> <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="kw">_</span>,
+                <span class="kw-2">&amp;mut</span> <span class="ident">right</span> <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="kw">_</span>,
             )
         };
         <span class="kw">if</span> <span class="ident">ret</span> <span class="op">!</span><span class="op">=</span> <span class="number">0</span> {

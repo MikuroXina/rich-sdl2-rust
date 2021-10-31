@@ -316,7 +316,7 @@
 }
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;video</span>, <span class="ident">T</span><span class="op">&gt;</span> <span class="ident">EventHandlers</span><span class="op">&lt;</span><span class="lifetime">&#39;video</span>, <span class="ident">T</span><span class="op">&gt;</span> {
-    <span class="kw">fn</span> <span class="ident">push</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">handler</span>: <span class="ident">EventHandler</span><span class="op">&lt;</span><span class="lifetime">&#39;video</span>, <span class="ident">T</span><span class="op">&gt;</span>) {
+    <span class="kw">fn</span> <span class="ident">push</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">handler</span>: <span class="ident">EventHandler</span><span class="op">&lt;</span><span class="lifetime">&#39;video</span>, <span class="ident">T</span><span class="op">&gt;</span>) {
         <span class="self">self</span>.<span class="number">0</span>.<span class="ident">push</span>(<span class="ident">handler</span>);
     }
 
@@ -367,57 +367,57 @@
     }
 
     <span class="doccomment">/// Registers the handler to handle [`QuitEvent`].</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">handle_quit</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">handler</span>: <span class="ident">EventHandler</span><span class="op">&lt;</span><span class="lifetime">&#39;video</span>, <span class="ident">QuitEvent</span><span class="op">&gt;</span>) {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">handle_quit</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">handler</span>: <span class="ident">EventHandler</span><span class="op">&lt;</span><span class="lifetime">&#39;video</span>, <span class="ident">QuitEvent</span><span class="op">&gt;</span>) {
         <span class="self">self</span>.<span class="ident">quit_event_handlers</span>.<span class="ident">push</span>(<span class="ident">handler</span>);
     }
 
     <span class="doccomment">/// Registers the handler to handle [`WindowEvent`].</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">handle_window</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">handler</span>: <span class="ident">EventHandler</span><span class="op">&lt;</span><span class="lifetime">&#39;video</span>, <span class="ident">WindowEvent</span><span class="op">&gt;</span>) {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">handle_window</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">handler</span>: <span class="ident">EventHandler</span><span class="op">&lt;</span><span class="lifetime">&#39;video</span>, <span class="ident">WindowEvent</span><span class="op">&gt;</span>) {
         <span class="self">self</span>.<span class="ident">window_event_handlers</span>.<span class="ident">push</span>(<span class="ident">handler</span>);
     }
 
     <span class="doccomment">/// Registers the handler to handle [`KeyboardEvent`].</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">handle_keyboard</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">handler</span>: <span class="ident">EventHandler</span><span class="op">&lt;</span><span class="lifetime">&#39;video</span>, <span class="ident">KeyboardEvent</span><span class="op">&gt;</span>) {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">handle_keyboard</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">handler</span>: <span class="ident">EventHandler</span><span class="op">&lt;</span><span class="lifetime">&#39;video</span>, <span class="ident">KeyboardEvent</span><span class="op">&gt;</span>) {
         <span class="self">self</span>.<span class="ident">keyboard_event_handlers</span>.<span class="ident">push</span>(<span class="ident">handler</span>);
     }
 
     <span class="doccomment">/// Registers the handler to handle [`TextInputEvent`].</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">handle_input</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">handler</span>: <span class="ident">EventHandler</span><span class="op">&lt;</span><span class="lifetime">&#39;video</span>, <span class="ident">TextInputEvent</span><span class="op">&gt;</span>) {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">handle_input</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">handler</span>: <span class="ident">EventHandler</span><span class="op">&lt;</span><span class="lifetime">&#39;video</span>, <span class="ident">TextInputEvent</span><span class="op">&gt;</span>) {
         <span class="self">self</span>.<span class="ident">input_event_handlers</span>.<span class="ident">push</span>(<span class="ident">handler</span>);
     }
 
     <span class="doccomment">/// Registers the handler to handle [`TextEditingEvent`].</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">handle_editing</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">handler</span>: <span class="ident">EventHandler</span><span class="op">&lt;</span><span class="lifetime">&#39;video</span>, <span class="ident">TextEditingEvent</span><span class="op">&gt;</span>) {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">handle_editing</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">handler</span>: <span class="ident">EventHandler</span><span class="op">&lt;</span><span class="lifetime">&#39;video</span>, <span class="ident">TextEditingEvent</span><span class="op">&gt;</span>) {
         <span class="self">self</span>.<span class="ident">editing_event_handlers</span>.<span class="ident">push</span>(<span class="ident">handler</span>);
     }
 
     <span class="doccomment">/// Registers the handler to handle [`MouseEvent`].</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">handle_mouse</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">handler</span>: <span class="ident">EventHandler</span><span class="op">&lt;</span><span class="lifetime">&#39;video</span>, <span class="ident">MouseEvent</span><span class="op">&gt;</span>) {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">handle_mouse</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">handler</span>: <span class="ident">EventHandler</span><span class="op">&lt;</span><span class="lifetime">&#39;video</span>, <span class="ident">MouseEvent</span><span class="op">&gt;</span>) {
         <span class="self">self</span>.<span class="ident">mouse_event_handlers</span>.<span class="ident">push</span>(<span class="ident">handler</span>);
     }
 
     <span class="doccomment">/// Registers the handler to handle [`ControllerEvent`].</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">handle_controller</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">handler</span>: <span class="ident">EventHandler</span><span class="op">&lt;</span><span class="lifetime">&#39;video</span>, <span class="ident">ControllerEvent</span><span class="op">&lt;</span><span class="lifetime">&#39;video</span><span class="op">&gt;</span><span class="op">&gt;</span>) {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">handle_controller</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">handler</span>: <span class="ident">EventHandler</span><span class="op">&lt;</span><span class="lifetime">&#39;video</span>, <span class="ident">ControllerEvent</span><span class="op">&lt;</span><span class="lifetime">&#39;video</span><span class="op">&gt;</span><span class="op">&gt;</span>) {
         <span class="self">self</span>.<span class="ident">controller_event_handlers</span>.<span class="ident">push</span>(<span class="ident">handler</span>);
     }
 
     <span class="doccomment">/// Registers the handler to handle [`JoystickEvent`].</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">handle_joystick</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">handler</span>: <span class="ident">EventHandler</span><span class="op">&lt;</span><span class="lifetime">&#39;video</span>, <span class="ident">JoystickEvent</span><span class="op">&lt;</span><span class="lifetime">&#39;video</span><span class="op">&gt;</span><span class="op">&gt;</span>) {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">handle_joystick</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">handler</span>: <span class="ident">EventHandler</span><span class="op">&lt;</span><span class="lifetime">&#39;video</span>, <span class="ident">JoystickEvent</span><span class="op">&lt;</span><span class="lifetime">&#39;video</span><span class="op">&gt;</span><span class="op">&gt;</span>) {
         <span class="self">self</span>.<span class="ident">joystick_event_handlers</span>.<span class="ident">push</span>(<span class="ident">handler</span>);
     }
 
     <span class="doccomment">/// Registers the handler to handle [`AudioDeviceEvent`].</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">handle_audio_device</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">handler</span>: <span class="ident">EventHandler</span><span class="op">&lt;</span><span class="lifetime">&#39;video</span>, <span class="ident">AudioDeviceEvent</span><span class="op">&gt;</span>) {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">handle_audio_device</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">handler</span>: <span class="ident">EventHandler</span><span class="op">&lt;</span><span class="lifetime">&#39;video</span>, <span class="ident">AudioDeviceEvent</span><span class="op">&gt;</span>) {
         <span class="self">self</span>.<span class="ident">audio_device_event_handlers</span>.<span class="ident">push</span>(<span class="ident">handler</span>);
     }
 
     <span class="doccomment">/// Registers the handler to handle [`DropEvent`].</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">handle_drop</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">handler</span>: <span class="ident">EventHandler</span><span class="op">&lt;</span><span class="lifetime">&#39;video</span>, <span class="ident">DropEvent</span><span class="op">&gt;</span>) {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">handle_drop</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">handler</span>: <span class="ident">EventHandler</span><span class="op">&lt;</span><span class="lifetime">&#39;video</span>, <span class="ident">DropEvent</span><span class="op">&gt;</span>) {
         <span class="self">self</span>.<span class="ident">drop_event_handlers</span>.<span class="ident">push</span>(<span class="ident">handler</span>);
     }
 
     <span class="doccomment">/// Registers the handler to handle [`GestureEvent`].</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">handle_gesture</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">handler</span>: <span class="ident">EventHandler</span><span class="op">&lt;</span><span class="lifetime">&#39;video</span>, <span class="ident">GestureEvent</span><span class="op">&gt;</span>) {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">handle_gesture</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">handler</span>: <span class="ident">EventHandler</span><span class="op">&lt;</span><span class="lifetime">&#39;video</span>, <span class="ident">GestureEvent</span><span class="op">&gt;</span>) {
         <span class="self">self</span>.<span class="ident">gesture_event_handlers</span>.<span class="ident">push</span>(<span class="ident">handler</span>);
     }
 
@@ -542,7 +542,7 @@
 }
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;video</span><span class="op">&gt;</span> <span class="ident">Drop</span> <span class="kw">for</span> <span class="ident">EventBox</span><span class="op">&lt;</span><span class="lifetime">&#39;video</span><span class="op">&gt;</span> {
-    <span class="kw">fn</span> <span class="ident">drop</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) {
+    <span class="kw">fn</span> <span class="ident">drop</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) {
         <span class="kw">unsafe</span> { <span class="ident">bind::SDL_QuitSubSystem</span>(<span class="ident">bind::SDL_INIT_EVENTS</span>) }
     }
 }

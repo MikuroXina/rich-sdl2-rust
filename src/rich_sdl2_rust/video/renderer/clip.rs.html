@@ -44,7 +44,7 @@
 <span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;renderer</span><span class="op">&gt;</span> <span class="ident">ClippedRenderer</span><span class="op">&lt;</span><span class="lifetime">&#39;renderer</span><span class="op">&gt;</span> {
     <span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">renderer</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;renderer</span> <span class="kw-2">mut</span> <span class="ident">Renderer</span><span class="op">&lt;</span><span class="lifetime">&#39;renderer</span><span class="op">&gt;</span>, <span class="ident">rect</span>: <span class="ident">Rect</span>) -&gt; <span class="self">Self</span> {
         <span class="kw">let</span> <span class="ident">ret</span> <span class="op">=</span>
-            <span class="kw">unsafe</span> { <span class="ident">bind::SDL_RenderSetClipRect</span>(<span class="ident">renderer</span>.<span class="ident">as_ptr</span>(), <span class="kw-2">&amp;</span><span class="ident">rect</span>.<span class="ident">into</span>() <span class="kw">as</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="kw">_</span>) };
+            <span class="kw">unsafe</span> { <span class="ident">bind::SDL_RenderSetClipRect</span>(<span class="ident">renderer</span>.<span class="ident">as_ptr</span>(), <span class="kw-2">&amp;</span><span class="ident">rect</span>.<span class="ident">into</span>() <span class="kw">as</span> <span class="kw-2">*const</span> <span class="kw">_</span>) };
         <span class="kw">if</span> <span class="ident">ret</span> <span class="op">!</span><span class="op">=</span> <span class="number">0</span> {
             <span class="ident">Sdl::error_then_panic</span>(<span class="string">&quot;Setting renderer clip rect&quot;</span>);
         }
@@ -53,7 +53,7 @@
 }
 
 <span class="kw">impl</span> <span class="ident">Drop</span> <span class="kw">for</span> <span class="ident">ClippedRenderer</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span> {
-    <span class="kw">fn</span> <span class="ident">drop</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) {
+    <span class="kw">fn</span> <span class="ident">drop</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) {
         <span class="kw">let</span> <span class="ident">ret</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">bind::SDL_RenderSetClipRect</span>(<span class="self">self</span>.<span class="ident">renderer</span>.<span class="ident">as_ptr</span>(), <span class="ident">std::ptr::null</span>()) };
         <span class="macro">debug_assert!</span>(<span class="ident">ret</span> <span class="op">==</span> <span class="number">0</span>);
     }

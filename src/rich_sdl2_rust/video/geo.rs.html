@@ -200,11 +200,11 @@
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">clip_with</span>(<span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">rect</span>: <span class="ident">Rect</span>) -&gt; <span class="self">Self</span> {
         <span class="kw">unsafe</span> {
             <span class="ident">bind::SDL_IntersectRectAndLine</span>(
-                <span class="kw-2">&amp;</span>(<span class="ident">rect</span>.<span class="ident">into</span>()) <span class="kw">as</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="kw">_</span>,
-                <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>.<span class="ident">start</span>.<span class="ident">x</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="kw">_</span>,
-                <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>.<span class="ident">start</span>.<span class="ident">y</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="kw">_</span>,
-                <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>.<span class="ident">end</span>.<span class="ident">x</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="kw">_</span>,
-                <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>.<span class="ident">end</span>.<span class="ident">y</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="kw">_</span>,
+                <span class="kw-2">&amp;</span>(<span class="ident">rect</span>.<span class="ident">into</span>()) <span class="kw">as</span> <span class="kw-2">*const</span> <span class="kw">_</span>,
+                <span class="kw-2">&amp;mut</span> <span class="self">self</span>.<span class="ident">start</span>.<span class="ident">x</span> <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="kw">_</span>,
+                <span class="kw-2">&amp;mut</span> <span class="self">self</span>.<span class="ident">start</span>.<span class="ident">y</span> <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="kw">_</span>,
+                <span class="kw-2">&amp;mut</span> <span class="self">self</span>.<span class="ident">end</span>.<span class="ident">x</span> <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="kw">_</span>,
+                <span class="kw-2">&amp;mut</span> <span class="self">self</span>.<span class="ident">end</span>.<span class="ident">y</span> <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="kw">_</span>,
             );
         }
         <span class="self">self</span>

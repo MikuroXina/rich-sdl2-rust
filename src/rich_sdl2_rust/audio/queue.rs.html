@@ -121,7 +121,7 @@
 }
 
 <span class="kw">impl</span> <span class="ident">Drop</span> <span class="kw">for</span> <span class="ident">QueuedAudio</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span> {
-    <span class="kw">fn</span> <span class="ident">drop</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) {
+    <span class="kw">fn</span> <span class="ident">drop</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) {
         <span class="kw">unsafe</span> { <span class="ident">bind::SDL_ClearQueuedAudio</span>(<span class="self">self</span>.<span class="ident">device</span>.<span class="ident">id</span>) }
     }
 }
@@ -145,13 +145,13 @@
 }
 
 <span class="kw">impl</span> <span class="ident">Drop</span> <span class="kw">for</span> <span class="ident">DequeueAudio</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span> {
-    <span class="kw">fn</span> <span class="ident">drop</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) {
+    <span class="kw">fn</span> <span class="ident">drop</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) {
         <span class="kw">unsafe</span> { <span class="ident">bind::SDL_ClearQueuedAudio</span>(<span class="self">self</span>.<span class="ident">device</span>.<span class="ident">id</span>) }
     }
 }
 
 <span class="kw">impl</span> <span class="ident">io::Read</span> <span class="kw">for</span> <span class="ident">DequeueAudio</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span> {
-    <span class="kw">fn</span> <span class="ident">read</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">buf</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">u8</span>]) -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">read</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">buf</span>: <span class="kw-2">&amp;mut</span> [<span class="ident">u8</span>]) -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="ident">bytes</span> <span class="op">=</span> <span class="kw">unsafe</span> {
             <span class="ident">bind::SDL_DequeueAudio</span>(<span class="self">self</span>.<span class="ident">device</span>.<span class="ident">id</span>, <span class="ident">buf</span>.<span class="ident">as_mut_ptr</span>().<span class="ident">cast</span>(), <span class="ident">buf</span>.<span class="ident">len</span>() <span class="kw">as</span> <span class="ident">u32</span>)
         };

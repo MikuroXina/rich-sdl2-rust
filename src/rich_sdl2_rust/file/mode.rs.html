@@ -106,17 +106,17 @@
     }
 
     <span class="doccomment">/// Sets to be able to read.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">read</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">read</span>: <span class="ident">bool</span>) -&gt; <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">read</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">read</span>: <span class="ident">bool</span>) -&gt; <span class="kw-2">&amp;mut</span> <span class="self">Self</span> {
         <span class="self">self</span>.<span class="ident">read</span> <span class="op">=</span> <span class="ident">read</span>;
         <span class="self">self</span>
     }
     <span class="doccomment">/// Sets to be able to create a new file.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">create</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">create</span>: <span class="ident">bool</span>) -&gt; <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">create</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">create</span>: <span class="ident">bool</span>) -&gt; <span class="kw-2">&amp;mut</span> <span class="self">Self</span> {
         <span class="self">self</span>.<span class="ident">create</span> <span class="op">=</span> <span class="ident">create</span>;
         <span class="self">self</span>
     }
     <span class="doccomment">/// Sets to force to append. Setting true will disable to be able to write.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">append</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">append</span>: <span class="ident">bool</span>) -&gt; <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">append</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">append</span>: <span class="ident">bool</span>) -&gt; <span class="kw-2">&amp;mut</span> <span class="self">Self</span> {
         <span class="self">self</span>.<span class="ident">append</span> <span class="op">=</span> <span class="ident">append</span>;
         <span class="kw">if</span> <span class="self">self</span>.<span class="ident">write</span> {
             <span class="self">self</span>.<span class="ident">write</span> <span class="op">=</span> <span class="bool-val">false</span>;
@@ -124,7 +124,7 @@
         <span class="self">self</span>
     }
     <span class="doccomment">/// Sets to force to write. Setting true will disable to be able to append.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">write</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">write</span>: <span class="ident">bool</span>) -&gt; <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">write</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">write</span>: <span class="ident">bool</span>) -&gt; <span class="kw-2">&amp;mut</span> <span class="self">Self</span> {
         <span class="self">self</span>.<span class="ident">write</span> <span class="op">=</span> <span class="ident">write</span>;
         <span class="kw">if</span> <span class="self">self</span>.<span class="ident">append</span> {
             <span class="self">self</span>.<span class="ident">append</span> <span class="op">=</span> <span class="bool-val">false</span>;
@@ -132,17 +132,17 @@
         <span class="self">self</span>
     }
     <span class="doccomment">/// Sets to force to truncate, overwriting all of a file.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">truncate</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">truncate</span>: <span class="ident">bool</span>) -&gt; <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">truncate</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">truncate</span>: <span class="ident">bool</span>) -&gt; <span class="kw-2">&amp;mut</span> <span class="self">Self</span> {
         <span class="self">self</span>.<span class="ident">truncate</span> <span class="op">=</span> <span class="ident">truncate</span>;
         <span class="self">self</span>
     }
     <span class="doccomment">/// Sets to be able to read as the binary mode. Setting false will be the text mode.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">binary</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">binary</span>: <span class="ident">bool</span>) -&gt; <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">binary</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">binary</span>: <span class="ident">bool</span>) -&gt; <span class="kw-2">&amp;mut</span> <span class="self">Self</span> {
         <span class="self">self</span>.<span class="ident">binary</span> <span class="op">=</span> <span class="ident">binary</span>;
         <span class="self">self</span>
     }
     <span class="doccomment">/// Sets to be able to read as the text mode. Setting false will be the binary mode.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">text</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">text</span>: <span class="ident">bool</span>) -&gt; <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">text</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">text</span>: <span class="ident">bool</span>) -&gt; <span class="kw-2">&amp;mut</span> <span class="self">Self</span> {
         <span class="self">self</span>.<span class="ident">binary</span> <span class="op">=</span> <span class="op">!</span><span class="ident">text</span>;
         <span class="self">self</span>
     }

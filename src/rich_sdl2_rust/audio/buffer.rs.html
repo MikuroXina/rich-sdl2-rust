@@ -211,12 +211,12 @@
             <span class="ident">channels</span>,
             <span class="ident">buffer</span>: <span class="macro">vec!</span>[],
         };
-        <span class="self">self</span>.<span class="ident">convert_in</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">dst</span>)<span class="question-mark">?</span>;
+        <span class="self">self</span>.<span class="ident">convert_in</span>(<span class="kw-2">&amp;mut</span> <span class="ident">dst</span>)<span class="question-mark">?</span>;
         <span class="prelude-val">Ok</span>(<span class="ident">dst</span>)
     }
 
     <span class="doccomment">/// Convert and write into another existing `AudioBuffer`.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">convert_in</span><span class="op">&lt;</span><span class="ident">U</span>: <span class="ident">Default</span> <span class="op">+</span> <span class="ident">Clone</span><span class="op">&gt;</span>(<span class="self">self</span>, <span class="ident">other</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">AudioBuffer</span><span class="op">&lt;</span><span class="ident">U</span><span class="op">&gt;</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">convert_in</span><span class="op">&lt;</span><span class="ident">U</span>: <span class="ident">Default</span> <span class="op">+</span> <span class="ident">Clone</span><span class="op">&gt;</span>(<span class="self">self</span>, <span class="ident">other</span>: <span class="kw-2">&amp;mut</span> <span class="ident">AudioBuffer</span><span class="op">&lt;</span><span class="ident">U</span><span class="op">&gt;</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">cvt</span> <span class="op">=</span> <span class="ident">MaybeUninit::uninit</span>();
         <span class="kw">let</span> <span class="ident">ret</span> <span class="op">=</span> <span class="kw">unsafe</span> {
             <span class="ident">bind::SDL_BuildAudioCVT</span>(
@@ -245,8 +245,8 @@
         <span class="ident">other</span>
             .<span class="ident">buffer</span>
             .<span class="ident">resize</span>(<span class="ident">len</span> <span class="op">*</span> <span class="ident">cvt</span>.<span class="ident">len_mult</span> <span class="kw">as</span> <span class="ident">usize</span>, <span class="ident">U::default</span>());
-        <span class="ident">cvt</span>.<span class="ident">buf</span> <span class="op">=</span> <span class="ident">as_u8_slice_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">other</span>.<span class="ident">buffer</span>).<span class="ident">as_mut_ptr</span>();
-        <span class="kw">let</span> <span class="ident">ret</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">bind::SDL_ConvertAudio</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">cvt</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="kw">_</span>) };
+        <span class="ident">cvt</span>.<span class="ident">buf</span> <span class="op">=</span> <span class="ident">as_u8_slice_mut</span>(<span class="kw-2">&amp;mut</span> <span class="ident">other</span>.<span class="ident">buffer</span>).<span class="ident">as_mut_ptr</span>();
+        <span class="kw">let</span> <span class="ident">ret</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">bind::SDL_ConvertAudio</span>(<span class="kw-2">&amp;mut</span> <span class="ident">cvt</span> <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="kw">_</span>) };
         <span class="kw">if</span> <span class="ident">ret</span> <span class="op">&lt;</span> <span class="number">0</span> {
             <span class="prelude-val">Err</span>(<span class="ident">SdlError::Others</span> { <span class="ident">msg</span>: <span class="ident">Sdl::error</span>() })
         } <span class="kw">else</span> {
@@ -261,21 +261,21 @@
     <span class="doccomment">/// The max value of `volume` is `128`, saturating if it is over the max.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">mix</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">volume</span>: <span class="ident">u8</span>) -&gt; <span class="self">Self</span> {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">dst</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">clone</span>();
-        <span class="self">self</span>.<span class="ident">mix_in</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">dst</span>, <span class="ident">volume</span>);
+        <span class="self">self</span>.<span class="ident">mix_in</span>(<span class="kw-2">&amp;mut</span> <span class="ident">dst</span>, <span class="ident">volume</span>);
         <span class="ident">dst</span>
     }
 
     <span class="doccomment">/// Mix into another existing `AudioBuffer` with the specified `volume`.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// The max value of `volume` is `128`, saturating if it is over the max.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">mix_in</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">dst</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span>, <span class="ident">volume</span>: <span class="ident">u8</span>) {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">mix_in</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">dst</span>: <span class="kw-2">&amp;mut</span> <span class="self">Self</span>, <span class="ident">volume</span>: <span class="ident">u8</span>) {
         <span class="macro">assert_eq!</span>(<span class="self">self</span>.<span class="ident">format</span>.<span class="ident">as_raw</span>(), <span class="ident">dst</span>.<span class="ident">format</span>.<span class="ident">as_raw</span>());
         <span class="ident">dst</span>.<span class="ident">buffer</span>.<span class="ident">clear</span>();
         <span class="ident">dst</span>.<span class="ident">buffer</span>.<span class="ident">resize</span>(<span class="self">self</span>.<span class="ident">buffer</span>.<span class="ident">len</span>(), <span class="ident">T::default</span>());
         <span class="kw">let</span> <span class="ident">len</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">buffer</span>.<span class="ident">len</span>() <span class="op">*</span> <span class="ident">std::mem::size_of</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>();
         <span class="kw">unsafe</span> {
             <span class="ident">bind::SDL_MixAudioFormat</span>(
-                <span class="ident">as_u8_slice_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">dst</span>.<span class="ident">buffer</span>).<span class="ident">as_mut_ptr</span>().<span class="ident">cast</span>(),
+                <span class="ident">as_u8_slice_mut</span>(<span class="kw-2">&amp;mut</span> <span class="ident">dst</span>.<span class="ident">buffer</span>).<span class="ident">as_mut_ptr</span>().<span class="ident">cast</span>(),
                 <span class="ident">as_u8_slice</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">buffer</span>).<span class="ident">as_ptr</span>().<span class="ident">cast</span>(),
                 <span class="self">self</span>.<span class="ident">format</span>.<span class="ident">as_raw</span>(),
                 <span class="ident">len</span> <span class="kw">as</span> <span class="ident">u32</span>,
@@ -290,7 +290,7 @@
     <span class="kw">unsafe</span> { <span class="ident">std::slice::from_raw_parts</span>(<span class="ident">slice</span>.<span class="ident">as_ptr</span>().<span class="ident">cast</span>(), <span class="ident">slice</span>.<span class="ident">len</span>() <span class="op">*</span> <span class="ident">size</span>) }
 }
 
-<span class="kw">fn</span> <span class="ident">as_u8_slice_mut</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>(<span class="ident">slice</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">T</span>]) -&gt; <span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">u8</span>] {
+<span class="kw">fn</span> <span class="ident">as_u8_slice_mut</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>(<span class="ident">slice</span>: <span class="kw-2">&amp;mut</span> [<span class="ident">T</span>]) -&gt; <span class="kw-2">&amp;mut</span> [<span class="ident">u8</span>] {
     <span class="kw">let</span> <span class="ident">size</span> <span class="op">=</span> <span class="ident">std::mem::size_of</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>();
     <span class="kw">unsafe</span> { <span class="ident">std::slice::from_raw_parts_mut</span>(<span class="ident">slice</span>.<span class="ident">as_mut_ptr</span>().<span class="ident">cast</span>(), <span class="ident">slice</span>.<span class="ident">len</span>() <span class="op">*</span> <span class="ident">size</span>) }
 }

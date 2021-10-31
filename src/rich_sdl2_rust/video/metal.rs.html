@@ -71,7 +71,7 @@
     }
 
     <span class="doccomment">/// Returns the raw pointer `CAMetalLayer` from the view.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">metal_layer</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">c_void</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">metal_layer</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">*mut</span> <span class="ident">c_void</span> {
         <span class="kw">unsafe</span> { <span class="ident">bind::SDL_Metal_GetLayer</span>(<span class="self">self</span>.<span class="ident">ptr</span>.<span class="ident">as_ptr</span>()) }
     }
 
@@ -82,8 +82,8 @@
         <span class="kw">unsafe</span> {
             <span class="ident">bind::SDL_Metal_GetDrawableSize</span>(
                 <span class="self">self</span>.<span class="ident">window</span>.<span class="ident">as_ptr</span>(),
-                <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">width</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="kw">_</span>,
-                <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">height</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="kw">_</span>,
+                <span class="kw-2">&amp;mut</span> <span class="ident">width</span> <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="kw">_</span>,
+                <span class="kw-2">&amp;mut</span> <span class="ident">height</span> <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="kw">_</span>,
             )
         }
         <span class="ident">Size</span> {
@@ -94,7 +94,7 @@
 }
 
 <span class="kw">impl</span> <span class="ident">Drop</span> <span class="kw">for</span> <span class="ident">MetalView</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span> {
-    <span class="kw">fn</span> <span class="ident">drop</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) {
+    <span class="kw">fn</span> <span class="ident">drop</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) {
         <span class="kw">unsafe</span> { <span class="ident">bind::SDL_Metal_DestroyView</span>(<span class="self">self</span>.<span class="ident">ptr</span>.<span class="ident">as_ptr</span>()) }
     }
 }
