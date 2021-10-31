@@ -76,7 +76,7 @@ impl Sdl {
             .expect("Getting revision failed")
     }
 
-    /// REturns the revision number.
+    /// Returns the revision number.
     pub fn revision_num() -> u32 {
         (unsafe { bind::SDL_GetRevisionNumber() }) as u32
     }
