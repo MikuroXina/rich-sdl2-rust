@@ -15,7 +15,7 @@ use super::format::AudioFormat;
 
 /// A builder to build an information representing what specification is required for an audio device.
 #[derive(TypedBuilder)]
-pub struct AudioSpecBuilder<'callback> {
+pub struct AudioSpecBuilder<'callback, T: AudioCallback<'callback>> {
     #[builder(default = 44100)]
     sample_freq: u32,
     #[builder(default = AudioFormat::signed32_lsb())]
@@ -25,27 +25,28 @@ pub struct AudioSpecBuilder<'callback> {
     #[builder(default = 4096)]
     samples: u16,
     #[builder(default, setter(strip_option))]
-    callback: Option<Box<dyn AudioCallback + 'callback>>,
+    callback: Option<T>,
+    _phantom: PhantomData<&'callback mut T>,
 }
 
 /// A type of the callback to interact with the raw audio buffer.
-pub trait AudioCallback: FnMut(&mut [u8]) {}
+pub trait AudioCallback<'callback>: FnMut(&mut [u8]) + 'callback {}
 
 /// A specification to require what an audio device is.
-pub struct AudioSpec<'callback> {
+pub struct AudioSpec<'callback, T> {
     raw: bind::SDL_AudioSpec,
-    _phantom: PhantomData<&'callback mut dyn AudioCallback>,
+    _phantom: PhantomData<&'callback mut T>,
 }
 
-impl std::fmt::Debug for AudioSpec<'_> {
+impl<T> std::fmt::Debug for AudioSpec<'_, T> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         f.debug_struct("AudioSpec").finish_non_exhaustive()
     }
 }
 
-impl<'callback> AudioSpec<'callback> {
+impl<'callback, T: AudioCallback<'callback>> AudioSpec<'callback, T> {
     /// Constructs an audio specification with the optional callback.
-    pub fn new(builder: AudioSpecBuilder) -> Self {
+    pub fn new(builder: AudioSpecBuilder<'callback, T>) -> Self {
         Self {
             raw: bind::SDL_AudioSpec {
                 freq: builder.sample_freq as c_int,
@@ -58,10 +59,12 @@ impl<'callback> AudioSpec<'callback> {
                 callback: builder
                     .callback
                     .as_ref()
-                    .map(|_| audio_spec_wrap_handler as _),
-                userdata: builder.callback.map_or(std::ptr::null_mut(), |callback| {
-                    Box::into_raw(Box::new(callback)).cast()
-                }),
+                    .map(|_| audio_spec_wrap_handler::<T> as _),
+                userdata: builder
+                    .callback
+                    .map_or(std::ptr::null_mut(), |mut callback| {
+                        &mut callback as *mut T as *mut _
+                    }),
             },
             _phantom: PhantomData,
         }
@@ -76,18 +79,15 @@ impl<'callback> AudioSpec<'callback> {
     }
 }
 
-impl Drop for AudioSpec<'_> {
-    fn drop(&mut self) {
-        let func = unsafe { self.raw.userdata as *mut Box<dyn AudioCallback> };
-        let _ = unsafe { Box::from_raw(func) };
-    }
-}
-
-unsafe extern "C" fn audio_spec_wrap_handler(userdata: *mut c_void, stream: *mut u8, len: c_int) {
+unsafe extern "C" fn audio_spec_wrap_handler<'callback, T: AudioCallback<'callback>>(
+    userdata: *mut c_void,
+    stream: *mut u8,
+    len: c_int,
+) {
     if userdata.is_null() {
         return;
     }
-    let func = &mut *(userdata as *mut Box<dyn AudioCallback>);
+    let func = &mut *(userdata as *mut T);
     let slice = std::slice::from_raw_parts_mut(stream, len as usize);
     slice.fill(0);
     func(slice);

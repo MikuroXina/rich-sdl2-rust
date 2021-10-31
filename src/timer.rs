@@ -7,15 +7,15 @@ mod ticks;
 pub use ticks::*;
 
 /// A callback for [`Timer`], that returns an interval for next calling.
-pub type TimerCallback<'callback> = Box<dyn FnMut() -> u32 + 'callback>;
+pub trait TimerCallback<'callback>: FnMut() -> u32 + 'callback {}
 
 /// A timer invokes a [`TimerCallback`] with the interval.
-pub struct Timer<'callback> {
+pub struct Timer<T> {
     id: NonZeroU32,
-    raw_callback: *mut TimerCallback<'callback>,
+    callback: T,
 }
 
-impl std::fmt::Debug for Timer<'_> {
+impl<T> std::fmt::Debug for Timer<T> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         f.debug_struct("Timer")
             .field("id", &self.id)
@@ -23,31 +23,33 @@ impl std::fmt::Debug for Timer<'_> {
     }
 }
 
-impl<'callback> Timer<'callback> {
+impl<'callback, T: TimerCallback<'callback>> Timer<T> {
     /// Constructs a timer with initial interval and callback.
-    pub fn new(interval: u32, callback: TimerCallback<'callback>) -> Result<Self> {
-        let wrapped = Box::into_raw(Box::new(callback));
-        let id = unsafe { bind::SDL_AddTimer(interval, Some(timer_wrap_handler), wrapped.cast()) };
+    pub fn new(interval: u32, mut callback: T) -> Result<Self> {
+        let data = &mut callback as *mut T;
+        let id =
+            unsafe { bind::SDL_AddTimer(interval, Some(timer_wrap_handler::<T>), data.cast()) };
         if id == 0 {
-            let _ = unsafe { Box::from_raw(wrapped) };
             Err(SdlError::Others { msg: Sdl::error() })
         } else {
             Ok(Self {
                 id: unsafe { NonZeroU32::new_unchecked(id as u32) },
-                raw_callback: wrapped,
+                callback,
             })
         }
     }
 }
 
-extern "C" fn timer_wrap_handler(_: u32, param: *mut c_void) -> u32 {
-    let callback = unsafe { &mut *(param as *mut TimerCallback) };
+extern "C" fn timer_wrap_handler<'callback, T: TimerCallback<'callback>>(
+    _: u32,
+    param: *mut c_void,
+) -> u32 {
+    let callback = unsafe { &mut *(param as *mut T) };
     callback()
 }
 
-impl Drop for Timer<'_> {
+impl<T> Drop for Timer<T> {
     fn drop(&mut self) {
-        let _ = unsafe { Box::from_raw(self.raw_callback) };
         let _ = unsafe { bind::SDL_RemoveTimer(self.id.get() as bind::SDL_TimerID) };
     }
 }
