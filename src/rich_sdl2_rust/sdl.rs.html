@@ -194,7 +194,7 @@
             .<span class="ident">expect</span>(<span class="string">&quot;Getting revision failed&quot;</span>)
     }
 
-    <span class="doccomment">/// REturns the revision number.</span>
+    <span class="doccomment">/// Returns the revision number.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">revision_num</span>() -&gt; <span class="ident">u32</span> {
         (<span class="kw">unsafe</span> { <span class="ident">bind::SDL_GetRevisionNumber</span>() }) <span class="kw">as</span> <span class="ident">u32</span>
     }
