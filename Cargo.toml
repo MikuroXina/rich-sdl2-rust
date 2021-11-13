@@ -12,7 +12,7 @@ categories = ["graphics", "gui", "multimedia", "rendering"]
 rust-version = "1.56"
 
 [features]
-default = ["use_pkg_config"]
+default = ["use_vcpkg"]
 vulkan = ["ash"]
 nightly = ["simd_allocator"]
 simd_allocator = []
