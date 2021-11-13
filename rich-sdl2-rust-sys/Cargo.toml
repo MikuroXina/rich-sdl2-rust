@@ -1,7 +1,7 @@
 [package]
 name = "rich-sdl2-rust-sys"
 version = "0.2.1"
-edition = "2018"
+edition = "2021"
 description = "The sdl2 binding for Rust."
 repository = "https://github.com/MikuroXina/rich-sdl2-rust"
 license = "Apache-2.0"
