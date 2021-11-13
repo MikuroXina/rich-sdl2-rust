@@ -51,6 +51,7 @@ fn include_paths() -> Vec<PathBuf> {
         let path = PathBuf::from(path);
         paths.push(path);
     }
+    eprintln!("{:?}", paths);
     paths
 }
 
