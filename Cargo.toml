@@ -1,6 +1,6 @@
 [package]
 name = "rich-sdl2-rust"
-version = "0.10.0"
+version = "0.10.1"
 authors = ["MikuroXina <ryosukadnak@gmail.com>"]
 edition = "2021"
 description = "The sdl2 wrapper for Rust."
@@ -12,10 +12,12 @@ categories = ["graphics", "gui", "multimedia", "rendering"]
 rust-version = "1.56"
 
 [features]
-default = []
+default = ["use_vcpkg"]
 vulkan = ["ash"]
 nightly = ["simd_allocator"]
 simd_allocator = []
+use_vcpkg = ["rich-sdl2-rust-sys/use_vcpkg"]
+use_pkg_config = ["rich-sdl2-rust-sys/use_pkg_config"]
 
 [dependencies]
 ash = { version = "0.33.0", optional = true }
