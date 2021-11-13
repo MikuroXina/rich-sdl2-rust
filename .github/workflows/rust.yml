@@ -60,7 +60,7 @@ jobs:
         run: cargo test --verbose
       - name: Create docs
         if: matrix.os == 'ubuntu-latest'
-        run: cargo +nightly doc --all-features --no-deps
+        run: cargo +nightly doc --features vulkan,simd_allocator --no-deps
 
       - uses: actions/upload-artifact@v2
         if: matrix.os == 'ubuntu-latest'
