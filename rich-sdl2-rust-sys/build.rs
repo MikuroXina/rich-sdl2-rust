@@ -10,6 +10,8 @@ fn main() {
     let target_os = target.splitn(3, '-').nth(2).unwrap();
     set_link(target_os);
 
+    set_lib_dir();
+
     println!("cargo:rerun-if-changed=wrapper.h");
 
     let bindings = bindgen::Builder::default()
@@ -78,5 +80,11 @@ fn set_link(target_os: &str) {
         println!("cargo:rustc-link-lib=framework=AudioToolbox");
         println!("cargo:rustc-link-lib=framework=Metal");
         println!("cargo:rustc-link-lib=iconv");
+    }
+}
+
+fn set_lib_dir() {
+    if let Ok(lib_dir) = std::env::var("SDL2_LIB_DIR") {
+        println!("cargo:rustc-link-search={}", lib_dir);
     }
 }
