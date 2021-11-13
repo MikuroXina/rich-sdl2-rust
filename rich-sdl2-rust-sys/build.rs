@@ -2,9 +2,9 @@ use std::{env, path::PathBuf};
 
 fn main() {
     let includes: Vec<_> = include_paths()
-        .into_iter()
         .map(|path| format!("-I{}", path.display()))
         .collect();
+    eprintln!("{:?}", includes);
 
     let target = env::var("TARGET").expect("Cargo build scripts always have TARGET");
     let target_os = target.splitn(3, '-').nth(2).unwrap();
@@ -33,26 +33,20 @@ fn main() {
         .expect("writing `bind.rs` failed");
 }
 
-fn include_paths() -> Vec<PathBuf> {
-    let mut paths = vec![];
-    if let Ok(mut sdl2) = vcpkg::Config::new()
+fn include_paths() -> impl Iterator<Item = PathBuf> {
+    vcpkg::Config::new()
         .emit_includes(true)
         .find_package("sdl2")
-    {
-        paths.append(&mut sdl2.include_paths);
-    }
-    if let Ok(mut sdl2) = pkg_config::Config::new()
-        .atleast_version("2.0.16")
-        .probe("sdl2")
-    {
-        paths.append(&mut sdl2.include_paths);
-    }
-    if let Ok(path) = std::env::var("SDL2_PATH") {
-        let path = PathBuf::from(path);
-        paths.push(path);
-    }
-    eprintln!("{:?}", paths);
-    paths
+        .into_iter()
+        .flat_map(|sdl2| sdl2.include_paths)
+        .chain(
+            pkg_config::Config::new()
+                .atleast_version("2.0.16")
+                .probe("sdl2")
+                .into_iter()
+                .flat_map(|sdl2| sdl2.include_paths),
+        )
+        .chain(std::env::var("SDL2_PATH").map(PathBuf::from).into_iter())
 }
 
 fn set_link(target_os: &str) {
