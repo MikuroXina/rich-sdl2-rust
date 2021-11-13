@@ -12,12 +12,10 @@ categories = ["graphics", "gui", "multimedia", "rendering"]
 rust-version = "1.56"
 
 [features]
-default = ["use_vcpkg"]
+default = []
 vulkan = ["ash"]
 nightly = ["simd_allocator"]
 simd_allocator = []
-use_vcpkg = ["rich-sdl2-rust-sys/use_vcpkg"]
-use_pkg_config = ["rich-sdl2-rust-sys/use_pkg_config"]
 
 [dependencies]
 ash = { version = "0.33.0", optional = true }

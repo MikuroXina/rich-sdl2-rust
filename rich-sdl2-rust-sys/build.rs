@@ -33,20 +33,16 @@ fn main() {
 
 fn include_paths() -> Vec<PathBuf> {
     let mut paths = vec![];
-    #[cfg(feature = "use_vcpkg")]
+    if let Ok(mut sdl2) = vcpkg::Config::new()
+        .emit_includes(true)
+        .find_package("sdl2")
     {
-        let mut sdl2 = vcpkg::Config::new()
-            .emit_includes(true)
-            .find_package("sdl2")
-            .expect("sdl2 package not found");
         paths.append(&mut sdl2.include_paths);
     }
-    #[cfg(feature = "use_pkg_config")]
+    if let Ok(mut sdl2) = pkg_config::Config::new()
+        .atleast_version("2.0.16")
+        .probe("sdl2")
     {
-        let mut sdl2 = pkg_config::Config::new()
-            .atleast_version("2.0.16")
-            .probe("sdl2")
-            .expect("sdl2 package not found");
         paths.append(&mut sdl2.include_paths);
     }
     paths
