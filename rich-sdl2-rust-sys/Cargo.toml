@@ -9,7 +9,7 @@ keywords = ["sdl2", "binding"]
 categories = ["graphics", "gui", "multimedia", "rendering"]
 
 [features]
-default = ["use_pkg_config"]
+default = []
 use_vcpkg = ["vcpkg"]
 use_pkg_config = ["pkg-config"]
 
