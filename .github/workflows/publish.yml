@@ -44,6 +44,7 @@ jobs:
         with:
           path: ./rich-sdl2-rust-sys
           registry-token: ${{ secrets.CARGO_REGISTRY_TOKEN }}
+          args: --features use_vcpkg
       - uses: katyo/publish-crates@v1
         with:
           registry-token: ${{ secrets.CARGO_REGISTRY_TOKEN }}
