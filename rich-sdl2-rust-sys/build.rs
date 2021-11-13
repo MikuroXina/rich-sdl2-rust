@@ -50,6 +50,11 @@ fn include_paths() -> Vec<PathBuf> {
 }
 
 fn set_link(target_os: &str) {
+    #[cfg(feature = "static")]
+    println!("cargo:rustc-link-lib=static=SDL2");
+    #[cfg(feature = "dynamic")]
+    println!("cargo:rustc-link-lib=SDL2");
+
     if target_os.contains("windows") {
         println!("cargo:rustc-link-lib=shell32");
         println!("cargo:rustc-link-lib=user32");

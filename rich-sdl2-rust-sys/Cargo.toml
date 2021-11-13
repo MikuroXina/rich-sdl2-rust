@@ -9,6 +9,10 @@ keywords = ["sdl2", "binding"]
 categories = ["graphics", "gui", "multimedia", "rendering"]
 links = "SDL2"
 
+[features]
+static = []
+dynamic = []
+
 [package.metadata.vcpkg]
 dependencies = ["sdl2"]
 git = "https://github.com/microsoft/vcpkg"
