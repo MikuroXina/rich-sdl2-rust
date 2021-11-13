@@ -1,17 +1,17 @@
 [package]
 name = "rich-sdl2-rust-sys"
 version = "0.2.1"
-edition = "2018"
+edition = "2021"
 description = "The sdl2 binding for Rust."
 repository = "https://github.com/MikuroXina/rich-sdl2-rust"
 license = "Apache-2.0"
 keywords = ["sdl2", "binding"]
 categories = ["graphics", "gui", "multimedia", "rendering"]
+links = "SDL2"
 
 [features]
-default = []
-use_vcpkg = ["vcpkg"]
-use_pkg_config = ["pkg-config"]
+static = []
+dynamic = []
 
 [package.metadata.vcpkg]
 dependencies = ["sdl2"]
@@ -23,5 +23,5 @@ x86_64-pc-windows-msvc = { triplet = "x64-windows-static-md" }
 
 [build-dependencies]
 bindgen = "0.59.1"
-pkg-config = { version = "0.3.22", optional = true }
-vcpkg = { version = "0.2.15", optional = true }
+pkg-config = "0.3.22"
+vcpkg = "0.2.15"
