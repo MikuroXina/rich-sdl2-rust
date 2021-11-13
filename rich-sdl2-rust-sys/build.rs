@@ -45,7 +45,7 @@ fn include_paths() -> Vec<PathBuf> {
     {
         let mut sdl2 = pkg_config::Config::new()
             .atleast_version("2.0.16")
-            .probe("SDL2")
+            .probe("sdl2")
             .expect("sdl2 package not found");
         paths.append(&mut sdl2.include_paths);
     }
