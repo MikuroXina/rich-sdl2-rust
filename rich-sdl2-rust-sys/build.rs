@@ -42,6 +42,10 @@ fn include_paths() -> Vec<PathBuf> {
     {
         paths.append(&mut sdl2.include_paths);
     }
+    if let Ok(path) = std::env::var("SDL2_PATH") {
+        let path = PathBuf::from(path);
+        paths.push(path);
+    }
     paths
 }
 
