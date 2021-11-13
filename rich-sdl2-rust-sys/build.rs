@@ -1,13 +1,7 @@
 use std::{env, path::PathBuf};
 
 fn main() {
-    let sdl2 = vcpkg::Config::new()
-        .emit_includes(true)
-        .find_package("sdl2")
-        .unwrap();
-    eprintln!("{:?}", sdl2.include_paths);
-    let includes: Vec<_> = sdl2
-        .include_paths
+    let includes: Vec<_> = include_paths()
         .into_iter()
         .map(|path| format!("-I{}", path.display()))
         .collect();
@@ -35,6 +29,27 @@ fn main() {
     bindings
         .write_to_file(root.join("bind.rs"))
         .expect("writing `bind.rs` failed");
+}
+
+fn include_paths() -> Vec<PathBuf> {
+    let mut paths = vec![];
+    #[cfg(feature = "use_vcpkg")]
+    {
+        let mut sdl2 = vcpkg::Config::new()
+            .emit_includes(true)
+            .find_package("sdl2")
+            .expect("sdl2 package not found");
+        paths.append(&mut sdl2.include_paths);
+    }
+    #[cfg(feature = "use_pkg_config")]
+    {
+        let mut sdl2 = pkg_config::Config::new()
+            .atleast_version("2.0.16")
+            .probe("SDL2")
+            .expect("sdl2 package not found");
+        paths.append(&mut sdl2.include_paths);
+    }
+    paths
 }
 
 fn set_link(target_os: &str) {
