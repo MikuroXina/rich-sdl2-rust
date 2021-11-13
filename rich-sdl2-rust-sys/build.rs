@@ -35,7 +35,10 @@ fn main() {
 
 fn include_paths() -> Vec<PathBuf> {
     let mut paths = vec![];
-    if let Ok(mut sdl2) = vcpkg::Config::new().find_package("sdl2") {
+    if let Ok(mut sdl2) = vcpkg::Config::new()
+        .emit_includes(true)
+        .find_package("sdl2")
+    {
         paths.append(&mut sdl2.include_paths);
     }
     if let Ok(mut sdl2) = pkg_config::Config::new()
