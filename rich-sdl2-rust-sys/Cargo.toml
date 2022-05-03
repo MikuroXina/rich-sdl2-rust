@@ -12,6 +12,7 @@ links = "SDL2"
 [features]
 static = []
 dynamic = []
+vendor = ["git2"]
 
 [package.metadata.vcpkg]
 dependencies = ["sdl2"]
@@ -25,3 +26,4 @@ x86_64-pc-windows-msvc = { triplet = "x64-windows-static-md" }
 bindgen = "0.59.1"
 pkg-config = "0.3.22"
 vcpkg = "0.2.15"
+git2 = { version = "0.14.3", optional = true }
