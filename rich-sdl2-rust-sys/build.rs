@@ -53,7 +53,9 @@ fn include_paths() -> impl Iterator<Item = PathBuf> {
         let _ = std::fs::remove_dir_all(&repo_path);
         let _ = std::fs::create_dir_all(&repo_path);
         Repository::clone_recurse(url, &repo_path).expect("failed to clone SDL repository");
-        Command::new(repo_path.with_file_name("configure"))
+        let configure_path = std::fs::canonicalize(repo_path.with_file_name("configure"))
+            .expect("configure not found");
+        Command::new(configure_path)
             .current_dir(&repo_path)
             .args([
                 format!("--prefix={}", root_dir.display()),
