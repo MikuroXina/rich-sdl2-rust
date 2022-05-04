@@ -1,5 +1,11 @@
 use std::{env, path::PathBuf};
 
+#[cfg(not(any(feature = "static", feature = "dynamic", feature = "vendor")))]
+compile_error!(r#"Either feature "static", "dynamic" or "bar" must be enabled."#);
+
+#[cfg(all(feature = "static", feature = "dynamic"))]
+compile_error!(r#"Feature "static" and "dynamic" cannot coexist."#);
+
 fn main() {
     let includes: Vec<_> = include_paths()
         .map(|path| format!("-I{}", path.display()))
