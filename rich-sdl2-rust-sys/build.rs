@@ -50,6 +50,7 @@ fn include_paths() -> impl Iterator<Item = PathBuf> {
         // setup vendored
         let url = "https://github.com/libsdl-org/SDL";
         let repo_path = root_dir.join("SDL");
+        eprintln!("SDL cloning into: {}", repo_path.display());
         let _ = std::fs::create_dir_all(&repo_path);
         if std::fs::remove_dir_all(&repo_path).is_ok() {
             eprintln!("cleaned SDL repository dir")
@@ -65,12 +66,11 @@ fn include_paths() -> impl Iterator<Item = PathBuf> {
             .spawn()
             .expect("failed to configure SDL");
         Command::new("make")
-            .current_dir(&repo_path)
+            .args(["-C", &repo_path.display().to_string()])
             .spawn()
             .expect("failed to build SDL");
         Command::new("make")
-            .arg("install")
-            .current_dir(&repo_path)
+            .args(["-C", &repo_path.display().to_string(), "install"])
             .spawn()
             .expect("failed to setup SDL");
         println!("cargo:rustc-link-search={}", lib_dir.display());
