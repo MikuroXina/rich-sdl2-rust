@@ -50,10 +50,14 @@ fn include_paths() -> impl Iterator<Item = PathBuf> {
         // setup vendored
         let url = "https://github.com/libsdl-org/SDL";
         let repo_path = root_dir.join("SDL");
-        let _ = std::fs::remove_dir_all(&repo_path);
+        if std::fs::remove_dir_all(&repo_path).is_ok() {
+            eprintln!("cleaned SDL repository dir")
+        }
         let _ = std::fs::create_dir_all(&repo_path);
         Repository::clone_recurse(url, &repo_path).expect("failed to clone SDL repository");
-        let configure_path = std::fs::canonicalize(repo_path.with_file_name("configure"))
+        let configure_path = repo_path
+            .with_file_name("configure")
+            .canonicalize()
             .expect("configure not found");
         Command::new(configure_path)
             .current_dir(&repo_path)
