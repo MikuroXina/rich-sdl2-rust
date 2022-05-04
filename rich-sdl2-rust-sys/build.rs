@@ -7,13 +7,14 @@ compile_error!(r#"Either feature "static", "dynamic" or "bar" must be enabled."#
 compile_error!(r#"Feature "static" and "dynamic" cannot coexist."#);
 
 fn main() {
-    let includes: Vec<_> = include_paths()
+    let target = env::var("TARGET").expect("Cargo build scripts always have TARGET");
+    let target_os = target.splitn(3, '-').nth(2).unwrap();
+
+    let includes: Vec<_> = include_paths(target_os)
         .map(|path| format!("-I{}", path.display()))
         .collect();
     eprintln!("{:?}", includes);
 
-    let target = env::var("TARGET").expect("Cargo build scripts always have TARGET");
-    let target_os = target.splitn(3, '-').nth(2).unwrap();
     set_link(target_os);
 
     set_lib_dir();
@@ -39,7 +40,7 @@ fn main() {
         .expect("writing `bind.rs` failed");
 }
 
-fn include_paths() -> impl Iterator<Item = PathBuf> {
+fn include_paths(target_os: &str) -> impl Iterator<Item = PathBuf> {
     let vendor_include = if cfg!(feature = "vendor") {
         use git2::Repository;
         use std::process::Command;
@@ -56,48 +57,65 @@ fn include_paths() -> impl Iterator<Item = PathBuf> {
             eprintln!("cleaned SDL repository dir")
         }
         Repository::clone_recurse(url, &repo_path).expect("failed to clone SDL repository");
-        let configure_path = repo_path.join("configure");
-        let configure = Command::new(configure_path)
-            .current_dir(&repo_path)
-            .args([
-                format!("--prefix={}", root_dir.display()),
-                format!("--libdir={}", lib_dir.display()),
-            ])
-            .spawn()
-            .expect("failed to configure SDL");
-        assert!(
-            configure
-                .wait_with_output()
-                .expect("configure process stopped")
-                .status
-                .success(),
-            "configure failed"
-        );
-        let build = Command::new("make")
-            .current_dir(&repo_path)
-            .spawn()
-            .expect("failed to build SDL");
-        assert!(
-            build
-                .wait_with_output()
-                .expect("build process stopped")
-                .status
-                .success(),
-            "build failed"
-        );
-        let setup = Command::new("make")
-            .arg("install")
-            .current_dir(&repo_path)
-            .spawn()
-            .expect("failed to setup SDL");
-        assert!(
-            setup
-                .wait_with_output()
-                .expect("setup process stopped")
-                .status
-                .success(),
-            "setup failed"
-        );
+        if target_os.contains("windows") {
+            let build = Command::new("msbuild")
+                .current_dir(&repo_path)
+                .arg(repo_path.join("VisualC"))
+                .arg("/p:Configuration=Debug")
+                .spawn()
+                .expect("failed to build project");
+            assert!(
+                build
+                    .wait_with_output()
+                    .expect("build process stopped")
+                    .status
+                    .success(),
+                "build failed"
+            );
+        } else {
+            let configure_path = repo_path.join("configure");
+            let configure = Command::new(configure_path)
+                .current_dir(&repo_path)
+                .args([
+                    format!("--prefix={}", root_dir.display()),
+                    format!("--libdir={}", lib_dir.display()),
+                ])
+                .spawn()
+                .expect("failed to configure SDL");
+            assert!(
+                configure
+                    .wait_with_output()
+                    .expect("configure process stopped")
+                    .status
+                    .success(),
+                "configure failed"
+            );
+            let build = Command::new("make")
+                .current_dir(&repo_path)
+                .spawn()
+                .expect("failed to build SDL");
+            assert!(
+                build
+                    .wait_with_output()
+                    .expect("build process stopped")
+                    .status
+                    .success(),
+                "build failed"
+            );
+            let setup = Command::new("make")
+                .arg("install")
+                .current_dir(&repo_path)
+                .spawn()
+                .expect("failed to setup SDL");
+            assert!(
+                setup
+                    .wait_with_output()
+                    .expect("setup process stopped")
+                    .status
+                    .success(),
+                "setup failed"
+            );
+        }
         println!("cargo:rustc-link-search={}", lib_dir.display());
         eprintln!("vendored SDL: {}", root_dir.display());
         let include_dir = root_dir.join("include");
