@@ -34,18 +34,11 @@ fn main() {
 }
 
 fn include_paths() -> impl Iterator<Item = PathBuf> {
-    vcpkg::Config::new()
-        .emit_includes(true)
-        .find_package("sdl2")
+    pkg_config::Config::new()
+        .atleast_version("2.0.16")
+        .probe("sdl2")
         .into_iter()
         .flat_map(|sdl2| sdl2.include_paths)
-        .chain(
-            pkg_config::Config::new()
-                .atleast_version("2.0.16")
-                .probe("sdl2")
-                .into_iter()
-                .flat_map(|sdl2| sdl2.include_paths),
-        )
         .chain(std::env::var("SDL2_PATH").map(PathBuf::from).into_iter())
 }
 
