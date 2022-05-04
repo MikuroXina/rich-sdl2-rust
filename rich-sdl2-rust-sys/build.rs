@@ -55,7 +55,7 @@ fn include_paths() -> impl Iterator<Item = PathBuf> {
             eprintln!("cleaned SDL repository dir")
         }
         Repository::clone_recurse(url, &repo_path).expect("failed to clone SDL repository");
-        let configure_path = repo_path.with_file_name("configure");
+        let configure_path = repo_path.join("configure");
         Command::new(configure_path)
             .current_dir(&repo_path)
             .args([
