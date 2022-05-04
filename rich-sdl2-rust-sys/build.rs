@@ -51,8 +51,8 @@ fn include_paths() -> impl Iterator<Item = PathBuf> {
         let url = "https://github.com/libsdl-org/SDL";
         let repo_path = root_dir.join("SDL");
         let _ = std::fs::remove_dir_all(&repo_path);
-        Repository::clone_recurse(url, &root_dir).expect("failed to clone SDL repository");
-        Command::new(repo_path.join("configure"))
+        Repository::clone_recurse(url, &repo_path).expect("failed to clone SDL repository");
+        Command::new(repo_path.with_file_name("configure"))
             .current_dir(&repo_path)
             .args([
                 format!("--prefix={}", root_dir.display()),
