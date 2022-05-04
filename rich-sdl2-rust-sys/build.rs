@@ -53,8 +53,7 @@ fn include_paths() -> impl Iterator<Item = PathBuf> {
         if std::fs::remove_dir_all(&repo_path).is_ok() {
             eprintln!("cleaned SDL repository dir")
         }
-        let _ = std::fs::create_dir_all(&repo_path);
-        Repository::clone_recurse(url, &repo_path).expect("failed to clone SDL repository");
+        Repository::clone_recurse(url, &root_dir).expect("failed to clone SDL repository");
         let configure_path = repo_path
             .with_file_name("configure")
             .canonicalize()
