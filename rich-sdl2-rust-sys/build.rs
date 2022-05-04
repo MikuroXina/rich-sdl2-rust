@@ -73,8 +73,8 @@ fn include_paths() -> impl Iterator<Item = PathBuf> {
             .current_dir(&repo_path)
             .spawn()
             .expect("failed to setup SDL");
-        let _ = std::fs::remove_dir_all(&repo_path);
         println!("cargo:rustc-link-search={}", lib_dir.display());
+        eprintln!("vendored SDL: {}", root_dir.display());
         let include_dir = root_dir.join("include");
         vec![include_dir]
     } else {
