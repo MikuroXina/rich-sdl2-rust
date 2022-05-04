@@ -38,30 +38,34 @@ fn include_paths() -> impl Iterator<Item = PathBuf> {
         use git2::Repository;
         use std::process::Command;
 
-        let root_dir = env::var("OUT_DIR").expect("OUT_DIR not found");
+        let root_dir = PathBuf::from(env::var("OUT_DIR").expect("OUT_DIR not found"));
+        let lib_dir = root_dir.join("lib");
 
         // setup vendored
         let url = "https://github.com/libsdl-org/SDL";
-        let mut repo_path = PathBuf::from(root_dir);
-        repo_path.push("vendor");
+        let repo_path = root_dir.join("vendor");
         let _ = std::fs::remove_dir_all(&repo_path);
         Repository::clone_recurse(url, &repo_path).expect("failed to clone SDL repository");
-        let mut configure = repo_path.clone();
-        configure.push("configure");
-        Command::new(configure)
+        Command::new(repo_path.join("configure"))
             .current_dir(&repo_path)
+            .args([
+                format!("--prefix={}", root_dir.display()),
+                format!("--libdir={}", lib_dir.display()),
+            ])
             .spawn()
             .expect("failed to configure SDL");
         Command::new("make")
             .current_dir(&repo_path)
             .spawn()
             .expect("failed to build SDL");
-        let mut lib_dir = repo_path.clone();
-        lib_dir.push("build");
-        lib_dir.push(".libs");
+        Command::new("make")
+            .arg("install")
+            .current_dir(&repo_path)
+            .spawn()
+            .expect("failed to setup SDL");
+        let _ = std::fs::remove_dir_all(&repo_path);
         println!("cargo:rustc-link-search={}", lib_dir.display());
-        let mut include_dir = repo_path.clone();
-        include_dir.push("include");
+        let include_dir = root_dir.join("include");
         vec![include_dir]
     } else {
         vec![]
