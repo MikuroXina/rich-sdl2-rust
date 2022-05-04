@@ -87,6 +87,7 @@ fn set_link(target_os: &str) {
         let mut configure = repo_path.clone();
         configure.push("configure");
         Command::new(configure)
+            .current_dir(&repo_path)
             .spawn()
             .expect("failed to configure SDL");
         Command::new("make")
@@ -96,7 +97,7 @@ fn set_link(target_os: &str) {
         let mut lib_dir = repo_path.clone();
         lib_dir.push("build");
         lib_dir.push(".libs");
-        println!("cargo:rustc-link-search={}", lib_dir);
+        println!("cargo:rustc-link-search={}", lib_dir.display());
     }
 }
 
