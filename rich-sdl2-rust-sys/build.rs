@@ -57,7 +57,7 @@ fn include_paths() -> impl Iterator<Item = PathBuf> {
         }
         Repository::clone_recurse(url, &repo_path).expect("failed to clone SDL repository");
         let configure_path = repo_path.join("configure");
-        Command::new(configure_path)
+        let configure = Command::new(configure_path)
             .current_dir(&repo_path)
             .args([
                 format!("--prefix={}", root_dir.display()),
@@ -65,14 +65,39 @@ fn include_paths() -> impl Iterator<Item = PathBuf> {
             ])
             .spawn()
             .expect("failed to configure SDL");
-        Command::new("make")
-            .args(["-C", &repo_path.display().to_string()])
+        assert!(
+            configure
+                .wait_with_output()
+                .expect("configure process stopped")
+                .status
+                .success(),
+            "configure failed"
+        );
+        let build = Command::new("make")
+            .current_dir(&repo_path)
             .spawn()
             .expect("failed to build SDL");
-        Command::new("make")
-            .args(["-C", &repo_path.display().to_string(), "install"])
+        assert!(
+            build
+                .wait_with_output()
+                .expect("build process stopped")
+                .status
+                .success(),
+            "build failed"
+        );
+        let setup = Command::new("make")
+            .arg("install")
+            .current_dir(&repo_path)
             .spawn()
             .expect("failed to setup SDL");
+        assert!(
+            setup
+                .wait_with_output()
+                .expect("setup process stopped")
+                .status
+                .success(),
+            "setup failed"
+        );
         println!("cargo:rustc-link-search={}", lib_dir.display());
         eprintln!("vendored SDL: {}", root_dir.display());
         let include_dir = root_dir.join("include");
