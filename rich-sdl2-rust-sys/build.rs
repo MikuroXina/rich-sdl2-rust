@@ -34,12 +34,45 @@ fn main() {
 }
 
 fn include_paths() -> impl Iterator<Item = PathBuf> {
+    let vendor_include = if cfg!(feature = "vendor") {
+        use git2::Repository;
+        use std::process::Command;
+
+        let root_dir = env::var("OUT_DIR").expect("OUT_DIR not found");
+
+        // setup vendored
+        let url = "https://github.com/libsdl-org/SDL";
+        let mut repo_path = PathBuf::from(root_dir);
+        repo_path.push("vendor");
+        let _ = std::fs::remove_dir_all(&repo_path);
+        Repository::clone_recurse(url, &repo_path).expect("failed to clone SDL repository");
+        let mut configure = repo_path.clone();
+        configure.push("configure");
+        Command::new(configure)
+            .current_dir(&repo_path)
+            .spawn()
+            .expect("failed to configure SDL");
+        Command::new("make")
+            .current_dir(&repo_path)
+            .spawn()
+            .expect("failed to build SDL");
+        let mut lib_dir = repo_path.clone();
+        lib_dir.push("build");
+        lib_dir.push(".libs");
+        println!("cargo:rustc-link-search={}", lib_dir.display());
+        let mut include_dir = repo_path.clone();
+        include_dir.push("include");
+        vec![include_dir]
+    } else {
+        vec![]
+    };
     pkg_config::Config::new()
         .atleast_version("2.0.16")
         .probe("sdl2")
         .into_iter()
         .flat_map(|sdl2| sdl2.include_paths)
         .chain(std::env::var("SDL2_PATH").map(PathBuf::from).into_iter())
+        .chain(vendor_include.into_iter())
 }
 
 fn set_link(target_os: &str) {
@@ -71,33 +104,6 @@ fn set_link(target_os: &str) {
         println!("cargo:rustc-link-lib=framework=AudioToolbox");
         println!("cargo:rustc-link-lib=framework=Metal");
         println!("cargo:rustc-link-lib=iconv");
-    }
-    #[cfg(feature = "vendor")]
-    {
-        use git2::Repository;
-        use std::process::Command;
-
-        let root_dir = env::var("OUT_DIR").expect("OUT_DIR not found");
-
-        // setup vendored
-        let url = "https://github.com/libsdl-org/SDL";
-        let mut repo_path = PathBuf::from(root_dir);
-        repo_path.push("vendor");
-        Repository::clone_recurse(url, &repo_path).expect("failed to clone SDL repository");
-        let mut configure = repo_path.clone();
-        configure.push("configure");
-        Command::new(configure)
-            .current_dir(&repo_path)
-            .spawn()
-            .expect("failed to configure SDL");
-        Command::new("make")
-            .current_dir(&repo_path)
-            .spawn()
-            .expect("failed to build SDL");
-        let mut lib_dir = repo_path.clone();
-        lib_dir.push("build");
-        lib_dir.push(".libs");
-        println!("cargo:rustc-link-search={}", lib_dir.display());
     }
 }
 
