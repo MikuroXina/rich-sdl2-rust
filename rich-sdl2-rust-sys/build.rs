@@ -81,9 +81,11 @@ fn include_paths(target_os: &str) -> impl Iterator<Item = PathBuf> {
             )
             .expect("failed to move built libraries");
         } else {
+            let build_path = repo_path.join("build");
+            std::fs::create_dir(&build_path).expect("failed to mkdir build");
             let configure_path = repo_path.join("configure");
             let configure = Command::new(configure_path)
-                .current_dir(&repo_path)
+                .current_dir(&build_path)
                 .args([
                     format!("--prefix={}", root_dir.display()),
                     format!("--libdir={}", lib_dir.display()),
@@ -99,7 +101,7 @@ fn include_paths(target_os: &str) -> impl Iterator<Item = PathBuf> {
                 "configure failed"
             );
             let build = Command::new("make")
-                .current_dir(&repo_path)
+                .current_dir(&build_path)
                 .spawn()
                 .expect("failed to build SDL");
             assert!(
@@ -112,7 +114,7 @@ fn include_paths(target_os: &str) -> impl Iterator<Item = PathBuf> {
             );
             let setup = Command::new("make")
                 .arg("install")
-                .current_dir(&repo_path)
+                .current_dir(&build_path)
                 .spawn()
                 .expect("failed to setup SDL");
             assert!(
