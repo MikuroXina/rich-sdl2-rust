@@ -73,7 +73,7 @@ fn include_paths(target_os: &str) -> impl Iterator<Item = PathBuf> {
                     .success(),
                 "build failed"
             );
-            std::fs::rename(repo_path.join("include").join("SDL2"), &include_dir)
+            std::fs::rename(repo_path.join("include"), include_dir.join("SDL2"))
                 .expect("failed to move headers");
             std::fs::rename(
                 repo_path.join("VisualC").join("Win32").join("Debug"),
