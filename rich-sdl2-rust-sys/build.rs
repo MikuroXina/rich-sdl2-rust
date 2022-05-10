@@ -62,11 +62,7 @@ fn include_paths(target_os: &str) -> impl Iterator<Item = PathBuf> {
             let build = Command::new("msbuild")
                 .current_dir(&repo_path)
                 .arg(repo_path.join("VisualC").join("SDL.sln"))
-                .args([
-                    "-property:Configuration=Release",
-                    "-t:rebuild",
-                    "-verbosity:diag",
-                ])
+                .args(["-property:Configuration=Release", "-t:rebuild"])
                 .spawn()
                 .expect("failed to build project");
             assert!(
