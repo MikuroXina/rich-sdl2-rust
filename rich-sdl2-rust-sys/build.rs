@@ -47,6 +47,7 @@ fn include_paths(target_os: &str) -> impl Iterator<Item = PathBuf> {
 
         let root_dir = PathBuf::from(env::var("OUT_DIR").expect("OUT_DIR not found"));
         let lib_dir = root_dir.join("lib");
+        let include_dir = root_dir.join("include");
 
         // setup vendored
         let url = "https://github.com/libsdl-org/SDL";
@@ -72,6 +73,13 @@ fn include_paths(target_os: &str) -> impl Iterator<Item = PathBuf> {
                     .success(),
                 "build failed"
             );
+            std::fs::rename(repo_path.join("include"), &include_dir)
+                .expect("failed to move headers");
+            std::fs::rename(
+                repo_path.join("VisualC").join("Win32").join("Debug"),
+                &lib_dir,
+            )
+            .expect("failed to move built libraries");
         } else {
             let configure_path = repo_path.join("configure");
             let configure = Command::new(configure_path)
@@ -118,7 +126,6 @@ fn include_paths(target_os: &str) -> impl Iterator<Item = PathBuf> {
         }
         println!("cargo:rustc-link-search={}", lib_dir.display());
         eprintln!("vendored SDL: {}", root_dir.display());
-        let include_dir = root_dir.join("include");
         vec![include_dir]
     } else {
         vec![]
