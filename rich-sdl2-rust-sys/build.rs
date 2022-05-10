@@ -85,7 +85,7 @@ fn include_paths(target_os: &str) -> impl Iterator<Item = PathBuf> {
                         .expect("failed to copy header file");
                 }
             }
-            std::fs::create_dir(&lib_dir).expect("failed to create lib dir");
+            std::fs::create_dir_all(&lib_dir).expect("failed to create lib dir");
             for file in std::fs::read_dir(repo_path.join("VisualC").join("Win32").join("Debug"))
                 .expect("build dir not found")
                 .flatten()
