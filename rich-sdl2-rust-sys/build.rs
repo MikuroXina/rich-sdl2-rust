@@ -92,6 +92,7 @@ fn include_paths(target_os: &str) -> impl Iterator<Item = PathBuf> {
             {
                 let path = file.path();
                 if path.is_file() {
+                    eprintln!("built library: {}", path.display());
                     std::fs::copy(&path, lib_dir.join(path.file_name().unwrap()))
                         .expect("failed to copy built library");
                 }
