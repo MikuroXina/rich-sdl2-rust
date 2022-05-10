@@ -83,22 +83,28 @@ fn include_paths(target_os: &str) -> impl Iterator<Item = PathBuf> {
         } else {
             let build_path = repo_path.join("build");
             std::fs::create_dir(&build_path).expect("failed to mkdir build");
-            let configure_path = repo_path.join("configure");
-            let configure = Command::new(configure_path)
+            let cmake = Command::new("cmake")
                 .current_dir(&build_path)
-                .args([
-                    format!("--prefix={}", root_dir.display()),
-                    format!("--libdir={}", lib_dir.display()),
+                .args([".."])
+                .envs([
+                    (
+                        "CMAKE_LIBRARY_PATH",
+                        format!("--prefix={}", root_dir.display()),
+                    ),
+                    (
+                        "CMAKE_INSTALL_LIBDIR",
+                        format!("--libdir={}", lib_dir.display()),
+                    ),
                 ])
                 .spawn()
                 .expect("failed to configure SDL");
             assert!(
-                configure
+                cmake
                     .wait_with_output()
-                    .expect("configure process stopped")
+                    .expect("cmake process stopped")
                     .status
                     .success(),
-                "configure failed"
+                "cmake failed"
             );
             let build = Command::new("make")
                 .current_dir(&build_path)
