@@ -73,8 +73,18 @@ fn include_paths(target_os: &str) -> impl Iterator<Item = PathBuf> {
                     .success(),
                 "build failed"
             );
-            std::fs::rename(repo_path.join("include"), include_dir.join("SDL2"))
-                .expect("failed to move headers");
+            let include_install_dir = include_dir.join("SDL2");
+            for file in std::fs::read_dir(repo_path.join("include"))
+                .expect("headers not found in repo")
+                .flatten()
+            {
+                let path = file.path();
+                if path.is_file() && path.extension() == Some(std::ffi::OsStr::new("h")) {
+                    std::fs::copy(&path, include_install_dir.join(path.file_name().unwrap()))
+                        .expect("failed to copy header file");
+                }
+            }
+            std::fs::create_dir(&lib_dir).expect("failed to create lib dir");
             std::fs::rename(
                 repo_path.join("VisualC").join("Win32").join("Debug"),
                 &lib_dir,
