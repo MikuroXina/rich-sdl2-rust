@@ -86,16 +86,7 @@ fn include_paths(target_os: &str) -> impl Iterator<Item = PathBuf> {
             let cmake = Command::new("cmake")
                 .current_dir(&build_path)
                 .args([".."])
-                .envs([
-                    (
-                        "CMAKE_LIBRARY_PATH",
-                        format!("--prefix={}", root_dir.display()),
-                    ),
-                    (
-                        "CMAKE_INSTALL_LIBDIR",
-                        format!("--libdir={}", lib_dir.display()),
-                    ),
-                ])
+                .envs([("CMAKE_INSTALL_PREFIX", root_dir.display().to_string())])
                 .spawn()
                 .expect("failed to configure SDL");
             assert!(
