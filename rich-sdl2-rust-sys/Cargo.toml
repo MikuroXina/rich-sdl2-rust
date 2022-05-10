@@ -12,9 +12,9 @@ links = "SDL2"
 [features]
 static = []
 dynamic = []
-vendor = ["git2"]
+vendor = []
 
 [build-dependencies]
 bindgen = "0.59.1"
 pkg-config = "0.3.22"
-git2 = { version = "0.14.3", optional = true }
+git2 = "0.14.3"
