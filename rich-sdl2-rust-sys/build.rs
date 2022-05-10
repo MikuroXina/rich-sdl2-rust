@@ -85,8 +85,11 @@ fn include_paths(target_os: &str) -> impl Iterator<Item = PathBuf> {
             std::fs::create_dir(&build_path).expect("failed to mkdir build");
             let cmake = Command::new("cmake")
                 .current_dir(&build_path)
-                .args([".."])
-                .envs([("CMAKE_INSTALL_PREFIX", root_dir.display().to_string())])
+                .args([
+                    "..".to_string(),
+                    "--prefix".to_string(),
+                    root_dir.display().to_string(),
+                ])
                 .spawn()
                 .expect("failed to configure SDL");
             assert!(
