@@ -74,6 +74,7 @@ fn include_paths(target_os: &str) -> impl Iterator<Item = PathBuf> {
                 "build failed"
             );
             let include_install_dir = include_dir.join("SDL2");
+            std::fs::create_dir_all(&include_install_dir).expect("failed to create lib dir");
             for file in std::fs::read_dir(repo_path.join("include"))
                 .expect("headers not found in repo")
                 .flatten()
