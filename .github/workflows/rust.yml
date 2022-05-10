@@ -30,7 +30,10 @@ jobs:
           components: rustfmt, clippy
           override: true
 
-      - name: Add LLVM PATH
+      - name: Add msbuild to PATH
+        if: matrix.os == 'windows-latest'
+        uses: microsoft/setup-msbuild@v1.0.2
+      - name: Add LLVM to PATH
         if: matrix.os == 'windows-latest'
         run: echo "LIBCLANG_PATH=$((gcm clang).source -replace "clang.exe")" >> $env:GITHUB_ENV
 
