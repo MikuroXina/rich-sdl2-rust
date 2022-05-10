@@ -60,14 +60,13 @@ fn include_paths(target_os: &str) -> impl Iterator<Item = PathBuf> {
         Repository::clone_recurse(url, &repo_path).expect("failed to clone SDL repository");
         if target_os.contains("windows") {
             let target_platform = if target_os.contains("x64") {
-                "-p:Platform=x64"
+                "-property:Platform=x64"
             } else {
-                r#"-p:Platform="Any CPU""#
+                r#"-property:Platform="Any CPU""#
             };
             let build = Command::new("msbuild")
-                .current_dir(&repo_path)
                 .arg(repo_path.join("VisualC").join("SDL.sln"))
-                .args(["-property:Configuration=Release", target_platform])
+                .args(["-property:Configuration=Debug", target_platform])
                 .spawn()
                 .expect("failed to build project");
             assert!(
