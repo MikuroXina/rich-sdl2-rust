@@ -91,7 +91,7 @@ fn include_paths(target_os: &str) -> impl Iterator<Item = PathBuf> {
                 .flatten()
             {
                 let path = file.path();
-                if path.is_file() && path.extension() == Some(std::ffi::OsStr::new("lib")) {
+                if path.is_file() {
                     std::fs::copy(&path, lib_dir.join(path.file_name().unwrap()))
                         .expect("failed to copy built library");
                 }
