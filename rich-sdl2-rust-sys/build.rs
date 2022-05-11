@@ -59,14 +59,14 @@ fn include_paths(target_os: &str) -> impl Iterator<Item = PathBuf> {
         }
         Repository::clone_recurse(url, &repo_path).expect("failed to clone SDL repository");
         if target_os.contains("windows") {
-            let target_platform = if target_os.contains("x64") {
-                "-property:Platform=x64"
+            let target_platform = if cfg!(target_pointer_width = "64") {
+                "Platform=x64"
             } else {
-                r#"-property:Platform="Any CPU""#
+                r#"Platform="Any CPU""#
             };
             let build = Command::new("msbuild")
+                .arg(format!("/p:Configuration=Debug,{}", target_platform))
                 .arg(repo_path.join("VisualC").join("SDL.sln"))
-                .args(["-property:Configuration=Debug", target_platform])
                 .spawn()
                 .expect("failed to build project");
             assert!(
@@ -89,7 +89,7 @@ fn include_paths(target_os: &str) -> impl Iterator<Item = PathBuf> {
                         .expect("failed to copy header file");
                 }
             }
-            let project_to_use = if target_os.contains("x64") {
+            let project_to_use = if cfg!(target_pointer_width = "64") {
                 "x64"
             } else {
                 "Win32"
