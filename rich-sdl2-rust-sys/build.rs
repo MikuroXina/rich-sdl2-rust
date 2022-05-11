@@ -3,8 +3,8 @@ use std::{
     path::{Path, PathBuf},
 };
 
-#[cfg(not(any(feature = "static", feature = "dynamic", feature = "vendor")))]
-compile_error!(r#"Either feature "static", "dynamic" or "bar" must be enabled."#);
+#[cfg(not(any(feature = "static", feature = "dynamic")))]
+compile_error!(r#"Either feature "static" or "dynamic" must be enabled."#);
 
 #[cfg(all(feature = "static", feature = "dynamic"))]
 compile_error!(r#"Feature "static" and "dynamic" cannot coexist."#);
