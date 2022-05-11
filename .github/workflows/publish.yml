@@ -28,9 +28,11 @@ jobs:
         with:
           path: ./rich-sdl2-rust-sys
           registry-token: ${{ secrets.CARGO_REGISTRY_TOKEN }}
+          args: --features vendor
       - uses: katyo/publish-crates@v1
         with:
           registry-token: ${{ secrets.CARGO_REGISTRY_TOKEN }}
+          args: --features vendor
 
   doc:
     runs-on: ubuntu-latest
