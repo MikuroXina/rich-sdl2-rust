@@ -10,6 +10,7 @@ categories = ["graphics", "gui", "multimedia", "rendering"]
 links = "SDL2"
 
 [features]
+default = ["dynamic"]
 static = []
 dynamic = []
 vendor = []
