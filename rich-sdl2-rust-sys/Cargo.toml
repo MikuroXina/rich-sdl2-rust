@@ -1,6 +1,6 @@
 [package]
 name = "rich-sdl2-rust-sys"
-version = "0.2.1"
+version = "0.2.2"
 edition = "2021"
 description = "The sdl2 binding for Rust."
 repository = "https://github.com/MikuroXina/rich-sdl2-rust"
@@ -12,18 +12,9 @@ links = "SDL2"
 [features]
 static = []
 dynamic = []
-vendor = ["git2"]
-
-[package.metadata.vcpkg]
-dependencies = ["sdl2"]
-git = "https://github.com/microsoft/vcpkg"
-rev = "5568f110b509a9fd90711978a7cb76bae75bb092"
-
-[package.metadata.vcpkg.target]
-x86_64-pc-windows-msvc = { triplet = "x64-windows-static-md" }
+vendor = []
 
 [build-dependencies]
 bindgen = "0.59.1"
 pkg-config = "0.3.22"
-vcpkg = "0.2.15"
-git2 = { version = "0.14.3", optional = true }
+git2 = "0.14.3"

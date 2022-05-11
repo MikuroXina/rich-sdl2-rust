@@ -17,22 +17,10 @@ jobs:
     strategy:
       matrix:
         os: [macos-latest, ubuntu-latest, windows-latest]
-        include:
-          - os: windows-latest
-            triplet: x64-windows-static-md
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - uses: lukka/get-cmake@latest
-      - name: Setup vcpkg
-        uses: lukka/run-vcpkg@v7
-        with:
-          setupOnly: true
-          vcpkgDirectory: "${{ github.workspace }}/vcpkg"
-          appendedCacheKey: ${{ hashFiles( '**/vcpkg_manifest/vcpkg.json' ) }}
-          additionalCachedPaths: ${{ env.BUILD_DIR }}/vcpkg_installed
-          vcpkgTriplet: ${{ matrix.triplet }}
-          vcpkgGitCommitId: 5568f110b509a9fd90711978a7cb76bae75bb092
 
       - name: Nightly with rustfmt and clippy
         uses: actions-rs/toolchain@v1
@@ -42,27 +30,26 @@ jobs:
           components: rustfmt, clippy
           override: true
 
-      - name: Add LLVM PATH
+      - name: Add msbuild to PATH
+        if: matrix.os == 'windows-latest'
+        uses: microsoft/setup-msbuild@v1.1
+        with:
+          msbuild-architecture: x64
+      - name: Add LLVM to PATH
         if: matrix.os == 'windows-latest'
         run: echo "LIBCLANG_PATH=$((gcm clang).source -replace "clang.exe")" >> $env:GITHUB_ENV
 
-      - name: Install cargo-vcpkg
-        run: cargo install cargo-vcpkg
-      - name: Install dependencies
-        run: cargo vcpkg -v build
-        working-directory: ./rich-sdl2-rust-sys
-
       - name: Build crate
-        run: cargo build --verbose
+        run: cargo build --verbose --features vendor
       - name: Clippy Check
-        run: cargo clippy --verbose
+        run: cargo clippy --verbose --features vendor
       - name: Test crate
-        run: cargo test --verbose
+        run: cargo test --verbose --features vendor
       - name: Create docs
         if: matrix.os == 'ubuntu-latest'
-        run: cargo +nightly doc --features nightly,vulkan,simd_allocator --no-deps
+        run: cargo +nightly doc --features vendor,nightly,vulkan,simd_allocator --no-deps
 
-      - uses: actions/upload-artifact@v2
+      - uses: actions/upload-artifact@v3
         if: matrix.os == 'ubuntu-latest'
         with:
           name: doc-artifact
