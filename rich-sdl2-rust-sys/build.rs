@@ -3,11 +3,18 @@ use std::{
     path::{Path, PathBuf},
 };
 
+use git2::Repository;
+use retry::{delay::Fixed, retry};
+
 #[cfg(not(any(feature = "static", feature = "dynamic")))]
 compile_error!(r#"Either feature "static" or "dynamic" must be enabled."#);
 
 #[cfg(all(feature = "static", feature = "dynamic"))]
 compile_error!(r#"Feature "static" and "dynamic" cannot coexist."#);
+
+const SDL_VERSION: &str = "2.0.22";
+const SDL_TTF_VERSION: &str = "2.20.0";
+const SDL_MIXER_VERSION: &str = "2.6.1";
 
 fn main() {
     let target = env::var("TARGET").expect("Cargo build scripts always have TARGET");
@@ -64,22 +71,27 @@ fn main() {
 }
 
 fn include_paths(target_os: &str) -> impl Iterator<Item = PathBuf> {
-    let mut vendor_include = if cfg!(feature = "vendor") {
+    let mut include_paths = vec![];
+    if cfg!(feature = "vendor") {
         let root_dir = PathBuf::from(env::var("OUT_DIR").expect("OUT_DIR not found"));
         let lib_dir = root_dir.join("lib");
         let include_dir = root_dir.join("include");
 
         // setup vendored
-        let repo_path = root_dir.join("SDL");
-        if !repo_path.is_dir() {
-            build_vendor_sdl2(repo_path, target_os, &include_dir, &lib_dir, &root_dir);
-        }
+        build_vendor_sdl2(target_os, &include_dir, &lib_dir, &root_dir);
         println!("cargo:rustc-link-search={}", lib_dir.display());
         eprintln!("vendored SDL: {}", root_dir.display());
-        vec![include_dir]
+        include_paths.push(include_dir);
     } else {
-        vec![]
-    };
+        include_paths.extend(
+            pkg_config::Config::new()
+                .atleast_version(SDL_VERSION)
+                .probe("sdl2")
+                .into_iter()
+                .flat_map(|sdl2| sdl2.include_paths)
+                .chain(std::env::var("SDL2_PATH").map(PathBuf::from).into_iter()),
+        );
+    }
     if cfg!(feature = "ttf") {
         if cfg!(feature = "vendor") {
             let root_dir = PathBuf::from(env::var("OUT_DIR").expect("OUT_DIR not found"));
@@ -87,20 +99,18 @@ fn include_paths(target_os: &str) -> impl Iterator<Item = PathBuf> {
             let include_dir = root_dir.join("include");
 
             // setup vendored
-            let repo_path = root_dir.join("SDL_ttf");
-            if !repo_path.is_dir() {
-                build_vendor_sdl2_ttf(repo_path, target_os, &include_dir, &lib_dir, &root_dir);
-            }
+            build_vendor_sdl2_ttf(target_os, &include_dir, &lib_dir, &root_dir);
             println!("cargo:rustc-link-search={}", lib_dir.display());
             eprintln!("vendored SDL_ttf: {}", root_dir.display());
+        } else {
+            include_paths.extend(
+                pkg_config::Config::new()
+                    .atleast_version(SDL_TTF_VERSION)
+                    .probe("sdl2_ttf")
+                    .into_iter()
+                    .flat_map(|sdl2| sdl2.include_paths),
+            );
         }
-        vendor_include.extend(
-            pkg_config::Config::new()
-                .atleast_version("2.20.0")
-                .probe("sdl2_ttf")
-                .into_iter()
-                .flat_map(|sdl2| sdl2.include_paths),
-        );
     }
     if cfg!(feature = "mixer") {
         if cfg!(feature = "vendor") {
@@ -108,48 +118,41 @@ fn include_paths(target_os: &str) -> impl Iterator<Item = PathBuf> {
             let lib_dir = root_dir.join("lib");
 
             // setup vendored
-            let repo_path = root_dir.join("SDL_mixer");
-            if !repo_path.is_dir() {
-                build_vendor_sdl2_mixer(repo_path, &root_dir);
-            }
+            build_vendor_sdl2_mixer(target_os, &root_dir);
             println!("cargo:rustc-link-search={}", lib_dir.display());
             eprintln!("vendored SDL_mixer: {}", root_dir.display());
+        } else {
+            include_paths.extend(
+                pkg_config::Config::new()
+                    .atleast_version(SDL_MIXER_VERSION)
+                    .probe("sdl2_mixer")
+                    .into_iter()
+                    .flat_map(|sdl2| sdl2.include_paths),
+            );
         }
-        vendor_include.extend(
-            pkg_config::Config::new()
-                .atleast_version("2.6.1")
-                .probe("sdl2_mixer")
-                .into_iter()
-                .flat_map(|sdl2| sdl2.include_paths),
-        );
     }
-    pkg_config::Config::new()
-        .atleast_version("2.0.16")
-        .probe("sdl2")
-        .into_iter()
-        .flat_map(|sdl2| sdl2.include_paths)
-        .chain(std::env::var("SDL2_PATH").map(PathBuf::from).into_iter())
-        .chain(vendor_include.into_iter())
+    include_paths.into_iter()
 }
 
-fn build_vendor_sdl2(
-    repo_path: PathBuf,
-    target_os: &str,
-    include_dir: &Path,
-    lib_dir: &Path,
-    root_dir: &Path,
-) {
-    use git2::Repository;
+fn build_vendor_sdl2(target_os: &str, include_dir: &Path, lib_dir: &Path, root_dir: &Path) {
+    let repo_path = root_dir.join("SDL");
+    if repo_path.is_dir() {
+        return;
+    }
+
     use std::process::Command;
 
     eprintln!("SDL cloning into: {}", repo_path.display());
-    let _ = std::fs::create_dir_all(&repo_path);
-    if std::fs::remove_dir_all(&repo_path).is_ok() {
-        eprintln!("cleaned SDL repository dir")
-    }
-
     let url = "https://github.com/libsdl-org/SDL";
-    Repository::clone_recurse(url, &repo_path).expect("failed to clone SDL repository");
+    let repo = retry(Fixed::from_millis(2000).take(3), || {
+        if std::fs::remove_dir_all(&repo_path).is_ok() {
+            eprintln!("cleaned SDL repository dir")
+        }
+        Repository::clone_recurse(url, &repo_path)
+    })
+    .expect("failed to clone SDL repository");
+    checkout_to_tag(&repo, SDL_VERSION);
+
     if target_os.contains("windows") {
         let target_platform = if cfg!(target_pointer_width = "64") {
             "Platform=x64"
@@ -229,24 +232,25 @@ fn build_vendor_sdl2(
     }
 }
 
-fn build_vendor_sdl2_ttf(
-    repo_path: PathBuf,
-    target_os: &str,
-    include_dir: &Path,
-    lib_dir: &Path,
-    root_dir: &Path,
-) {
-    use git2::Repository;
+fn build_vendor_sdl2_ttf(target_os: &str, include_dir: &Path, lib_dir: &Path, root_dir: &Path) {
+    let repo_path = root_dir.join("SDL_ttf");
+    if repo_path.is_dir() {
+        return;
+    }
+
     use std::process::Command;
 
     eprintln!("SDL_ttf cloning into: {}", repo_path.display());
-    let _ = std::fs::create_dir_all(&repo_path);
-    if std::fs::remove_dir_all(&repo_path).is_ok() {
-        eprintln!("cleaned SDL_ttf repository dir")
-    }
-
     let url = "https://github.com/libsdl-org/SDL_ttf";
-    Repository::clone_recurse(url, &repo_path).expect("failed to clone SDL_ttf repository");
+    let repo = retry(Fixed::from_millis(2000).take(3), || {
+        if std::fs::remove_dir_all(&repo_path).is_ok() {
+            eprintln!("cleaned SDL_ttf repository dir")
+        }
+        Repository::clone_recurse(url, &repo_path)
+    })
+    .expect("failed to clone SDL_ttf repository");
+    checkout_to_tag(&repo, SDL_TTF_VERSION);
+
     if target_os.contains("windows") {
         let target_platform = if cfg!(target_pointer_width = "64") {
             "Platform=x64"
@@ -256,24 +260,20 @@ fn build_vendor_sdl2_ttf(
         assert!(
             Command::new("msbuild")
                 .arg(format!("/p:Configuration=Debug,{}", target_platform))
-                .arg(repo_path.join("VisualC").join("SDL.sln"))
+                .arg(repo_path.join("VisualC").join("SDL_ttf.sln"))
                 .status()
                 .expect("failed to build project")
                 .success(),
             "build failed"
         );
-        let include_install_dir = include_dir.join("SDL_ttf");
+        let include_install_dir = include_dir.join("SDL2");
         std::fs::create_dir_all(&include_install_dir).expect("failed to create lib dir");
-        for file in std::fs::read_dir(repo_path.join("include"))
-            .expect("headers not found in repo")
-            .flatten()
-        {
-            let path = file.path();
-            if path.is_file() && path.extension() == Some(std::ffi::OsStr::new("h")) {
-                std::fs::copy(&path, include_install_dir.join(path.file_name().unwrap()))
-                    .expect("failed to copy header file");
-            }
-        }
+        std::fs::copy(
+            repo_path.join("SDL_ttf.h"),
+            include_install_dir.join("SDL_ttf.h"),
+        )
+        .expect("failed to copy header file");
+
         let project_to_use = if cfg!(target_pointer_width = "64") {
             "x64"
         } else {
@@ -326,46 +326,113 @@ fn build_vendor_sdl2_ttf(
     }
 }
 
-fn build_vendor_sdl2_mixer(repo_path: PathBuf, root_dir: &Path) {
-    use git2::Repository;
+fn build_vendor_sdl2_mixer(target_os: &str, root_dir: &Path) {
+    let repo_path = root_dir.join("SDL_mixer");
+    if repo_path.is_dir() {
+        return;
+    }
+
     use std::process::Command;
 
     eprintln!("SDL_mixer cloning into: {}", repo_path.display());
-    let _ = std::fs::create_dir_all(&repo_path);
-    if std::fs::remove_dir_all(&repo_path).is_ok() {
-        eprintln!("cleaned SDL_mixer repository dir")
+    let url = "https://github.com/libsdl-org/SDL_mixer";
+    let repo = retry(Fixed::from_millis(2000).take(3), || {
+        if std::fs::remove_dir_all(&repo_path).is_ok() {
+            eprintln!("cleaned SDL_mixer repository dir")
+        }
+        Repository::clone_recurse(url, &repo_path)
+    })
+    .expect("failed to clone SDL_mixer repository");
+    checkout_to_tag(&repo, SDL_MIXER_VERSION);
+    for mut submodule in repo.submodules().unwrap() {
+        submodule
+            .update(true, None)
+            .expect("failed to update submodule");
     }
 
-    let url = "https://github.com/libsdl-org/SDL_mixer";
-    Repository::clone_recurse(url, &repo_path).expect("failed to clone SDL_mixer repository");
-    let build_path = repo_path.join("build");
-    std::fs::create_dir(&build_path).expect("failed to mkdir build");
-    assert!(
-        Command::new(repo_path.join("configure"))
-            .current_dir(&build_path)
-            .args([format!("--prefix={}", root_dir.display())])
-            .status()
-            .expect("failed to configure SDL_mixer")
-            .success(),
-        "cmake failed"
-    );
-    assert!(
-        Command::new("make")
-            .current_dir(&build_path)
-            .status()
-            .expect("failed to build SDL_mixer")
-            .success(),
-        "build failed"
-    );
-    assert!(
-        Command::new("make")
-            .arg("install")
-            .current_dir(&build_path)
-            .status()
-            .expect("failed to setup SDL_mixer")
-            .success(),
-        "setup failed"
-    );
+    if target_os.contains("windows") {
+        let build_path = repo_path.join("build");
+        std::fs::create_dir(&build_path).expect("failed to mkdir build");
+        assert!(
+            Command::new("cmake")
+                .current_dir(&build_path)
+                .args([
+                    format!("-DCMAKE_INSTALL_PREFIX={}", root_dir.display()),
+                    "..".into(),
+                ])
+                .status()
+                .expect("failed to configure SDL_mixer")
+                .success(),
+            "cmake failed"
+        );
+        assert!(
+            Command::new("cmake")
+                .current_dir(&build_path)
+                .args(["--build", "."])
+                .status()
+                .expect("failed to build SDL_mixer")
+                .success(),
+            "build failed"
+        );
+        std::fs::rename(
+            build_path.join("Debug").join("SDL2_mixerd.dll"),
+            root_dir.join("lib").join("SDL2_mixer.dll"),
+        )
+        .expect("failed to move dll");
+        std::fs::rename(
+            build_path.join("Debug").join("SDL2_mixerd.lib"),
+            root_dir.join("lib").join("SDL2_mixer.lib"),
+        )
+        .expect("failed to move lib");
+        std::fs::copy(
+            repo_path.join("include").join("SDL_mixer.h"),
+            root_dir.join("include").join("SDL2").join("SDL_mixer.h"),
+        )
+        .expect("failed to copy header");
+    } else {
+        assert!(
+            Command::new(repo_path.join("configure"))
+                .current_dir(&repo_path)
+                .args([
+                    format!("--prefix={}", root_dir.display()),
+                    format!("LD_LIBRARY_PATH={}", root_dir.join("lib").display()),
+                    format!("CPPFLAGS=-I{}", root_dir.join("include").display())
+                ])
+                .status()
+                .expect("failed to configure SDL_mixer")
+                .success(),
+            "cmake failed"
+        );
+        assert!(
+            Command::new("make")
+                .current_dir(&repo_path)
+                .status()
+                .expect("failed to build SDL_mixer")
+                .success(),
+            "build failed"
+        );
+        assert!(
+            Command::new("make")
+                .arg("install")
+                .current_dir(&repo_path)
+                .status()
+                .expect("failed to setup SDL_mixer")
+                .success(),
+            "setup failed"
+        );
+    }
+}
+
+fn checkout_to_tag(repo: &Repository, tag: &str) {
+    let (obj, reference) = repo
+        .revparse_ext(&format!("release-{}", tag))
+        .expect("the version tag not found");
+    repo.checkout_tree(&obj, None).expect("failed to checkout");
+    match reference {
+        Some(gref) => repo.set_head(gref.name().unwrap()),
+        None => repo.set_head_detached(obj.id()),
+    }
+    .expect("Failed to set HEAD");
 }
 
 fn set_link(target_os: &str) {
