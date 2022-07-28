@@ -48,9 +48,11 @@ fn main() {
     {
         builder = builder
             .clang_arg("-DRICH_SDL2_RUST_MIXER")
-            .allowlist_function("MIX_.*")
+            .allowlist_function("Mix_.*")
             .allowlist_type("MIX_.*")
-            .allowlist_var("MIX_.*");
+            .allowlist_type("Mix_.*")
+            .allowlist_var("MIX_.*")
+            .allowlist_var("Mix_.*");
     }
     let bindings = builder.generate().expect("bindgen builder was invalid");
 
