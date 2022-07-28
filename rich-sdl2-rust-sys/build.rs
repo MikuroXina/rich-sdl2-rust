@@ -371,12 +371,13 @@ fn build_vendor_sdl2_mixer(repo_path: PathBuf, root_dir: &Path) {
     let url = "https://github.com/libsdl-org/SDL_mixer";
     Repository::clone_recurse(url, &repo_path).expect("failed to clone SDL_mixer repository");
     let build_path = repo_path.join("build");
+    std::fs::create_dir(&build_path).expect("failed to mkdir build");
     assert!(
         Command::new(repo_path.join("configure"))
             .current_dir(&build_path)
             .args([format!("--prefix={}", root_dir.display())])
             .status()
-            .expect("failed to configure SDL")
+            .expect("failed to configure SDL_mixer")
             .success(),
         "cmake failed"
     );
@@ -384,7 +385,7 @@ fn build_vendor_sdl2_mixer(repo_path: PathBuf, root_dir: &Path) {
         Command::new("make")
             .current_dir(&build_path)
             .status()
-            .expect("failed to build SDL")
+            .expect("failed to build SDL_mixer")
             .success(),
         "build failed"
     );
