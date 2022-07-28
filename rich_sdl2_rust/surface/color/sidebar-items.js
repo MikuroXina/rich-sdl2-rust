@@ -1,1 +1,1 @@
-initSidebarItems({"struct":[["ColorMod","A color modified [`Surface`]."]]});
+window.SIDEBAR_ITEMS = {"struct":[["ColorMod","A color modified [`Surface`]."]]};

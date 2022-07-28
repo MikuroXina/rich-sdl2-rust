@@ -1,1 +1,1 @@
-initSidebarItems({"struct":[["AudioStream","An audio stream to read and write audio data by streaming method. To read/write the data, `use` the implementation [`std::io::Read`]/[`std::io::Write`] for this."]]});
+window.SIDEBAR_ITEMS = {"struct":[["AudioStream","An audio stream to read and write audio data by streaming method. To read/write the data, `use` the implementation [`std::io::Read`]/[`std::io::Write`] for this."]]};

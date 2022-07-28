@@ -1,1 +1,1 @@
-initSidebarItems({"struct":[["WindowSurface","A [`Surface`] made from the [`Window`]."]]});
+window.SIDEBAR_ITEMS = {"struct":[["WindowSurface","A [`Surface`] made from the [`Window`]."]]};

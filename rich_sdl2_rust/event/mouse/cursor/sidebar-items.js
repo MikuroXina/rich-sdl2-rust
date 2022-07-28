@@ -1,1 +1,1 @@
-initSidebarItems({"struct":[["Cursor","This controls the cursor on the window. It can show/hide the cursor."]]});
+window.SIDEBAR_ITEMS = {"struct":[["Cursor","This controls the cursor on the window. It can show/hide the cursor."]]};

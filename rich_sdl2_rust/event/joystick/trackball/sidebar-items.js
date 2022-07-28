@@ -1,1 +1,1 @@
-initSidebarItems({"struct":[["Trackball","A trackball on a physical joystick."],["Trackballs","A set of `Trackball` for a physical joystick."]]});
+window.SIDEBAR_ITEMS = {"struct":[["Trackball","A trackball on a physical joystick."],["Trackballs","A set of `Trackball` for a physical joystick."]]};

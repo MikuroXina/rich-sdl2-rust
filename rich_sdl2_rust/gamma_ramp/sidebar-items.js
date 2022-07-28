@@ -1,1 +1,1 @@
-initSidebarItems({"struct":[["GammaRamp","A gamma ramp for a display."]]});
+window.SIDEBAR_ITEMS = {"struct":[["GammaRamp","A gamma ramp for a display."]]};

@@ -1,1 +1,1 @@
-initSidebarItems({"struct":[["KeyMod","A key modification flag."]]});
+window.SIDEBAR_ITEMS = {"struct":[["KeyMod","A key modification flag."]]};

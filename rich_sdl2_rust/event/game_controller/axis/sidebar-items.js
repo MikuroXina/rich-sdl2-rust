@@ -1,1 +1,1 @@
-initSidebarItems({"enum":[["Axis","An axis like sticks and trigger buttons on a game controller."]]});
+window.SIDEBAR_ITEMS = {"enum":[["Axis","An axis like sticks and trigger buttons on a game controller."]]};

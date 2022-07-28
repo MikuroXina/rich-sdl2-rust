@@ -1,1 +1,1 @@
-initSidebarItems({"struct":[["Owned","An owned [`Surface`] with raw pixel data."]]});
+window.SIDEBAR_ITEMS = {"struct":[["Owned","An owned [`Surface`] with raw pixel data."]]};

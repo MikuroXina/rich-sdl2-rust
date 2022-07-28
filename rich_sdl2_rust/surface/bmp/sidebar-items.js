@@ -1,1 +1,1 @@
-initSidebarItems({"struct":[["Bmp","A bitmap texture as a [`Surface`]."],["BmpSaveError","An error on saving as the bitmap texture."]],"trait":[["BmpSaveExt","An extension for a [`Surface`] to save the image as BMP format."]]});
+window.SIDEBAR_ITEMS = {"struct":[["Bmp","A bitmap texture as a [`Surface`]."],["BmpSaveError","An error on saving as the bitmap texture."]],"trait":[["BmpSaveExt","An extension for a [`Surface`] to save the image as BMP format."]]};

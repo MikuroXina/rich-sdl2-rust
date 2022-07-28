@@ -1,1 +1,1 @@
-initSidebarItems({"enum":[["AudioStatus","A playing status of an audio device."]]});
+window.SIDEBAR_ITEMS = {"enum":[["AudioStatus","A playing status of an audio device."]]};

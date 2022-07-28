@@ -1,1 +1,1 @@
-initSidebarItems({"struct":[["Palette","A controller for a palette in an indexed bitmap pixel format."]]});
+window.SIDEBAR_ITEMS = {"struct":[["Palette","A controller for a palette in an indexed bitmap pixel format."]]};

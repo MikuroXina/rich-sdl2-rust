@@ -1,1 +1,1 @@
-initSidebarItems({"enum":[["ArrayPixelOrder","A pixel byte order from low byte to high byte for a array pixel format."],["BitmapPixelOrder","A pixel order in a bitmap pixel format."],["PackedPixelOrder","A pixel order in a packed pixel format."]]});
+window.SIDEBAR_ITEMS = {"enum":[["ArrayPixelOrder","A pixel byte order from low byte to high byte for a array pixel format."],["BitmapPixelOrder","A pixel order in a bitmap pixel format."],["PackedPixelOrder","A pixel order in a packed pixel format."]]};

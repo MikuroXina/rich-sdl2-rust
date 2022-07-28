@@ -1,1 +1,1 @@
-initSidebarItems({"constant":[["NUM_SCANCODES",""]],"enum":[["ScanCode",""]]});
+window.SIDEBAR_ITEMS = {"constant":[["NUM_SCANCODES",""]],"enum":[["ScanCode",""]]};

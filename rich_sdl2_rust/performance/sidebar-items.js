@@ -1,1 +1,1 @@
-initSidebarItems({"fn":[["counter","Returns current counts of the high resolution counter."],["frequency","Returns the numbers of counts per one seconds of the high resolution counter."]]});
+window.SIDEBAR_ITEMS = {"fn":[["counter","Returns current counts of the high resolution counter."],["frequency","Returns the numbers of counts per one seconds of the high resolution counter."]]};

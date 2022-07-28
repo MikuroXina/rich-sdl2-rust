@@ -1,1 +1,1 @@
-initSidebarItems({"enum":[["MapInput","A mapping that the logical button is attached to the physical index."]]});
+window.SIDEBAR_ITEMS = {"enum":[["MapInput","A mapping that the logical button is attached to the physical index."]]};

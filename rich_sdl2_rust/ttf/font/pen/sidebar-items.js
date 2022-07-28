@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"enum":[["TextAlignX","X-axis alignment of the text."],["TextAlignY","Y-axis alignment of the text."]],"struct":[["FontRenderOptions","Options to render the text for [`FontRenderExt::text`]."],["TextAlign","Alignments of the text."]],"trait":[["FontRenderExt","An extension for [`Pen`] to render a text."]]};

@@ -1,1 +1,1 @@
-initSidebarItems({"enum":[["AudioDeviceEvent","An event occurs on an audio device was added/removed."]]});
+window.SIDEBAR_ITEMS = {"enum":[["AudioDeviceEvent","An event occurs on an audio device was added/removed."]]};

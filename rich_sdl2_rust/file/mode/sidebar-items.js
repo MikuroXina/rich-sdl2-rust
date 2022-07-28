@@ -1,1 +1,1 @@
-initSidebarItems({"struct":[["OpenMode","A builder for an open mode of [`super::RwOps`]."]]});
+window.SIDEBAR_ITEMS = {"struct":[["OpenMode","A builder for an open mode of [`super::RwOps`]."]]};

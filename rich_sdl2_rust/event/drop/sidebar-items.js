@@ -1,1 +1,1 @@
-initSidebarItems({"enum":[["DropEvent","An event occurred when the item was dropped on a window."]]});
+window.SIDEBAR_ITEMS = {"enum":[["DropEvent","An event occurred when the item was dropped on a window."]]};

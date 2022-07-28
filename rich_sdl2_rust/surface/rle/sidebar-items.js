@@ -1,1 +1,1 @@
-initSidebarItems({"struct":[["Rle","A Run-length encoded [`Surface`]."],["RleLock","A locked RLE surface."]]});
+window.SIDEBAR_ITEMS = {"struct":[["Rle","A Run-length encoded [`Surface`]."],["RleLock","A locked RLE surface."]]};

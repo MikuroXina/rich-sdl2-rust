@@ -1,1 +1,1 @@
-initSidebarItems({"fn":[["ram_size","Returns the size of the system RAM."]],"mod":[["cpu","System CPU information."],["simd_alloc","Provides SIMD-friendly allocator from SDL2."]]});
+window.SIDEBAR_ITEMS = {"fn":[["ram_size","Returns the size of the system RAM."]],"mod":[["cpu","System CPU information."],["simd_alloc","Provides SIMD-friendly allocator from SDL2."]]};

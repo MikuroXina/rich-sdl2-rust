@@ -1,1 +1,1 @@
-initSidebarItems({"mod":[["gesture","Gesture controller and events."]],"struct":[["TouchDevice","A device that receives the finger input."],["TouchFinger","A finger input, which having coordinates and pressures."]]});
+window.SIDEBAR_ITEMS = {"mod":[["gesture","Gesture controller and events."]],"struct":[["TouchDevice","A device that receives the finger input."],["TouchFinger","A finger input, which having coordinates and pressures."]]};

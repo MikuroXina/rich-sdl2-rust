@@ -1,1 +1,1 @@
-initSidebarItems({"enum":[["KeyCode",""]]});
+window.SIDEBAR_ITEMS = {"enum":[["KeyCode",""]]};

@@ -1,1 +1,1 @@
-initSidebarItems({"enum":[["RendererKind","A kind of renderer."]],"struct":[["RendererInfo","An information of a renderer."]],"trait":[["RendererInfoExt","An extension for [`Renderer`] to get [`RendererInfo`]."]]});
+window.SIDEBAR_ITEMS = {"enum":[["RendererKind","A kind of renderer."]],"struct":[["RendererInfo","An information of a renderer."]],"trait":[["RendererInfoExt","An extension for [`Renderer`] to get [`RendererInfo`]."]]};

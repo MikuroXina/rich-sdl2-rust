@@ -1,1 +1,1 @@
-initSidebarItems({"enum":[["SystemCursorKind","A kind of the system cursor."]],"struct":[["Cursor","A system cursor controller."]]});
+window.SIDEBAR_ITEMS = {"enum":[["SystemCursorKind","A kind of the system cursor."]],"struct":[["Cursor","A system cursor controller."]]};
