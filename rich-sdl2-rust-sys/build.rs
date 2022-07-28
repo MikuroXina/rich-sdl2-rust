@@ -156,16 +156,12 @@ fn build_vendor_sdl2(
         } else {
             r#"Platform="Any CPU""#
         };
-        let build = Command::new("msbuild")
-            .arg(format!("/p:Configuration=Debug,{}", target_platform))
-            .arg(repo_path.join("VisualC").join("SDL.sln"))
-            .spawn()
-            .expect("failed to build project");
         assert!(
-            build
-                .wait_with_output()
-                .expect("build process stopped")
-                .status
+            Command::new("msbuild")
+                .arg(format!("/p:Configuration=Debug,{}", target_platform))
+                .arg(repo_path.join("VisualC").join("SDL.sln"))
+                .status()
+                .expect("failed to build project")
                 .success(),
             "build failed"
         );
@@ -201,44 +197,32 @@ fn build_vendor_sdl2(
     } else {
         let build_path = repo_path.join("build");
         std::fs::create_dir(&build_path).expect("failed to mkdir build");
-        let cmake = Command::new("cmake")
-            .current_dir(&build_path)
-            .args([
-                format!("-DCMAKE_INSTALL_PREFIX={}", root_dir.display()),
-                "..".to_string(),
-            ])
-            .spawn()
-            .expect("failed to configure SDL");
         assert!(
-            cmake
-                .wait_with_output()
-                .expect("cmake process stopped")
-                .status
+            Command::new("cmake")
+                .current_dir(&build_path)
+                .args([
+                    format!("-DCMAKE_INSTALL_PREFIX={}", root_dir.display()),
+                    "..".to_string(),
+                ])
+                .status()
+                .expect("failed to configure SDL")
                 .success(),
             "cmake failed"
         );
-        let build = Command::new("make")
-            .current_dir(&build_path)
-            .spawn()
-            .expect("failed to build SDL");
         assert!(
-            build
-                .wait_with_output()
-                .expect("build process stopped")
-                .status
+            Command::new("make")
+                .current_dir(&build_path)
+                .status()
+                .expect("failed to build SDL")
                 .success(),
             "build failed"
         );
-        let setup = Command::new("make")
-            .arg("install")
-            .current_dir(&build_path)
-            .spawn()
-            .expect("failed to setup SDL");
         assert!(
-            setup
-                .wait_with_output()
-                .expect("setup process stopped")
-                .status
+            Command::new("make")
+                .arg("install")
+                .current_dir(&build_path)
+                .status()
+                .expect("failed to setup SDL")
                 .success(),
             "setup failed"
         );
@@ -269,16 +253,12 @@ fn build_vendor_sdl2_ttf(
         } else {
             r#"Platform="Any CPU""#
         };
-        let build = Command::new("msbuild")
-            .arg(format!("/p:Configuration=Debug,{}", target_platform))
-            .arg(repo_path.join("VisualC").join("SDL.sln"))
-            .spawn()
-            .expect("failed to build project");
         assert!(
-            build
-                .wait_with_output()
-                .expect("build process stopped")
-                .status
+            Command::new("msbuild")
+                .arg(format!("/p:Configuration=Debug,{}", target_platform))
+                .arg(repo_path.join("VisualC").join("SDL.sln"))
+                .status()
+                .expect("failed to build project")
                 .success(),
             "build failed"
         );
@@ -314,44 +294,32 @@ fn build_vendor_sdl2_ttf(
     } else {
         let build_path = repo_path.join("build");
         std::fs::create_dir(&build_path).expect("failed to mkdir build");
-        let cmake = Command::new("cmake")
-            .current_dir(&build_path)
-            .args([
-                format!("-DCMAKE_INSTALL_PREFIX={}", root_dir.display()),
-                "..".to_string(),
-            ])
-            .spawn()
-            .expect("failed to configure SDL_ttf");
         assert!(
-            cmake
-                .wait_with_output()
-                .expect("cmake process stopped")
-                .status
+            Command::new("cmake")
+                .current_dir(&build_path)
+                .args([
+                    format!("-DCMAKE_INSTALL_PREFIX={}", root_dir.display()),
+                    "..".to_string(),
+                ])
+                .status()
+                .expect("failed to configure SDL_ttf")
                 .success(),
             "cmake failed"
         );
-        let build = Command::new("make")
-            .current_dir(&build_path)
-            .spawn()
-            .expect("failed to build SDL_ttf");
         assert!(
-            build
-                .wait_with_output()
-                .expect("build process stopped")
-                .status
+            Command::new("make")
+                .current_dir(&build_path)
+                .status()
+                .expect("failed to build SDL_ttf")
                 .success(),
             "build failed"
         );
-        let setup = Command::new("make")
-            .arg("install")
-            .current_dir(&build_path)
-            .spawn()
-            .expect("failed to setup SDL_ttf");
         assert!(
-            setup
-                .wait_with_output()
-                .expect("setup process stopped")
-                .status
+            Command::new("make")
+                .arg("install")
+                .current_dir(&build_path)
+                .status()
+                .expect("failed to setup SDL_ttf")
                 .success(),
             "setup failed"
         );
