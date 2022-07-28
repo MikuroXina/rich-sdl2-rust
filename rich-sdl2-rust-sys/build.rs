@@ -24,17 +24,27 @@ fn main() {
 
     println!("cargo:rerun-if-changed=wrapper.h");
 
-    let bindings = bindgen::Builder::default()
-        .header("wrapper.h")
-        .clang_args(&includes)
-        .allowlist_function("SDL_.*")
-        .allowlist_type("SDL_.*")
-        .allowlist_var("SDL_.*")
-        .generate_comments(false)
-        .prepend_enum_name(false)
-        .parse_callbacks(Box::new(bindgen::CargoCallbacks))
-        .generate()
-        .expect("bindgen builder was invalid");
+    let mut builder = bindgen::Builder::default();
+    {
+        builder = builder
+            .header("wrapper.h")
+            .clang_args(&includes)
+            .allowlist_function("SDL_.*")
+            .allowlist_type("SDL_.*")
+            .allowlist_var("SDL_.*")
+            .generate_comments(false)
+            .prepend_enum_name(false)
+            .parse_callbacks(Box::new(bindgen::CargoCallbacks));
+    }
+    #[cfg(feature = "ttf")]
+    {
+        builder = builder
+            .clang_arg("-DRICH_SDL2_RUST_TTF")
+            .allowlist_function("TTF_.*")
+            .allowlist_type("TTF_.*")
+            .allowlist_var("TTF_.*");
+    }
+    let bindings = builder.generate().expect("bindgen builder was invalid");
 
     let root_dir = env::var("OUT_DIR").expect("OUT_DIR not found");
     let root = PathBuf::from(root_dir);

@@ -31,6 +31,8 @@ pub mod power;
 mod sdl;
 pub mod system;
 mod timer;
+#[cfg(feature = "ttf")]
+pub mod ttf;
 mod video;
 
 use rich_sdl2_rust_sys as bind;
