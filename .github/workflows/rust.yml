@@ -44,7 +44,7 @@ jobs:
       - name: Clippy Check
         run: cargo clippy --verbose --features vendor
       - name: Test crate
-        run: cargo test --verbose --features vendor
+        run: cargo test --verbose --features vendor,ttf,mixer
       - name: Create docs
         if: matrix.os == 'ubuntu-latest'
         run: cargo +nightly doc --features vendor,nightly,vulkan,simd_allocator,ttf,mixer --no-deps
