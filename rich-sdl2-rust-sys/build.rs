@@ -389,6 +389,15 @@ fn build_vendor_sdl2_mixer(repo_path: PathBuf, root_dir: &Path) {
             .success(),
         "build failed"
     );
+    assert!(
+        Command::new("make")
+            .arg("install")
+            .current_dir(&build_path)
+            .status()
+            .expect("failed to setup SDL_mixer")
+            .success(),
+        "setup failed"
+    );
 }
 
 fn set_link(target_os: &str) {
