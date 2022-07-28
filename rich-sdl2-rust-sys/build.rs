@@ -44,6 +44,14 @@ fn main() {
             .allowlist_type("TTF_.*")
             .allowlist_var("TTF_.*");
     }
+    #[cfg(feature = "mixer")]
+    {
+        builder = builder
+            .clang_arg("-DRICH_SDL2_RUST_MIXER")
+            .allowlist_function("MIX_.*")
+            .allowlist_type("MIX_.*")
+            .allowlist_var("MIX_.*");
+    }
     let bindings = builder.generate().expect("bindgen builder was invalid");
 
     let root_dir = env::var("OUT_DIR").expect("OUT_DIR not found");
@@ -88,6 +96,27 @@ fn include_paths(target_os: &str) -> impl Iterator<Item = PathBuf> {
             pkg_config::Config::new()
                 .atleast_version("2.20.0")
                 .probe("sdl2_ttf")
+                .into_iter()
+                .flat_map(|sdl2| sdl2.include_paths),
+        );
+    }
+    if cfg!(feature = "mixer") {
+        if cfg!(feature = "vendor") {
+            let root_dir = PathBuf::from(env::var("OUT_DIR").expect("OUT_DIR not found"));
+            let lib_dir = root_dir.join("lib");
+
+            // setup vendored
+            let repo_path = root_dir.join("SDL_mixer");
+            if !repo_path.is_dir() {
+                build_vendor_sdl2_mixer(repo_path, &root_dir);
+            }
+            println!("cargo:rustc-link-search={}", lib_dir.display());
+            eprintln!("vendored SDL_mixer: {}", root_dir.display());
+        }
+        vendor_include.extend(
+            pkg_config::Config::new()
+                .atleast_version("2.6.1")
+                .probe("sdl2_mixer")
                 .into_iter()
                 .flat_map(|sdl2| sdl2.include_paths),
         );
@@ -327,6 +356,38 @@ fn build_vendor_sdl2_ttf(
     }
 }
 
+fn build_vendor_sdl2_mixer(repo_path: PathBuf, root_dir: &Path) {
+    use git2::Repository;
+    use std::process::Command;
+
+    eprintln!("SDL_mixer cloning into: {}", repo_path.display());
+    let _ = std::fs::create_dir_all(&repo_path);
+    if std::fs::remove_dir_all(&repo_path).is_ok() {
+        eprintln!("cleaned SDL_mixer repository dir")
+    }
+
+    let url = "https://github.com/libsdl-org/SDL_mixer";
+    Repository::clone_recurse(url, &repo_path).expect("failed to clone SDL_mixer repository");
+    let build_path = repo_path.join("build");
+    assert!(
+        Command::new(repo_path.join("configure"))
+            .current_dir(&build_path)
+            .args([format!("--prefix={}", root_dir.display())])
+            .status()
+            .expect("failed to configure SDL")
+            .success(),
+        "cmake failed"
+    );
+    assert!(
+        Command::new("make")
+            .current_dir(&build_path)
+            .status()
+            .expect("failed to build SDL")
+            .success(),
+        "build failed"
+    );
+}
+
 fn set_link(target_os: &str) {
     #[cfg(feature = "static")]
     println!("cargo:rustc-link-lib=static=SDL2");
@@ -338,6 +399,13 @@ fn set_link(target_os: &str) {
         println!("cargo:rustc-link-lib=static=SDL2_ttf");
         #[cfg(feature = "dynamic")]
         println!("cargo:rustc-link-lib=dylib=SDL2_ttf");
+    }
+    #[cfg(feature = "mixer")]
+    {
+        #[cfg(feature = "static")]
+        println!("cargo:rustc-link-lib=static=SDL2_mixer");
+        #[cfg(feature = "dynamic")]
+        println!("cargo:rustc-link-lib=dylib=SDL2_mixer");
     }
 
     if target_os.contains("windows") {

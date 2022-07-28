@@ -5,3 +5,7 @@
 #ifdef RICH_SDL2_RUST_TTF
 #include <SDL2/SDL_ttf.h>
 #endif
+
+#ifdef RICH_SDL2_RUST_MIXER
+#include <SDL2/SDL_mixer.h>
+#endif

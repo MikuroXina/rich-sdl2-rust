@@ -15,6 +15,7 @@ static = []
 dynamic = []
 vendor = []
 ttf = []
+mixer = []
 
 [build-dependencies]
 bindgen = "0.59.1"
