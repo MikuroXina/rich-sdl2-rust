@@ -2,7 +2,7 @@ use std::ffi::CString;
 
 use crate::bind;
 
-#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
 enum ButtonKind {
     Normal,
     Confirm,
@@ -10,7 +10,7 @@ enum ButtonKind {
 }
 
 impl ButtonKind {
-    fn as_flags(&self) -> u32 {
+    fn as_flags(self) -> u32 {
         (match self {
             ButtonKind::Normal => 0,
             ButtonKind::Confirm => bind::SDL_MESSAGEBOX_BUTTON_RETURNKEY_DEFAULT,

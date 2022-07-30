@@ -268,7 +268,7 @@ impl KeyCode {
         (!name.is_empty()).then(|| name)
     }
 
-    pub(crate) fn as_raw(&self) -> bind::SDL_Keycode {
+    pub(crate) fn as_raw(self) -> bind::SDL_Keycode {
         use KeyCode::*;
         (match self {
             KeyCode::Unknown => bind::SDLK_UNKNOWN,

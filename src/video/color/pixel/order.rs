@@ -3,7 +3,7 @@
 use crate::bind;
 
 /// A pixel order in a bitmap pixel format.
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
 pub enum BitmapPixelOrder {
     /// An order in little endian.
     _4321,
@@ -12,7 +12,7 @@ pub enum BitmapPixelOrder {
 }
 
 impl BitmapPixelOrder {
-    pub(super) fn as_raw(&self) -> u32 {
+    pub(super) fn as_raw(self) -> u32 {
         (match self {
             BitmapPixelOrder::_4321 => bind::SDL_BITMAPORDER_4321,
             BitmapPixelOrder::_1234 => bind::SDL_BITMAPORDER_1234,
@@ -31,7 +31,7 @@ impl From<bind::SDL_PixelFormatEnum> for BitmapPixelOrder {
 }
 
 /// A pixel order in a packed pixel format.
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
 pub enum PackedPixelOrder {
     /// An order of 3 components is right aligned RGB.
     Xrgb,
@@ -52,7 +52,7 @@ pub enum PackedPixelOrder {
 }
 
 impl PackedPixelOrder {
-    pub(super) fn as_raw(&self) -> u32 {
+    pub(super) fn as_raw(self) -> u32 {
         (match self {
             PackedPixelOrder::Xrgb => bind::SDL_PACKEDORDER_XRGB,
             PackedPixelOrder::Rgbx => bind::SDL_PACKEDORDER_RGBX,
@@ -83,7 +83,7 @@ impl From<bind::SDL_PixelFormatEnum> for PackedPixelOrder {
 }
 
 /// A pixel byte order from low byte to high byte for a array pixel format.
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
 pub enum ArrayPixelOrder {
     /// An order stored in RGB.
     Rgb,
@@ -100,7 +100,7 @@ pub enum ArrayPixelOrder {
 }
 
 impl ArrayPixelOrder {
-    pub(super) fn as_raw(&self) -> u32 {
+    pub(super) fn as_raw(self) -> u32 {
         (match self {
             ArrayPixelOrder::Rgb => bind::SDL_ARRAYORDER_RGB,
             ArrayPixelOrder::Rgba => bind::SDL_ARRAYORDER_RGBA,

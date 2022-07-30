@@ -38,7 +38,7 @@ impl Axis {
         Some(val)
     }
 
-    pub(super) fn as_raw(&self) -> bind::SDL_GameControllerAxis {
+    pub(super) fn as_raw(self) -> bind::SDL_GameControllerAxis {
         match self {
             Axis::LeftX => bind::SDL_CONTROLLER_AXIS_LEFTX,
             Axis::LeftY => bind::SDL_CONTROLLER_AXIS_LEFTY,

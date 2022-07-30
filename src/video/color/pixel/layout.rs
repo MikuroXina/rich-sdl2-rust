@@ -3,7 +3,7 @@
 use crate::bind;
 
 /// A layout for a packed pixel format.
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
 pub enum PackedPixelLayout {
     /// A layout is in 8 bits with 4 components, as below:
     ///
@@ -56,7 +56,7 @@ pub enum PackedPixelLayout {
 }
 
 impl PackedPixelLayout {
-    pub(super) fn as_raw(&self) -> u32 {
+    pub(super) fn as_raw(self) -> u32 {
         (match self {
             PackedPixelLayout::_332 => bind::SDL_PACKEDLAYOUT_332,
             PackedPixelLayout::_4444 => bind::SDL_PACKEDLAYOUT_4444,

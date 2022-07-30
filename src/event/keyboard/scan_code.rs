@@ -256,7 +256,7 @@ pub enum ScanCode {
 pub const NUM_SCANCODES: u16 = 512;
 
 impl ScanCode {
-    pub(crate) fn as_raw(&self) -> bind::SDL_Scancode {
+    pub(crate) fn as_raw(self) -> bind::SDL_Scancode {
         match self {
             ScanCode::Unknown => bind::SDL_SCANCODE_UNKNOWN,
             ScanCode::A => bind::SDL_SCANCODE_A,

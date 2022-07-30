@@ -9,7 +9,7 @@ use crate::{bind, geo::Point, surface::Surface, Result, Sdl, SdlError};
 use super::Window;
 
 /// A kind of the system cursor.
-#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
 pub enum SystemCursorKind {
     /// The arrow cursor.
     Arrow,
@@ -38,7 +38,7 @@ pub enum SystemCursorKind {
 }
 
 impl SystemCursorKind {
-    pub(crate) fn as_raw(&self) -> bind::SDL_SystemCursor {
+    pub(crate) fn as_raw(self) -> bind::SDL_SystemCursor {
         match self {
             SystemCursorKind::Arrow => bind::SDL_SYSTEM_CURSOR_ARROW,
             SystemCursorKind::IBeam => bind::SDL_SYSTEM_CURSOR_IBEAM,

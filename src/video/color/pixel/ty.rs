@@ -3,7 +3,7 @@
 use crate::{bind, EnumInt};
 
 /// A type in a bitmap pixel format.
-#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
 pub enum BitmapPixelType {
     /// An 1 bit index of the palette with 2 colors.
     Index1,
@@ -14,7 +14,7 @@ pub enum BitmapPixelType {
 }
 
 impl BitmapPixelType {
-    pub(super) fn as_raw(&self) -> u32 {
+    pub(super) fn as_raw(self) -> u32 {
         (match self {
             BitmapPixelType::Index1 => bind::SDL_PIXELTYPE_INDEX1,
             BitmapPixelType::Index4 => bind::SDL_PIXELTYPE_INDEX4,
@@ -22,7 +22,7 @@ impl BitmapPixelType {
         }) as u32
     }
 
-    pub(super) fn bits_per_pixel(&self) -> u32 {
+    pub(super) fn bits_per_pixel(self) -> u32 {
         match self {
             BitmapPixelType::Index1 => 1,
             BitmapPixelType::Index4 => 4,
@@ -30,7 +30,7 @@ impl BitmapPixelType {
         }
     }
 
-    pub(super) fn bytes_per_pixel(&self) -> u32 {
+    pub(super) fn bytes_per_pixel(self) -> u32 {
         if let BitmapPixelType::Index8 = self {
             1
         } else {
@@ -40,7 +40,7 @@ impl BitmapPixelType {
 }
 
 /// A type in a packed pixel format.
-#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
 pub enum PackedPixelType {
     /// An unsigned 8 bits.
     _8,
@@ -51,7 +51,7 @@ pub enum PackedPixelType {
 }
 
 impl PackedPixelType {
-    pub(super) fn as_raw(&self) -> u32 {
+    pub(super) fn as_raw(self) -> u32 {
         (match self {
             PackedPixelType::_8 => bind::SDL_PIXELTYPE_PACKED8,
             PackedPixelType::_16 => bind::SDL_PIXELTYPE_PACKED16,
@@ -59,7 +59,7 @@ impl PackedPixelType {
         }) as u32
     }
 
-    pub(super) fn bytes_per_pixel(&self) -> u32 {
+    pub(super) fn bytes_per_pixel(self) -> u32 {
         match self {
             PackedPixelType::_8 => 1,
             PackedPixelType::_16 => 2,
@@ -69,7 +69,7 @@ impl PackedPixelType {
 }
 
 /// A type in a pixel array format.
-#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
 pub enum ArrayPixelType {
     /// A type of array is `u8`.
     U8,
@@ -84,7 +84,7 @@ pub enum ArrayPixelType {
 }
 
 impl ArrayPixelType {
-    pub(super) fn as_raw(&self) -> u32 {
+    pub(super) fn as_raw(self) -> u32 {
         (match self {
             ArrayPixelType::U8 => bind::SDL_PIXELTYPE_ARRAYU8,
             ArrayPixelType::U16 => bind::SDL_PIXELTYPE_ARRAYU16,

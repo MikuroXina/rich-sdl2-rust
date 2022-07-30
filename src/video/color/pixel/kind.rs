@@ -7,7 +7,7 @@ use crate::{bind, EnumInt};
 use super::{layout::*, order::*, ty::*};
 
 /// A kind of pixel format.
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
 pub enum PixelFormatKind {
     /// A format not supported by SDL2.
     Unknown,
@@ -35,7 +35,7 @@ pub enum PixelFormatKind {
         order: ArrayPixelOrder,
     },
     /// A special format such as YUV in FourCC code.
-    FourCode(String),
+    FourCode([u8; 4]),
 }
 
 /// Bpp and RGBA mask.
@@ -108,7 +108,7 @@ impl PixelFormatKind {
     pub(crate) fn from_raw(raw: EnumInt) -> Self {
         if (raw >> 28) & 0x0F != 1 {
             let bytes = ((raw >> 24) & 0xf).to_le_bytes();
-            return PixelFormatKind::FourCode(bytes.iter().map(|&c| c as char).collect());
+            return PixelFormatKind::FourCode(bytes);
         }
         match (raw >> 24) & 0xf {
             bind::SDL_PIXELTYPE_INDEX1 => PixelFormatKind::Bitmap {
@@ -162,7 +162,7 @@ impl PixelFormatKind {
         }
     }
 
-    pub(crate) fn as_raw(&self) -> u32 {
+    pub(crate) fn as_raw(self) -> u32 {
         (match self {
             PixelFormatKind::Unknown => 0,
             PixelFormatKind::Bitmap { ty, order } => calc_bits(
@@ -183,15 +183,17 @@ impl PixelFormatKind {
                 let bits = bytes_per_array_pixel(ty, order);
                 calc_bits(ty.as_raw(), order.as_raw(), 0, bits, bits / 8)
             }
-            PixelFormatKind::FourCode(code) => {
-                let bytes: Vec<_> = code.bytes().map(|byte| byte as u32).collect();
-                bytes[0] | bytes[1] << 8 | bytes[2] << 16 | bytes[3] << 24
+            PixelFormatKind::FourCode(bytes) => {
+                (bytes[0] as u32)
+                    | (bytes[1] as u32) << 8
+                    | (bytes[2] as u32) << 16
+                    | (bytes[3] as u32) << 24
             }
         }) as u32
     }
 }
 
-fn bits_per_packed_pixel(order: &PackedPixelOrder, layout: &PackedPixelLayout) -> u32 {
+fn bits_per_packed_pixel(order: PackedPixelOrder, layout: PackedPixelLayout) -> u32 {
     match (order, layout) {
         (PackedPixelOrder::Xrgb, PackedPixelLayout::_332) => 8,
         (PackedPixelOrder::Xrgb, PackedPixelLayout::_4444) => 12,
@@ -222,7 +224,7 @@ fn bits_per_packed_pixel(order: &PackedPixelOrder, layout: &PackedPixelLayout) -
     }
 }
 
-fn bytes_per_array_pixel(ty: &ArrayPixelType, order: &ArrayPixelOrder) -> u32 {
+fn bytes_per_array_pixel(ty: ArrayPixelType, order: ArrayPixelOrder) -> u32 {
     let components = match order {
         ArrayPixelOrder::Rgb | ArrayPixelOrder::Bgr => 3,
         ArrayPixelOrder::Rgba

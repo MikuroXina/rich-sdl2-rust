@@ -66,7 +66,7 @@ impl Button {
         Some(val)
     }
 
-    pub(super) fn as_raw(&self) -> bind::SDL_GameControllerButton {
+    pub(super) fn as_raw(self) -> bind::SDL_GameControllerButton {
         match self {
             Button::LeftFour(FourButton::Up) => bind::SDL_CONTROLLER_BUTTON_Y,
             Button::LeftFour(FourButton::Right) => bind::SDL_CONTROLLER_BUTTON_B,
