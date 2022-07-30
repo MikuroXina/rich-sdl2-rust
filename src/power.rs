@@ -19,13 +19,12 @@ pub enum PowerState {
 
 impl From<bind::SDL_PowerState> for PowerState {
     fn from(raw: bind::SDL_PowerState) -> Self {
-        use PowerState::*;
         match raw {
-            bind::SDL_POWERSTATE_UNKNOWN => Unknown,
-            bind::SDL_POWERSTATE_ON_BATTERY => OnBattery,
-            bind::SDL_POWERSTATE_NO_BATTERY => NoBattery,
-            bind::SDL_POWERSTATE_CHARGING => Charging,
-            bind::SDL_POWERSTATE_CHARGED => Charged,
+            bind::SDL_POWERSTATE_UNKNOWN => PowerState::Unknown,
+            bind::SDL_POWERSTATE_ON_BATTERY => PowerState::OnBattery,
+            bind::SDL_POWERSTATE_NO_BATTERY => PowerState::NoBattery,
+            bind::SDL_POWERSTATE_CHARGING => PowerState::Charging,
+            bind::SDL_POWERSTATE_CHARGED => PowerState::Charged,
             _ => unreachable!(),
         }
     }

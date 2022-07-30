@@ -46,38 +46,36 @@ pub enum Button {
 
 impl Button {
     pub(super) fn from_raw(raw: bind::SDL_GameControllerButton) -> Option<Self> {
-        use Button::*;
         let val = match raw {
-            bind::SDL_CONTROLLER_BUTTON_A => RightFour(FourButton::Down),
-            bind::SDL_CONTROLLER_BUTTON_B => RightFour(FourButton::Right),
-            bind::SDL_CONTROLLER_BUTTON_X => RightFour(FourButton::Left),
-            bind::SDL_CONTROLLER_BUTTON_Y => RightFour(FourButton::Up),
-            bind::SDL_CONTROLLER_BUTTON_BACK => Back,
-            bind::SDL_CONTROLLER_BUTTON_GUIDE => Guide,
-            bind::SDL_CONTROLLER_BUTTON_START => Start,
-            bind::SDL_CONTROLLER_BUTTON_LEFTSTICK => LeftStick,
-            bind::SDL_CONTROLLER_BUTTON_RIGHTSTICK => RightStick,
-            bind::SDL_CONTROLLER_BUTTON_LEFTSHOULDER => LeftShoulder,
-            bind::SDL_CONTROLLER_BUTTON_DPAD_DOWN => LeftFour(FourButton::Down),
-            bind::SDL_CONTROLLER_BUTTON_DPAD_RIGHT => LeftFour(FourButton::Right),
-            bind::SDL_CONTROLLER_BUTTON_DPAD_LEFT => LeftFour(FourButton::Left),
-            bind::SDL_CONTROLLER_BUTTON_DPAD_UP => LeftFour(FourButton::Up),
+            bind::SDL_CONTROLLER_BUTTON_A => Button::RightFour(FourButton::Down),
+            bind::SDL_CONTROLLER_BUTTON_B => Button::RightFour(FourButton::Right),
+            bind::SDL_CONTROLLER_BUTTON_X => Button::RightFour(FourButton::Left),
+            bind::SDL_CONTROLLER_BUTTON_Y => Button::RightFour(FourButton::Up),
+            bind::SDL_CONTROLLER_BUTTON_BACK => Button::Back,
+            bind::SDL_CONTROLLER_BUTTON_GUIDE => Button::Guide,
+            bind::SDL_CONTROLLER_BUTTON_START => Button::Start,
+            bind::SDL_CONTROLLER_BUTTON_LEFTSTICK => Button::LeftStick,
+            bind::SDL_CONTROLLER_BUTTON_RIGHTSTICK => Button::RightStick,
+            bind::SDL_CONTROLLER_BUTTON_LEFTSHOULDER => Button::LeftShoulder,
+            bind::SDL_CONTROLLER_BUTTON_DPAD_DOWN => Button::LeftFour(FourButton::Down),
+            bind::SDL_CONTROLLER_BUTTON_DPAD_RIGHT => Button::LeftFour(FourButton::Right),
+            bind::SDL_CONTROLLER_BUTTON_DPAD_LEFT => Button::LeftFour(FourButton::Left),
+            bind::SDL_CONTROLLER_BUTTON_DPAD_UP => Button::LeftFour(FourButton::Up),
             _ => return None,
         };
         Some(val)
     }
 
     pub(super) fn as_raw(&self) -> bind::SDL_GameControllerButton {
-        use FourButton::*;
         match self {
-            Button::LeftFour(Up) => bind::SDL_CONTROLLER_BUTTON_Y,
-            Button::LeftFour(Right) => bind::SDL_CONTROLLER_BUTTON_B,
-            Button::LeftFour(Down) => bind::SDL_CONTROLLER_BUTTON_A,
-            Button::LeftFour(Left) => bind::SDL_CONTROLLER_BUTTON_X,
-            Button::RightFour(Up) => bind::SDL_CONTROLLER_BUTTON_DPAD_UP,
-            Button::RightFour(Right) => bind::SDL_CONTROLLER_BUTTON_DPAD_RIGHT,
-            Button::RightFour(Down) => bind::SDL_CONTROLLER_BUTTON_DPAD_DOWN,
-            Button::RightFour(Left) => bind::SDL_CONTROLLER_BUTTON_DPAD_LEFT,
+            Button::LeftFour(FourButton::Up) => bind::SDL_CONTROLLER_BUTTON_Y,
+            Button::LeftFour(FourButton::Right) => bind::SDL_CONTROLLER_BUTTON_B,
+            Button::LeftFour(FourButton::Down) => bind::SDL_CONTROLLER_BUTTON_A,
+            Button::LeftFour(FourButton::Left) => bind::SDL_CONTROLLER_BUTTON_X,
+            Button::RightFour(FourButton::Up) => bind::SDL_CONTROLLER_BUTTON_DPAD_UP,
+            Button::RightFour(FourButton::Right) => bind::SDL_CONTROLLER_BUTTON_DPAD_RIGHT,
+            Button::RightFour(FourButton::Down) => bind::SDL_CONTROLLER_BUTTON_DPAD_DOWN,
+            Button::RightFour(FourButton::Left) => bind::SDL_CONTROLLER_BUTTON_DPAD_LEFT,
             Button::Back => bind::SDL_CONTROLLER_BUTTON_BACK,
             Button::Guide => bind::SDL_CONTROLLER_BUTTON_GUIDE,
             Button::Start => bind::SDL_CONTROLLER_BUTTON_START,

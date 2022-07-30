@@ -26,28 +26,26 @@ pub enum Axis {
 
 impl Axis {
     pub(super) fn from_raw(raw: bind::SDL_GameControllerAxis) -> Option<Self> {
-        use Axis::*;
         let val = match raw {
-            bind::SDL_CONTROLLER_AXIS_LEFTX => LeftX,
-            bind::SDL_CONTROLLER_AXIS_LEFTY => LeftY,
-            bind::SDL_CONTROLLER_AXIS_RIGHTX => RightX,
-            bind::SDL_CONTROLLER_AXIS_RIGHTY => RightY,
-            bind::SDL_CONTROLLER_AXIS_TRIGGERLEFT => TriggerLeft,
-            bind::SDL_CONTROLLER_AXIS_TRIGGERRIGHT => TriggerRight,
+            bind::SDL_CONTROLLER_AXIS_LEFTX => Axis::LeftX,
+            bind::SDL_CONTROLLER_AXIS_LEFTY => Axis::LeftY,
+            bind::SDL_CONTROLLER_AXIS_RIGHTX => Axis::RightX,
+            bind::SDL_CONTROLLER_AXIS_RIGHTY => Axis::RightY,
+            bind::SDL_CONTROLLER_AXIS_TRIGGERLEFT => Axis::TriggerLeft,
+            bind::SDL_CONTROLLER_AXIS_TRIGGERRIGHT => Axis::TriggerRight,
             _ => return None,
         };
         Some(val)
     }
 
     pub(super) fn as_raw(&self) -> bind::SDL_GameControllerAxis {
-        use Axis::*;
         match self {
-            LeftX => bind::SDL_CONTROLLER_AXIS_LEFTX,
-            LeftY => bind::SDL_CONTROLLER_AXIS_LEFTY,
-            RightX => bind::SDL_CONTROLLER_AXIS_RIGHTX,
-            RightY => bind::SDL_CONTROLLER_AXIS_RIGHTY,
-            TriggerLeft => bind::SDL_CONTROLLER_AXIS_TRIGGERLEFT,
-            TriggerRight => bind::SDL_CONTROLLER_AXIS_TRIGGERRIGHT,
+            Axis::LeftX => bind::SDL_CONTROLLER_AXIS_LEFTX,
+            Axis::LeftY => bind::SDL_CONTROLLER_AXIS_LEFTY,
+            Axis::RightX => bind::SDL_CONTROLLER_AXIS_RIGHTX,
+            Axis::RightY => bind::SDL_CONTROLLER_AXIS_RIGHTY,
+            Axis::TriggerLeft => bind::SDL_CONTROLLER_AXIS_TRIGGERLEFT,
+            Axis::TriggerRight => bind::SDL_CONTROLLER_AXIS_TRIGGERRIGHT,
         }
     }
 

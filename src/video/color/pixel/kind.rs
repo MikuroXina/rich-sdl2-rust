@@ -106,60 +106,59 @@ impl PixelFormatKind {
     }
 
     pub(crate) fn from_raw(raw: EnumInt) -> Self {
-        use PixelFormatKind::*;
         if (raw >> 28) & 0x0F != 1 {
             let bytes = ((raw >> 24) & 0xf).to_le_bytes();
-            return FourCode(bytes.iter().map(|&c| c as char).collect());
+            return PixelFormatKind::FourCode(bytes.iter().map(|&c| c as char).collect());
         }
         match (raw >> 24) & 0xf {
-            bind::SDL_PIXELTYPE_INDEX1 => Bitmap {
+            bind::SDL_PIXELTYPE_INDEX1 => PixelFormatKind::Bitmap {
                 ty: BitmapPixelType::Index1,
                 order: raw.into(),
             },
-            bind::SDL_PIXELTYPE_INDEX4 => Bitmap {
+            bind::SDL_PIXELTYPE_INDEX4 => PixelFormatKind::Bitmap {
                 ty: BitmapPixelType::Index4,
                 order: raw.into(),
             },
-            bind::SDL_PIXELTYPE_INDEX8 => Bitmap {
+            bind::SDL_PIXELTYPE_INDEX8 => PixelFormatKind::Bitmap {
                 ty: BitmapPixelType::Index8,
                 order: raw.into(),
             },
-            bind::SDL_PIXELTYPE_PACKED8 => Packed {
+            bind::SDL_PIXELTYPE_PACKED8 => PixelFormatKind::Packed {
                 ty: PackedPixelType::_8,
                 order: raw.into(),
                 layout: raw.into(),
             },
-            bind::SDL_PIXELTYPE_PACKED16 => Packed {
+            bind::SDL_PIXELTYPE_PACKED16 => PixelFormatKind::Packed {
                 ty: PackedPixelType::_16,
                 order: raw.into(),
                 layout: raw.into(),
             },
-            bind::SDL_PIXELTYPE_PACKED32 => Packed {
+            bind::SDL_PIXELTYPE_PACKED32 => PixelFormatKind::Packed {
                 ty: PackedPixelType::_32,
                 order: raw.into(),
                 layout: raw.into(),
             },
-            bind::SDL_PIXELTYPE_ARRAYU8 => Array {
+            bind::SDL_PIXELTYPE_ARRAYU8 => PixelFormatKind::Array {
                 ty: ArrayPixelType::U8,
                 order: raw.into(),
             },
-            bind::SDL_PIXELTYPE_ARRAYU16 => Array {
+            bind::SDL_PIXELTYPE_ARRAYU16 => PixelFormatKind::Array {
                 ty: ArrayPixelType::U16,
                 order: raw.into(),
             },
-            bind::SDL_PIXELTYPE_ARRAYU32 => Array {
+            bind::SDL_PIXELTYPE_ARRAYU32 => PixelFormatKind::Array {
                 ty: ArrayPixelType::U32,
                 order: raw.into(),
             },
-            bind::SDL_PIXELTYPE_ARRAYF16 => Array {
+            bind::SDL_PIXELTYPE_ARRAYF16 => PixelFormatKind::Array {
                 ty: ArrayPixelType::F16,
                 order: raw.into(),
             },
-            bind::SDL_PIXELTYPE_ARRAYF32 => Array {
+            bind::SDL_PIXELTYPE_ARRAYF32 => PixelFormatKind::Array {
                 ty: ArrayPixelType::F32,
                 order: raw.into(),
             },
-            _ => Unknown,
+            _ => PixelFormatKind::Unknown,
         }
     }
 

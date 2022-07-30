@@ -21,14 +21,13 @@ pub enum PowerLevel {
 
 impl From<bind::SDL_JoystickPowerLevel> for PowerLevel {
     fn from(raw: bind::SDL_JoystickPowerLevel) -> Self {
-        use PowerLevel::*;
         match raw {
-            bind::SDL_JOYSTICK_POWER_EMPTY => Empty,
-            bind::SDL_JOYSTICK_POWER_LOW => Low,
-            bind::SDL_JOYSTICK_POWER_MEDIUM => Medium,
-            bind::SDL_JOYSTICK_POWER_FULL => Full,
-            bind::SDL_JOYSTICK_POWER_WIRED => Wired,
-            _ => Unknown,
+            bind::SDL_JOYSTICK_POWER_EMPTY => PowerLevel::Empty,
+            bind::SDL_JOYSTICK_POWER_LOW => PowerLevel::Low,
+            bind::SDL_JOYSTICK_POWER_MEDIUM => PowerLevel::Medium,
+            bind::SDL_JOYSTICK_POWER_FULL => PowerLevel::Full,
+            bind::SDL_JOYSTICK_POWER_WIRED => PowerLevel::Wired,
+            _ => PowerLevel::Unknown,
         }
     }
 }

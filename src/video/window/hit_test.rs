@@ -37,18 +37,17 @@ pub enum HitTestResult {
 
 impl HitTestResult {
     fn into_arg(self) -> bind::SDL_HitTestResult {
-        use HitTestResult::*;
         match self {
-            Normal => bind::SDL_HITTEST_NORMAL,
-            Draggable => bind::SDL_HITTEST_DRAGGABLE,
-            ResizeTopLeft => bind::SDL_HITTEST_RESIZE_TOPLEFT,
-            ResizeTop => bind::SDL_HITTEST_RESIZE_TOP,
-            ResizeTopRight => bind::SDL_HITTEST_RESIZE_TOPRIGHT,
-            ResizeRight => bind::SDL_HITTEST_RESIZE_RIGHT,
-            ResizeBottomRight => bind::SDL_HITTEST_RESIZE_BOTTOMRIGHT,
-            ResizeBottom => bind::SDL_HITTEST_RESIZE_BOTTOM,
-            ResizeBottomLeft => bind::SDL_HITTEST_RESIZE_BOTTOMLEFT,
-            ResizeLeft => bind::SDL_HITTEST_RESIZE_LEFT,
+            HitTestResult::Normal => bind::SDL_HITTEST_NORMAL,
+            HitTestResult::Draggable => bind::SDL_HITTEST_DRAGGABLE,
+            HitTestResult::ResizeTopLeft => bind::SDL_HITTEST_RESIZE_TOPLEFT,
+            HitTestResult::ResizeTop => bind::SDL_HITTEST_RESIZE_TOP,
+            HitTestResult::ResizeTopRight => bind::SDL_HITTEST_RESIZE_TOPRIGHT,
+            HitTestResult::ResizeRight => bind::SDL_HITTEST_RESIZE_RIGHT,
+            HitTestResult::ResizeBottomRight => bind::SDL_HITTEST_RESIZE_BOTTOMRIGHT,
+            HitTestResult::ResizeBottom => bind::SDL_HITTEST_RESIZE_BOTTOM,
+            HitTestResult::ResizeBottomLeft => bind::SDL_HITTEST_RESIZE_BOTTOMLEFT,
+            HitTestResult::ResizeLeft => bind::SDL_HITTEST_RESIZE_LEFT,
         }
     }
 }

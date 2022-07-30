@@ -73,24 +73,22 @@ pub enum BlendMode {
 
 impl From<bind::SDL_BlendMode> for BlendMode {
     fn from(raw: bind::SDL_BlendMode) -> Self {
-        use BlendMode::*;
         match raw {
-            bind::SDL_BLENDMODE_BLEND => AlphaBlend,
-            bind::SDL_BLENDMODE_ADD => Add,
-            bind::SDL_BLENDMODE_MOD => Mul,
-            _ => None,
+            bind::SDL_BLENDMODE_BLEND => BlendMode::AlphaBlend,
+            bind::SDL_BLENDMODE_ADD => BlendMode::Add,
+            bind::SDL_BLENDMODE_MOD => BlendMode::Mul,
+            _ => BlendMode::None,
         }
     }
 }
 
 impl From<BlendMode> for bind::SDL_BlendMode {
     fn from(raw: BlendMode) -> Self {
-        use BlendMode::*;
         match raw {
-            AlphaBlend => bind::SDL_BLENDMODE_BLEND,
-            Add => bind::SDL_BLENDMODE_ADD,
-            Mul => bind::SDL_BLENDMODE_MOD,
-            None => bind::SDL_BLENDMODE_NONE,
+            BlendMode::AlphaBlend => bind::SDL_BLENDMODE_BLEND,
+            BlendMode::Add => bind::SDL_BLENDMODE_ADD,
+            BlendMode::Mul => bind::SDL_BLENDMODE_MOD,
+            BlendMode::None => bind::SDL_BLENDMODE_NONE,
         }
     }
 }
