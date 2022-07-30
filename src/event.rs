@@ -78,17 +78,17 @@ impl<'video> EventBox<'video> {
             Sdl::error_then_panic("Sdl event")
         }
         Self {
-            quit_event_handlers: Default::default(),
-            window_event_handlers: Default::default(),
-            keyboard_event_handlers: Default::default(),
-            input_event_handlers: Default::default(),
-            editing_event_handlers: Default::default(),
-            mouse_event_handlers: Default::default(),
-            controller_event_handlers: Default::default(),
-            joystick_event_handlers: Default::default(),
-            audio_device_event_handlers: Default::default(),
-            drop_event_handlers: Default::default(),
-            gesture_event_handlers: Default::default(),
+            quit_event_handlers: EventHandlers::default(),
+            window_event_handlers: EventHandlers::default(),
+            keyboard_event_handlers: EventHandlers::default(),
+            input_event_handlers: EventHandlers::default(),
+            editing_event_handlers: EventHandlers::default(),
+            mouse_event_handlers: EventHandlers::default(),
+            controller_event_handlers: EventHandlers::default(),
+            joystick_event_handlers: EventHandlers::default(),
+            audio_device_event_handlers: EventHandlers::default(),
+            drop_event_handlers: EventHandlers::default(),
+            gesture_event_handlers: EventHandlers::default(),
             _phantom: PhantomData,
         }
     }
