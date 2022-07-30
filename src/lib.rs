@@ -1,6 +1,7 @@
 #![allow(unused)]
 #![warn(missing_docs)]
 #![warn(rustdoc::broken_intra_doc_links)]
+#![warn(clippy::pedantic)]
 #![cfg_attr(feature = "simd_allocator", feature(allocator_api))]
 #![cfg_attr(feature = "nightly", feature(doc_cfg))]
 

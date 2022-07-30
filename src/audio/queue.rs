@@ -35,6 +35,7 @@ impl<'device> QueuedAudio<'device> {
     }
 
     /// Returns the size of the queue in bytes.
+    #[must_use]
     pub fn queue_bytes_size(&self) -> usize {
         unsafe { bind::SDL_GetQueuedAudioSize(self.device.id) as usize }
     }

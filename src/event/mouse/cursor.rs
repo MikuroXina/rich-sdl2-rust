@@ -22,6 +22,7 @@ assert_not_impl_all!(Cursor: Send, Sync);
 
 impl<'window> Cursor<'window> {
     /// Constructs cursor control from the window.
+    #[must_use]
     pub fn new(_: &'window Window) -> Self {
         Self {
             window: PhantomData,
@@ -45,6 +46,7 @@ impl<'window> Cursor<'window> {
     }
 
     /// Returns whether the cursor is shown.
+    #[must_use]
     pub fn is_shown(&self) -> bool {
         let ret = unsafe { bind::SDL_ShowCursor(bind::SDL_QUERY as c_int) };
         if ret < 0 {

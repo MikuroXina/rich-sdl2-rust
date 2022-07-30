@@ -49,6 +49,7 @@ impl<'texture> Lock<'texture> {
     }
 
     /// Returns bytes of the pixels.
+    #[must_use]
     pub fn as_bytes(&self) -> &[u8] {
         unsafe { std::slice::from_raw_parts(self.pixels.as_ptr().cast(), self.len) }
     }

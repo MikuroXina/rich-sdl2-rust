@@ -14,6 +14,7 @@ pub struct MouseHaptic {
 
 impl MouseHaptic {
     /// Constructs if the mouse had the haptic device.
+    #[must_use]
     pub fn new() -> Option<Self> {
         let is_supported = unsafe { bind::SDL_MouseIsHaptic() as bind::SDL_bool == bind::SDL_TRUE };
         if !is_supported {

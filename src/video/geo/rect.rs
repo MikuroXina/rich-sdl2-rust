@@ -6,6 +6,7 @@ use super::{Point, Size};
 
 /// A rectangle holding up left point and size.
 #[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord)]
+#[must_use]
 pub struct Rect {
     /// A up left point of the rectangle.
     pub up_left: Point,
@@ -106,18 +107,22 @@ impl Rect {
     }
 
     /// Returns the left x of the rect.
+    #[must_use]
     pub fn left(self) -> i32 {
         self.up_left.x
     }
     /// Returns the right x of the rect.
+    #[must_use]
     pub fn right(self) -> i32 {
         self.up_left.x + self.size.width as i32
     }
     /// Returns the top y of the rect.
+    #[must_use]
     pub fn top(self) -> i32 {
         self.up_left.y
     }
     /// Returns the bottom y of the rect.
+    #[must_use]
     pub fn bottom(self) -> i32 {
         self.up_left.y + self.size.height as i32
     }
@@ -141,6 +146,7 @@ impl Rect {
     }
 
     /// Returns whether two rectangles intersected.
+    #[must_use]
     pub fn has_intersection(self, other: Self) -> bool {
         unsafe {
             bind::SDL_HasIntersection(&self.into() as *const _, &other.into() as *const _) != 0
@@ -148,6 +154,7 @@ impl Rect {
     }
 
     /// Returns the intersection rectangle of two rectangles.
+    #[must_use]
     pub fn intersect(self, other: Self) -> Option<Self> {
         let mut raw = MaybeUninit::uninit();
         let ret = unsafe {
@@ -161,6 +168,7 @@ impl Rect {
     }
 
     /// Returns whether the rectangle is empty.
+    #[must_use]
     pub fn is_empty(&self) -> bool {
         self.size.width == 0 || self.size.height == 0
     }

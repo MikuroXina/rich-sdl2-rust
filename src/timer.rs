@@ -64,11 +64,13 @@ pub mod performance {
     use crate::bind;
 
     /// Returns current counts of the high resolution counter.
+    #[must_use]
     pub fn counter() -> u64 {
         unsafe { bind::SDL_GetPerformanceCounter() }
     }
 
     /// Returns the numbers of counts per one seconds of the high resolution counter.
+    #[must_use]
     pub fn frequency() -> u64 {
         unsafe { bind::SDL_GetPerformanceFrequency() }
     }

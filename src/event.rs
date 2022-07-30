@@ -71,6 +71,7 @@ assert_not_impl_all!(EventBox: Send, Sync);
 
 impl<'video> EventBox<'video> {
     /// Constructs an event box from the video system.
+    #[must_use]
     pub fn new(_: &'video Video) -> Self {
         let ret = unsafe { bind::SDL_InitSubSystem(bind::SDL_INIT_EVENTS) };
         if ret != 0 {

@@ -82,6 +82,7 @@ assert_not_impl_all!(GlAttribute: Send, Sync);
 
 impl<'gl> GlAttribute<'gl> {
     /// Constructs an attribute from context and kind.
+    #[must_use]
     pub fn new(_: &'gl GlContext<'gl>, attr: GlAttributeKind) -> Self {
         Self {
             attr,

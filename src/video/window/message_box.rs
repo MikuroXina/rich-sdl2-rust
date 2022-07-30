@@ -36,6 +36,7 @@ pub struct MessageBox {
 
 impl MessageBox {
     /// Constructs a message box builder from the kind.
+    #[must_use]
     pub fn new(kind: MessageBoxKind) -> Self {
         Self {
             kind,

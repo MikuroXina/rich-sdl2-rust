@@ -32,6 +32,7 @@ pub struct Button {
 
 impl Button {
     /// Constructs a normal button.
+    #[must_use]
     pub fn normal(id: ButtonId, text: &str) -> Self {
         Self {
             kind: ButtonKind::Normal,
@@ -40,6 +41,7 @@ impl Button {
         }
     }
     /// Constructs a confirm button.
+    #[must_use]
     pub fn confirm(id: ButtonId, text: &str) -> Self {
         Self {
             kind: ButtonKind::Confirm,
@@ -48,6 +50,7 @@ impl Button {
         }
     }
     /// Constructs a cancel button.
+    #[must_use]
     pub fn cancel(id: ButtonId, text: &str) -> Self {
         Self {
             kind: ButtonKind::Cancel,

@@ -32,6 +32,7 @@ impl<'a> RwOps<'a> {
     /// # Safety
     ///
     /// Dereferencing the pointer and using the field is not recommended. Please use carefully.
+    #[must_use]
     pub unsafe fn ptr(&self) -> NonNull<bind::SDL_RWops> {
         self.ptr
     }

@@ -38,6 +38,7 @@ assert_not_impl_all!(Renderer: Send, Sync);
 
 impl<'window> Renderer<'window> {
     /// Constructs a renderer from the window.
+    #[must_use]
     pub fn new(window: &'window Window) -> Self {
         let raw = unsafe { bind::SDL_CreateRenderer(window.as_ptr(), -1, 0) };
         NonNull::new(raw).map_or_else(
@@ -51,6 +52,7 @@ impl<'window> Renderer<'window> {
     }
 
     /// Returns the borrowing window.
+    #[must_use]
     pub fn window(&self) -> &Window {
         self.window
     }
@@ -74,6 +76,7 @@ impl<'window> Renderer<'window> {
     }
 
     /// Returns the logical size of the renderer if available.
+    #[must_use]
     pub fn logical_size(&self) -> Option<Size> {
         let (mut width, mut height) = (0, 0);
         unsafe {
@@ -104,6 +107,7 @@ impl<'window> Renderer<'window> {
     }
 
     /// Returns whether integer scaled is forced.
+    #[must_use]
     pub fn is_forced_integer_scale(&self) -> bool {
         unsafe { bind::SDL_RenderGetIntegerScale(self.as_ptr()) != 0 }
     }

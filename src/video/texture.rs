@@ -109,6 +109,7 @@ impl<'renderer> Texture<'renderer> {
     }
 
     /// Returns the alpha mod of the texture.
+    #[must_use]
     pub fn alpha_mod(&self) -> u8 {
         let mut alpha = 0;
         let ret = unsafe { bind::SDL_GetTextureAlphaMod(self.as_ptr(), &mut alpha as *mut _) };
@@ -162,6 +163,7 @@ impl<'renderer> Texture<'renderer> {
     }
 
     /// Return the clip area of the texture if available.
+    #[must_use]
     pub fn clip(&self) -> &Option<Rect> {
         &self.clip
     }

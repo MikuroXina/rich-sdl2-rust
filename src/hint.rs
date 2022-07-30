@@ -12,6 +12,7 @@ mod observer;
 pub use observer::*;
 
 /// Returns the hint value of the key if exists.
+#[must_use]
 pub fn get_hint(key: &str) -> Option<String> {
     let cstr = CString::new(key).expect("key must not be empty");
     let hint = unsafe { bind::SDL_GetHint(cstr.as_ptr()) };
@@ -23,6 +24,7 @@ pub fn get_hint(key: &str) -> Option<String> {
 }
 
 /// Returns the boolean hint value of the key if exists.
+#[must_use]
 pub fn get_hint_bool(key: &str) -> Option<bool> {
     let cstr = CString::new(key).expect("key must not be empty");
     let ret = unsafe { bind::SDL_GetHintBoolean(cstr.as_ptr(), 2) };

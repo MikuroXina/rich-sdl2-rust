@@ -23,6 +23,7 @@ pub struct Opacity {
 
 impl Opacity {
     /// Constructs from opacity, or `None` if the value is not in `0.0..=1.0`.
+    #[must_use]
     pub fn new(opacity: f32) -> Option<Self> {
         if (0.0..=1.0).contains(&opacity) {
             return None;
@@ -31,6 +32,7 @@ impl Opacity {
     }
 
     /// Constructs from opacity, clamping to `0.0,,=1.0`.
+    #[must_use]
     pub fn with_clamped(opacity: f32) -> Self {
         Self {
             opacity: opacity.clamp(0.0, 1.0),
@@ -38,6 +40,7 @@ impl Opacity {
     }
 
     /// Converts into `f32`
+    #[must_use]
     pub fn as_f32(&self) -> f32 {
         self.opacity
     }

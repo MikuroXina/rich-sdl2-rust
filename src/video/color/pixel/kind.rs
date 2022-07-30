@@ -55,6 +55,7 @@ pub struct BppMask {
 
 impl PixelFormatKind {
     /// Constructs from [`BppMask`].
+    #[must_use]
     pub fn from_bpp_mask(
         BppMask {
             bpp,
@@ -69,6 +70,7 @@ impl PixelFormatKind {
     }
 
     /// Converts to [`BppMask`], if able to do.
+    #[must_use]
     pub fn to_bpp_mask(&self) -> Option<BppMask> {
         let mut bpp_mask = BppMask::default();
         let BppMask {
@@ -96,6 +98,7 @@ impl PixelFormatKind {
     }
 
     /// Returns the name for the pixel format, or empty string if does not exist.
+    #[must_use]
     pub fn name(&self) -> &'static str {
         unsafe { CStr::from_ptr(bind::SDL_GetPixelFormatName(self.clone().as_raw())) }
             .to_str()

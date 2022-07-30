@@ -11,6 +11,7 @@ pub struct Brightness {
 
 impl Brightness {
     /// Constructs from brightness, or `None` if the value is not in `0.0..=1.0`.
+    #[must_use]
     pub fn new(brightness: f32) -> Option<Self> {
         if (0.0..=1.0).contains(&brightness) {
             Some(Self { brightness })
@@ -20,6 +21,7 @@ impl Brightness {
     }
 
     /// Constructs from brightness, clamping to `0.0,,=1.0`.
+    #[must_use]
     pub fn with_clamped(brightness: f32) -> Self {
         Self {
             brightness: brightness.clamp(0.0, 1.0),
@@ -27,6 +29,7 @@ impl Brightness {
     }
 
     /// Converts into `f32`.
+    #[must_use]
     pub fn as_f32(self) -> f32 {
         self.brightness
     }

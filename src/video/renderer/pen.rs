@@ -15,11 +15,13 @@ pub struct Pen<'renderer> {
 
 impl<'renderer> Pen<'renderer> {
     /// Constructs a pen from the renderer [`Renderer`].
+    #[must_use]
     pub fn new(renderer: &'renderer Renderer) -> Self {
         Self { renderer }
     }
 
     /// Returns the renderer that the pen is drawing.
+    #[must_use]
     pub fn renderer(&self) -> &Renderer {
         self.renderer
     }

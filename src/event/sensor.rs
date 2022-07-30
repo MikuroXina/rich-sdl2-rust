@@ -30,6 +30,7 @@ impl std::fmt::Debug for Sensor {
 
 impl Sensor {
     /// Reads some `f32` data by count
+    #[must_use]
     pub fn data(&self, read_count: usize) -> Vec<f32> {
         let mut data = vec![0.0; read_count];
         unsafe {
@@ -39,12 +40,14 @@ impl Sensor {
     }
 
     /// Returns the name of the sensor
+    #[must_use]
     pub fn name(&self) -> &str {
         let cstr = unsafe { CStr::from_ptr(bind::SDL_SensorGetName(self.ptr.as_ptr())) };
         cstr.to_str().unwrap()
     }
 
     /// Returns the kind of the sensor
+    #[must_use]
     pub fn kind(&self) -> SensorKind {
         let ty = unsafe { bind::SDL_SensorGetType(self.ptr.as_ptr()) };
         match ty {
@@ -65,6 +68,7 @@ pub struct SensorSet(Vec<Sensor>);
 
 impl SensorSet {
     /// Setup the system and recognizes the sensors.
+    #[must_use]
     pub fn new() -> Self {
         let sensor_count = unsafe {
             bind::SDL_InitSubSystem(bind::SDL_INIT_SENSOR);
@@ -83,6 +87,7 @@ impl SensorSet {
     }
 
     /// Returns the sensors slice.
+    #[must_use]
     pub fn sensors(&self) -> &[Sensor] {
         &self.0
     }

@@ -8,6 +8,7 @@ pub struct Ticks(pub u32);
 
 impl Ticks {
     /// Gets a current [`Ticks`].
+    #[must_use]
     pub fn now(_: &Sdl) -> Self {
         let ticks = unsafe { bind::SDL_GetTicks() };
         Ticks(ticks)

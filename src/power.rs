@@ -44,6 +44,7 @@ pub struct PowerInfo {
 
 impl PowerInfo {
     /// Returns a power information at now.
+    #[must_use]
     pub fn now() -> Self {
         let mut remaining_seconds = 0;
         let mut remaining_ratio = 0;

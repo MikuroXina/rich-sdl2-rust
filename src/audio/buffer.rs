@@ -25,6 +25,7 @@ impl<T> AudioBuffer<T> {
     /// # Panics
     ///
     /// Panics if the size of type `T` does not equal to the format bit size.
+    #[must_use]
     pub fn new(format: AudioFormat, samples: u32, channels: u8, buffer: Vec<T>) -> Self {
         assert_eq!(format.bit_size as usize, std::mem::size_of::<T>() * 8);
         Self {
@@ -41,11 +42,13 @@ impl<T> AudioBuffer<T> {
     }
 
     /// Returns the sample rates of the audio buffer.
+    #[must_use]
     pub fn samples(&self) -> u32 {
         self.samples
     }
 
     /// Returns the numbers of channels of the audio buffer.
+    #[must_use]
     pub fn channels(&self) -> u8 {
         self.channels
     }
@@ -111,6 +114,7 @@ impl<T: Default + Clone> AudioBuffer<T> {
     /// Mix into another `AudioBuffer` with the specified `volume`.
     ///
     /// The max value of `volume` is `128`, saturating if it is over the max.
+    #[must_use]
     pub fn mix(&self, volume: u8) -> Self {
         let mut dst = self.clone();
         self.mix_in(&mut dst, volume);

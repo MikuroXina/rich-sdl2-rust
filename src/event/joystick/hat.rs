@@ -47,6 +47,7 @@ impl<'joystick> Hat<'joystick> {
     }
 
     /// Returns the pov hat state of the joystick.
+    #[must_use]
     pub fn state(&self) -> PovHat {
         let raw = unsafe { bind::SDL_JoystickGetHat(self.joystick.ptr.as_ptr(), self.index) };
         PovHat::from_bits(raw).expect("hat state must be valid")

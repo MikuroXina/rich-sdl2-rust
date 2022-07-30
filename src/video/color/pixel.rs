@@ -16,12 +16,14 @@ pub mod ty;
 
 /// A simple pixel that can convert into `u32`.
 #[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord)]
+#[must_use]
 pub struct Pixel {
     pixel: u32,
 }
 
 impl Pixel {
     /// Convert into `u32`.
+    #[must_use]
     pub fn as_u32(self) -> u32 {
         self.pixel
     }
@@ -81,21 +83,25 @@ impl PixelFormat {
     }
 
     /// Returns the kind of the format.
+    #[must_use]
     pub fn kind(&self) -> PixelFormatKind {
         PixelFormatKind::from_raw(unsafe { self.format.as_ref() }.format as EnumInt)
     }
 
     /// Returns the bits per pixel of the format.
+    #[must_use]
     pub fn bits_per_pixel(&self) -> u8 {
         unsafe { self.format.as_ref() }.BitsPerPixel
     }
 
     /// Returns the bytes per pixel of the format.
+    #[must_use]
     pub fn bytes_per_pixel(&self) -> u8 {
         unsafe { self.format.as_ref() }.BytesPerPixel
     }
 
     /// Returns the property of the format.
+    #[must_use]
     pub fn property(&self) -> PixelFormatProperty {
         let raw = unsafe { self.format.as_ref() };
         NonNull::new(raw.palette).map_or_else(

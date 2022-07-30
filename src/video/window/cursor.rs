@@ -121,6 +121,7 @@ impl<'window> Cursor<'window> {
     }
 
     /// Constructs a default cursor, or `None` if unavailable.
+    #[must_use]
     pub fn default(_: &'window Window) -> Option<Self> {
         NonNull::new(unsafe { bind::SDL_GetDefaultCursor() }).map(|cursor| Self {
             cursor,

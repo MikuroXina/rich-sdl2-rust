@@ -18,18 +18,21 @@ impl WindowCoord {
     /// # Panics
     ///
     /// Panics if `coord` is not in `-16384..=16384`.
+    #[must_use]
     pub fn coord(coord: i32) -> Self {
         const MAX: i32 = 16384;
         assert!((-MAX..=MAX).contains(&coord));
         Self { coord }
     }
     /// Constructs the undefined coordinate.
+    #[must_use]
     pub const fn undefined() -> Self {
         Self {
             coord: 0x1FFF0000, // SDL_WINDOWPOS_UNDEFINED
         }
     }
     /// Constructs the centered coordinate.
+    #[must_use]
     pub const fn centered() -> Self {
         Self {
             coord: 0x2FFF0000, // SDL_WINDOWPOS_CENTERED
@@ -69,6 +72,7 @@ pub struct WindowBuilder {
 
 impl WindowBuilder {
     /// Builds the window.
+    #[must_use]
     pub fn new_window<'video>(self, video: &'video Video) -> Window<'video> {
         if self.context_kind == WindowContextKind::Vulkan {
             let ret = unsafe { bind::SDL_Vulkan_LoadLibrary(std::ptr::null()) };

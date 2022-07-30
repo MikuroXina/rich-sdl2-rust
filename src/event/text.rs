@@ -75,6 +75,7 @@ assert_not_impl_all!(TextInput: Send, Sync);
 
 impl<'video> TextInput<'video> {
     /// Starts to input the text on area `input_rect`.
+    #[must_use]
     pub fn new(_: &'video Video, input_rect: Rect) -> Self {
         let mut raw_rect = input_rect.into();
         unsafe {

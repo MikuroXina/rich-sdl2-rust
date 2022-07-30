@@ -52,6 +52,7 @@ impl Axis {
     }
 
     /// Returns the mapping string if exists.
+    #[must_use]
     pub fn to_mapping_string(self) -> Option<String> {
         let ptr = unsafe { bind::SDL_GameControllerGetStringForAxis(self.as_raw()) };
         if ptr.is_null() {

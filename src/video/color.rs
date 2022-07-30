@@ -6,6 +6,7 @@ pub mod pixel;
 
 /// A RGB color structure.
 #[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord)]
+#[must_use]
 pub struct Rgb {
     /// A red component in RGB.
     pub r: u8,
@@ -27,6 +28,7 @@ impl From<u32> for Rgb {
 
 /// A RGBA color structure.
 #[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord)]
+#[must_use]
 pub struct Rgba {
     /// A red component in RGB.
     pub r: u8,
@@ -57,6 +59,7 @@ impl From<Rgba> for bind::SDL_Color {
 
 /// A mode for blending colors.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[must_use]
 pub enum BlendMode {
     /// Not blend, overwrites a color by the another one.
     None,

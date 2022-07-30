@@ -46,6 +46,7 @@ impl AudioStream {
     }
 
     /// Returns the available length of the stream in bytes.
+    #[must_use]
     pub fn available_bytes_len(&self) -> usize {
         unsafe { bind::SDL_AudioStreamAvailable(self.ptr.as_ptr()) as usize }
     }

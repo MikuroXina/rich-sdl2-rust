@@ -8,6 +8,7 @@ pub struct GammaRamp(pub Box<[u16; 256]>);
 
 impl GammaRamp {
     /// Constructs a gamma ramp from the gamma value.
+    #[must_use]
     pub fn new(gamma: f32) -> Self {
         let mut ramp = Self::default();
         unsafe { bind::SDL_CalculateGammaRamp(gamma, ramp.0.as_mut_ptr()) }

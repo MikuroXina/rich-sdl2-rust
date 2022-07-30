@@ -49,6 +49,7 @@ impl Wav {
     }
 
     /// Treats as an `u8` slice.
+    #[must_use]
     pub fn as_slice(&self) -> &[u8] {
         unsafe { std::slice::from_raw_parts(self.buffer, self.len) }
     }
@@ -59,6 +60,7 @@ impl Wav {
     }
 
     /// Convert into a vector.
+    #[must_use]
     pub fn to_vec(&self) -> Vec<u8> {
         self.as_slice().to_vec()
     }

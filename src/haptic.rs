@@ -63,6 +63,7 @@ impl std::fmt::Debug for Haptic {
 
 impl Haptic {
     /// Returns the name of the haptic device.
+    #[must_use]
     pub fn name(&self) -> String {
         let index = unsafe { bind::SDL_HapticIndex(self.ptr.as_ptr()) };
         let cstr = unsafe { CStr::from_ptr(bind::SDL_HapticName(index)) };
@@ -70,11 +71,13 @@ impl Haptic {
     }
 
     /// Returns the numbers of the axes on the haptic device.
+    #[must_use]
     pub fn num_axes(&self) -> u32 {
         unsafe { bind::SDL_HapticNumAxes(self.ptr.as_ptr()) as u32 }
     }
 
     /// Returns whether the effect is supported on the haptic device.
+    #[must_use]
     pub fn is_effect_supported(&self, effect: &HapticEffect) -> bool {
         let mut raw = effect.clone().into_raw();
         unsafe {
@@ -98,11 +101,13 @@ impl Haptic {
     }
 
     /// Returns the capacity of the effects on the haptic device.
+    #[must_use]
     pub fn effects_creation_capacity(&self) -> usize {
         unsafe { bind::SDL_HapticNumEffects(self.ptr.as_ptr()) as usize }
     }
 
     /// Returns the maximum numbers of playing the effects at same time on the haptic device.
+    #[must_use]
     pub fn effects_playing_capacity(&self) -> usize {
         unsafe { bind::SDL_HapticNumEffectsPlaying(self.ptr.as_ptr()) as usize }
     }
@@ -139,12 +144,14 @@ impl Haptic {
     }
 
     /// Queries a property on the haptic device.
+    #[must_use]
     pub fn property(&self) -> HapticProperty {
         let bits = unsafe { bind::SDL_HapticQuery(self.ptr.as_ptr()) };
         HapticProperty::from_bits(bits).unwrap()
     }
 
     /// Pauses the haptic device and converts into [`PausedHaptic`].
+    #[must_use]
     pub fn pause(self) -> PausedHaptic {
         unsafe {
             bind::SDL_HapticPause(self.ptr.as_ptr());
@@ -160,6 +167,7 @@ pub struct PausedHaptic {
 
 impl PausedHaptic {
     /// Unpauses the haptic device and converts into [`Haptic`].
+    #[must_use]
     pub fn unpause(self) -> Haptic {
         unsafe {
             bind::SDL_HapticUnpause(self.haptic.ptr.as_ptr());
@@ -173,6 +181,7 @@ pub struct HapticSet(Vec<Haptic>);
 
 impl HapticSet {
     /// Constructs and initializes the system and recognizes haptic devices.
+    #[must_use]
     pub fn new() -> Self {
         let num_haptics = unsafe {
             bind::SDL_InitSubSystem(bind::SDL_INIT_HAPTIC);
@@ -189,6 +198,7 @@ impl HapticSet {
     }
 
     /// Returns the haptic devices.
+    #[must_use]
     pub fn haptics(&self) -> &[Haptic] {
         &self.0
     }

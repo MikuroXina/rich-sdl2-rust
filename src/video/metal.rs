@@ -12,6 +12,7 @@ pub struct MetalView<'window> {
 
 impl<'window> MetalView<'window> {
     /// Constructs a Metal view.
+    #[must_use]
     pub fn new(window: &'window Window<'window>) -> Self {
         let ptr = unsafe { bind::SDL_Metal_CreateView(window.as_ptr()) };
         Self {
@@ -21,6 +22,7 @@ impl<'window> MetalView<'window> {
     }
 
     /// Returns the raw pointer `CAMetalLayer` from the view.
+    #[must_use]
     pub fn metal_layer(&self) -> *mut c_void {
         unsafe { bind::SDL_Metal_GetLayer(self.ptr.as_ptr()) }
     }

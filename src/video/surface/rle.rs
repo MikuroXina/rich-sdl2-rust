@@ -41,6 +41,7 @@ impl<'surface, S: Surface> RleLock<'surface, S> {
     }
 
     /// Returns the raw pixels data.
+    #[must_use]
     pub fn pixels(&self) -> &[u8] {
         let surface = unsafe { self.src.surface.as_ptr().as_ref() };
         let len = surface.h as usize * surface.pitch as usize;

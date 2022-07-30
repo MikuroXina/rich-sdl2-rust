@@ -42,6 +42,7 @@ impl Palette {
     }
 
     /// Returns the numbers of colors in the palette.
+    #[must_use]
     pub fn num_colors(&self) -> usize {
         unsafe { self.palette.as_ref() }.ncolors as _
     }

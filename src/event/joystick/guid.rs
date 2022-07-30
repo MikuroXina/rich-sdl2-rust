@@ -13,6 +13,7 @@ pub struct Guid([u8; 16]);
 
 impl Guid {
     /// Returns mapping string for the game controller having the GUID.
+    #[must_use]
     pub fn mapping(&self) -> String {
         let ptr = unsafe {
             bind::SDL_GameControllerMappingForGUID(bind::SDL_JoystickGUID { data: self.0 })

@@ -22,6 +22,7 @@ impl<'joystick> Button<'joystick> {
     }
 
     /// Returns whether the button is pressed.
+    #[must_use]
     pub fn is_pressed(&self) -> bool {
         unsafe { bind::SDL_JoystickGetButton(self.joystick.ptr.as_ptr(), self.index) != 0 }
     }

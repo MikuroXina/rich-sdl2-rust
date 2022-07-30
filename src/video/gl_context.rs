@@ -36,6 +36,7 @@ assert_not_impl_all!(GlContext: Send, Sync);
 
 impl<'window> GlContext<'window> {
     /// Constructs from a reference to [`Window`], or `Err` on failure.
+    #[must_use]
     pub fn new(window: &'window Window) -> Option<Self> {
         if let WindowContextKind::OpenGl = window.state().context_kind {
             let raw = unsafe { bind::SDL_GL_CreateContext(window.as_ptr()) };
@@ -46,6 +47,7 @@ impl<'window> GlContext<'window> {
     }
 
     /// Returns the internal pointer of the OpenGL context.
+    #[must_use]
     pub fn as_ptr(&self) -> *mut c_void {
         self.ctx.as_ptr()
     }
@@ -67,6 +69,7 @@ impl<'window> GlContext<'window> {
     }
 
     /// Returns whether the extension `name` is supported.
+    #[must_use]
     pub fn supported_extension(&self, name: &'static str) -> bool {
         let cstr = CString::new(name).unwrap();
         unsafe { bind::SDL_GL_ExtensionSupported(cstr.as_ptr()) != 0 }
@@ -93,6 +96,7 @@ impl<'window> GlContext<'window> {
     ///
     /// This return value is valid only on supported the extension.
     /// You must check by `supported_extension` before casting to any function pointer.
+    #[must_use]
     pub unsafe fn proc_address(&self, proc: &str) -> *mut c_void {
         let cstr = CString::new(proc).unwrap();
         unsafe { bind::SDL_GL_GetProcAddress(cstr.as_ptr()) }
