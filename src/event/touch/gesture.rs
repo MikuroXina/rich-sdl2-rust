@@ -11,7 +11,11 @@ use super::TouchDevice;
 pub struct Gesture(bind::SDL_GestureID);
 
 impl Gesture {
-    /// Saves all gestures into `dst` and returns the numbers of succeed to write, or `Err` on failure
+    /// Saves all gestures into `dst` and returns the numbers of succeed to write.
+    ///
+    /// # Errors
+    ///
+    /// Returns `Err` if failed to save all the template data.
     pub fn save_dollar_template_all(dst: &RwOps) -> Result<usize> {
         let ret = unsafe { bind::SDL_SaveAllDollarTemplates(dst.ptr().as_ptr()) };
         if ret == 0 {
@@ -21,7 +25,11 @@ impl Gesture {
         }
     }
 
-    /// Saves gesture into `dst` and returns the numbers of succeed to write, or `Err` on failure
+    /// Saves gesture into `dst` and returns the numbers of succeed to write.
+    ///
+    /// # Errors
+    ///
+    /// Returns `Err` if failed to save a template data.
     pub fn save_dollar_template(&self, dst: &RwOps) -> Result<usize> {
         let ret = unsafe { bind::SDL_SaveDollarTemplate(self.0, dst.ptr().as_ptr()) };
         if ret == 0 {

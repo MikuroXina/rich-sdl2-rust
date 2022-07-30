@@ -90,7 +90,11 @@ impl<'gl> GlAttribute<'gl> {
         }
     }
 
-    /// Sets the attribute value, or `Err` on failure.
+    /// Sets an attribute value.
+    ///
+    /// # Errors
+    ///
+    /// Returns `Err` if failed to set a value for the attribute.
     pub fn set(&self, value: i32) -> Result<()> {
         let ret = unsafe { bind::SDL_GL_SetAttribute(self.attr.bits as EnumInt, value) };
         if ret != 0 {
@@ -99,7 +103,11 @@ impl<'gl> GlAttribute<'gl> {
         Ok(())
     }
 
-    /// Gets the attribute value, or `Err` on failure.
+    /// Gets an attribute value.
+    ///
+    /// # Errors
+    ///
+    /// Returns `Err` if failed to get a value of the attribute.
     pub fn get(&self) -> Result<i32> {
         let mut value = 0;
         let ret =

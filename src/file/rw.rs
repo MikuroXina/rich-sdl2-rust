@@ -37,7 +37,15 @@ impl<'a> RwOps<'a> {
         self.ptr
     }
 
-    /// Constructs from file name with the open mode, or `Err` on failure.
+    /// Constructs from file name with the open mode.
+    ///
+    /// # Panics
+    ///
+    /// Panics if `file_name` was empty.
+    ///
+    /// # Errors
+    ///
+    /// Returns `Err` if failed to open the file with `mode`.
     pub fn from_file(file_name: &str, mode: OpenMode) -> Result<RwOps<'static>> {
         let cstr = CString::new(file_name).expect("file_name must not be empty");
         let ptr = unsafe { bind::SDL_RWFromFile(cstr.as_ptr(), mode.into_raw().as_ptr()) };
@@ -51,7 +59,11 @@ impl<'a> RwOps<'a> {
         }
     }
 
-    /// Constructs from the buffer `&[u8]`, or `Err` on failure.
+    /// Constructs from the buffer `&[u8]`.
+    ///
+    /// # Errors
+    ///
+    /// Returns `Err` if failed to make it a read-only memory buffer.
     pub fn from_mem(buf: &'a [u8]) -> Result<Self> {
         let ptr = unsafe { bind::SDL_RWFromConstMem(buf.as_ptr().cast(), buf.len() as c_int) };
         if ptr.is_null() {
@@ -64,7 +76,11 @@ impl<'a> RwOps<'a> {
         }
     }
 
-    /// Constructs from the mutable buffer `&mut [u8]`, or `Err` on failure.
+    /// Constructs from the mutable buffer `&mut [u8]`.
+    ///
+    /// # Errors
+    ///
+    /// Returns `Err` if failed to make it a read-write memory buffer.
     pub fn from_mem_mut(buf: &'a mut [u8]) -> Result<Self> {
         let ptr = unsafe { bind::SDL_RWFromMem(buf.as_mut_ptr().cast(), buf.len() as c_int) };
         if ptr.is_null() {
@@ -78,6 +94,10 @@ impl<'a> RwOps<'a> {
     }
 
     /// Returns the size of the read/write target.
+    ///
+    /// # Errors
+    ///
+    /// Returns `Err` if failed to get the size of buffer.
     pub fn size(&self) -> Result<usize> {
         let ret = unsafe { bind::SDL_RWsize(self.ptr.as_ptr()) };
         if ret < 0 {
@@ -88,6 +108,10 @@ impl<'a> RwOps<'a> {
     }
 
     /// Returns the current position of seeking.
+    ///
+    /// # Errors
+    ///
+    /// Returns `Err` if failed to seek to get the current position.
     pub fn tell(&mut self) -> io::Result<u64> {
         self.seek(io::SeekFrom::Current(0))
     }

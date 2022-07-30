@@ -63,7 +63,11 @@ impl std::fmt::Debug for Texture<'_> {
 assert_not_impl_all!(Texture: Send, Sync);
 
 impl<'renderer> Texture<'renderer> {
-    /// Constructs a texture from the renderer with access type, or `Err` on failure.
+    /// Constructs a texture from the renderer with access type.
+    ///
+    /// # Errors
+    ///
+    /// Returns `Err` if failed to allocate, no rendering context was active, the format was unsupported, or the width or height were out of range.
     pub fn new(renderer: &'renderer Renderer<'renderer>, access: TextureAccess) -> Result<Self> {
         use super::window::ConfigExt;
         let Size { width, height } = renderer.window().size();
@@ -120,6 +124,14 @@ impl<'renderer> Texture<'renderer> {
     }
 
     /// Sets the alpha mod of the texture.
+    ///
+    /// # Errors
+    ///
+    /// Returns `Err` if setting the alpha mod is unsupported.
+    ///
+    /// # Panics
+    ///
+    /// Panics if some unrecoverable error is occurred.
     pub fn set_alpha_mod(&self, alpha: u8) -> Result<()> {
         let ret = unsafe { bind::SDL_SetTextureAlphaMod(self.as_ptr(), alpha) };
         if ret != 0 {
@@ -173,7 +185,11 @@ impl<'renderer> Texture<'renderer> {
         self.clip = clip;
     }
 
-    /// Binds the texture to the current OpenGL context. And returns the size in the context, or `Err` on failure.
+    /// Binds the texture to the current OpenGL context. And returns the size in the context.
+    ///
+    /// # Errors
+    ///
+    /// Returns `Err` if failed to bind the texture.
     pub fn bind_to_current_gl_context(&self) -> Result<(f32, f32)> {
         let mut width = 0f32;
         let mut height = 0f32;
@@ -187,7 +203,11 @@ impl<'renderer> Texture<'renderer> {
         }
     }
 
-    /// Unbinds the texture to the current OpenGL context, or `Err` on failure.
+    /// Unbinds the texture to the current OpenGL context.
+    ///
+    /// # Errors
+    ///
+    /// Returns `Err` if failed to unbind the texture.
     pub fn unbind_from_current_gl_context(&self) -> Result<()> {
         let ret = unsafe { bind::SDL_GL_UnbindTexture(self.as_ptr()) };
         if ret != 0 {

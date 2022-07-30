@@ -23,6 +23,10 @@ assert_not_impl_all!(Bmp: Send, Sync);
 
 impl Bmp {
     /// Constructs from the bitmap file name.
+    ///
+    /// # Errors
+    ///
+    /// Returns `Err` if failed to open the file, uses an unknown data format, or is corrupt.
     pub fn new(file_name: &str) -> Result<Self> {
         let c_str = CString::new(file_name).expect("must be a valid string");
         let read_binary_mode = CStr::from_bytes_with_nul(b"rb\0").unwrap();
@@ -56,6 +60,10 @@ pub struct BmpSaveError(pub String);
 /// An extension for a [`Surface`] to save the image as BMP format.
 pub trait BmpSaveExt {
     /// Saves the surface image as BMP format.
+    ///
+    /// # Errors
+    ///
+    /// Returns `Err` if failed to save an image to the file.
     fn save_bmp(&self, file_name: &str) -> std::result::Result<(), BmpSaveError>;
 }
 

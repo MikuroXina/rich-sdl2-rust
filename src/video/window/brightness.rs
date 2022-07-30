@@ -39,7 +39,11 @@ impl Brightness {
 pub trait BrightnessExt {
     /// Returns the brightness of the window.
     fn brightness(&self) -> Brightness;
-    /// Sets the brightness of the Window. Returns `Err` on failure.
+    /// Sets the brightness of the Window.
+    ///
+    /// # Errors
+    ///
+    /// Returns `Err` if setting a brightness is unsupported.
     fn set_brightness(&self, brightness: Brightness) -> Result<()>;
 }
 
@@ -83,8 +87,16 @@ pub struct GammaParam {
 /// An extension for [`Window`] to get/set the gamma ramp.
 pub trait GammaExt {
     /// Returns the gamma ramps of the window.
+    ///
+    /// # Errors
+    ///
+    /// Returns `Err` if failed to allocate a gamma ramp, or unsupported.
     fn gamma(&self) -> Result<Gamma>;
-    /// Sets the gamma ramps of the window. Returns `Err` on failure.
+    /// Sets the gamma ramps of the window.
+    ///
+    /// # Errors
+    ///
+    /// Returns `Err` if failed to allocate a gamma ramp, or unsupported.
     fn set_gamma(&self, gamma: GammaParam) -> Result<()>;
 }
 

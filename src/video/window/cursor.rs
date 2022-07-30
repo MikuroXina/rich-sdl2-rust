@@ -72,7 +72,11 @@ impl std::fmt::Debug for Cursor<'_> {
 assert_not_impl_all!(Cursor: Send, Sync);
 
 impl<'window> Cursor<'window> {
-    /// Constructs a system cursor from kind, or `Err` on failure.
+    /// Constructs a system cursor from `kind`.
+    ///
+    /// # Errors
+    ///
+    /// Returns `Err` if the feature of cursor is unsupported.
     pub fn system(_: &'window Window, kind: SystemCursorKind) -> Result<Self> {
         let cursor = unsafe { bind::SDL_CreateSystemCursor(kind.as_raw()) };
         let cursor = NonNull::new(cursor).ok_or(SdlError::UnsupportedFeature)?;
@@ -82,7 +86,11 @@ impl<'window> Cursor<'window> {
         })
     }
 
-    /// Constructs a colored cursor from surface and hot spot point, or `Err` on failure.
+    /// Constructs a colored cursor from surface and hot spot point.
+    ///
+    /// # Errors
+    ///
+    /// Returns `Err` if coloring a cursor is unsupported.
     pub fn colored(_: &'window Window, surface: &impl Surface, hot_spot: Point) -> Result<Self> {
         let cursor = unsafe {
             bind::SDL_CreateColorCursor(surface.as_ptr().as_ptr(), hot_spot.x, hot_spot.y)
@@ -94,7 +102,11 @@ impl<'window> Cursor<'window> {
         })
     }
 
-    /// Constructs a completely customized color from data, mask and hot spot point, or `Err` on failure.
+    /// Constructs a completely customized color from data, mask and hot spot point.
+    ///
+    /// # Errors
+    ///
+    /// Returns `Err` if failed to create a custom cursor.
     pub fn customized(
         _: &'window Window,
         data: &[u8],

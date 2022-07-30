@@ -54,6 +54,10 @@ impl<T> AudioBuffer<T> {
     }
 
     /// Convert into another `AudioBuffer` with different format, sample rate or channels.
+    ///
+    /// # Errors
+    ///
+    /// Returns `Err` if failed to convert into a specific format.
     pub fn convert<U: Default + Clone>(
         self,
         format: AudioFormat,
@@ -71,6 +75,10 @@ impl<T> AudioBuffer<T> {
     }
 
     /// Convert and write into another existing `AudioBuffer`.
+    ///
+    /// # Errors
+    ///
+    /// Returns `Err` if failed to convert between `self` and `other`.
     pub fn convert_in<U: Default + Clone>(self, other: &mut AudioBuffer<U>) -> Result<()> {
         let mut cvt = MaybeUninit::uninit();
         let ret = unsafe {

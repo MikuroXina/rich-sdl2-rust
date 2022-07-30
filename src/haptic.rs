@@ -86,7 +86,11 @@ impl Haptic {
         }
     }
 
-    /// Constructs the [`PendingEffect`] from the effect specification, or `Err` on failure.
+    /// Constructs the [`PendingEffect`] from the effect specification.
+    ///
+    /// # Errors
+    ///
+    /// Returns `Err` if this feature is unsupported, or failed to create a new haptic effect on the device.
     pub fn new_effect(&self, effect: &HapticEffect) -> Result<PendingEffect> {
         if !self.is_effect_supported(effect) {
             return Err(SdlError::UnsupportedFeature);

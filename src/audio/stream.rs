@@ -20,6 +20,10 @@ impl std::fmt::Debug for AudioStream {
 
 impl AudioStream {
     /// Constructs a stream from two audio buffers.
+    ///
+    /// # Errors
+    ///
+    /// Returns `Err` if failed to create a new audio stream.
     pub fn new<T, U>(src: AudioBuffer<T>, dst: AudioBuffer<U>) -> Result<Self> {
         let ptr = unsafe {
             bind::SDL_NewAudioStream(

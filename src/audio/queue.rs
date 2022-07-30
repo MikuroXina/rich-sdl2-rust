@@ -17,7 +17,11 @@ impl<'device> QueuedAudio<'device> {
         Self { device }
     }
 
-    /// Queues the `data`. Returns an `Err` on failure.
+    /// Queues the `data` to play.
+    ///
+    /// # Errors
+    ///
+    /// Returns `Err` if failed to queue `data`.
     pub fn queue<T>(&self, data: &[T]) -> Result<()> {
         let size = data.len() * std::mem::size_of::<T>();
         let ret =

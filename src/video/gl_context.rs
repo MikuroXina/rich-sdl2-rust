@@ -75,7 +75,11 @@ impl<'window> GlContext<'window> {
         unsafe { bind::SDL_GL_ExtensionSupported(cstr.as_ptr()) != 0 }
     }
 
-    /// Loads the library from `path`, or `Err` on failure.
+    /// Loads the library from `path`.
+    ///
+    /// # Errors
+    ///
+    /// Returns `Err` if failed to load the library.
     pub fn load_lib(&self, path: &str) -> Result<()> {
         let cstr = CString::new(path).unwrap();
         let ret = unsafe { bind::SDL_GL_LoadLibrary(cstr.as_ptr()) };

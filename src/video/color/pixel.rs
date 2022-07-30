@@ -67,7 +67,11 @@ impl std::fmt::Debug for PixelFormat {
 assert_not_impl_all!(PixelFormat: Send, Sync);
 
 impl PixelFormat {
-    /// Constructs a pixel format from [`PixelFormatKind`], or `Err` on failure.
+    /// Constructs a pixel format from [`PixelFormatKind`].
+    ///
+    /// # Errors
+    ///
+    /// Returns `Err` if failed to allocate the memory for the format, or construct the format.
     pub fn new(kind: PixelFormatKind) -> Result<Self> {
         NonNull::new(unsafe { bind::SDL_AllocFormat(kind.as_raw()) }).map_or_else(
             || {

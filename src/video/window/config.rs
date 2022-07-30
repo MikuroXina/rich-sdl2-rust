@@ -68,6 +68,10 @@ pub trait ConfigExt {
     /// Sets the current size of the window.
     fn set_size(&self, size: Size);
     /// Sets the opacity of the window.
+    ///
+    /// # Errors
+    ///
+    /// Returns `Err` if setting the opacity of window is unsupported.
     fn set_opacity(&self, opacity: Opacity) -> Result<()>;
     /// Sets the position of the window.
     fn set_pos(&self, pos: Position);

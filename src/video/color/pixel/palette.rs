@@ -23,6 +23,10 @@ assert_not_impl_all!(Palette: Send, Sync);
 
 impl Palette {
     /// Constructs a palette with numbers of colors.
+    ///
+    /// # Errors
+    ///
+    /// Returns `Err` if failed to allocate the memory, or construct a palette.
     pub fn new(num_colors: usize) -> Result<Self> {
         NonNull::new(unsafe { bind::SDL_AllocPalette(num_colors as c_int) }).map_or_else(
             || {

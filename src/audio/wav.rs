@@ -23,6 +23,10 @@ impl std::fmt::Debug for Wav {
 
 impl Wav {
     /// Constructs a wav buffer from file named `file_name`.
+    ///
+    /// # Errors
+    ///
+    /// Returns `Err` if the wav file cannot be opened, uses an unknown data format, or is corrupt.
     pub fn new(file_name: &str) -> Result<Self> {
         let read_binary_mode = CStr::from_bytes_with_nul(b"rb\0").unwrap();
         let cstr = CString::new(file_name).expect("file_name must not be empty");

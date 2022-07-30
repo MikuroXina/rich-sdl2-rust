@@ -64,6 +64,10 @@ pub struct HitTest<'window, T> {
 
 impl<'window, T: HitTester<'window>> HitTest<'window, T> {
     /// Constructs a hit test from the window and a callback.
+    ///
+    /// # Errors
+    ///
+    /// Returns `Err` if a hit test in the window is unsupported.
     pub fn new(window: &'window Window<'window>, mut tester: T) -> Result<Self> {
         let data = &mut tester as *mut T;
         let ret = unsafe {

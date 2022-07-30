@@ -25,6 +25,12 @@ impl<T> std::fmt::Debug for Timer<T> {
 
 impl<'callback, T: TimerCallback<'callback>> Timer<T> {
     /// Constructs a timer with initial interval and callback.
+    ///
+    /// The timing may be inaccurate because of OS scheduling. Make sure to check the current time in your callback.
+    ///
+    /// # Errors
+    ///
+    /// Returns `Err` if failed to create a new timer.
     pub fn new(interval: u32, mut callback: T) -> Result<Self> {
         let data = &mut callback as *mut T;
         let id =

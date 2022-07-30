@@ -18,6 +18,10 @@ pub struct Owned {
 
 impl Owned {
     /// Creates a new owned surface with its size and pixel format.
+    ///
+    /// # Errors
+    ///
+    /// Returns `Err` if failed to allocate the surface.
     pub fn new(size: Size, kind: PixelFormat) -> Result<Self> {
         let BppMask {
             r_mask,

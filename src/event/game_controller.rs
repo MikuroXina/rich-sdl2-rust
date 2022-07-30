@@ -94,7 +94,11 @@ impl GameControllerSet {
         Self { controls }
     }
 
-    /// Applies mapping string, or returns `Err` on failure.
+    /// Applies mapping string.
+    ///
+    /// # Errors
+    ///
+    /// Returns `Err` if failed to apply the mapping `string`.
     pub fn add_mapping(string: &str) -> Result<bool> {
         let cstr = CString::new(string).expect("string must not be empty");
         let ret = unsafe { bind::SDL_GameControllerAddMapping(cstr.as_ptr()) };
@@ -106,6 +110,10 @@ impl GameControllerSet {
     }
 
     /// Applies mapping file, or returns `Err` on failure.
+    ///
+    /// # Errors
+    ///
+    /// Returns `Err` if failed to open the mapping file, or it contains invalid mapping data.
     pub fn add_mapping_from_file(file_name: &str) -> Result<u32> {
         let cstr = CString::new(file_name).expect("string must not be empty");
         let read_binary_mode = CStr::from_bytes_with_nul(b"rb\0").unwrap();

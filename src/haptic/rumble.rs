@@ -14,7 +14,11 @@ pub struct HapticRumble<'haptic> {
 }
 
 impl<'haptic> HapticRumble<'haptic> {
-    /// Constructs from a reference to [`Haptic`], or `Err` on failure.
+    /// Constructs from a reference to [`Haptic`].
+    ///
+    /// # Errors
+    ///
+    /// Returns `Err` if this feature is unsupported, or failed to create a new rumble effect.
     pub fn new(haptic: &'haptic Haptic) -> Result<Self> {
         let is_supported = unsafe {
             bind::SDL_HapticRumbleSupported(haptic.ptr.as_ptr()) as bind::SDL_bool == SDL_TRUE
@@ -30,7 +34,11 @@ impl<'haptic> HapticRumble<'haptic> {
         }
     }
 
-    /// Starts to play a rumbling, or `Err` on failure.
+    /// Starts to play a rumbling.
+    ///
+    /// # Errors
+    ///
+    /// Returns `Err` if failed to start the rumbling.
     pub fn play(&self, strength: f32, length: u32) -> Result<()> {
         let ret = unsafe { bind::SDL_HapticRumblePlay(self.haptic.ptr.as_ptr(), strength, length) };
         if ret < 0 {
@@ -40,7 +48,11 @@ impl<'haptic> HapticRumble<'haptic> {
         }
     }
 
-    /// Stops playing the rumbling, or `Err` on failure.
+    /// Stops playing the rumbling.
+    ///
+    /// # Errors
+    ///
+    /// Returns `Err` if failed to stop the rumbling.
     pub fn stop(&self) -> Result<()> {
         let ret = unsafe { bind::SDL_HapticRumbleStop(self.haptic.ptr.as_ptr()) };
         if ret < 0 {

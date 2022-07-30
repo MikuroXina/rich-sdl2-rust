@@ -71,7 +71,11 @@ impl MessageBox {
         self
     }
 
-    /// Shows the message box for a window. And returns the pushed button's [`ButtonId`], or `Err` on failure.
+    /// Shows the message box for a window. And returns the pushed button's [`ButtonId`].
+    ///
+    /// # Errors
+    ///
+    /// Returns `Err` if failed to show the message box.
     pub fn show(self, parent: &'_ Window<'_>) -> Result<ButtonId> {
         let title_cstr = CString::new(self.title).unwrap_or_default();
         let message_cstr = CString::new(self.message).unwrap_or_default();

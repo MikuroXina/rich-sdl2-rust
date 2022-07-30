@@ -18,6 +18,10 @@ pub struct BorderWidths {
 /// An extension for [`Window`] to query border widths.
 pub trait BorderExt {
     /// Returns the border widths of the window.
+    ///
+    /// # Errors
+    ///
+    /// Returns `Err` if querying them is unsupported.
     fn border_widths(&self) -> Result<BorderWidths>;
 }
 

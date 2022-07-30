@@ -84,7 +84,11 @@ impl TouchDevice {
             .collect()
     }
 
-    /// Loads $1 template from `src` and returns the numbers of loaded templates, or `Err` on failure.
+    /// Loads $1 template from `src` and returns the numbers of loaded templates.
+    ///
+    /// # Errors
+    ///
+    /// Returns `Err` if failed to load template data from `src`.
     pub fn load_dollar_templates(&self, src: &RwOps) -> Result<usize> {
         let ret = unsafe { bind::SDL_LoadDollarTemplates(self.0, src.ptr().as_ptr()) };
         if ret <= 0 {

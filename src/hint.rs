@@ -32,6 +32,14 @@ pub fn get_hint_bool(key: &str) -> Option<bool> {
 }
 
 /// Sets the hint value of the key, or `Err` if does not exist.
+///
+/// # Panics
+///
+/// Panics if `key` or `value` was empty.
+///
+/// # Errors
+///
+/// Returns `Err` if the hint of `key` is unsupported.
 pub fn set_hint(key: &str, value: &str) -> Result<()> {
     let key_cstr = CString::new(key).expect("key must not be empty");
     let value_cstr = CString::new(value).expect("value must not be empty");
@@ -70,7 +78,11 @@ impl Default for HintPriority {
     }
 }
 
-/// Sets the hint value of the key with a priority, or `Err` if does not exist.
+/// Sets a hint value of the key with a priority.
+///
+/// # Errors
+///
+/// Returns `Err` if the hint of `key` does not exist.
 pub fn set_hint_with_priority(key: &str, value: &str, priority: HintPriority) -> Result<()> {
     let key_cstr = CString::new(key).expect("key must not be empty");
     let value_cstr = CString::new(value).expect("value must not be empty");
