@@ -31,7 +31,7 @@ pub mod trackball;
 pub struct InputIndex(c_int);
 
 /// An id of the joystick. It can be used to share/duplicate Joystick object, but not [`Send`] and [`Sync`] due to the safety.
-#[derive(Clone, PartialEq, Eq)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash)]
 pub struct JoystickId<'joystick> {
     pub(super) id: u32,
     pub(super) _phantom: PhantomData<&'joystick Joystick>,
@@ -74,12 +74,14 @@ impl Joystick {
     }
 
     /// Constructs from [`JoystickId`] if it is valid.
+    #[must_use]
     pub fn from_id(id: JoystickId) -> Option<Self> {
         let ptr = unsafe { bind::SDL_JoystickFromInstanceID(id.id as bind::SDL_JoystickID) };
         NonNull::new(ptr).map(|ptr| Self { ptr })
     }
 
     /// Returns the instance id [`JoystickId`].
+    #[must_use]
     pub fn instance_id(&self) -> JoystickId {
         let raw = unsafe { bind::SDL_JoystickInstanceID(self.ptr.as_ptr()) };
         debug_assert_ne!(raw, -1);
@@ -90,16 +92,19 @@ impl Joystick {
     }
 
     /// Returns the power level of the joystick.
+    #[must_use]
     pub fn power_level(&self) -> PowerLevel {
         unsafe { bind::SDL_JoystickCurrentPowerLevel(self.ptr.as_ptr()) }.into()
     }
 
     /// Returns the GUID of the joystick.
+    #[must_use]
     pub fn guid(&self) -> Guid {
         unsafe { bind::SDL_JoystickGetGUID(self.ptr.as_ptr()) }.into()
     }
 
     /// Returns the name of the joystick.
+    #[must_use]
     pub fn name(&self) -> std::borrow::Cow<str> {
         let c_str = unsafe { CStr::from_ptr(bind::SDL_JoystickName(self.ptr.as_ptr())) };
         c_str.to_string_lossy()
@@ -116,49 +121,58 @@ impl Joystick {
     }
 
     /// Returns whether the joystick is enabled.
+    #[must_use]
     pub fn is_enabled(&self) -> bool {
         unsafe { bind::SDL_JoystickEventState(bind::SDL_QUERY) != 0 }
     }
 
     /// Returns axes [`Axes`] that the joystick has.
+    #[must_use]
     pub fn axes(&self) -> Axes {
         Axes::new(self)
     }
 
     /// Returns an axis of `index` if it exists.
+    #[must_use]
     pub fn axis(&self, index: InputIndex) -> Option<Axis> {
         let num = unsafe { bind::SDL_JoystickNumAxes(self.ptr.as_ptr()) };
         (index.0 < num).then(|| Axis::new(index, self))
     }
 
     /// Returns trackballs [`Trackballs`] that the joystick has.
+    #[must_use]
     pub fn trackballs(&self) -> Trackballs {
         Trackballs::new(self)
     }
 
     /// Returns a trackball of `index` if it exists.
+    #[must_use]
     pub fn trackball(&self, index: InputIndex) -> Option<Trackball> {
         let num = unsafe { bind::SDL_JoystickNumBalls(self.ptr.as_ptr()) };
         (index.0 < num).then(|| Trackball::new(index, self))
     }
 
     /// Returns buttons [`Buttons`] that the joystick has.
+    #[must_use]
     pub fn buttons(&self) -> Buttons {
         Buttons::new(self)
     }
 
     /// Returns a button of `index` if it exists.
+    #[must_use]
     pub fn button(&self, index: InputIndex) -> Option<Button> {
         let num = unsafe { bind::SDL_JoystickNumButtons(self.ptr.as_ptr()) };
         (index.0 < num).then(|| Button::new(index, self))
     }
 
     /// Returns hats [`Hats`] that the joystick has.
+    #[must_use]
     pub fn hats(&self) -> Hats {
         Hats::new(self)
     }
 
     /// Returns a hat of `index` if it exists.
+    #[must_use]
     pub fn hat(&self, index: InputIndex) -> Option<Hat> {
         let num = unsafe { bind::SDL_JoystickNumHats(self.ptr.as_ptr()) };
         (index.0 < num).then(|| Hat::new(index, self))
@@ -180,6 +194,7 @@ pub struct JoystickSet(Vec<Joystick>);
 
 impl JoystickSet {
     /// Constructs and initializes the system and recognizes joysticks.
+    #[must_use]
     pub fn new() -> Self {
         let num_joysticks = unsafe {
             bind::SDL_InitSubSystem(bind::SDL_INIT_JOYSTICK);

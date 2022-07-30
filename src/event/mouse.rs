@@ -23,13 +23,12 @@ pub enum MouseButton {
 
 impl MouseButton {
     pub(crate) fn from_bits(bits: u8) -> Option<Self> {
-        use MouseButton::*;
         Some(match bits {
-            1 => Left,
-            2 => Middle,
-            3 => Right,
-            4 => X1,
-            5 => X2,
+            1 => MouseButton::Left,
+            2 => MouseButton::Middle,
+            3 => MouseButton::Right,
+            4 => MouseButton::X1,
+            5 => MouseButton::X2,
             _ => return None,
         })
     }

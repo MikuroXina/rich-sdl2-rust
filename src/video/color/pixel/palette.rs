@@ -23,6 +23,10 @@ assert_not_impl_all!(Palette: Send, Sync);
 
 impl Palette {
     /// Constructs a palette with numbers of colors.
+    ///
+    /// # Errors
+    ///
+    /// Returns `Err` if failed to allocate the memory, or construct a palette.
     pub fn new(num_colors: usize) -> Result<Self> {
         NonNull::new(unsafe { bind::SDL_AllocPalette(num_colors as c_int) }).map_or_else(
             || {
@@ -42,6 +46,7 @@ impl Palette {
     }
 
     /// Returns the numbers of colors in the palette.
+    #[must_use]
     pub fn num_colors(&self) -> usize {
         unsafe { self.palette.as_ref() }.ncolors as _
     }
@@ -52,7 +57,7 @@ impl Palette {
     ///
     /// Panics if `colors` was too long than `num_colors` on initialized.
     pub fn set_colors(&self, colors: impl IntoIterator<Item = Rgba>) {
-        let colors: Vec<_> = colors.into_iter().map(|c| c.into()).collect();
+        let colors: Vec<_> = colors.into_iter().map(Into::into).collect();
         assert!(colors.len() <= self.num_colors());
         let ret = unsafe {
             bind::SDL_SetPaletteColors(self.palette.as_ptr(), colors.as_ptr(), 0, colors.len() as _)

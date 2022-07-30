@@ -19,13 +19,12 @@ pub enum PowerState {
 
 impl From<bind::SDL_PowerState> for PowerState {
     fn from(raw: bind::SDL_PowerState) -> Self {
-        use PowerState::*;
         match raw {
-            bind::SDL_POWERSTATE_UNKNOWN => Unknown,
-            bind::SDL_POWERSTATE_ON_BATTERY => OnBattery,
-            bind::SDL_POWERSTATE_NO_BATTERY => NoBattery,
-            bind::SDL_POWERSTATE_CHARGING => Charging,
-            bind::SDL_POWERSTATE_CHARGED => Charged,
+            bind::SDL_POWERSTATE_UNKNOWN => PowerState::Unknown,
+            bind::SDL_POWERSTATE_ON_BATTERY => PowerState::OnBattery,
+            bind::SDL_POWERSTATE_NO_BATTERY => PowerState::NoBattery,
+            bind::SDL_POWERSTATE_CHARGING => PowerState::Charging,
+            bind::SDL_POWERSTATE_CHARGED => PowerState::Charged,
             _ => unreachable!(),
         }
     }
@@ -44,15 +43,11 @@ pub struct PowerInfo {
 
 impl PowerInfo {
     /// Returns a power information at now.
+    #[must_use]
     pub fn now() -> Self {
         let mut remaining_seconds = 0;
         let mut remaining_ratio = 0;
-        let state = unsafe {
-            bind::SDL_GetPowerInfo(
-                &mut remaining_seconds as *mut _,
-                &mut remaining_ratio as *mut _,
-            )
-        };
+        let state = unsafe { bind::SDL_GetPowerInfo(&mut remaining_seconds, &mut remaining_ratio) };
         Self {
             state: state.into(),
             remaining_seconds: (0 <= remaining_seconds).then(|| remaining_seconds as _),

@@ -7,10 +7,12 @@ use std::ptr::NonNull;
 use clip::ClippedRenderer;
 
 use super::window::Window;
-
-use crate::geo::{Rect, Scale, Size};
-use crate::texture::Texture;
-use crate::{bind, Sdl};
+use crate::{
+    bind,
+    geo::{Rect, Scale, Size},
+    texture::Texture,
+    Result, Sdl, SdlError,
+};
 
 pub mod clip;
 pub mod driver;
@@ -38,6 +40,7 @@ assert_not_impl_all!(Renderer: Send, Sync);
 
 impl<'window> Renderer<'window> {
     /// Constructs a renderer from the window.
+    #[must_use]
     pub fn new(window: &'window Window) -> Self {
         let raw = unsafe { bind::SDL_CreateRenderer(window.as_ptr(), -1, 0) };
         NonNull::new(raw).map_or_else(
@@ -51,20 +54,24 @@ impl<'window> Renderer<'window> {
     }
 
     /// Returns the borrowing window.
+    #[must_use]
     pub fn window(&self) -> &Window {
         self.window
     }
 
     /// Returns the geometry size of the output from the renderer.
-    pub fn output_size(&self) -> Size {
+    pub fn output_size(&self) -> Result<Size> {
         let (mut w, mut h) = (0i32, 0i32);
-        let ret = unsafe {
-            bind::SDL_GetRendererOutputSize(self.as_ptr(), &mut w as *mut _, &mut h as *mut _)
-        };
-        assert!(ret == 0, "Getting output size failed");
-        Size {
-            width: w as u32,
-            height: h as u32,
+        let ret = unsafe { bind::SDL_GetRendererOutputSize(self.as_ptr(), &mut w, &mut h) };
+        if ret == 0 {
+            Err(SdlError::Others {
+                msg: "Getting output size failed".into(),
+            })
+        } else {
+            Ok(Size {
+                width: w as u32,
+                height: h as u32,
+            })
         }
     }
 
@@ -74,15 +81,10 @@ impl<'window> Renderer<'window> {
     }
 
     /// Returns the logical size of the renderer if available.
+    #[must_use]
     pub fn logical_size(&self) -> Option<Size> {
         let (mut width, mut height) = (0, 0);
-        unsafe {
-            bind::SDL_RenderGetLogicalSize(
-                self.as_ptr(),
-                &mut width as *mut _,
-                &mut height as *mut _,
-            )
-        }
+        unsafe { bind::SDL_RenderGetLogicalSize(self.as_ptr(), &mut width, &mut height) }
         if width == 0 && height == 0 {
             return None;
         }
@@ -104,6 +106,7 @@ impl<'window> Renderer<'window> {
     }
 
     /// Returns whether integer scaled is forced.
+    #[must_use]
     pub fn is_forced_integer_scale(&self) -> bool {
         unsafe { bind::SDL_RenderGetIntegerScale(self.as_ptr()) != 0 }
     }
@@ -124,11 +127,7 @@ impl<'window> Renderer<'window> {
             vertical: 0.0,
         };
         unsafe {
-            bind::SDL_RenderGetScale(
-                self.as_ptr(),
-                &mut scale.horizontal as *mut _,
-                &mut scale.vertical as *mut _,
-            )
+            bind::SDL_RenderGetScale(self.as_ptr(), &mut scale.horizontal, &mut scale.vertical);
         }
         scale
     }
@@ -159,7 +158,7 @@ impl<'window> Renderer<'window> {
         let ret = unsafe {
             bind::SDL_RenderSetViewport(
                 self.as_ptr(),
-                area.map_or(std::ptr::null(), |rect| &rect.into() as *const _),
+                area.map_or(std::ptr::null(), |rect| &rect.into()),
             )
         };
         if ret != 0 {

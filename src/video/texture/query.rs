@@ -21,7 +21,7 @@ impl QueryExt for Texture<'_> {
         let ret = unsafe {
             bind::SDL_QueryTexture(
                 self.as_ptr(),
-                &mut raw_format as *mut _,
+                &mut raw_format,
                 null_mut(),
                 null_mut(),
                 null_mut(),
@@ -40,7 +40,7 @@ impl QueryExt for Texture<'_> {
             bind::SDL_QueryTexture(
                 self.as_ptr(),
                 null_mut(),
-                &mut access as *mut _,
+                &mut access,
                 null_mut(),
                 null_mut(),
             )
@@ -55,13 +55,7 @@ impl QueryExt for Texture<'_> {
         use std::ptr::null_mut;
         let (mut w, mut h) = (0, 0);
         let ret = unsafe {
-            bind::SDL_QueryTexture(
-                self.as_ptr(),
-                null_mut(),
-                null_mut(),
-                &mut w as *mut _,
-                &mut h as *mut _,
-            )
+            bind::SDL_QueryTexture(self.as_ptr(), null_mut(), null_mut(), &mut w, &mut h)
         };
         if ret != 0 {
             Sdl::error_then_panic("Getting texture size");

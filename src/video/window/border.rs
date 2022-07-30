@@ -18,6 +18,10 @@ pub struct BorderWidths {
 /// An extension for [`Window`] to query border widths.
 pub trait BorderExt {
     /// Returns the border widths of the window.
+    ///
+    /// # Errors
+    ///
+    /// Returns `Err` if querying them is unsupported.
     fn border_widths(&self) -> Result<BorderWidths>;
 }
 
@@ -27,10 +31,10 @@ impl BorderExt for Window<'_> {
         let ret = unsafe {
             bind::SDL_GetWindowBordersSize(
                 self.as_ptr(),
-                &mut top as *mut _,
-                &mut left as *mut _,
-                &mut bottom as *mut _,
-                &mut right as *mut _,
+                &mut top,
+                &mut left,
+                &mut bottom,
+                &mut right,
             )
         };
         if ret != 0 {

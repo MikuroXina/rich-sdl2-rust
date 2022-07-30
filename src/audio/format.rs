@@ -17,6 +17,7 @@ bitflags! {
 }
 
 /// A format to represent how is stored samples in audio data.
+#[must_use]
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub struct AudioFormat {
     /// A flag to represent characteristics of a type.

@@ -23,7 +23,7 @@ impl<S: Surface> Clipped<S> {
     pub(super) fn new(surface: S, area: Rect) -> Self {
         let raw_rect = area.into();
         unsafe {
-            let _ = bind::SDL_SetClipRect(surface.as_ptr().as_ptr(), &raw_rect as *const _);
+            let _ = bind::SDL_SetClipRect(surface.as_ptr().as_ptr(), &raw_rect);
         }
         Self { surface, area }
     }

@@ -22,6 +22,7 @@ impl<'joystick> Axis<'joystick> {
     }
 
     /// Returns the state of axis.
+    #[must_use]
     pub fn state(&self) -> i16 {
         unsafe { bind::SDL_JoystickGetAxis(self.joystick.ptr.as_ptr(), self.index) }
     }

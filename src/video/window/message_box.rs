@@ -36,6 +36,7 @@ pub struct MessageBox {
 
 impl MessageBox {
     /// Constructs a message box builder from the kind.
+    #[must_use]
     pub fn new(kind: MessageBoxKind) -> Self {
         Self {
             kind,
@@ -47,12 +48,20 @@ impl MessageBox {
     }
 
     /// Sets the title of the message box.
+    ///
+    /// # Panics
+    ///
+    /// Panics if `title` contains a null character.
     pub fn title(&mut self, title: &str) -> &mut Self {
         self.title = CString::new(title).unwrap();
         self
     }
 
     /// Sets the message of the message box.
+    ///
+    /// # Panics
+    ///
+    /// Panics if `message` contains a null character.
     pub fn message(&mut self, message: &str) -> &mut Self {
         self.message = CString::new(message).unwrap();
         self
@@ -70,12 +79,16 @@ impl MessageBox {
         self
     }
 
-    /// Shows the message box for a window. And returns the pushed button's [`ButtonId`], or `Err` on failure.
+    /// Shows the message box for a window. And returns the pushed button's [`ButtonId`].
+    ///
+    /// # Errors
+    ///
+    /// Returns `Err` if failed to show the message box.
     pub fn show(self, parent: &'_ Window<'_>) -> Result<ButtonId> {
         let title_cstr = CString::new(self.title).unwrap_or_default();
         let message_cstr = CString::new(self.message).unwrap_or_default();
-        let buttons_raw: Vec<_> = self.buttons.iter().map(|button| button.as_raw()).collect();
-        let color_scheme = self.color_scheme.map(|scheme| scheme.into());
+        let buttons_raw: Vec<_> = self.buttons.iter().map(Button::as_raw).collect();
+        let color_scheme = self.color_scheme.map(Into::into);
         let data = bind::SDL_MessageBoxData {
             flags: 0,
             window: parent.as_ptr(),
@@ -88,7 +101,7 @@ impl MessageBox {
                 .map_or(std::ptr::null(), |scheme| scheme as *const _),
         };
         let mut button_id = 0;
-        let ret = unsafe { bind::SDL_ShowMessageBox(&data as *const _, &mut button_id as *mut _) };
+        let ret = unsafe { bind::SDL_ShowMessageBox(&data, &mut button_id) };
         if ret != 0 {
             return Err(SdlError::Others { msg: Sdl::error() });
         }

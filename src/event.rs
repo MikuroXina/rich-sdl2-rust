@@ -46,8 +46,8 @@ impl<'video, T> EventHandlers<'video, T> {
         self.0.push(handler);
     }
 
-    fn call_handlers(&self, event: T) {
-        self.0.iter().for_each(|handler| handler(&event));
+    fn call_handlers(&self, event: &T) {
+        self.0.iter().for_each(|handler| handler(event));
     }
 }
 
@@ -71,23 +71,24 @@ assert_not_impl_all!(EventBox: Send, Sync);
 
 impl<'video> EventBox<'video> {
     /// Constructs an event box from the video system.
+    #[must_use]
     pub fn new(_: &'video Video) -> Self {
         let ret = unsafe { bind::SDL_InitSubSystem(bind::SDL_INIT_EVENTS) };
         if ret != 0 {
             Sdl::error_then_panic("Sdl event")
         }
         Self {
-            quit_event_handlers: Default::default(),
-            window_event_handlers: Default::default(),
-            keyboard_event_handlers: Default::default(),
-            input_event_handlers: Default::default(),
-            editing_event_handlers: Default::default(),
-            mouse_event_handlers: Default::default(),
-            controller_event_handlers: Default::default(),
-            joystick_event_handlers: Default::default(),
-            audio_device_event_handlers: Default::default(),
-            drop_event_handlers: Default::default(),
-            gesture_event_handlers: Default::default(),
+            quit_event_handlers: EventHandlers::default(),
+            window_event_handlers: EventHandlers::default(),
+            keyboard_event_handlers: EventHandlers::default(),
+            input_event_handlers: EventHandlers::default(),
+            editing_event_handlers: EventHandlers::default(),
+            mouse_event_handlers: EventHandlers::default(),
+            controller_event_handlers: EventHandlers::default(),
+            joystick_event_handlers: EventHandlers::default(),
+            audio_device_event_handlers: EventHandlers::default(),
+            drop_event_handlers: EventHandlers::default(),
+            gesture_event_handlers: EventHandlers::default(),
             _phantom: PhantomData,
         }
     }
@@ -152,91 +153,91 @@ impl<'video> EventBox<'video> {
         match ty as EnumInt {
             bind::SDL_QUIT => {
                 let quit: QuitEvent = unsafe { event.quit }.into();
-                self.quit_event_handlers.call_handlers(quit);
+                self.quit_event_handlers.call_handlers(&quit);
             }
             bind::SDL_WINDOWEVENT => {
                 let window: WindowEvent = unsafe { event.window }.into();
-                self.window_event_handlers.call_handlers(window);
+                self.window_event_handlers.call_handlers(&window);
             }
             bind::SDL_KEYDOWN | bind::SDL_KEYUP => {
                 let keyboard: KeyboardEvent = unsafe { event.key }.into();
-                self.keyboard_event_handlers.call_handlers(keyboard);
+                self.keyboard_event_handlers.call_handlers(&keyboard);
             }
             bind::SDL_TEXTINPUT => {
                 let input: TextInputEvent = unsafe { event.text }.into();
-                self.input_event_handlers.call_handlers(input);
+                self.input_event_handlers.call_handlers(&input);
             }
             bind::SDL_TEXTEDITING => {
                 let editing: TextEditingEvent = unsafe { event.edit }.into();
-                self.editing_event_handlers.call_handlers(editing);
+                self.editing_event_handlers.call_handlers(&editing);
             }
             bind::SDL_MOUSEMOTION => {
                 let motion: MouseMotionEvent = unsafe { event.motion }.into();
                 let mouse = MouseEvent::Motion(motion);
-                self.mouse_event_handlers.call_handlers(mouse);
+                self.mouse_event_handlers.call_handlers(&mouse);
             }
             bind::SDL_MOUSEBUTTONDOWN | bind::SDL_MOUSEBUTTONUP => {
                 let button: MouseButtonEvent = unsafe { event.button }.into();
                 let mouse = MouseEvent::Button(button);
-                self.mouse_event_handlers.call_handlers(mouse);
+                self.mouse_event_handlers.call_handlers(&mouse);
             }
             bind::SDL_MOUSEWHEEL => {
                 let wheel: MouseWheelEvent = unsafe { event.wheel }.into();
                 let mouse = MouseEvent::Wheel(wheel);
-                self.mouse_event_handlers.call_handlers(mouse);
+                self.mouse_event_handlers.call_handlers(&mouse);
             }
             bind::SDL_CONTROLLERAXISMOTION => {
                 let con: ControllerEvent = unsafe { event.caxis }.into();
-                self.controller_event_handlers.call_handlers(con);
+                self.controller_event_handlers.call_handlers(&con);
             }
             bind::SDL_CONTROLLERBUTTONDOWN | bind::SDL_CONTROLLERBUTTONUP => {
                 let con: ControllerEvent = unsafe { event.cbutton }.into();
-                self.controller_event_handlers.call_handlers(con);
+                self.controller_event_handlers.call_handlers(&con);
             }
             bind::SDL_CONTROLLERDEVICEADDED
             | bind::SDL_CONTROLLERDEVICEREMOVED
             | bind::SDL_CONTROLLERDEVICEREMAPPED => {
                 let con: ControllerEvent = unsafe { event.cdevice }.into();
-                self.controller_event_handlers.call_handlers(con);
+                self.controller_event_handlers.call_handlers(&con);
             }
             bind::SDL_JOYAXISMOTION => {
                 let joy: JoystickEvent = unsafe { event.jaxis }.into();
-                self.joystick_event_handlers.call_handlers(joy);
+                self.joystick_event_handlers.call_handlers(&joy);
             }
             bind::SDL_JOYBALLMOTION => {
                 let joy: JoystickEvent = unsafe { event.jball }.into();
-                self.joystick_event_handlers.call_handlers(joy);
+                self.joystick_event_handlers.call_handlers(&joy);
             }
             bind::SDL_JOYBUTTONDOWN | bind::SDL_JOYBUTTONUP => {
                 let joy: JoystickEvent = unsafe { event.jbutton }.into();
-                self.joystick_event_handlers.call_handlers(joy);
+                self.joystick_event_handlers.call_handlers(&joy);
             }
             bind::SDL_JOYDEVICEADDED | bind::SDL_JOYDEVICEREMOVED => {
                 let joy: JoystickEvent = unsafe { event.jdevice }.into();
-                self.joystick_event_handlers.call_handlers(joy);
+                self.joystick_event_handlers.call_handlers(&joy);
             }
             bind::SDL_JOYHATMOTION => {
                 let joy: JoystickEvent = unsafe { event.jhat }.into();
-                self.joystick_event_handlers.call_handlers(joy);
+                self.joystick_event_handlers.call_handlers(&joy);
             }
             bind::SDL_AUDIODEVICEADDED | bind::SDL_AUDIODEVICEREMOVED => {
                 let audio = unsafe { event.adevice }.into();
-                self.audio_device_event_handlers.call_handlers(audio);
+                self.audio_device_event_handlers.call_handlers(&audio);
             }
             bind::SDL_DROPFILE
             | bind::SDL_DROPTEXT
             | bind::SDL_DROPBEGIN
             | bind::SDL_DROPCOMPLETE => {
                 let drop = unsafe { event.drop }.into();
-                self.drop_event_handlers.call_handlers(drop);
+                self.drop_event_handlers.call_handlers(&drop);
             }
             bind::SDL_MULTIGESTURE => {
                 let gesture = unsafe { event.mgesture }.into();
-                self.gesture_event_handlers.call_handlers(gesture);
+                self.gesture_event_handlers.call_handlers(&gesture);
             }
             bind::SDL_DOLLARGESTURE => {
                 let gesture = unsafe { event.dgesture }.into();
-                self.gesture_event_handlers.call_handlers(gesture);
+                self.gesture_event_handlers.call_handlers(&gesture);
             }
             _ => {}
         }

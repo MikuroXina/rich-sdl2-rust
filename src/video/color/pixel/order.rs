@@ -3,7 +3,7 @@
 use crate::bind;
 
 /// A pixel order in a bitmap pixel format.
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
 pub enum BitmapPixelOrder {
     /// An order in little endian.
     _4321,
@@ -12,7 +12,7 @@ pub enum BitmapPixelOrder {
 }
 
 impl BitmapPixelOrder {
-    pub(super) fn as_raw(&self) -> u32 {
+    pub(super) fn as_raw(self) -> u32 {
         (match self {
             BitmapPixelOrder::_4321 => bind::SDL_BITMAPORDER_4321,
             BitmapPixelOrder::_1234 => bind::SDL_BITMAPORDER_1234,
@@ -22,17 +22,16 @@ impl BitmapPixelOrder {
 
 impl From<bind::SDL_PixelFormatEnum> for BitmapPixelOrder {
     fn from(raw: bind::SDL_PixelFormatEnum) -> Self {
-        use BitmapPixelOrder::*;
         match (raw >> 20) & 0xf {
-            bind::SDL_BITMAPORDER_4321 => _4321,
-            bind::SDL_BITMAPORDER_1234 => _1234,
+            bind::SDL_BITMAPORDER_4321 => BitmapPixelOrder::_4321,
+            bind::SDL_BITMAPORDER_1234 => BitmapPixelOrder::_1234,
             _ => unreachable!(),
         }
     }
 }
 
 /// A pixel order in a packed pixel format.
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
 pub enum PackedPixelOrder {
     /// An order of 3 components is right aligned RGB.
     Xrgb,
@@ -53,7 +52,7 @@ pub enum PackedPixelOrder {
 }
 
 impl PackedPixelOrder {
-    pub(super) fn as_raw(&self) -> u32 {
+    pub(super) fn as_raw(self) -> u32 {
         (match self {
             PackedPixelOrder::Xrgb => bind::SDL_PACKEDORDER_XRGB,
             PackedPixelOrder::Rgbx => bind::SDL_PACKEDORDER_RGBX,
@@ -69,23 +68,22 @@ impl PackedPixelOrder {
 
 impl From<bind::SDL_PixelFormatEnum> for PackedPixelOrder {
     fn from(raw: bind::SDL_PixelFormatEnum) -> Self {
-        use PackedPixelOrder::*;
         match (raw >> 20) & 0xf {
-            bind::SDL_PACKEDORDER_XRGB => Xrgb,
-            bind::SDL_PACKEDORDER_RGBX => Rgbx,
-            bind::SDL_PACKEDORDER_ARGB => Argb,
-            bind::SDL_PACKEDORDER_RGBA => Rgba,
-            bind::SDL_PACKEDORDER_XBGR => Xbgr,
-            bind::SDL_PACKEDORDER_BGRX => Bgrx,
-            bind::SDL_PACKEDORDER_ABGR => Abgr,
-            bind::SDL_PACKEDORDER_BGRA => Bgra,
+            bind::SDL_PACKEDORDER_XRGB => PackedPixelOrder::Xrgb,
+            bind::SDL_PACKEDORDER_RGBX => PackedPixelOrder::Rgbx,
+            bind::SDL_PACKEDORDER_ARGB => PackedPixelOrder::Argb,
+            bind::SDL_PACKEDORDER_RGBA => PackedPixelOrder::Rgba,
+            bind::SDL_PACKEDORDER_XBGR => PackedPixelOrder::Xbgr,
+            bind::SDL_PACKEDORDER_BGRX => PackedPixelOrder::Bgrx,
+            bind::SDL_PACKEDORDER_ABGR => PackedPixelOrder::Abgr,
+            bind::SDL_PACKEDORDER_BGRA => PackedPixelOrder::Bgra,
             _ => unreachable!(),
         }
     }
 }
 
 /// A pixel byte order from low byte to high byte for a array pixel format.
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
 pub enum ArrayPixelOrder {
     /// An order stored in RGB.
     Rgb,
@@ -102,7 +100,7 @@ pub enum ArrayPixelOrder {
 }
 
 impl ArrayPixelOrder {
-    pub(super) fn as_raw(&self) -> u32 {
+    pub(super) fn as_raw(self) -> u32 {
         (match self {
             ArrayPixelOrder::Rgb => bind::SDL_ARRAYORDER_RGB,
             ArrayPixelOrder::Rgba => bind::SDL_ARRAYORDER_RGBA,
@@ -116,14 +114,13 @@ impl ArrayPixelOrder {
 
 impl From<bind::SDL_PixelFormatEnum> for ArrayPixelOrder {
     fn from(raw: bind::SDL_PixelFormatEnum) -> Self {
-        use ArrayPixelOrder::*;
         match (raw >> 20) & 0xf {
-            bind::SDL_ARRAYORDER_RGB => Rgb,
-            bind::SDL_ARRAYORDER_RGBA => Rgba,
-            bind::SDL_ARRAYORDER_ARGB => Argb,
-            bind::SDL_ARRAYORDER_BGR => Bgr,
-            bind::SDL_ARRAYORDER_BGRA => Bgra,
-            bind::SDL_ARRAYORDER_ABGR => Abgr,
+            bind::SDL_ARRAYORDER_RGB => ArrayPixelOrder::Rgb,
+            bind::SDL_ARRAYORDER_RGBA => ArrayPixelOrder::Rgba,
+            bind::SDL_ARRAYORDER_ARGB => ArrayPixelOrder::Argb,
+            bind::SDL_ARRAYORDER_BGR => ArrayPixelOrder::Bgr,
+            bind::SDL_ARRAYORDER_BGRA => ArrayPixelOrder::Bgra,
+            bind::SDL_ARRAYORDER_ABGR => ArrayPixelOrder::Abgr,
             _ => unreachable!(),
         }
     }

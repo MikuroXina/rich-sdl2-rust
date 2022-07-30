@@ -5,7 +5,11 @@ use super::GlContext;
 
 /// An extension for [`Window`] to set OpenGL context.
 pub trait ContextSwitchExt<'window> {
-    /// Sets context to the window, or `Err` on failure.
+    /// Sets context to the window.
+    ///
+    /// # Errors
+    ///
+    /// Returns `Err` if failed to set the context to.
     fn set_context<'context: 'window>(&'window self, context: GlContext<'context>) -> Result<()>;
 }
 

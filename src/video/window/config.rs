@@ -23,6 +23,7 @@ pub struct Opacity {
 
 impl Opacity {
     /// Constructs from opacity, or `None` if the value is not in `0.0..=1.0`.
+    #[must_use]
     pub fn new(opacity: f32) -> Option<Self> {
         if (0.0..=1.0).contains(&opacity) {
             return None;
@@ -31,6 +32,7 @@ impl Opacity {
     }
 
     /// Constructs from opacity, clamping to `0.0,,=1.0`.
+    #[must_use]
     pub fn with_clamped(opacity: f32) -> Self {
         Self {
             opacity: opacity.clamp(0.0, 1.0),
@@ -38,6 +40,7 @@ impl Opacity {
     }
 
     /// Converts into `f32`
+    #[must_use]
     pub fn as_f32(&self) -> f32 {
         self.opacity
     }
@@ -65,6 +68,10 @@ pub trait ConfigExt {
     /// Sets the current size of the window.
     fn set_size(&self, size: Size);
     /// Sets the opacity of the window.
+    ///
+    /// # Errors
+    ///
+    /// Returns `Err` if setting the opacity of window is unsupported.
     fn set_opacity(&self, opacity: Opacity) -> Result<()>;
     /// Sets the position of the window.
     fn set_pos(&self, pos: Position);
@@ -83,7 +90,7 @@ impl ConfigExt for Window<'_> {
     fn max_size(&self) -> Size {
         let (mut width, mut height) = (MaybeUninit::uninit(), MaybeUninit::uninit());
         unsafe {
-            bind::SDL_GetWindowMaximumSize(self.as_ptr(), width.as_mut_ptr(), height.as_mut_ptr())
+            bind::SDL_GetWindowMaximumSize(self.as_ptr(), width.as_mut_ptr(), height.as_mut_ptr());
         }
         Size {
             width: unsafe { width.assume_init() } as _,
@@ -94,7 +101,7 @@ impl ConfigExt for Window<'_> {
     fn min_size(&self) -> Size {
         let (mut width, mut height) = (MaybeUninit::uninit(), MaybeUninit::uninit());
         unsafe {
-            bind::SDL_GetWindowMinimumSize(self.as_ptr(), width.as_mut_ptr(), height.as_mut_ptr())
+            bind::SDL_GetWindowMinimumSize(self.as_ptr(), width.as_mut_ptr(), height.as_mut_ptr());
         }
         Size {
             width: unsafe { width.assume_init() } as _,
@@ -114,23 +121,17 @@ impl ConfigExt for Window<'_> {
     fn opacity(&self) -> Opacity {
         let mut opacity = MaybeUninit::uninit();
         let ret = unsafe { bind::SDL_GetWindowOpacity(self.as_ptr(), opacity.as_mut_ptr()) };
-        let opacity = if ret != 0 {
-            1.0
-        } else {
+        let opacity = if ret == 0 {
             unsafe { opacity.assume_init() }
+        } else {
+            1.0
         };
         Opacity { opacity }
     }
 
     fn pos(&self) -> Point {
         let mut point = Point::default();
-        unsafe {
-            bind::SDL_GetWindowPosition(
-                self.as_ptr(),
-                &mut point.x as *mut _,
-                &mut point.y as *mut _,
-            )
-        }
+        unsafe { bind::SDL_GetWindowPosition(self.as_ptr(), &mut point.x, &mut point.y) }
         point
     }
 

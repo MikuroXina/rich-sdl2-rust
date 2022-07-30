@@ -92,6 +92,10 @@ impl SpeakerDevice {
 
     /// Opens the audio device named `device` with the specification and fallback flag.
     /// If device is `None`, the default audio device is used.
+    ///
+    /// # Errors
+    ///
+    /// Returns `Err` if failed to open a specific speaker device.
     pub fn open<'callback, T: AudioCallback<'callback>>(
         device: Option<String>,
         spec: &'callback AudioSpec<'callback, T>,
@@ -144,6 +148,10 @@ impl MicrophoneDevice {
 
     /// Opens the audio device named `device` with the specification and fallback flag.
     /// If device is `None`, the default audio device is used.
+    ///
+    /// # Errors
+    ///
+    /// Returns `Err` if failed to open a specific microphone device.
     pub fn open<'callback, T: AudioCallback<'callback>>(
         device: Option<String>,
         spec: &'callback AudioSpec<'callback, T>,
@@ -167,6 +175,7 @@ impl AudioDevice for MicrophoneDevice {
 }
 
 /// Returns the device name of the id `device_id`. Please set `is_microphone` according to what type you want to.
+#[must_use]
 pub fn device_name(device_id: u32, is_microphone: bool) -> Option<String> {
     let ptr = unsafe {
         bind::SDL_GetAudioDeviceName(device_id as i32, if is_microphone { 1 } else { 0 })

@@ -26,15 +26,14 @@ pub enum MapInput {
 
 impl From<bind::SDL_GameControllerButtonBind> for MapInput {
     fn from(raw: bind::SDL_GameControllerButtonBind) -> Self {
-        use MapInput::*;
         match raw.bindType {
-            bind::SDL_CONTROLLER_BINDTYPE_BUTTON => Button {
+            bind::SDL_CONTROLLER_BINDTYPE_BUTTON => MapInput::Button {
                 index: unsafe { raw.value.button } as u32,
             },
-            bind::SDL_CONTROLLER_BINDTYPE_AXIS => Axis {
+            bind::SDL_CONTROLLER_BINDTYPE_AXIS => MapInput::Axis {
                 index: unsafe { raw.value.axis } as u32,
             },
-            bind::SDL_CONTROLLER_BINDTYPE_HAT => Hat {
+            bind::SDL_CONTROLLER_BINDTYPE_HAT => MapInput::Hat {
                 index: unsafe { raw.value.hat.hat } as u32,
                 mask: unsafe { raw.value.hat.hat_mask } as u32,
             },

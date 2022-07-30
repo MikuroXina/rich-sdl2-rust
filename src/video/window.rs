@@ -45,18 +45,21 @@ assert_not_impl_all!(Window: Send, Sync);
 
 impl<'video> Window<'video> {
     /// Gets a window from the window id, or `None` if does not exist.
+    #[must_use]
     pub fn from_id(id: u32, video: &'video Video) -> Option<Self> {
         let raw = unsafe { bind::SDL_GetWindowFromID(id) };
         NonNull::new(raw).map(|window| Self { window, video })
     }
 
     /// Gets a grabbed window, or `None` if does not exist.
+    #[must_use]
     pub fn grabbed(video: &'video Video) -> Option<Self> {
         let raw = unsafe { bind::SDL_GetGrabbedWindow() };
         NonNull::new(raw).map(|window| Self { window, video })
     }
 
     /// Gets a focused window, or `None` if does not exist.
+    #[must_use]
     pub fn mouse_focused(video: &'video Video) -> Option<Self> {
         let raw = unsafe { bind::SDL_GetMouseFocus() };
         NonNull::new(raw).map(|window| Self { window, video })
@@ -67,23 +70,27 @@ impl<'video> Window<'video> {
     }
 
     /// Returns the state of the window.
+    #[must_use]
     pub fn state(&self) -> WindowState {
         let flag_bits = unsafe { bind::SDL_GetWindowFlags(self.as_ptr()) };
         WindowFlags::from_bits_truncate(flag_bits).into()
     }
 
     /// Returns the display at the window, or `None` if unavailable.
+    #[must_use]
     pub fn display(&self) -> Option<Display> {
         let ret = unsafe { bind::SDL_GetWindowDisplayIndex(self.as_ptr()) };
         (0 <= ret).then(|| Display::new(ret, self.video))
     }
 
     /// Returns the window id.
+    #[must_use]
     pub fn id(&self) -> u32 {
         unsafe { bind::SDL_GetWindowID(self.as_ptr()) }
     }
 
     /// Returns the pixel format of the window context.
+    #[must_use]
     pub fn pixel_format(&self) -> PixelFormatKind {
         PixelFormatKind::from_raw(
             (unsafe { bind::SDL_GetWindowPixelFormat(self.as_ptr()) }) as EnumInt,
@@ -105,7 +112,11 @@ impl<'video> Window<'video> {
         unsafe { bind::SDL_RaiseWindow(self.as_ptr()) }
     }
 
-    /// Make the window full screen, or `Err` on failure.
+    /// Make the window full screen.
+    ///
+    /// # Errors
+    ///
+    /// Returns `Err` if failed to make it full screen.
     pub fn full_screen(&self) -> Result<()> {
         let ret = unsafe {
             bind::SDL_SetWindowFullscreen(self.as_ptr(), bind::SDL_WINDOW_FULLSCREEN as u32)
@@ -137,11 +148,13 @@ impl<'video> Window<'video> {
     }
 
     /// Returns whether the window is showing the screen keyboard.
+    #[must_use]
     pub fn is_screen_keyboard_shown(&self) -> bool {
         unsafe { bind::SDL_IsScreenKeyboardShown(self.as_ptr()) != 0 }
     }
 
     /// Makes the window surface.
+    #[must_use]
     pub fn surface(&self) -> WindowSurface {
         WindowSurface::new(self)
     }

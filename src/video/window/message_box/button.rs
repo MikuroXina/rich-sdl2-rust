@@ -2,7 +2,7 @@ use std::ffi::CString;
 
 use crate::bind;
 
-#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
 enum ButtonKind {
     Normal,
     Confirm,
@@ -10,7 +10,7 @@ enum ButtonKind {
 }
 
 impl ButtonKind {
-    fn as_flags(&self) -> u32 {
+    fn as_flags(self) -> u32 {
         (match self {
             ButtonKind::Normal => 0,
             ButtonKind::Confirm => bind::SDL_MESSAGEBOX_BUTTON_RETURNKEY_DEFAULT,
@@ -32,6 +32,11 @@ pub struct Button {
 
 impl Button {
     /// Constructs a normal button.
+    ///
+    /// # Panics
+    ///
+    /// Panics if `text` contains a null character.
+    #[must_use]
     pub fn normal(id: ButtonId, text: &str) -> Self {
         Self {
             kind: ButtonKind::Normal,
@@ -40,6 +45,11 @@ impl Button {
         }
     }
     /// Constructs a confirm button.
+    ///
+    /// # Panics
+    ///
+    /// Panics if `text` contains a null character.
+    #[must_use]
     pub fn confirm(id: ButtonId, text: &str) -> Self {
         Self {
             kind: ButtonKind::Confirm,
@@ -48,6 +58,11 @@ impl Button {
         }
     }
     /// Constructs a cancel button.
+    ///
+    /// # Panics
+    ///
+    /// Panics if `text` contains a null character.
+    #[must_use]
     pub fn cancel(id: ButtonId, text: &str) -> Self {
         Self {
             kind: ButtonKind::Cancel,

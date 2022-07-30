@@ -3,6 +3,7 @@ use std::{
     cell::{Cell, RefCell},
     collections::HashMap,
     ffi::c_void,
+    ptr::addr_of_mut,
 };
 
 use crate::{bind, geo::Point, Result};
@@ -36,18 +37,17 @@ pub enum HitTestResult {
 
 impl HitTestResult {
     fn into_arg(self) -> bind::SDL_HitTestResult {
-        use HitTestResult::*;
         match self {
-            Normal => bind::SDL_HITTEST_NORMAL,
-            Draggable => bind::SDL_HITTEST_DRAGGABLE,
-            ResizeTopLeft => bind::SDL_HITTEST_RESIZE_TOPLEFT,
-            ResizeTop => bind::SDL_HITTEST_RESIZE_TOP,
-            ResizeTopRight => bind::SDL_HITTEST_RESIZE_TOPRIGHT,
-            ResizeRight => bind::SDL_HITTEST_RESIZE_RIGHT,
-            ResizeBottomRight => bind::SDL_HITTEST_RESIZE_BOTTOMRIGHT,
-            ResizeBottom => bind::SDL_HITTEST_RESIZE_BOTTOM,
-            ResizeBottomLeft => bind::SDL_HITTEST_RESIZE_BOTTOMLEFT,
-            ResizeLeft => bind::SDL_HITTEST_RESIZE_LEFT,
+            HitTestResult::Normal => bind::SDL_HITTEST_NORMAL,
+            HitTestResult::Draggable => bind::SDL_HITTEST_DRAGGABLE,
+            HitTestResult::ResizeTopLeft => bind::SDL_HITTEST_RESIZE_TOPLEFT,
+            HitTestResult::ResizeTop => bind::SDL_HITTEST_RESIZE_TOP,
+            HitTestResult::ResizeTopRight => bind::SDL_HITTEST_RESIZE_TOPRIGHT,
+            HitTestResult::ResizeRight => bind::SDL_HITTEST_RESIZE_RIGHT,
+            HitTestResult::ResizeBottomRight => bind::SDL_HITTEST_RESIZE_BOTTOMRIGHT,
+            HitTestResult::ResizeBottom => bind::SDL_HITTEST_RESIZE_BOTTOM,
+            HitTestResult::ResizeBottomLeft => bind::SDL_HITTEST_RESIZE_BOTTOMLEFT,
+            HitTestResult::ResizeLeft => bind::SDL_HITTEST_RESIZE_LEFT,
         }
     }
 }
@@ -64,8 +64,12 @@ pub struct HitTest<'window, T> {
 
 impl<'window, T: HitTester<'window>> HitTest<'window, T> {
     /// Constructs a hit test from the window and a callback.
+    ///
+    /// # Errors
+    ///
+    /// Returns `Err` if a hit test in the window is unsupported.
     pub fn new(window: &'window Window<'window>, mut tester: T) -> Result<Self> {
-        let data = &mut tester as *mut T;
+        let data = addr_of_mut!(tester);
         let ret = unsafe {
             bind::SDL_SetWindowHitTest(
                 window.as_ptr(),
@@ -73,10 +77,10 @@ impl<'window, T: HitTester<'window>> HitTest<'window, T> {
                 data.cast(),
             )
         };
-        if ret != 0 {
-            Err(crate::SdlError::UnsupportedFeature)
-        } else {
+        if ret == 0 {
             Ok(Self { window, tester })
+        } else {
+            Err(crate::SdlError::UnsupportedFeature)
         }
     }
 }
@@ -93,6 +97,6 @@ unsafe extern "C" fn hit_test_wrap_handler<'window, T: HitTester<'window>>(
     area: *const bind::SDL_Point,
     data: *mut c_void,
 ) -> bind::SDL_HitTestResult {
-    let callback = unsafe { &mut *(data as *mut T) };
+    let callback = unsafe { &mut *data.cast::<T>() };
     callback((*area).into()).into_arg()
 }

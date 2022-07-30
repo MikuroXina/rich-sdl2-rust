@@ -61,31 +61,32 @@ impl From<bind::SDL_WindowEvent> for WindowEvent {
             ..
         }: bind::SDL_WindowEvent,
     ) -> Self {
-        use WindowEventDetails::*;
         Self {
             timestamp,
             window_id,
             details: match event as EnumInt {
-                bind::SDL_WINDOWEVENT_SHOWN => Shown,
-                bind::SDL_WINDOWEVENT_HIDDEN => Hidden,
-                bind::SDL_WINDOWEVENT_EXPOSED => Exposed,
-                bind::SDL_WINDOWEVENT_MOVED => Moved(Point { x: data1, y: data2 }),
-                bind::SDL_WINDOWEVENT_RESIZED => Resized(Size {
+                bind::SDL_WINDOWEVENT_SHOWN => WindowEventDetails::Shown,
+                bind::SDL_WINDOWEVENT_HIDDEN => WindowEventDetails::Hidden,
+                bind::SDL_WINDOWEVENT_EXPOSED => WindowEventDetails::Exposed,
+                bind::SDL_WINDOWEVENT_MOVED => {
+                    WindowEventDetails::Moved(Point { x: data1, y: data2 })
+                }
+                bind::SDL_WINDOWEVENT_RESIZED => WindowEventDetails::Resized(Size {
                     width: data1 as u32,
                     height: data2 as u32,
                 }),
-                bind::SDL_WINDOWEVENT_SIZE_CHANGED => SizeChanged(Size {
+                bind::SDL_WINDOWEVENT_SIZE_CHANGED => WindowEventDetails::SizeChanged(Size {
                     width: data1 as u32,
                     height: data2 as u32,
                 }),
-                bind::SDL_WINDOWEVENT_MINIMIZED => Minimized,
-                bind::SDL_WINDOWEVENT_MAXIMIZED => Maximized,
-                bind::SDL_WINDOWEVENT_RESTORED => Restored,
-                bind::SDL_WINDOWEVENT_ENTER => Enter,
-                bind::SDL_WINDOWEVENT_LEAVE => Leave,
-                bind::SDL_WINDOWEVENT_FOCUS_GAINED => FocusGained,
-                bind::SDL_WINDOWEVENT_FOCUS_LOST => FocusLost,
-                bind::SDL_WINDOWEVENT_CLOSE => Close,
+                bind::SDL_WINDOWEVENT_MINIMIZED => WindowEventDetails::Minimized,
+                bind::SDL_WINDOWEVENT_MAXIMIZED => WindowEventDetails::Maximized,
+                bind::SDL_WINDOWEVENT_RESTORED => WindowEventDetails::Restored,
+                bind::SDL_WINDOWEVENT_ENTER => WindowEventDetails::Enter,
+                bind::SDL_WINDOWEVENT_LEAVE => WindowEventDetails::Leave,
+                bind::SDL_WINDOWEVENT_FOCUS_GAINED => WindowEventDetails::FocusGained,
+                bind::SDL_WINDOWEVENT_FOCUS_LOST => WindowEventDetails::FocusLost,
+                bind::SDL_WINDOWEVENT_CLOSE => WindowEventDetails::Close,
                 _ => todo!(),
             },
         }

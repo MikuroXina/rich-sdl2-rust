@@ -8,6 +8,7 @@ pub use rect::*;
 
 /// A point of the cartesian coordinate system.
 #[derive(Debug, Default, Clone, Copy, PartialEq, Eq, PartialOrd, Ord)]
+#[must_use]
 pub struct Point {
     /// An x coordinate of the point.
     pub x: i32,
@@ -44,6 +45,7 @@ impl Point {
     }
 
     /// Returns whether the point is in the rectangle.
+    #[must_use]
     pub fn is_in(&self, rect: Rect) -> bool {
         let bottom_right = rect.bottom_right();
         rect.up_left.x <= self.x
@@ -55,6 +57,7 @@ impl Point {
 
 /// A geometry size representation.
 #[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord)]
+#[must_use]
 pub struct Size {
     /// A width of the geometry.
     pub width: u32,
@@ -64,6 +67,7 @@ pub struct Size {
 
 /// A scale from the normal geometry.
 #[derive(Debug, Clone, Copy, PartialEq, PartialOrd)]
+#[must_use]
 pub struct Scale {
     /// A horizontal scale, normalized.
     pub horizontal: f32,
@@ -82,6 +86,7 @@ impl Default for Scale {
 
 /// A straight line from point to point.
 #[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord)]
+#[must_use]
 pub struct Line {
     /// A start point of the line.
     pub start: Point,
@@ -94,11 +99,11 @@ impl Line {
     pub fn clip_with(mut self, rect: Rect) -> Self {
         unsafe {
             bind::SDL_IntersectRectAndLine(
-                &(rect.into()) as *const _,
-                &mut self.start.x as *mut _,
-                &mut self.start.y as *mut _,
-                &mut self.end.x as *mut _,
-                &mut self.end.y as *mut _,
+                &(rect.into()),
+                &mut self.start.x,
+                &mut self.start.y,
+                &mut self.end.x,
+                &mut self.end.y,
             );
         }
         self

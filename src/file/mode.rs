@@ -15,8 +15,9 @@ pub struct OpenMode {
 
 impl OpenMode {
     /// Constructs an empty mode. Please do not pass this into [`super::RwOps`] as is.
+    #[must_use]
     pub fn new() -> Self {
-        Default::default()
+        Self::default()
     }
 
     /// Sets to be able to read.

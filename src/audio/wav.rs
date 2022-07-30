@@ -23,6 +23,14 @@ impl std::fmt::Debug for Wav {
 
 impl Wav {
     /// Constructs a wav buffer from file named `file_name`.
+    ///
+    /// # Errors
+    ///
+    /// Returns `Err` if the wav file cannot be opened, uses an unknown data format, or is corrupt.
+    ///
+    /// # Panics
+    ///
+    /// Panics if `file_name` contains a null character.
     pub fn new(file_name: &str) -> Result<Self> {
         let read_binary_mode = CStr::from_bytes_with_nul(b"rb\0").unwrap();
         let cstr = CString::new(file_name).expect("file_name must not be empty");
@@ -34,8 +42,8 @@ impl Wav {
                 bind::SDL_RWFromFile(cstr.as_ptr(), read_binary_mode.as_ptr()),
                 1,
                 audio_spec.as_mut_ptr(),
-                &mut buffer as *mut _,
-                &mut len as *mut _,
+                &mut buffer,
+                &mut len,
             )
         };
         if ptr.is_null() {
@@ -49,6 +57,7 @@ impl Wav {
     }
 
     /// Treats as an `u8` slice.
+    #[must_use]
     pub fn as_slice(&self) -> &[u8] {
         unsafe { std::slice::from_raw_parts(self.buffer, self.len) }
     }
@@ -59,6 +68,7 @@ impl Wav {
     }
 
     /// Convert into a vector.
+    #[must_use]
     pub fn to_vec(&self) -> Vec<u8> {
         self.as_slice().to_vec()
     }
