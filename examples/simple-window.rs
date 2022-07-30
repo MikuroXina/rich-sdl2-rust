@@ -16,7 +16,7 @@ pub fn main() {
         .expect("please specify font file on arg");
     let sdl = Sdl::new();
     let ttf = Ttf::new();
-    let font = Font::new(&ttf, &font_file, 20, None).expect("Arial font not found");
+    let font = Font::new(&ttf, &font_file, 20, None).expect("failed to open font");
     let video = Video::new(&sdl);
     let window = window::WindowBuilder::builder().build().new_window(&video);
     let renderer = renderer::Renderer::new(&window);
