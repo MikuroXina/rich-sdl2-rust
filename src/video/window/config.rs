@@ -90,7 +90,7 @@ impl ConfigExt for Window<'_> {
     fn max_size(&self) -> Size {
         let (mut width, mut height) = (MaybeUninit::uninit(), MaybeUninit::uninit());
         unsafe {
-            bind::SDL_GetWindowMaximumSize(self.as_ptr(), width.as_mut_ptr(), height.as_mut_ptr())
+            bind::SDL_GetWindowMaximumSize(self.as_ptr(), width.as_mut_ptr(), height.as_mut_ptr());
         }
         Size {
             width: unsafe { width.assume_init() } as _,
@@ -101,7 +101,7 @@ impl ConfigExt for Window<'_> {
     fn min_size(&self) -> Size {
         let (mut width, mut height) = (MaybeUninit::uninit(), MaybeUninit::uninit());
         unsafe {
-            bind::SDL_GetWindowMinimumSize(self.as_ptr(), width.as_mut_ptr(), height.as_mut_ptr())
+            bind::SDL_GetWindowMinimumSize(self.as_ptr(), width.as_mut_ptr(), height.as_mut_ptr());
         }
         Size {
             width: unsafe { width.assume_init() } as _,

@@ -120,7 +120,7 @@ impl<'window> Renderer<'window> {
             vertical: 0.0,
         };
         unsafe {
-            bind::SDL_RenderGetScale(self.as_ptr(), &mut scale.horizontal, &mut scale.vertical)
+            bind::SDL_RenderGetScale(self.as_ptr(), &mut scale.horizontal, &mut scale.vertical);
         }
         scale
     }

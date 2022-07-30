@@ -141,7 +141,7 @@ impl PixelFormat {
                 &mut rgb.r,
                 &mut rgb.g,
                 &mut rgb.b,
-            )
+            );
         }
         rgb
     }
@@ -162,7 +162,7 @@ impl PixelFormat {
                 &mut rgba.g,
                 &mut rgba.b,
                 &mut rgba.a,
-            )
+            );
         }
         rgba
     }

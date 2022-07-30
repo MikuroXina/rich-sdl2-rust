@@ -33,7 +33,7 @@ impl std::fmt::Display for Guid {
                 bind::SDL_JoystickGUID { data: self.0 },
                 buf.as_mut_ptr().cast(),
                 buf.len() as c_int,
-            )
+            );
         }
         write!(f, "{}", String::from_utf8_lossy(&buf))
     }

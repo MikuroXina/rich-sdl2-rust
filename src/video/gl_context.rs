@@ -60,7 +60,7 @@ impl<'window> GlContext<'window> {
                 self.window.as_ptr(),
                 width.as_mut_ptr(),
                 height.as_mut_ptr(),
-            )
+            );
         }
         Size {
             width: unsafe { width.assume_init() } as u32,
@@ -111,7 +111,7 @@ impl<'window> Drop for GlContext<'window> {
     fn drop(&mut self) {
         unsafe {
             bind::SDL_GL_UnloadLibrary();
-            bind::SDL_GL_DeleteContext(self.ctx.as_ptr())
+            bind::SDL_GL_DeleteContext(self.ctx.as_ptr());
         }
     }
 }

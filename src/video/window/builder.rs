@@ -123,7 +123,7 @@ impl WindowBuilder {
             flags |= WindowFlags::ALLOW_HIGHDPI;
         }
         if self.borderless {
-            flags |= WindowFlags::BORDERLESS
+            flags |= WindowFlags::BORDERLESS;
         }
         flags.bits()
     }
