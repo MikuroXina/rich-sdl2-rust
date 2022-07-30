@@ -32,3 +32,7 @@ once_cell = { version = "1.13.0", optional = true }
 
 [workspace]
 members = ["rich-sdl2-rust-sys"]
+
+[[example]]
+name = "simple-window"
+required-features = ["ttf"]
