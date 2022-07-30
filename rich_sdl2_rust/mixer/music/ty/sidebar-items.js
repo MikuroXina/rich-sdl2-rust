@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"enum":[["MusicType","A type of audio format supported by [`MixMusic`]."]]};

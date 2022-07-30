@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"mod":[["chunk","Audio sampling buffer controls."],["device","Audio specifications for SDL2_mixer."],["music","The music control that are suitable to background music."]],"struct":[["FormatFlag","A format flag to use on initializing of [`Mix`]."],["Mix","A root SDL2_mixer controller."]]};

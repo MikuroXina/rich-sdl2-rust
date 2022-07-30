@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"struct":[["MixCustomMusic","A custom music made by the callback."]],"type":[["MusicCallback","A callback to generate the audio to play."]]};

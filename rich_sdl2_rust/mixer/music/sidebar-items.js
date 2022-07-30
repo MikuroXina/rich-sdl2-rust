@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"enum":[["FadingState","A fading state of the music."]],"mod":[["custom","A music made from the custom callback function."],["pause","Pauser for a [`MixMusic`]."],["ty","Audio formats for [`super::MixMusic`]."]],"struct":[["MixMusic","A music buffer of the audio data."]]};
