@@ -74,6 +74,11 @@
 <span id="68">68</span>
 <span id="69">69</span>
 <span id="70">70</span>
+<span id="71">71</span>
+<span id="72">72</span>
+<span id="73">73</span>
+<span id="74">74</span>
+<span id="75">75</span>
 </pre><pre class="rust"><code><span class="doccomment">//! Palettes for a bitmap pixel format.</span>
 
 <span class="kw">use</span> <span class="ident">std::os::raw::c_int</span>;
@@ -99,6 +104,10 @@
 
 <span class="kw">impl</span> <span class="ident">Palette</span> {
     <span class="doccomment">/// Constructs a palette with numbers of colors.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// # Errors</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// Returns `Err` if failed to allocate the memory, or construct a palette.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">num_colors</span>: <span class="ident">usize</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
         <span class="ident">NonNull::new</span>(<span class="kw">unsafe</span> { <span class="ident">bind::SDL_AllocPalette</span>(<span class="ident">num_colors</span> <span class="kw">as</span> <span class="ident">c_int</span>) }).<span class="ident">map_or_else</span>(
             <span class="op">|</span><span class="op">|</span> {
@@ -118,6 +127,7 @@
     }
 
     <span class="doccomment">/// Returns the numbers of colors in the palette.</span>
+    <span class="attribute">#[<span class="ident">must_use</span>]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">num_colors</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">usize</span> {
         <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">palette</span>.<span class="ident">as_ref</span>() }.<span class="ident">ncolors</span> <span class="kw">as</span> <span class="kw">_</span>
     }
@@ -128,7 +138,7 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// Panics if `colors` was too long than `num_colors` on initialized.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_colors</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">colors</span>: <span class="kw">impl</span> <span class="ident">IntoIterator</span><span class="op">&lt;</span><span class="ident">Item</span> <span class="op">=</span> <span class="ident">Rgba</span><span class="op">&gt;</span>) {
-        <span class="kw">let</span> <span class="ident">colors</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="kw">_</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">colors</span>.<span class="ident">into_iter</span>().<span class="ident">map</span>(<span class="op">|</span><span class="ident">c</span><span class="op">|</span> <span class="ident">c</span>.<span class="ident">into</span>()).<span class="ident">collect</span>();
+        <span class="kw">let</span> <span class="ident">colors</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="kw">_</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">colors</span>.<span class="ident">into_iter</span>().<span class="ident">map</span>(<span class="ident">Into::into</span>).<span class="ident">collect</span>();
         <span class="macro">assert!</span>(<span class="ident">colors</span>.<span class="ident">len</span>() <span class="op">&lt;</span><span class="op">=</span> <span class="self">self</span>.<span class="ident">num_colors</span>());
         <span class="kw">let</span> <span class="ident">ret</span> <span class="op">=</span> <span class="kw">unsafe</span> {
             <span class="ident">bind::SDL_SetPaletteColors</span>(<span class="self">self</span>.<span class="ident">palette</span>.<span class="ident">as_ptr</span>(), <span class="ident">colors</span>.<span class="ident">as_ptr</span>(), <span class="number">0</span>, <span class="ident">colors</span>.<span class="ident">len</span>() <span class="kw">as</span> <span class="kw">_</span>)

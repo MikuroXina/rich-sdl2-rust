@@ -46,6 +46,7 @@
 <span id="40">40</span>
 <span id="41">41</span>
 <span id="42">42</span>
+<span id="43">43</span>
 </pre><pre class="rust"><code><span class="doccomment">//! Buttons for a physical joystick.</span>
 
 <span class="kw">use</span> <span class="ident">std::os::raw::c_int</span>;
@@ -70,6 +71,7 @@
     }
 
     <span class="doccomment">/// Returns whether the button is pressed.</span>
+    <span class="attribute">#[<span class="ident">must_use</span>]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_pressed</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
         <span class="kw">unsafe</span> { <span class="ident">bind::SDL_JoystickGetButton</span>(<span class="self">self</span>.<span class="ident">joystick</span>.<span class="ident">ptr</span>.<span class="ident">as_ptr</span>(), <span class="self">self</span>.<span class="ident">index</span>) <span class="op">!</span><span class="op">=</span> <span class="number">0</span> }
     }

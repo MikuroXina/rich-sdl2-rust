@@ -60,6 +60,8 @@
 <span id="54">54</span>
 <span id="55">55</span>
 <span id="56">56</span>
+<span id="57">57</span>
+<span id="58">58</span>
 </pre><pre class="rust"><code><span class="doccomment">//! Controlling cursor to show/hide.</span>
 
 <span class="kw">use</span> <span class="ident">static_assertions::assert_not_impl_all</span>;
@@ -84,6 +86,7 @@
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;window</span><span class="op">&gt;</span> <span class="ident">Cursor</span><span class="op">&lt;</span><span class="lifetime">&#39;window</span><span class="op">&gt;</span> {
     <span class="doccomment">/// Constructs cursor control from the window.</span>
+    <span class="attribute">#[<span class="ident">must_use</span>]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="kw">_</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;window</span> <span class="ident">Window</span>) -&gt; <span class="self">Self</span> {
         <span class="self">Self</span> {
             <span class="ident">window</span>: <span class="ident">PhantomData</span>,
@@ -107,6 +110,7 @@
     }
 
     <span class="doccomment">/// Returns whether the cursor is shown.</span>
+    <span class="attribute">#[<span class="ident">must_use</span>]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_shown</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
         <span class="kw">let</span> <span class="ident">ret</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">bind::SDL_ShowCursor</span>(<span class="ident">bind::SDL_QUERY</span> <span class="kw">as</span> <span class="ident">c_int</span>) };
         <span class="kw">if</span> <span class="ident">ret</span> <span class="op">&lt;</span> <span class="number">0</span> {

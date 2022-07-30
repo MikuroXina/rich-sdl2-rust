@@ -13,8 +13,7 @@ pub struct ClippedRenderer<'renderer> {
 
 impl<'renderer> ClippedRenderer<'renderer> {
     pub(super) fn new(renderer: &'renderer mut Renderer<'renderer>, rect: Rect) -> Self {
-        let ret =
-            unsafe { bind::SDL_RenderSetClipRect(renderer.as_ptr(), &rect.into() as *const _) };
+        let ret = unsafe { bind::SDL_RenderSetClipRect(renderer.as_ptr(), &rect.into()) };
         if ret != 0 {
             Sdl::error_then_panic("Setting renderer clip rect");
         }

@@ -36,6 +36,7 @@ assert_not_impl_all!(GlContext: Send, Sync);
 
 impl<'window> GlContext<'window> {
     /// Constructs from a reference to [`Window`], or `Err` on failure.
+    #[must_use]
     pub fn new(window: &'window Window) -> Option<Self> {
         if let WindowContextKind::OpenGl = window.state().context_kind {
             let raw = unsafe { bind::SDL_GL_CreateContext(window.as_ptr()) };
@@ -46,6 +47,7 @@ impl<'window> GlContext<'window> {
     }
 
     /// Returns the internal pointer of the OpenGL context.
+    #[must_use]
     pub fn as_ptr(&self) -> *mut c_void {
         self.ctx.as_ptr()
     }
@@ -58,7 +60,7 @@ impl<'window> GlContext<'window> {
                 self.window.as_ptr(),
                 width.as_mut_ptr(),
                 height.as_mut_ptr(),
-            )
+            );
         }
         Size {
             width: unsafe { width.assume_init() } as u32,
@@ -67,12 +69,25 @@ impl<'window> GlContext<'window> {
     }
 
     /// Returns whether the extension `name` is supported.
+    ///
+    /// # Panics
+    ///
+    /// Panics if `name` contains a null character.
+    #[must_use]
     pub fn supported_extension(&self, name: &'static str) -> bool {
         let cstr = CString::new(name).unwrap();
         unsafe { bind::SDL_GL_ExtensionSupported(cstr.as_ptr()) != 0 }
     }
 
-    /// Loads the library from `path`, or `Err` on failure.
+    /// Loads the library from `path`.
+    ///
+    /// # Errors
+    ///
+    /// Returns `Err` if failed to load the library.
+    ///
+    /// # Panics
+    ///
+    /// Panics if `path` contains a null character.
     pub fn load_lib(&self, path: &str) -> Result<()> {
         let cstr = CString::new(path).unwrap();
         let ret = unsafe { bind::SDL_GL_LoadLibrary(cstr.as_ptr()) };
@@ -93,6 +108,11 @@ impl<'window> GlContext<'window> {
     ///
     /// This return value is valid only on supported the extension.
     /// You must check by `supported_extension` before casting to any function pointer.
+    ///
+    /// # Panics
+    ///
+    /// Panics if `proc` contains a null character.
+    #[must_use]
     pub unsafe fn proc_address(&self, proc: &str) -> *mut c_void {
         let cstr = CString::new(proc).unwrap();
         unsafe { bind::SDL_GL_GetProcAddress(cstr.as_ptr()) }
@@ -103,7 +123,7 @@ impl<'window> Drop for GlContext<'window> {
     fn drop(&mut self) {
         unsafe {
             bind::SDL_GL_UnloadLibrary();
-            bind::SDL_GL_DeleteContext(self.ctx.as_ptr())
+            bind::SDL_GL_DeleteContext(self.ctx.as_ptr());
         }
     }
 }

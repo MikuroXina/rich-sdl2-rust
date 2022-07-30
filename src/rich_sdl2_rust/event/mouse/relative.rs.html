@@ -43,6 +43,10 @@
 <span id="37">37</span>
 <span id="38">38</span>
 <span id="39">39</span>
+<span id="40">40</span>
+<span id="41">41</span>
+<span id="42">42</span>
+<span id="43">43</span>
 </pre><pre class="rust"><code><span class="doccomment">//! Hold the cursor position and change to get relative motions from the mouse.</span>
 
 <span class="kw">use</span> <span class="ident">static_assertions::assert_not_impl_all</span>;
@@ -65,7 +69,11 @@
 <span class="macro">assert_not_impl_all!</span>(<span class="ident">RelativeMouse</span>: <span class="ident">Send</span>, <span class="ident">Sync</span>);
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;video</span><span class="op">&gt;</span> <span class="ident">RelativeMouse</span><span class="op">&lt;</span><span class="lifetime">&#39;video</span><span class="op">&gt;</span> {
-    <span class="doccomment">/// Starts the relative mouse mode, but returns `Err(UnsupportedFeature)` if this is not supported.</span>
+    <span class="doccomment">/// Starts the relative mouse mode.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// # Errors</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// Returns `Err(UnsupportedFeature)` if this is not supported.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="kw">_</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;video</span> <span class="ident">Video</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="ident">SdlError</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="ident">ret</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">bind::SDL_SetRelativeMouseMode</span>(<span class="ident">bind::SDL_TRUE</span>) };
         <span class="kw">if</span> <span class="ident">ret</span> <span class="op">==</span> <span class="op">-</span><span class="number">1</span> {

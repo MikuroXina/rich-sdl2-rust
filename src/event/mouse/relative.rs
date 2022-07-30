@@ -20,7 +20,11 @@ impl std::fmt::Debug for RelativeMouse<'_> {
 assert_not_impl_all!(RelativeMouse: Send, Sync);
 
 impl<'video> RelativeMouse<'video> {
-    /// Starts the relative mouse mode, but returns `Err(UnsupportedFeature)` if this is not supported.
+    /// Starts the relative mouse mode.
+    ///
+    /// # Errors
+    ///
+    /// Returns `Err(UnsupportedFeature)` if this is not supported.
     pub fn new(_: &'video Video) -> Result<Self, SdlError> {
         let ret = unsafe { bind::SDL_SetRelativeMouseMode(bind::SDL_TRUE) };
         if ret == -1 {

@@ -17,17 +17,16 @@ pub enum WindowFormat {
 
 impl From<WindowFlags> for WindowFormat {
     fn from(flags: WindowFlags) -> Self {
-        use WindowFormat::*;
         if flags.contains(WindowFlags::FULLSCREEN) {
-            FullScreen
+            WindowFormat::FullScreen
         } else if flags.contains(WindowFlags::FULLSCREEN_DESKTOP) {
-            FullScreenWithCurrentDesktop
+            WindowFormat::FullScreenWithCurrentDesktop
         } else if flags.contains(WindowFlags::MINIMIZED) {
-            Minimized
+            WindowFormat::Minimized
         } else if flags.contains(WindowFlags::MAXIMIZED) {
-            Maximized
+            WindowFormat::Maximized
         } else {
-            Normal
+            WindowFormat::Normal
         }
     }
 }
@@ -47,15 +46,14 @@ pub enum WindowContextKind {
 
 impl From<WindowFlags> for WindowContextKind {
     fn from(flags: WindowFlags) -> Self {
-        use WindowContextKind::*;
         if flags.contains(WindowFlags::OPENGL) {
-            OpenGl
+            WindowContextKind::OpenGl
         } else if flags.contains(WindowFlags::VULKAN) {
-            Vulkan
+            WindowContextKind::Vulkan
         } else if flags.contains(WindowFlags::METAL) {
-            Metal
+            WindowContextKind::Metal
         } else {
-            Software
+            WindowContextKind::Software
         }
     }
 }

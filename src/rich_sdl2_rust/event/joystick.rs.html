@@ -210,6 +210,21 @@
 <span id="204">204</span>
 <span id="205">205</span>
 <span id="206">206</span>
+<span id="207">207</span>
+<span id="208">208</span>
+<span id="209">209</span>
+<span id="210">210</span>
+<span id="211">211</span>
+<span id="212">212</span>
+<span id="213">213</span>
+<span id="214">214</span>
+<span id="215">215</span>
+<span id="216">216</span>
+<span id="217">217</span>
+<span id="218">218</span>
+<span id="219">219</span>
+<span id="220">220</span>
+<span id="221">221</span>
 </pre><pre class="rust"><code><span class="doccomment">//! A physical joystick device, controlling based on `InputIndex` and raw inputs.</span>
 
 <span class="kw">use</span> <span class="ident">static_assertions::assert_not_impl_all</span>;
@@ -243,7 +258,7 @@
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">InputIndex</span>(<span class="ident">c_int</span>);
 
 <span class="doccomment">/// An id of the joystick. It can be used to share/duplicate Joystick object, but not [`Send`] and [`Sync`] due to the safety.</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>)]</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Copy</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>, <span class="ident">Hash</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">JoystickId</span><span class="op">&lt;</span><span class="lifetime">&#39;joystick</span><span class="op">&gt;</span> {
     <span class="kw">pub</span>(<span class="kw">super</span>) <span class="ident">id</span>: <span class="ident">u32</span>,
     <span class="kw">pub</span>(<span class="kw">super</span>) <span class="ident">_phantom</span>: <span class="ident">PhantomData</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;joystick</span> <span class="ident">Joystick</span><span class="op">&gt;</span>,
@@ -286,12 +301,14 @@
     }
 
     <span class="doccomment">/// Constructs from [`JoystickId`] if it is valid.</span>
+    <span class="attribute">#[<span class="ident">must_use</span>]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">from_id</span>(<span class="ident">id</span>: <span class="ident">JoystickId</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="ident">ptr</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">bind::SDL_JoystickFromInstanceID</span>(<span class="ident">id</span>.<span class="ident">id</span> <span class="kw">as</span> <span class="ident">bind::SDL_JoystickID</span>) };
         <span class="ident">NonNull::new</span>(<span class="ident">ptr</span>).<span class="ident">map</span>(<span class="op">|</span><span class="ident">ptr</span><span class="op">|</span> <span class="self">Self</span> { <span class="ident">ptr</span> })
     }
 
     <span class="doccomment">/// Returns the instance id [`JoystickId`].</span>
+    <span class="attribute">#[<span class="ident">must_use</span>]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">instance_id</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">JoystickId</span> {
         <span class="kw">let</span> <span class="ident">raw</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">bind::SDL_JoystickInstanceID</span>(<span class="self">self</span>.<span class="ident">ptr</span>.<span class="ident">as_ptr</span>()) };
         <span class="macro">debug_assert_ne!</span>(<span class="ident">raw</span>, <span class="op">-</span><span class="number">1</span>);
@@ -302,16 +319,19 @@
     }
 
     <span class="doccomment">/// Returns the power level of the joystick.</span>
+    <span class="attribute">#[<span class="ident">must_use</span>]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">power_level</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">PowerLevel</span> {
         <span class="kw">unsafe</span> { <span class="ident">bind::SDL_JoystickCurrentPowerLevel</span>(<span class="self">self</span>.<span class="ident">ptr</span>.<span class="ident">as_ptr</span>()) }.<span class="ident">into</span>()
     }
 
     <span class="doccomment">/// Returns the GUID of the joystick.</span>
+    <span class="attribute">#[<span class="ident">must_use</span>]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">guid</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">Guid</span> {
         <span class="kw">unsafe</span> { <span class="ident">bind::SDL_JoystickGetGUID</span>(<span class="self">self</span>.<span class="ident">ptr</span>.<span class="ident">as_ptr</span>()) }.<span class="ident">into</span>()
     }
 
     <span class="doccomment">/// Returns the name of the joystick.</span>
+    <span class="attribute">#[<span class="ident">must_use</span>]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">name</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">std::borrow::Cow</span><span class="op">&lt;</span><span class="ident">str</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="ident">c_str</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">CStr::from_ptr</span>(<span class="ident">bind::SDL_JoystickName</span>(<span class="self">self</span>.<span class="ident">ptr</span>.<span class="ident">as_ptr</span>())) };
         <span class="ident">c_str</span>.<span class="ident">to_string_lossy</span>()
@@ -328,49 +348,58 @@
     }
 
     <span class="doccomment">/// Returns whether the joystick is enabled.</span>
+    <span class="attribute">#[<span class="ident">must_use</span>]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_enabled</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
         <span class="kw">unsafe</span> { <span class="ident">bind::SDL_JoystickEventState</span>(<span class="ident">bind::SDL_QUERY</span>) <span class="op">!</span><span class="op">=</span> <span class="number">0</span> }
     }
 
     <span class="doccomment">/// Returns axes [`Axes`] that the joystick has.</span>
+    <span class="attribute">#[<span class="ident">must_use</span>]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">axes</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">Axes</span> {
         <span class="ident">Axes::new</span>(<span class="self">self</span>)
     }
 
     <span class="doccomment">/// Returns an axis of `index` if it exists.</span>
+    <span class="attribute">#[<span class="ident">must_use</span>]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">axis</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">index</span>: <span class="ident">InputIndex</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Axis</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="ident">num</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">bind::SDL_JoystickNumAxes</span>(<span class="self">self</span>.<span class="ident">ptr</span>.<span class="ident">as_ptr</span>()) };
         (<span class="ident">index</span>.<span class="number">0</span> <span class="op">&lt;</span> <span class="ident">num</span>).<span class="ident">then</span>(<span class="op">|</span><span class="op">|</span> <span class="ident">Axis::new</span>(<span class="ident">index</span>, <span class="self">self</span>))
     }
 
     <span class="doccomment">/// Returns trackballs [`Trackballs`] that the joystick has.</span>
+    <span class="attribute">#[<span class="ident">must_use</span>]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">trackballs</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">Trackballs</span> {
         <span class="ident">Trackballs::new</span>(<span class="self">self</span>)
     }
 
     <span class="doccomment">/// Returns a trackball of `index` if it exists.</span>
+    <span class="attribute">#[<span class="ident">must_use</span>]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">trackball</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">index</span>: <span class="ident">InputIndex</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Trackball</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="ident">num</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">bind::SDL_JoystickNumBalls</span>(<span class="self">self</span>.<span class="ident">ptr</span>.<span class="ident">as_ptr</span>()) };
         (<span class="ident">index</span>.<span class="number">0</span> <span class="op">&lt;</span> <span class="ident">num</span>).<span class="ident">then</span>(<span class="op">|</span><span class="op">|</span> <span class="ident">Trackball::new</span>(<span class="ident">index</span>, <span class="self">self</span>))
     }
 
     <span class="doccomment">/// Returns buttons [`Buttons`] that the joystick has.</span>
+    <span class="attribute">#[<span class="ident">must_use</span>]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">buttons</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">Buttons</span> {
         <span class="ident">Buttons::new</span>(<span class="self">self</span>)
     }
 
     <span class="doccomment">/// Returns a button of `index` if it exists.</span>
+    <span class="attribute">#[<span class="ident">must_use</span>]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">button</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">index</span>: <span class="ident">InputIndex</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Button</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="ident">num</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">bind::SDL_JoystickNumButtons</span>(<span class="self">self</span>.<span class="ident">ptr</span>.<span class="ident">as_ptr</span>()) };
         (<span class="ident">index</span>.<span class="number">0</span> <span class="op">&lt;</span> <span class="ident">num</span>).<span class="ident">then</span>(<span class="op">|</span><span class="op">|</span> <span class="ident">Button::new</span>(<span class="ident">index</span>, <span class="self">self</span>))
     }
 
     <span class="doccomment">/// Returns hats [`Hats`] that the joystick has.</span>
+    <span class="attribute">#[<span class="ident">must_use</span>]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">hats</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">Hats</span> {
         <span class="ident">Hats::new</span>(<span class="self">self</span>)
     }
 
     <span class="doccomment">/// Returns a hat of `index` if it exists.</span>
+    <span class="attribute">#[<span class="ident">must_use</span>]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">hat</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">index</span>: <span class="ident">InputIndex</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Hat</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="ident">num</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">bind::SDL_JoystickNumHats</span>(<span class="self">self</span>.<span class="ident">ptr</span>.<span class="ident">as_ptr</span>()) };
         (<span class="ident">index</span>.<span class="number">0</span> <span class="op">&lt;</span> <span class="ident">num</span>).<span class="ident">then</span>(<span class="op">|</span><span class="op">|</span> <span class="ident">Hat::new</span>(<span class="ident">index</span>, <span class="self">self</span>))
@@ -392,6 +421,7 @@
 
 <span class="kw">impl</span> <span class="ident">JoystickSet</span> {
     <span class="doccomment">/// Constructs and initializes the system and recognizes joysticks.</span>
+    <span class="attribute">#[<span class="ident">must_use</span>]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>() -&gt; <span class="self">Self</span> {
         <span class="kw">let</span> <span class="ident">num_joysticks</span> <span class="op">=</span> <span class="kw">unsafe</span> {
             <span class="ident">bind::SDL_InitSubSystem</span>(<span class="ident">bind::SDL_INIT_JOYSTICK</span>);

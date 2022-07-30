@@ -25,6 +25,7 @@ impl<T> AudioBuffer<T> {
     /// # Panics
     ///
     /// Panics if the size of type `T` does not equal to the format bit size.
+    #[must_use]
     pub fn new(format: AudioFormat, samples: u32, channels: u8, buffer: Vec<T>) -> Self {
         assert_eq!(format.bit_size as usize, std::mem::size_of::<T>() * 8);
         Self {
@@ -41,16 +42,22 @@ impl<T> AudioBuffer<T> {
     }
 
     /// Returns the sample rates of the audio buffer.
+    #[must_use]
     pub fn samples(&self) -> u32 {
         self.samples
     }
 
     /// Returns the numbers of channels of the audio buffer.
+    #[must_use]
     pub fn channels(&self) -> u8 {
         self.channels
     }
 
     /// Convert into another `AudioBuffer` with different format, sample rate or channels.
+    ///
+    /// # Errors
+    ///
+    /// Returns `Err` if failed to convert into a specific format.
     pub fn convert<U: Default + Clone>(
         self,
         format: AudioFormat,
@@ -68,6 +75,10 @@ impl<T> AudioBuffer<T> {
     }
 
     /// Convert and write into another existing `AudioBuffer`.
+    ///
+    /// # Errors
+    ///
+    /// Returns `Err` if failed to convert between `self` and `other`.
     pub fn convert_in<U: Default + Clone>(self, other: &mut AudioBuffer<U>) -> Result<()> {
         let mut cvt = MaybeUninit::uninit();
         let ret = unsafe {
@@ -98,7 +109,7 @@ impl<T> AudioBuffer<T> {
             .buffer
             .resize(len * cvt.len_mult as usize, U::default());
         cvt.buf = as_u8_slice_mut(&mut other.buffer).as_mut_ptr();
-        let ret = unsafe { bind::SDL_ConvertAudio(&mut cvt as *mut _) };
+        let ret = unsafe { bind::SDL_ConvertAudio(&mut cvt) };
         if ret < 0 {
             Err(SdlError::Others { msg: Sdl::error() })
         } else {
@@ -111,17 +122,26 @@ impl<T: Default + Clone> AudioBuffer<T> {
     /// Mix into another `AudioBuffer` with the specified `volume`.
     ///
     /// The max value of `volume` is `128`, saturating if it is over the max.
+    #[must_use]
     pub fn mix(&self, volume: u8) -> Self {
         let mut dst = self.clone();
-        self.mix_in(&mut dst, volume);
+        self.mix_in(&mut dst, volume).unwrap();
         dst
     }
 
     /// Mix into another existing `AudioBuffer` with the specified `volume`.
     ///
     /// The max value of `volume` is `128`, saturating if it is over the max.
-    pub fn mix_in(&self, dst: &mut Self, volume: u8) {
-        assert_eq!(self.format.as_raw(), dst.format.as_raw());
+    ///
+    /// # Errors
+    ///
+    /// Return `Err` if the formats of `self` and `dst` are different.
+    pub fn mix_in(&self, dst: &mut Self, volume: u8) -> Result<()> {
+        if self.format.as_raw() != dst.format.as_raw() {
+            return Err(SdlError::Others {
+                msg: "Cannot mix in buffers which have different format".into(),
+            });
+        }
         dst.buffer.clear();
         dst.buffer.resize(self.buffer.len(), T::default());
         let len = self.buffer.len() * std::mem::size_of::<T>();
@@ -132,8 +152,9 @@ impl<T: Default + Clone> AudioBuffer<T> {
                 self.format.as_raw(),
                 len as u32,
                 volume.min(bind::SDL_MIX_MAXVOLUME as u8) as c_int,
-            )
+            );
         }
+        Ok(())
     }
 }
 

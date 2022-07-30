@@ -56,6 +56,18 @@
 <span id="50">50</span>
 <span id="51">51</span>
 <span id="52">52</span>
+<span id="53">53</span>
+<span id="54">54</span>
+<span id="55">55</span>
+<span id="56">56</span>
+<span id="57">57</span>
+<span id="58">58</span>
+<span id="59">59</span>
+<span id="60">60</span>
+<span id="61">61</span>
+<span id="62">62</span>
+<span id="63">63</span>
+<span id="64">64</span>
 </pre><pre class="rust"><code><span class="doccomment">//! Rumbling the haptic device.</span>
 
 <span class="kw">use</span> <span class="kw">crate</span>::{
@@ -72,7 +84,11 @@
 }
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;haptic</span><span class="op">&gt;</span> <span class="ident">HapticRumble</span><span class="op">&lt;</span><span class="lifetime">&#39;haptic</span><span class="op">&gt;</span> {
-    <span class="doccomment">/// Constructs from a reference to [`Haptic`], or `Err` on failure.</span>
+    <span class="doccomment">/// Constructs from a reference to [`Haptic`].</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// # Errors</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// Returns `Err` if this feature is unsupported, or failed to create a new rumble effect.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">haptic</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;haptic</span> <span class="ident">Haptic</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="ident">is_supported</span> <span class="op">=</span> <span class="kw">unsafe</span> {
             <span class="ident">bind::SDL_HapticRumbleSupported</span>(<span class="ident">haptic</span>.<span class="ident">ptr</span>.<span class="ident">as_ptr</span>()) <span class="kw">as</span> <span class="ident">bind::SDL_bool</span> <span class="op">==</span> <span class="ident">SDL_TRUE</span>
@@ -88,7 +104,11 @@
         }
     }
 
-    <span class="doccomment">/// Starts to play a rumbling, or `Err` on failure.</span>
+    <span class="doccomment">/// Starts to play a rumbling.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// # Errors</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// Returns `Err` if failed to start the rumbling.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">play</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">strength</span>: <span class="ident">f32</span>, <span class="ident">length</span>: <span class="ident">u32</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="ident">ret</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">bind::SDL_HapticRumblePlay</span>(<span class="self">self</span>.<span class="ident">haptic</span>.<span class="ident">ptr</span>.<span class="ident">as_ptr</span>(), <span class="ident">strength</span>, <span class="ident">length</span>) };
         <span class="kw">if</span> <span class="ident">ret</span> <span class="op">&lt;</span> <span class="number">0</span> {
@@ -98,7 +118,11 @@
         }
     }
 
-    <span class="doccomment">/// Stops playing the rumbling, or `Err` on failure.</span>
+    <span class="doccomment">/// Stops playing the rumbling.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// # Errors</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// Returns `Err` if failed to stop the rumbling.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">stop</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="ident">ret</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">bind::SDL_HapticRumbleStop</span>(<span class="self">self</span>.<span class="ident">haptic</span>.<span class="ident">ptr</span>.<span class="ident">as_ptr</span>()) };
         <span class="kw">if</span> <span class="ident">ret</span> <span class="op">&lt;</span> <span class="number">0</span> {

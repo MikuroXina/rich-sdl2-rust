@@ -278,6 +278,7 @@
 <span id="272">272</span>
 <span id="273">273</span>
 <span id="274">274</span>
+<span id="275">275</span>
 </pre><pre class="rust"><code><span class="doccomment">//! SDL2 event system and handlers.</span>
 <span class="doccomment">//!</span>
 <span class="doccomment">//! Most event structures are defined in these sub modules, but [`crate::audio::event::AudioDeviceEvent`] is defined in the external module.</span>
@@ -326,8 +327,8 @@
         <span class="self">self</span>.<span class="number">0</span>.<span class="ident">push</span>(<span class="ident">handler</span>);
     }
 
-    <span class="kw">fn</span> <span class="ident">call_handlers</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">event</span>: <span class="ident">T</span>) {
-        <span class="self">self</span>.<span class="number">0</span>.<span class="ident">iter</span>().<span class="ident">for_each</span>(<span class="op">|</span><span class="ident">handler</span><span class="op">|</span> <span class="ident">handler</span>(<span class="kw-2">&amp;</span><span class="ident">event</span>));
+    <span class="kw">fn</span> <span class="ident">call_handlers</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">event</span>: <span class="kw-2">&amp;</span><span class="ident">T</span>) {
+        <span class="self">self</span>.<span class="number">0</span>.<span class="ident">iter</span>().<span class="ident">for_each</span>(<span class="op">|</span><span class="ident">handler</span><span class="op">|</span> <span class="ident">handler</span>(<span class="ident">event</span>));
     }
 }
 
@@ -351,23 +352,24 @@
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;video</span><span class="op">&gt;</span> <span class="ident">EventBox</span><span class="op">&lt;</span><span class="lifetime">&#39;video</span><span class="op">&gt;</span> {
     <span class="doccomment">/// Constructs an event box from the video system.</span>
+    <span class="attribute">#[<span class="ident">must_use</span>]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="kw">_</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;video</span> <span class="ident">Video</span>) -&gt; <span class="self">Self</span> {
         <span class="kw">let</span> <span class="ident">ret</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">bind::SDL_InitSubSystem</span>(<span class="ident">bind::SDL_INIT_EVENTS</span>) };
         <span class="kw">if</span> <span class="ident">ret</span> <span class="op">!</span><span class="op">=</span> <span class="number">0</span> {
             <span class="ident">Sdl::error_then_panic</span>(<span class="string">&quot;Sdl event&quot;</span>)
         }
         <span class="self">Self</span> {
-            <span class="ident">quit_event_handlers</span>: <span class="ident">Default::default</span>(),
-            <span class="ident">window_event_handlers</span>: <span class="ident">Default::default</span>(),
-            <span class="ident">keyboard_event_handlers</span>: <span class="ident">Default::default</span>(),
-            <span class="ident">input_event_handlers</span>: <span class="ident">Default::default</span>(),
-            <span class="ident">editing_event_handlers</span>: <span class="ident">Default::default</span>(),
-            <span class="ident">mouse_event_handlers</span>: <span class="ident">Default::default</span>(),
-            <span class="ident">controller_event_handlers</span>: <span class="ident">Default::default</span>(),
-            <span class="ident">joystick_event_handlers</span>: <span class="ident">Default::default</span>(),
-            <span class="ident">audio_device_event_handlers</span>: <span class="ident">Default::default</span>(),
-            <span class="ident">drop_event_handlers</span>: <span class="ident">Default::default</span>(),
-            <span class="ident">gesture_event_handlers</span>: <span class="ident">Default::default</span>(),
+            <span class="ident">quit_event_handlers</span>: <span class="ident">EventHandlers::default</span>(),
+            <span class="ident">window_event_handlers</span>: <span class="ident">EventHandlers::default</span>(),
+            <span class="ident">keyboard_event_handlers</span>: <span class="ident">EventHandlers::default</span>(),
+            <span class="ident">input_event_handlers</span>: <span class="ident">EventHandlers::default</span>(),
+            <span class="ident">editing_event_handlers</span>: <span class="ident">EventHandlers::default</span>(),
+            <span class="ident">mouse_event_handlers</span>: <span class="ident">EventHandlers::default</span>(),
+            <span class="ident">controller_event_handlers</span>: <span class="ident">EventHandlers::default</span>(),
+            <span class="ident">joystick_event_handlers</span>: <span class="ident">EventHandlers::default</span>(),
+            <span class="ident">audio_device_event_handlers</span>: <span class="ident">EventHandlers::default</span>(),
+            <span class="ident">drop_event_handlers</span>: <span class="ident">EventHandlers::default</span>(),
+            <span class="ident">gesture_event_handlers</span>: <span class="ident">EventHandlers::default</span>(),
             <span class="ident">_phantom</span>: <span class="ident">PhantomData</span>,
         }
     }
@@ -432,91 +434,91 @@
         <span class="kw">match</span> <span class="ident">ty</span> <span class="kw">as</span> <span class="ident">EnumInt</span> {
             <span class="ident">bind::SDL_QUIT</span> =&gt; {
                 <span class="kw">let</span> <span class="ident">quit</span>: <span class="ident">QuitEvent</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">event</span>.<span class="ident">quit</span> }.<span class="ident">into</span>();
-                <span class="self">self</span>.<span class="ident">quit_event_handlers</span>.<span class="ident">call_handlers</span>(<span class="ident">quit</span>);
+                <span class="self">self</span>.<span class="ident">quit_event_handlers</span>.<span class="ident">call_handlers</span>(<span class="kw-2">&amp;</span><span class="ident">quit</span>);
             }
             <span class="ident">bind::SDL_WINDOWEVENT</span> =&gt; {
                 <span class="kw">let</span> <span class="ident">window</span>: <span class="ident">WindowEvent</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">event</span>.<span class="ident">window</span> }.<span class="ident">into</span>();
-                <span class="self">self</span>.<span class="ident">window_event_handlers</span>.<span class="ident">call_handlers</span>(<span class="ident">window</span>);
+                <span class="self">self</span>.<span class="ident">window_event_handlers</span>.<span class="ident">call_handlers</span>(<span class="kw-2">&amp;</span><span class="ident">window</span>);
             }
             <span class="ident">bind::SDL_KEYDOWN</span> <span class="op">|</span> <span class="ident">bind::SDL_KEYUP</span> =&gt; {
                 <span class="kw">let</span> <span class="ident">keyboard</span>: <span class="ident">KeyboardEvent</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">event</span>.<span class="ident">key</span> }.<span class="ident">into</span>();
-                <span class="self">self</span>.<span class="ident">keyboard_event_handlers</span>.<span class="ident">call_handlers</span>(<span class="ident">keyboard</span>);
+                <span class="self">self</span>.<span class="ident">keyboard_event_handlers</span>.<span class="ident">call_handlers</span>(<span class="kw-2">&amp;</span><span class="ident">keyboard</span>);
             }
             <span class="ident">bind::SDL_TEXTINPUT</span> =&gt; {
                 <span class="kw">let</span> <span class="ident">input</span>: <span class="ident">TextInputEvent</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">event</span>.<span class="ident">text</span> }.<span class="ident">into</span>();
-                <span class="self">self</span>.<span class="ident">input_event_handlers</span>.<span class="ident">call_handlers</span>(<span class="ident">input</span>);
+                <span class="self">self</span>.<span class="ident">input_event_handlers</span>.<span class="ident">call_handlers</span>(<span class="kw-2">&amp;</span><span class="ident">input</span>);
             }
             <span class="ident">bind::SDL_TEXTEDITING</span> =&gt; {
                 <span class="kw">let</span> <span class="ident">editing</span>: <span class="ident">TextEditingEvent</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">event</span>.<span class="ident">edit</span> }.<span class="ident">into</span>();
-                <span class="self">self</span>.<span class="ident">editing_event_handlers</span>.<span class="ident">call_handlers</span>(<span class="ident">editing</span>);
+                <span class="self">self</span>.<span class="ident">editing_event_handlers</span>.<span class="ident">call_handlers</span>(<span class="kw-2">&amp;</span><span class="ident">editing</span>);
             }
             <span class="ident">bind::SDL_MOUSEMOTION</span> =&gt; {
                 <span class="kw">let</span> <span class="ident">motion</span>: <span class="ident">MouseMotionEvent</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">event</span>.<span class="ident">motion</span> }.<span class="ident">into</span>();
                 <span class="kw">let</span> <span class="ident">mouse</span> <span class="op">=</span> <span class="ident">MouseEvent::Motion</span>(<span class="ident">motion</span>);
-                <span class="self">self</span>.<span class="ident">mouse_event_handlers</span>.<span class="ident">call_handlers</span>(<span class="ident">mouse</span>);
+                <span class="self">self</span>.<span class="ident">mouse_event_handlers</span>.<span class="ident">call_handlers</span>(<span class="kw-2">&amp;</span><span class="ident">mouse</span>);
             }
             <span class="ident">bind::SDL_MOUSEBUTTONDOWN</span> <span class="op">|</span> <span class="ident">bind::SDL_MOUSEBUTTONUP</span> =&gt; {
                 <span class="kw">let</span> <span class="ident">button</span>: <span class="ident">MouseButtonEvent</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">event</span>.<span class="ident">button</span> }.<span class="ident">into</span>();
                 <span class="kw">let</span> <span class="ident">mouse</span> <span class="op">=</span> <span class="ident">MouseEvent::Button</span>(<span class="ident">button</span>);
-                <span class="self">self</span>.<span class="ident">mouse_event_handlers</span>.<span class="ident">call_handlers</span>(<span class="ident">mouse</span>);
+                <span class="self">self</span>.<span class="ident">mouse_event_handlers</span>.<span class="ident">call_handlers</span>(<span class="kw-2">&amp;</span><span class="ident">mouse</span>);
             }
             <span class="ident">bind::SDL_MOUSEWHEEL</span> =&gt; {
                 <span class="kw">let</span> <span class="ident">wheel</span>: <span class="ident">MouseWheelEvent</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">event</span>.<span class="ident">wheel</span> }.<span class="ident">into</span>();
                 <span class="kw">let</span> <span class="ident">mouse</span> <span class="op">=</span> <span class="ident">MouseEvent::Wheel</span>(<span class="ident">wheel</span>);
-                <span class="self">self</span>.<span class="ident">mouse_event_handlers</span>.<span class="ident">call_handlers</span>(<span class="ident">mouse</span>);
+                <span class="self">self</span>.<span class="ident">mouse_event_handlers</span>.<span class="ident">call_handlers</span>(<span class="kw-2">&amp;</span><span class="ident">mouse</span>);
             }
             <span class="ident">bind::SDL_CONTROLLERAXISMOTION</span> =&gt; {
                 <span class="kw">let</span> <span class="ident">con</span>: <span class="ident">ControllerEvent</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">event</span>.<span class="ident">caxis</span> }.<span class="ident">into</span>();
-                <span class="self">self</span>.<span class="ident">controller_event_handlers</span>.<span class="ident">call_handlers</span>(<span class="ident">con</span>);
+                <span class="self">self</span>.<span class="ident">controller_event_handlers</span>.<span class="ident">call_handlers</span>(<span class="kw-2">&amp;</span><span class="ident">con</span>);
             }
             <span class="ident">bind::SDL_CONTROLLERBUTTONDOWN</span> <span class="op">|</span> <span class="ident">bind::SDL_CONTROLLERBUTTONUP</span> =&gt; {
                 <span class="kw">let</span> <span class="ident">con</span>: <span class="ident">ControllerEvent</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">event</span>.<span class="ident">cbutton</span> }.<span class="ident">into</span>();
-                <span class="self">self</span>.<span class="ident">controller_event_handlers</span>.<span class="ident">call_handlers</span>(<span class="ident">con</span>);
+                <span class="self">self</span>.<span class="ident">controller_event_handlers</span>.<span class="ident">call_handlers</span>(<span class="kw-2">&amp;</span><span class="ident">con</span>);
             }
             <span class="ident">bind::SDL_CONTROLLERDEVICEADDED</span>
             <span class="op">|</span> <span class="ident">bind::SDL_CONTROLLERDEVICEREMOVED</span>
             <span class="op">|</span> <span class="ident">bind::SDL_CONTROLLERDEVICEREMAPPED</span> =&gt; {
                 <span class="kw">let</span> <span class="ident">con</span>: <span class="ident">ControllerEvent</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">event</span>.<span class="ident">cdevice</span> }.<span class="ident">into</span>();
-                <span class="self">self</span>.<span class="ident">controller_event_handlers</span>.<span class="ident">call_handlers</span>(<span class="ident">con</span>);
+                <span class="self">self</span>.<span class="ident">controller_event_handlers</span>.<span class="ident">call_handlers</span>(<span class="kw-2">&amp;</span><span class="ident">con</span>);
             }
             <span class="ident">bind::SDL_JOYAXISMOTION</span> =&gt; {
                 <span class="kw">let</span> <span class="ident">joy</span>: <span class="ident">JoystickEvent</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">event</span>.<span class="ident">jaxis</span> }.<span class="ident">into</span>();
-                <span class="self">self</span>.<span class="ident">joystick_event_handlers</span>.<span class="ident">call_handlers</span>(<span class="ident">joy</span>);
+                <span class="self">self</span>.<span class="ident">joystick_event_handlers</span>.<span class="ident">call_handlers</span>(<span class="kw-2">&amp;</span><span class="ident">joy</span>);
             }
             <span class="ident">bind::SDL_JOYBALLMOTION</span> =&gt; {
                 <span class="kw">let</span> <span class="ident">joy</span>: <span class="ident">JoystickEvent</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">event</span>.<span class="ident">jball</span> }.<span class="ident">into</span>();
-                <span class="self">self</span>.<span class="ident">joystick_event_handlers</span>.<span class="ident">call_handlers</span>(<span class="ident">joy</span>);
+                <span class="self">self</span>.<span class="ident">joystick_event_handlers</span>.<span class="ident">call_handlers</span>(<span class="kw-2">&amp;</span><span class="ident">joy</span>);
             }
             <span class="ident">bind::SDL_JOYBUTTONDOWN</span> <span class="op">|</span> <span class="ident">bind::SDL_JOYBUTTONUP</span> =&gt; {
                 <span class="kw">let</span> <span class="ident">joy</span>: <span class="ident">JoystickEvent</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">event</span>.<span class="ident">jbutton</span> }.<span class="ident">into</span>();
-                <span class="self">self</span>.<span class="ident">joystick_event_handlers</span>.<span class="ident">call_handlers</span>(<span class="ident">joy</span>);
+                <span class="self">self</span>.<span class="ident">joystick_event_handlers</span>.<span class="ident">call_handlers</span>(<span class="kw-2">&amp;</span><span class="ident">joy</span>);
             }
             <span class="ident">bind::SDL_JOYDEVICEADDED</span> <span class="op">|</span> <span class="ident">bind::SDL_JOYDEVICEREMOVED</span> =&gt; {
                 <span class="kw">let</span> <span class="ident">joy</span>: <span class="ident">JoystickEvent</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">event</span>.<span class="ident">jdevice</span> }.<span class="ident">into</span>();
-                <span class="self">self</span>.<span class="ident">joystick_event_handlers</span>.<span class="ident">call_handlers</span>(<span class="ident">joy</span>);
+                <span class="self">self</span>.<span class="ident">joystick_event_handlers</span>.<span class="ident">call_handlers</span>(<span class="kw-2">&amp;</span><span class="ident">joy</span>);
             }
             <span class="ident">bind::SDL_JOYHATMOTION</span> =&gt; {
                 <span class="kw">let</span> <span class="ident">joy</span>: <span class="ident">JoystickEvent</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">event</span>.<span class="ident">jhat</span> }.<span class="ident">into</span>();
-                <span class="self">self</span>.<span class="ident">joystick_event_handlers</span>.<span class="ident">call_handlers</span>(<span class="ident">joy</span>);
+                <span class="self">self</span>.<span class="ident">joystick_event_handlers</span>.<span class="ident">call_handlers</span>(<span class="kw-2">&amp;</span><span class="ident">joy</span>);
             }
             <span class="ident">bind::SDL_AUDIODEVICEADDED</span> <span class="op">|</span> <span class="ident">bind::SDL_AUDIODEVICEREMOVED</span> =&gt; {
                 <span class="kw">let</span> <span class="ident">audio</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">event</span>.<span class="ident">adevice</span> }.<span class="ident">into</span>();
-                <span class="self">self</span>.<span class="ident">audio_device_event_handlers</span>.<span class="ident">call_handlers</span>(<span class="ident">audio</span>);
+                <span class="self">self</span>.<span class="ident">audio_device_event_handlers</span>.<span class="ident">call_handlers</span>(<span class="kw-2">&amp;</span><span class="ident">audio</span>);
             }
             <span class="ident">bind::SDL_DROPFILE</span>
             <span class="op">|</span> <span class="ident">bind::SDL_DROPTEXT</span>
             <span class="op">|</span> <span class="ident">bind::SDL_DROPBEGIN</span>
             <span class="op">|</span> <span class="ident">bind::SDL_DROPCOMPLETE</span> =&gt; {
                 <span class="kw">let</span> <span class="ident">drop</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">event</span>.<span class="ident">drop</span> }.<span class="ident">into</span>();
-                <span class="self">self</span>.<span class="ident">drop_event_handlers</span>.<span class="ident">call_handlers</span>(<span class="ident">drop</span>);
+                <span class="self">self</span>.<span class="ident">drop_event_handlers</span>.<span class="ident">call_handlers</span>(<span class="kw-2">&amp;</span><span class="ident">drop</span>);
             }
             <span class="ident">bind::SDL_MULTIGESTURE</span> =&gt; {
                 <span class="kw">let</span> <span class="ident">gesture</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">event</span>.<span class="ident">mgesture</span> }.<span class="ident">into</span>();
-                <span class="self">self</span>.<span class="ident">gesture_event_handlers</span>.<span class="ident">call_handlers</span>(<span class="ident">gesture</span>);
+                <span class="self">self</span>.<span class="ident">gesture_event_handlers</span>.<span class="ident">call_handlers</span>(<span class="kw-2">&amp;</span><span class="ident">gesture</span>);
             }
             <span class="ident">bind::SDL_DOLLARGESTURE</span> =&gt; {
                 <span class="kw">let</span> <span class="ident">gesture</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">event</span>.<span class="ident">dgesture</span> }.<span class="ident">into</span>();
-                <span class="self">self</span>.<span class="ident">gesture_event_handlers</span>.<span class="ident">call_handlers</span>(<span class="ident">gesture</span>);
+                <span class="self">self</span>.<span class="ident">gesture_event_handlers</span>.<span class="ident">call_handlers</span>(<span class="kw-2">&amp;</span><span class="ident">gesture</span>);
             }
             <span class="kw">_</span> =&gt; {}
         }

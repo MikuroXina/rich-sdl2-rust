@@ -152,6 +152,27 @@
 <span id="146">146</span>
 <span id="147">147</span>
 <span id="148">148</span>
+<span id="149">149</span>
+<span id="150">150</span>
+<span id="151">151</span>
+<span id="152">152</span>
+<span id="153">153</span>
+<span id="154">154</span>
+<span id="155">155</span>
+<span id="156">156</span>
+<span id="157">157</span>
+<span id="158">158</span>
+<span id="159">159</span>
+<span id="160">160</span>
+<span id="161">161</span>
+<span id="162">162</span>
+<span id="163">163</span>
+<span id="164">164</span>
+<span id="165">165</span>
+<span id="166">166</span>
+<span id="167">167</span>
+<span id="168">168</span>
+<span id="169">169</span>
 </pre><pre class="rust"><code><span class="doccomment">//! An audio buffer `AudioBuffer&lt;T&gt;` with a format, sample rates, numbers of channels and a buffer.</span>
 <span class="doccomment">//! It can be convert into another format and mix by the specified volume.</span>
 
@@ -179,6 +200,7 @@
     <span class="doccomment">/// # Panics</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// Panics if the size of type `T` does not equal to the format bit size.</span>
+    <span class="attribute">#[<span class="ident">must_use</span>]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">format</span>: <span class="ident">AudioFormat</span>, <span class="ident">samples</span>: <span class="ident">u32</span>, <span class="ident">channels</span>: <span class="ident">u8</span>, <span class="ident">buffer</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>) -&gt; <span class="self">Self</span> {
         <span class="macro">assert_eq!</span>(<span class="ident">format</span>.<span class="ident">bit_size</span> <span class="kw">as</span> <span class="ident">usize</span>, <span class="ident">std::mem::size_of</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>() <span class="op">*</span> <span class="number">8</span>);
         <span class="self">Self</span> {
@@ -195,16 +217,22 @@
     }
 
     <span class="doccomment">/// Returns the sample rates of the audio buffer.</span>
+    <span class="attribute">#[<span class="ident">must_use</span>]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">samples</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">u32</span> {
         <span class="self">self</span>.<span class="ident">samples</span>
     }
 
     <span class="doccomment">/// Returns the numbers of channels of the audio buffer.</span>
+    <span class="attribute">#[<span class="ident">must_use</span>]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">channels</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">u8</span> {
         <span class="self">self</span>.<span class="ident">channels</span>
     }
 
     <span class="doccomment">/// Convert into another `AudioBuffer` with different format, sample rate or channels.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// # Errors</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// Returns `Err` if failed to convert into a specific format.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">convert</span><span class="op">&lt;</span><span class="ident">U</span>: <span class="ident">Default</span> <span class="op">+</span> <span class="ident">Clone</span><span class="op">&gt;</span>(
         <span class="self">self</span>,
         <span class="ident">format</span>: <span class="ident">AudioFormat</span>,
@@ -222,6 +250,10 @@
     }
 
     <span class="doccomment">/// Convert and write into another existing `AudioBuffer`.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// # Errors</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// Returns `Err` if failed to convert between `self` and `other`.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">convert_in</span><span class="op">&lt;</span><span class="ident">U</span>: <span class="ident">Default</span> <span class="op">+</span> <span class="ident">Clone</span><span class="op">&gt;</span>(<span class="self">self</span>, <span class="ident">other</span>: <span class="kw-2">&amp;mut</span> <span class="ident">AudioBuffer</span><span class="op">&lt;</span><span class="ident">U</span><span class="op">&gt;</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">cvt</span> <span class="op">=</span> <span class="ident">MaybeUninit::uninit</span>();
         <span class="kw">let</span> <span class="ident">ret</span> <span class="op">=</span> <span class="kw">unsafe</span> {
@@ -252,7 +284,7 @@
             .<span class="ident">buffer</span>
             .<span class="ident">resize</span>(<span class="ident">len</span> <span class="op">*</span> <span class="ident">cvt</span>.<span class="ident">len_mult</span> <span class="kw">as</span> <span class="ident">usize</span>, <span class="ident">U::default</span>());
         <span class="ident">cvt</span>.<span class="ident">buf</span> <span class="op">=</span> <span class="ident">as_u8_slice_mut</span>(<span class="kw-2">&amp;mut</span> <span class="ident">other</span>.<span class="ident">buffer</span>).<span class="ident">as_mut_ptr</span>();
-        <span class="kw">let</span> <span class="ident">ret</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">bind::SDL_ConvertAudio</span>(<span class="kw-2">&amp;mut</span> <span class="ident">cvt</span> <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="kw">_</span>) };
+        <span class="kw">let</span> <span class="ident">ret</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">bind::SDL_ConvertAudio</span>(<span class="kw-2">&amp;mut</span> <span class="ident">cvt</span>) };
         <span class="kw">if</span> <span class="ident">ret</span> <span class="op">&lt;</span> <span class="number">0</span> {
             <span class="prelude-val">Err</span>(<span class="ident">SdlError::Others</span> { <span class="ident">msg</span>: <span class="ident">Sdl::error</span>() })
         } <span class="kw">else</span> {
@@ -265,17 +297,26 @@
     <span class="doccomment">/// Mix into another `AudioBuffer` with the specified `volume`.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// The max value of `volume` is `128`, saturating if it is over the max.</span>
+    <span class="attribute">#[<span class="ident">must_use</span>]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">mix</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">volume</span>: <span class="ident">u8</span>) -&gt; <span class="self">Self</span> {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">dst</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">clone</span>();
-        <span class="self">self</span>.<span class="ident">mix_in</span>(<span class="kw-2">&amp;mut</span> <span class="ident">dst</span>, <span class="ident">volume</span>);
+        <span class="self">self</span>.<span class="ident">mix_in</span>(<span class="kw-2">&amp;mut</span> <span class="ident">dst</span>, <span class="ident">volume</span>).<span class="ident">unwrap</span>();
         <span class="ident">dst</span>
     }
 
     <span class="doccomment">/// Mix into another existing `AudioBuffer` with the specified `volume`.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// The max value of `volume` is `128`, saturating if it is over the max.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">mix_in</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">dst</span>: <span class="kw-2">&amp;mut</span> <span class="self">Self</span>, <span class="ident">volume</span>: <span class="ident">u8</span>) {
-        <span class="macro">assert_eq!</span>(<span class="self">self</span>.<span class="ident">format</span>.<span class="ident">as_raw</span>(), <span class="ident">dst</span>.<span class="ident">format</span>.<span class="ident">as_raw</span>());
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// # Errors</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// Return `Err` if the formats of `self` and `dst` are different.</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">mix_in</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">dst</span>: <span class="kw-2">&amp;mut</span> <span class="self">Self</span>, <span class="ident">volume</span>: <span class="ident">u8</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
+        <span class="kw">if</span> <span class="self">self</span>.<span class="ident">format</span>.<span class="ident">as_raw</span>() <span class="op">!</span><span class="op">=</span> <span class="ident">dst</span>.<span class="ident">format</span>.<span class="ident">as_raw</span>() {
+            <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">SdlError::Others</span> {
+                <span class="ident">msg</span>: <span class="string">&quot;Cannot mix in buffers which have different format&quot;</span>.<span class="ident">into</span>(),
+            });
+        }
         <span class="ident">dst</span>.<span class="ident">buffer</span>.<span class="ident">clear</span>();
         <span class="ident">dst</span>.<span class="ident">buffer</span>.<span class="ident">resize</span>(<span class="self">self</span>.<span class="ident">buffer</span>.<span class="ident">len</span>(), <span class="ident">T::default</span>());
         <span class="kw">let</span> <span class="ident">len</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">buffer</span>.<span class="ident">len</span>() <span class="op">*</span> <span class="ident">std::mem::size_of</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>();
@@ -286,8 +327,9 @@
                 <span class="self">self</span>.<span class="ident">format</span>.<span class="ident">as_raw</span>(),
                 <span class="ident">len</span> <span class="kw">as</span> <span class="ident">u32</span>,
                 <span class="ident">volume</span>.<span class="ident">min</span>(<span class="ident">bind::SDL_MIX_MAXVOLUME</span> <span class="kw">as</span> <span class="ident">u8</span>) <span class="kw">as</span> <span class="ident">c_int</span>,
-            )
+            );
         }
+        <span class="prelude-val">Ok</span>(())
     }
 }
 

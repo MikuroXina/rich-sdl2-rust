@@ -93,6 +93,17 @@
 <span id="87">87</span>
 <span id="88">88</span>
 <span id="89">89</span>
+<span id="90">90</span>
+<span id="91">91</span>
+<span id="92">92</span>
+<span id="93">93</span>
+<span id="94">94</span>
+<span id="95">95</span>
+<span id="96">96</span>
+<span id="97">97</span>
+<span id="98">98</span>
+<span id="99">99</span>
+<span id="100">100</span>
 </pre><pre class="rust"><code><span class="doccomment">//! Controls touch devices, fingers, and gestures.</span>
 
 <span class="kw">use</span> <span class="ident">static_assertions::assert_not_impl_all</span>;
@@ -118,18 +129,22 @@
 
 <span class="kw">impl</span> <span class="ident">TouchFinger</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span> {
     <span class="doccomment">/// Returns the id of the finger.</span>
+    <span class="attribute">#[<span class="ident">must_use</span>]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">id</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">i64</span> {
         <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">ptr</span>.<span class="ident">as_ref</span>() }.<span class="ident">id</span>
     }
     <span class="doccomment">/// Returns the x pos of the finger.</span>
+    <span class="attribute">#[<span class="ident">must_use</span>]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">x</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">f32</span> {
         <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">ptr</span>.<span class="ident">as_ref</span>() }.<span class="ident">x</span>
     }
     <span class="doccomment">/// Returns the y pos of the finger.</span>
+    <span class="attribute">#[<span class="ident">must_use</span>]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">y</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">f32</span> {
         <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">ptr</span>.<span class="ident">as_ref</span>() }.<span class="ident">y</span>
     }
     <span class="doccomment">/// Returns the pressures of the finger.</span>
+    <span class="attribute">#[<span class="ident">must_use</span>]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">pressure</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">f32</span> {
         <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">ptr</span>.<span class="ident">as_ref</span>() }.<span class="ident">pressure</span>
     }
@@ -143,6 +158,7 @@
 
 <span class="kw">impl</span> <span class="ident">TouchDevice</span> {
     <span class="doccomment">/// Setup the system and recognize all touch devices.</span>
+    <span class="attribute">#[<span class="ident">must_use</span>]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">all_devices</span>() -&gt; <span class="ident">Vec</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="ident">num</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">bind::SDL_GetNumTouchDevices</span>() };
         (<span class="number">0</span>..<span class="ident">num</span>)
@@ -154,15 +170,17 @@
     }
 
     <span class="doccomment">/// Starts to record the gesture. After invoking this and record, then an event [`gesture::GestureEvent::DollarRecord`] will occur. Please handle the event.</span>
+    <span class="attribute">#[<span class="ident">must_use</span>]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">record</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
         <span class="kw">unsafe</span> { <span class="ident">bind::SDL_RecordGesture</span>(<span class="self">self</span>.<span class="number">0</span>) <span class="op">==</span> <span class="number">1</span> }
     }
 
     <span class="doccomment">/// Returns all the touching fingers.</span>
+    <span class="attribute">#[<span class="ident">must_use</span>]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">touch_fingers</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">TouchFinger</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="ident">num</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">bind::SDL_GetNumTouchFingers</span>(<span class="self">self</span>.<span class="number">0</span>) };
         (<span class="number">0</span>..<span class="ident">num</span>)
-            .<span class="ident">flat_map</span>(<span class="op">|</span><span class="ident">index</span><span class="op">|</span> {
+            .<span class="ident">filter_map</span>(<span class="op">|</span><span class="ident">index</span><span class="op">|</span> {
                 <span class="kw">let</span> <span class="ident">ptr</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">bind::SDL_GetTouchFinger</span>(<span class="self">self</span>.<span class="number">0</span>, <span class="ident">index</span>) };
                 (<span class="op">!</span><span class="ident">ptr</span>.<span class="ident">is_null</span>()).<span class="ident">then</span>(<span class="op">|</span><span class="op">|</span> <span class="ident">TouchFinger</span> {
                     <span class="ident">ptr</span>: <span class="ident">NonNull::new</span>(<span class="ident">ptr</span>).<span class="ident">unwrap</span>(),
@@ -172,7 +190,11 @@
             .<span class="ident">collect</span>()
     }
 
-    <span class="doccomment">/// Loads $1 template from `src` and returns the numbers of loaded templates, or `Err` on failure.</span>
+    <span class="doccomment">/// Loads $1 template from `src` and returns the numbers of loaded templates.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// # Errors</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// Returns `Err` if failed to load template data from `src`.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">load_dollar_templates</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">src</span>: <span class="kw-2">&amp;</span><span class="ident">RwOps</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="ident">ret</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">bind::SDL_LoadDollarTemplates</span>(<span class="self">self</span>.<span class="number">0</span>, <span class="ident">src</span>.<span class="ident">ptr</span>().<span class="ident">as_ptr</span>()) };
         <span class="kw">if</span> <span class="ident">ret</span> <span class="op">&lt;</span><span class="op">=</span> <span class="number">0</span> {

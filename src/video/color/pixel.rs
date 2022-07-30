@@ -16,12 +16,14 @@ pub mod ty;
 
 /// A simple pixel that can convert into `u32`.
 #[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord)]
+#[must_use]
 pub struct Pixel {
     pixel: u32,
 }
 
 impl Pixel {
     /// Convert into `u32`.
+    #[must_use]
     pub fn as_u32(self) -> u32 {
         self.pixel
     }
@@ -65,7 +67,11 @@ impl std::fmt::Debug for PixelFormat {
 assert_not_impl_all!(PixelFormat: Send, Sync);
 
 impl PixelFormat {
-    /// Constructs a pixel format from [`PixelFormatKind`], or `Err` on failure.
+    /// Constructs a pixel format from [`PixelFormatKind`].
+    ///
+    /// # Errors
+    ///
+    /// Returns `Err` if failed to allocate the memory for the format, or construct the format.
     pub fn new(kind: PixelFormatKind) -> Result<Self> {
         NonNull::new(unsafe { bind::SDL_AllocFormat(kind.as_raw()) }).map_or_else(
             || {
@@ -81,21 +87,25 @@ impl PixelFormat {
     }
 
     /// Returns the kind of the format.
+    #[must_use]
     pub fn kind(&self) -> PixelFormatKind {
         PixelFormatKind::from_raw(unsafe { self.format.as_ref() }.format as EnumInt)
     }
 
     /// Returns the bits per pixel of the format.
+    #[must_use]
     pub fn bits_per_pixel(&self) -> u8 {
         unsafe { self.format.as_ref() }.BitsPerPixel
     }
 
     /// Returns the bytes per pixel of the format.
+    #[must_use]
     pub fn bytes_per_pixel(&self) -> u8 {
         unsafe { self.format.as_ref() }.BytesPerPixel
     }
 
     /// Returns the property of the format.
+    #[must_use]
     pub fn property(&self) -> PixelFormatProperty {
         let raw = unsafe { self.format.as_ref() };
         NonNull::new(raw.palette).map_or_else(
@@ -128,10 +138,10 @@ impl PixelFormat {
             bind::SDL_GetRGB(
                 pixel,
                 self.format.as_ptr(),
-                &mut rgb.r as *mut _,
-                &mut rgb.g as *mut _,
-                &mut rgb.b as *mut _,
-            )
+                &mut rgb.r,
+                &mut rgb.g,
+                &mut rgb.b,
+            );
         }
         rgb
     }
@@ -148,17 +158,17 @@ impl PixelFormat {
             bind::SDL_GetRGBA(
                 pixel,
                 self.format.as_ptr(),
-                &mut rgba.r as *mut _,
-                &mut rgba.g as *mut _,
-                &mut rgba.b as *mut _,
-                &mut rgba.a as *mut _,
-            )
+                &mut rgba.r,
+                &mut rgba.g,
+                &mut rgba.b,
+                &mut rgba.a,
+            );
         }
         rgba
     }
 
     /// Overwrites the palette with a new [`Palette`].
-    pub fn set_palette(&self, palette: Palette) {
+    pub fn set_palette(&self, palette: &Palette) {
         let ret =
             unsafe { bind::SDL_SetPixelFormatPalette(self.format.as_ptr(), palette.as_ptr()) };
         if ret != 0 {

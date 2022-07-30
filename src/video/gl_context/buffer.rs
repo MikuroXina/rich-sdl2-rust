@@ -16,6 +16,10 @@ pub enum IntervalKind {
 /// An extension for [`GlContext`] to add methods for control buffers.
 pub trait BufferExt {
     /// Sets the interval mode of swapping buffers.
+    ///
+    /// # Errors
+    ///
+    /// Returns `Err` if the feature swapping them is unsupported.
     fn set_swap_interval(&self, interval_kind: IntervalKind) -> Result<()>;
 
     /// Swaps buffers immediately.

@@ -15,11 +15,13 @@ pub struct Pen<'renderer> {
 
 impl<'renderer> Pen<'renderer> {
     /// Constructs a pen from the renderer [`Renderer`].
+    #[must_use]
     pub fn new(renderer: &'renderer Renderer) -> Self {
         Self { renderer }
     }
 
     /// Returns the renderer that the pen is drawing.
+    #[must_use]
     pub fn renderer(&self) -> &Renderer {
         self.renderer
     }
@@ -40,9 +42,9 @@ impl<'renderer> Pen<'renderer> {
         let ret = unsafe {
             bind::SDL_GetRenderDrawColor(
                 self.renderer.as_ptr(),
-                &mut r as *mut _,
-                &mut g as *mut _,
-                &mut b as *mut _,
+                &mut r,
+                &mut g,
+                &mut b,
                 std::ptr::null_mut(),
             )
         };
@@ -63,8 +65,7 @@ impl<'renderer> Pen<'renderer> {
     /// Returns the current color blend mode.
     pub fn blend_mode(&self) -> BlendMode {
         let mut raw = 0;
-        let ret =
-            unsafe { bind::SDL_GetRenderDrawBlendMode(self.renderer.as_ptr(), &mut raw as *mut _) };
+        let ret = unsafe { bind::SDL_GetRenderDrawBlendMode(self.renderer.as_ptr(), &mut raw) };
         if ret != 0 {
             Sdl::error_then_panic("Getting renderer blend mode")
         }
@@ -97,7 +98,7 @@ impl<'renderer> Pen<'renderer> {
 
     /// Draws the lines.
     pub fn lines(&self, points: impl IntoIterator<Item = Point>) {
-        let points: Vec<_> = points.into_iter().map(|p| p.into()).collect();
+        let points: Vec<_> = points.into_iter().map(Into::into).collect();
         let ret = unsafe {
             bind::SDL_RenderDrawLines(self.renderer.as_ptr(), points.as_ptr(), points.len() as i32)
         };
@@ -116,7 +117,7 @@ impl<'renderer> Pen<'renderer> {
 
     /// Draw the points.
     pub fn points(&self, points: impl IntoIterator<Item = Point>) {
-        let points: Vec<_> = points.into_iter().map(|p| p.into()).collect();
+        let points: Vec<_> = points.into_iter().map(Into::into).collect();
         let ret = unsafe {
             bind::SDL_RenderDrawPoints(self.renderer.as_ptr(), points.as_ptr(), points.len() as i32)
         };
@@ -127,8 +128,7 @@ impl<'renderer> Pen<'renderer> {
 
     /// Draw the rectangle only lines.
     pub fn stroke_rect(&self, rect: Rect) {
-        let ret =
-            unsafe { bind::SDL_RenderDrawRect(self.renderer.as_ptr(), &rect.into() as *const _) };
+        let ret = unsafe { bind::SDL_RenderDrawRect(self.renderer.as_ptr(), &rect.into()) };
         if ret != 0 {
             Sdl::error_then_panic("Sdl pen rect")
         }
@@ -136,7 +136,7 @@ impl<'renderer> Pen<'renderer> {
 
     /// Draw the rectangles only lines.
     pub fn stroke_rects(&self, rects: impl IntoIterator<Item = Rect>) {
-        let rects: Vec<_> = rects.into_iter().map(|r| r.into()).collect();
+        let rects: Vec<_> = rects.into_iter().map(Into::into).collect();
         let ret = unsafe {
             bind::SDL_RenderDrawRects(self.renderer.as_ptr(), rects.as_ptr(), rects.len() as i32)
         };
@@ -147,8 +147,7 @@ impl<'renderer> Pen<'renderer> {
 
     /// Draw the filled rectangle.
     pub fn fill_rect(&self, rect: Rect) {
-        let ret =
-            unsafe { bind::SDL_RenderFillRect(self.renderer.as_ptr(), &rect.into() as *const _) };
+        let ret = unsafe { bind::SDL_RenderFillRect(self.renderer.as_ptr(), &rect.into()) };
         if ret != 0 {
             Sdl::error_then_panic("Sdl pen rect")
         }
@@ -156,7 +155,7 @@ impl<'renderer> Pen<'renderer> {
 
     /// Draw the filled rectangles.
     pub fn fill_rects(&self, rects: impl IntoIterator<Item = Rect>) {
-        let rects: Vec<_> = rects.into_iter().map(|r| r.into()).collect();
+        let rects: Vec<_> = rects.into_iter().map(Into::into).collect();
         let ret = unsafe {
             bind::SDL_RenderFillRects(self.renderer.as_ptr(), rects.as_ptr(), rects.len() as i32)
         };

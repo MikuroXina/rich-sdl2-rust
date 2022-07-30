@@ -52,11 +52,6 @@
 <span id="46">46</span>
 <span id="47">47</span>
 <span id="48">48</span>
-<span id="49">49</span>
-<span id="50">50</span>
-<span id="51">51</span>
-<span id="52">52</span>
-<span id="53">53</span>
 </pre><pre class="rust"><code><span class="doccomment">//! Trackballs for a physical joystick.</span>
 
 <span class="kw">use</span> <span class="ident">std::os::raw::c_int</span>;
@@ -85,12 +80,7 @@
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">delta</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">Point</span> {
         <span class="kw">let</span> (<span class="kw-2">mut</span> <span class="ident">dx</span>, <span class="kw-2">mut</span> <span class="ident">dy</span>): (<span class="ident">c_int</span>, <span class="ident">c_int</span>) <span class="op">=</span> (<span class="number">0</span>, <span class="number">0</span>);
         <span class="kw">let</span> <span class="ident">ret</span> <span class="op">=</span> <span class="kw">unsafe</span> {
-            <span class="ident">bind::SDL_JoystickGetBall</span>(
-                <span class="self">self</span>.<span class="ident">joystick</span>.<span class="ident">ptr</span>.<span class="ident">as_ptr</span>(),
-                <span class="self">self</span>.<span class="ident">index</span>,
-                <span class="kw-2">&amp;mut</span> <span class="ident">dx</span> <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="kw">_</span>,
-                <span class="kw-2">&amp;mut</span> <span class="ident">dy</span> <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="kw">_</span>,
-            )
+            <span class="ident">bind::SDL_JoystickGetBall</span>(<span class="self">self</span>.<span class="ident">joystick</span>.<span class="ident">ptr</span>.<span class="ident">as_ptr</span>(), <span class="self">self</span>.<span class="ident">index</span>, <span class="kw-2">&amp;mut</span> <span class="ident">dx</span>, <span class="kw-2">&amp;mut</span> <span class="ident">dy</span>)
         };
         <span class="macro">debug_assert_eq!</span>(<span class="ident">ret</span>, <span class="number">0</span>);
         <span class="ident">Point</span> { <span class="ident">x</span>: <span class="ident">dx</span>, <span class="ident">y</span>: <span class="ident">dy</span> }

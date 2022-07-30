@@ -48,6 +48,7 @@ impl<'video> Display<'video> {
     }
 
     /// Returns the bounds of the display if available.
+    #[must_use]
     pub fn bounds(&self) -> Option<Rect> {
         let mut raw_rect = MaybeUninit::uninit();
         let ret = unsafe { bind::SDL_GetDisplayBounds(self.index, raw_rect.as_mut_ptr()) };
@@ -55,6 +56,7 @@ impl<'video> Display<'video> {
     }
 
     /// Returns the usable bounds of the display if available.
+    #[must_use]
     pub fn usable_bounds(&self) -> Option<Rect> {
         let mut raw_rect = MaybeUninit::uninit();
         let ret = unsafe { bind::SDL_GetDisplayUsableBounds(self.index, raw_rect.as_mut_ptr()) };
@@ -62,6 +64,7 @@ impl<'video> Display<'video> {
     }
 
     /// Returns the dpi information [`Dpi`] if available.
+    #[must_use]
     pub fn dpi(&self) -> Option<Dpi> {
         let mut dpi = Dpi {
             ddpi: 0.0,
@@ -69,18 +72,14 @@ impl<'video> Display<'video> {
             vdpi: 0.0,
         };
         let ret = unsafe {
-            bind::SDL_GetDisplayDPI(
-                self.index,
-                &mut dpi.ddpi as *mut _,
-                &mut dpi.hdpi as *mut _,
-                &mut dpi.vdpi as *mut _,
-            )
+            bind::SDL_GetDisplayDPI(self.index, &mut dpi.ddpi, &mut dpi.hdpi, &mut dpi.vdpi)
         };
 
         (ret == 0).then(|| dpi)
     }
 
     /// Returns the name of the display.
+    #[must_use]
     pub fn name(&self) -> &str {
         let raw_str = unsafe { bind::SDL_GetDisplayName(self.index) };
         unsafe { CStr::from_ptr(raw_str) }
@@ -89,6 +88,7 @@ impl<'video> Display<'video> {
     }
 
     /// Returns the modes supported by the display.
+    #[must_use]
     pub fn modes(&self) -> Vec<Mode> {
         let ret = unsafe { bind::SDL_GetNumDisplayModes(self.index) };
         if ret < 0 {
@@ -106,6 +106,7 @@ impl<'video> Display<'video> {
     }
 
     /// Returns the current mode of the display.
+    #[must_use]
     pub fn current_mode(&self) -> Mode {
         let mut raw = MaybeUninit::uninit();
         let ret = unsafe { bind::SDL_GetCurrentDisplayMode(self.index, raw.as_mut_ptr()) };
@@ -115,6 +116,7 @@ impl<'video> Display<'video> {
     }
 
     /// Returns the original mode of the display.
+    #[must_use]
     pub fn original_mode(&self) -> Mode {
         let mut raw = MaybeUninit::uninit();
         let ret = unsafe { bind::SDL_GetDesktopDisplayMode(self.index, raw.as_mut_ptr()) };

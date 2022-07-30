@@ -20,6 +20,7 @@ assert_not_impl_all!(ScreenSaver: Send, Sync);
 
 impl<'video> ScreenSaver<'video> {
     /// Constructs and starts a screen saver.
+    #[must_use]
     pub fn new(_: &'video Video) -> Self {
         unsafe { bind::SDL_EnableScreenSaver() }
         Self {

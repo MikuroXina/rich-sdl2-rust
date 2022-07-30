@@ -32,6 +32,7 @@ assert_not_impl_all!(GameController: Send, Sync);
 
 impl GameController {
     /// Returns the string of all mapping `GameController` holds.
+    #[must_use]
     pub fn mapping(&self) -> String {
         let ptr = unsafe { bind::SDL_GameControllerMapping(self.ptr.as_ptr()) };
         let cstr = unsafe { CStr::from_ptr(ptr) };
@@ -41,6 +42,7 @@ impl GameController {
     }
 
     /// Returns the name of the game controller.
+    #[must_use]
     pub fn name(&self) -> String {
         let ptr = unsafe { bind::SDL_GameControllerName(self.ptr.as_ptr()) };
         if ptr.is_null() {
@@ -51,6 +53,7 @@ impl GameController {
     }
 
     /// Returns the bind for an axis if exists.
+    #[must_use]
     pub fn bind_for_axis(&self, axis: Axis) -> Option<MapInput> {
         let ret =
             unsafe { bind::SDL_GameControllerGetBindForAxis(self.ptr.as_ptr(), axis.as_raw()) };
@@ -58,6 +61,7 @@ impl GameController {
     }
 
     /// Returns the bind for a button if exists.
+    #[must_use]
     pub fn bind_for_button(&self, button: Button) -> Option<MapInput> {
         let ret =
             unsafe { bind::SDL_GameControllerGetBindForButton(self.ptr.as_ptr(), button.as_raw()) };
@@ -73,6 +77,7 @@ pub struct GameControllerSet {
 
 impl GameControllerSet {
     /// Constructs and initializes the system and recognizes controllers.
+    #[must_use]
     pub fn new() -> Self {
         let num_controls = unsafe {
             bind::SDL_InitSubSystem(bind::SDL_INIT_JOYSTICK);
@@ -89,7 +94,11 @@ impl GameControllerSet {
         Self { controls }
     }
 
-    /// Applies mapping string, or returns `Err` on failure.
+    /// Applies mapping string.
+    ///
+    /// # Errors
+    ///
+    /// Returns `Err` if failed to apply the mapping `string`.
     pub fn add_mapping(string: &str) -> Result<bool> {
         let cstr = CString::new(string).expect("string must not be empty");
         let ret = unsafe { bind::SDL_GameControllerAddMapping(cstr.as_ptr()) };
@@ -101,6 +110,14 @@ impl GameControllerSet {
     }
 
     /// Applies mapping file, or returns `Err` on failure.
+    ///
+    /// # Errors
+    ///
+    /// Returns `Err` if failed to open the mapping file, or it contains invalid mapping data.
+    ///
+    /// # Panics
+    ///
+    /// Panics if `file_name` contains a null character.
     pub fn add_mapping_from_file(file_name: &str) -> Result<u32> {
         let cstr = CString::new(file_name).expect("string must not be empty");
         let read_binary_mode = CStr::from_bytes_with_nul(b"rb\0").unwrap();
@@ -118,6 +135,7 @@ impl GameControllerSet {
     }
 
     /// Returns the `GameController` list.
+    #[must_use]
     pub fn controllers(&self) -> &[GameController] {
         &self.controls
     }

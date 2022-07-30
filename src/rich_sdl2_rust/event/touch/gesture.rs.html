@@ -115,6 +115,14 @@
 <span id="109">109</span>
 <span id="110">110</span>
 <span id="111">111</span>
+<span id="112">112</span>
+<span id="113">113</span>
+<span id="114">114</span>
+<span id="115">115</span>
+<span id="116">116</span>
+<span id="117">117</span>
+<span id="118">118</span>
+<span id="119">119</span>
 </pre><pre class="rust"><code><span class="doccomment">//! Gesture controller and events.</span>
 
 <span class="kw">use</span> <span class="ident">std::marker::PhantomData</span>;
@@ -128,7 +136,11 @@
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Gesture</span>(<span class="ident">bind::SDL_GestureID</span>);
 
 <span class="kw">impl</span> <span class="ident">Gesture</span> {
-    <span class="doccomment">/// Saves all gestures into `dst` and returns the numbers of succeed to write, or `Err` on failure</span>
+    <span class="doccomment">/// Saves all gestures into `dst` and returns the numbers of succeed to write.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// # Errors</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// Returns `Err` if failed to save all the template data.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">save_dollar_template_all</span>(<span class="ident">dst</span>: <span class="kw-2">&amp;</span><span class="ident">RwOps</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="ident">ret</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">bind::SDL_SaveAllDollarTemplates</span>(<span class="ident">dst</span>.<span class="ident">ptr</span>().<span class="ident">as_ptr</span>()) };
         <span class="kw">if</span> <span class="ident">ret</span> <span class="op">==</span> <span class="number">0</span> {
@@ -138,7 +150,11 @@
         }
     }
 
-    <span class="doccomment">/// Saves gesture into `dst` and returns the numbers of succeed to write, or `Err` on failure</span>
+    <span class="doccomment">/// Saves gesture into `dst` and returns the numbers of succeed to write.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// # Errors</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// Returns `Err` if failed to save a template data.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">save_dollar_template</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">dst</span>: <span class="kw-2">&amp;</span><span class="ident">RwOps</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="ident">ret</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">bind::SDL_SaveDollarTemplate</span>(<span class="self">self</span>.<span class="number">0</span>, <span class="ident">dst</span>.<span class="ident">ptr</span>().<span class="ident">as_ptr</span>()) };
         <span class="kw">if</span> <span class="ident">ret</span> <span class="op">==</span> <span class="number">0</span> {

@@ -6,6 +6,7 @@ use super::info::RendererInfo;
 use crate::bind;
 
 /// Returns the list of render driver information.
+#[must_use]
 pub fn drivers() -> Vec<RendererInfo> {
     let num = unsafe {
         bind::SDL_InitSubSystem(bind::SDL_INIT_VIDEO);

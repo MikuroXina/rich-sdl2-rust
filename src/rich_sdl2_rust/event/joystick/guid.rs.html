@@ -82,6 +82,7 @@
 <span id="76">76</span>
 <span id="77">77</span>
 <span id="78">78</span>
+<span id="79">79</span>
 </pre><pre class="rust"><code><span class="doccomment">//! The GUID of joystick devices.</span>
 
 <span class="kw">use</span> <span class="ident">std</span>::{
@@ -97,6 +98,7 @@
 
 <span class="kw">impl</span> <span class="ident">Guid</span> {
     <span class="doccomment">/// Returns mapping string for the game controller having the GUID.</span>
+    <span class="attribute">#[<span class="ident">must_use</span>]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">mapping</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">String</span> {
         <span class="kw">let</span> <span class="ident">ptr</span> <span class="op">=</span> <span class="kw">unsafe</span> {
             <span class="ident">bind::SDL_GameControllerMappingForGUID</span>(<span class="ident">bind::SDL_JoystickGUID</span> { <span class="ident">data</span>: <span class="self">self</span>.<span class="number">0</span> })
@@ -116,7 +118,7 @@
                 <span class="ident">bind::SDL_JoystickGUID</span> { <span class="ident">data</span>: <span class="self">self</span>.<span class="number">0</span> },
                 <span class="ident">buf</span>.<span class="ident">as_mut_ptr</span>().<span class="ident">cast</span>(),
                 <span class="ident">buf</span>.<span class="ident">len</span>() <span class="kw">as</span> <span class="ident">c_int</span>,
-            )
+            );
         }
         <span class="macro">write!</span>(<span class="ident">f</span>, <span class="string">&quot;{}&quot;</span>, <span class="ident">String::from_utf8_lossy</span>(<span class="kw-2">&amp;</span><span class="ident">buf</span>))
     }

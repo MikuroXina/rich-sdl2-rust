@@ -105,7 +105,7 @@
 <span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">bind</span>, <span class="ident">EnumInt</span>};
 
 <span class="doccomment">/// A type in a bitmap pixel format.</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">Copy</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>)]</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">Copy</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>, <span class="ident">Hash</span>)]</span>
 <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">BitmapPixelType</span> {
     <span class="doccomment">/// An 1 bit index of the palette with 2 colors.</span>
     <span class="ident">Index1</span>,
@@ -116,7 +116,7 @@
 }
 
 <span class="kw">impl</span> <span class="ident">BitmapPixelType</span> {
-    <span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn</span> <span class="ident">as_raw</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">u32</span> {
+    <span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn</span> <span class="ident">as_raw</span>(<span class="self">self</span>) -&gt; <span class="ident">u32</span> {
         (<span class="kw">match</span> <span class="self">self</span> {
             <span class="ident">BitmapPixelType::Index1</span> =&gt; <span class="ident">bind::SDL_PIXELTYPE_INDEX1</span>,
             <span class="ident">BitmapPixelType::Index4</span> =&gt; <span class="ident">bind::SDL_PIXELTYPE_INDEX4</span>,
@@ -124,7 +124,7 @@
         }) <span class="kw">as</span> <span class="ident">u32</span>
     }
 
-    <span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn</span> <span class="ident">bits_per_pixel</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">u32</span> {
+    <span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn</span> <span class="ident">bits_per_pixel</span>(<span class="self">self</span>) -&gt; <span class="ident">u32</span> {
         <span class="kw">match</span> <span class="self">self</span> {
             <span class="ident">BitmapPixelType::Index1</span> =&gt; <span class="number">1</span>,
             <span class="ident">BitmapPixelType::Index4</span> =&gt; <span class="number">4</span>,
@@ -132,7 +132,7 @@
         }
     }
 
-    <span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn</span> <span class="ident">bytes_per_pixel</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">u32</span> {
+    <span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn</span> <span class="ident">bytes_per_pixel</span>(<span class="self">self</span>) -&gt; <span class="ident">u32</span> {
         <span class="kw">if</span> <span class="kw">let</span> <span class="ident">BitmapPixelType::Index8</span> <span class="op">=</span> <span class="self">self</span> {
             <span class="number">1</span>
         } <span class="kw">else</span> {
@@ -142,7 +142,7 @@
 }
 
 <span class="doccomment">/// A type in a packed pixel format.</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">Copy</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>)]</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">Copy</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>, <span class="ident">Hash</span>)]</span>
 <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">PackedPixelType</span> {
     <span class="doccomment">/// An unsigned 8 bits.</span>
     <span class="ident">_8</span>,
@@ -153,7 +153,7 @@
 }
 
 <span class="kw">impl</span> <span class="ident">PackedPixelType</span> {
-    <span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn</span> <span class="ident">as_raw</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">u32</span> {
+    <span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn</span> <span class="ident">as_raw</span>(<span class="self">self</span>) -&gt; <span class="ident">u32</span> {
         (<span class="kw">match</span> <span class="self">self</span> {
             <span class="ident">PackedPixelType::_8</span> =&gt; <span class="ident">bind::SDL_PIXELTYPE_PACKED8</span>,
             <span class="ident">PackedPixelType::_16</span> =&gt; <span class="ident">bind::SDL_PIXELTYPE_PACKED16</span>,
@@ -161,7 +161,7 @@
         }) <span class="kw">as</span> <span class="ident">u32</span>
     }
 
-    <span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn</span> <span class="ident">bytes_per_pixel</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">u32</span> {
+    <span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn</span> <span class="ident">bytes_per_pixel</span>(<span class="self">self</span>) -&gt; <span class="ident">u32</span> {
         <span class="kw">match</span> <span class="self">self</span> {
             <span class="ident">PackedPixelType::_8</span> =&gt; <span class="number">1</span>,
             <span class="ident">PackedPixelType::_16</span> =&gt; <span class="number">2</span>,
@@ -171,7 +171,7 @@
 }
 
 <span class="doccomment">/// A type in a pixel array format.</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">Copy</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>)]</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">Copy</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>, <span class="ident">Hash</span>)]</span>
 <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">ArrayPixelType</span> {
     <span class="doccomment">/// A type of array is `u8`.</span>
     <span class="ident">U8</span>,
@@ -186,7 +186,7 @@
 }
 
 <span class="kw">impl</span> <span class="ident">ArrayPixelType</span> {
-    <span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn</span> <span class="ident">as_raw</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">u32</span> {
+    <span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn</span> <span class="ident">as_raw</span>(<span class="self">self</span>) -&gt; <span class="ident">u32</span> {
         (<span class="kw">match</span> <span class="self">self</span> {
             <span class="ident">ArrayPixelType::U8</span> =&gt; <span class="ident">bind::SDL_PIXELTYPE_ARRAYU8</span>,
             <span class="ident">ArrayPixelType::U16</span> =&gt; <span class="ident">bind::SDL_PIXELTYPE_ARRAYU16</span>,

@@ -30,9 +30,9 @@ impl<'texture> Lock<'texture> {
         let ret = unsafe {
             bind::SDL_LockTexture(
                 texture.as_ptr(),
-                area.map_or(std::ptr::null(), |area| &area.into() as *const _),
-                &mut pixels as *mut _,
-                &mut pitch as *mut _,
+                area.map_or(std::ptr::null(), |area| &area.into()),
+                &mut pixels,
+                &mut pitch,
             )
         };
         if ret != 0 {
@@ -49,6 +49,7 @@ impl<'texture> Lock<'texture> {
     }
 
     /// Returns bytes of the pixels.
+    #[must_use]
     pub fn as_bytes(&self) -> &[u8] {
         unsafe { std::slice::from_raw_parts(self.pixels.as_ptr().cast(), self.len) }
     }

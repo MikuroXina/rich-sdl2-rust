@@ -50,6 +50,10 @@
 <span id="44">44</span>
 <span id="45">45</span>
 <span id="46">46</span>
+<span id="47">47</span>
+<span id="48">48</span>
+<span id="49">49</span>
+<span id="50">50</span>
 </pre><pre class="rust"><code><span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">bind</span>, <span class="prelude-ty">Result</span>};
 
 <span class="kw">use</span> <span class="ident"><span class="kw">super</span>::Window</span>;
@@ -70,6 +74,10 @@
 <span class="doccomment">/// An extension for [`Window`] to query border widths.</span>
 <span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">BorderExt</span> {
     <span class="doccomment">/// Returns the border widths of the window.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// # Errors</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// Returns `Err` if querying them is unsupported.</span>
     <span class="kw">fn</span> <span class="ident">border_widths</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">BorderWidths</span><span class="op">&gt;</span>;
 }
 
@@ -79,10 +87,10 @@
         <span class="kw">let</span> <span class="ident">ret</span> <span class="op">=</span> <span class="kw">unsafe</span> {
             <span class="ident">bind::SDL_GetWindowBordersSize</span>(
                 <span class="self">self</span>.<span class="ident">as_ptr</span>(),
-                <span class="kw-2">&amp;mut</span> <span class="ident">top</span> <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="kw">_</span>,
-                <span class="kw-2">&amp;mut</span> <span class="ident">left</span> <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="kw">_</span>,
-                <span class="kw-2">&amp;mut</span> <span class="ident">bottom</span> <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="kw">_</span>,
-                <span class="kw-2">&amp;mut</span> <span class="ident">right</span> <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="kw">_</span>,
+                <span class="kw-2">&amp;mut</span> <span class="ident">top</span>,
+                <span class="kw-2">&amp;mut</span> <span class="ident">left</span>,
+                <span class="kw-2">&amp;mut</span> <span class="ident">bottom</span>,
+                <span class="kw-2">&amp;mut</span> <span class="ident">right</span>,
             )
         };
         <span class="kw">if</span> <span class="ident">ret</span> <span class="op">!</span><span class="op">=</span> <span class="number">0</span> {

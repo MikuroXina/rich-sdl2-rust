@@ -226,6 +226,15 @@
 <span id="220">220</span>
 <span id="221">221</span>
 <span id="222">222</span>
+<span id="223">223</span>
+<span id="224">224</span>
+<span id="225">225</span>
+<span id="226">226</span>
+<span id="227">227</span>
+<span id="228">228</span>
+<span id="229">229</span>
+<span id="230">230</span>
+<span id="231">231</span>
 </pre><pre class="rust"><code><span class="doccomment">//! Provides audio device control, configuration, wav format utilities and so on.</span>
 
 <span class="kw">use</span> <span class="ident">static_assertions::assert_not_impl_all</span>;
@@ -320,6 +329,10 @@
 
     <span class="doccomment">/// Opens the audio device named `device` with the specification and fallback flag.</span>
     <span class="doccomment">/// If device is `None`, the default audio device is used.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// # Errors</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// Returns `Err` if failed to open a specific speaker device.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">open</span><span class="op">&lt;</span><span class="lifetime">&#39;callback</span>, <span class="ident">T</span>: <span class="ident">AudioCallback</span><span class="op">&lt;</span><span class="lifetime">&#39;callback</span><span class="op">&gt;</span><span class="op">&gt;</span>(
         <span class="ident">device</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>,
         <span class="ident">spec</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;callback</span> <span class="ident">AudioSpec</span><span class="op">&lt;</span><span class="lifetime">&#39;callback</span>, <span class="ident">T</span><span class="op">&gt;</span>,
@@ -372,6 +385,10 @@
 
     <span class="doccomment">/// Opens the audio device named `device` with the specification and fallback flag.</span>
     <span class="doccomment">/// If device is `None`, the default audio device is used.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// # Errors</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// Returns `Err` if failed to open a specific microphone device.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">open</span><span class="op">&lt;</span><span class="lifetime">&#39;callback</span>, <span class="ident">T</span>: <span class="ident">AudioCallback</span><span class="op">&lt;</span><span class="lifetime">&#39;callback</span><span class="op">&gt;</span><span class="op">&gt;</span>(
         <span class="ident">device</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>,
         <span class="ident">spec</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;callback</span> <span class="ident">AudioSpec</span><span class="op">&lt;</span><span class="lifetime">&#39;callback</span>, <span class="ident">T</span><span class="op">&gt;</span>,
@@ -395,6 +412,7 @@
 }
 
 <span class="doccomment">/// Returns the device name of the id `device_id`. Please set `is_microphone` according to what type you want to.</span>
+<span class="attribute">#[<span class="ident">must_use</span>]</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">device_name</span>(<span class="ident">device_id</span>: <span class="ident">u32</span>, <span class="ident">is_microphone</span>: <span class="ident">bool</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span> {
     <span class="kw">let</span> <span class="ident">ptr</span> <span class="op">=</span> <span class="kw">unsafe</span> {
         <span class="ident">bind::SDL_GetAudioDeviceName</span>(<span class="ident">device_id</span> <span class="kw">as</span> <span class="ident">i32</span>, <span class="kw">if</span> <span class="ident">is_microphone</span> { <span class="number">1</span> } <span class="kw">else</span> { <span class="number">0</span> })

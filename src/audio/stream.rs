@@ -20,7 +20,11 @@ impl std::fmt::Debug for AudioStream {
 
 impl AudioStream {
     /// Constructs a stream from two audio buffers.
-    pub fn new<T, U>(src: AudioBuffer<T>, dst: AudioBuffer<U>) -> Result<Self> {
+    ///
+    /// # Errors
+    ///
+    /// Returns `Err` if failed to create a new audio stream.
+    pub fn new<T, U>(src: &AudioBuffer<T>, dst: &AudioBuffer<U>) -> Result<Self> {
         let ptr = unsafe {
             bind::SDL_NewAudioStream(
                 src.format().as_raw(),
@@ -46,6 +50,7 @@ impl AudioStream {
     }
 
     /// Returns the available length of the stream in bytes.
+    #[must_use]
     pub fn available_bytes_len(&self) -> usize {
         unsafe { bind::SDL_AudioStreamAvailable(self.ptr.as_ptr()) as usize }
     }

@@ -54,6 +54,7 @@
 <span id="48">48</span>
 <span id="49">49</span>
 <span id="50">50</span>
+<span id="51">51</span>
 </pre><pre class="rust"><code><span class="doccomment">//! Definitions of key modification codes.</span>
 
 <span class="kw">use</span> <span class="ident">bitflags::bitflags</span>;
@@ -100,6 +101,7 @@
 
 <span class="kw">impl</span> <span class="ident">KeyMod</span> {
     <span class="doccomment">/// Returns the current modification status on the keyboard.</span>
+    <span class="attribute">#[<span class="ident">must_use</span>]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">current</span>() -&gt; <span class="self">Self</span> {
         <span class="ident"><span class="self">Self</span>::from_bits</span>(<span class="kw">unsafe</span> { <span class="ident">bind::SDL_GetModState</span>() } <span class="kw">as</span> <span class="ident">u16</span>).<span class="ident">unwrap</span>()
     }

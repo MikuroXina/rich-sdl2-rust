@@ -61,11 +61,6 @@
 <span id="55">55</span>
 <span id="56">56</span>
 <span id="57">57</span>
-<span id="58">58</span>
-<span id="59">59</span>
-<span id="60">60</span>
-<span id="61">61</span>
-<span id="62">62</span>
 </pre><pre class="rust"><code><span class="doccomment">//! System power monitoring.</span>
 
 <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::bind</span>;
@@ -87,13 +82,12 @@
 
 <span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">bind::SDL_PowerState</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">PowerState</span> {
     <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">raw</span>: <span class="ident">bind::SDL_PowerState</span>) -&gt; <span class="self">Self</span> {
-        <span class="kw">use</span> <span class="ident">PowerState</span>::<span class="kw-2">*</span>;
         <span class="kw">match</span> <span class="ident">raw</span> {
-            <span class="ident">bind::SDL_POWERSTATE_UNKNOWN</span> =&gt; <span class="ident">Unknown</span>,
-            <span class="ident">bind::SDL_POWERSTATE_ON_BATTERY</span> =&gt; <span class="ident">OnBattery</span>,
-            <span class="ident">bind::SDL_POWERSTATE_NO_BATTERY</span> =&gt; <span class="ident">NoBattery</span>,
-            <span class="ident">bind::SDL_POWERSTATE_CHARGING</span> =&gt; <span class="ident">Charging</span>,
-            <span class="ident">bind::SDL_POWERSTATE_CHARGED</span> =&gt; <span class="ident">Charged</span>,
+            <span class="ident">bind::SDL_POWERSTATE_UNKNOWN</span> =&gt; <span class="ident">PowerState::Unknown</span>,
+            <span class="ident">bind::SDL_POWERSTATE_ON_BATTERY</span> =&gt; <span class="ident">PowerState::OnBattery</span>,
+            <span class="ident">bind::SDL_POWERSTATE_NO_BATTERY</span> =&gt; <span class="ident">PowerState::NoBattery</span>,
+            <span class="ident">bind::SDL_POWERSTATE_CHARGING</span> =&gt; <span class="ident">PowerState::Charging</span>,
+            <span class="ident">bind::SDL_POWERSTATE_CHARGED</span> =&gt; <span class="ident">PowerState::Charged</span>,
             <span class="kw">_</span> =&gt; <span class="macro">unreachable!</span>(),
         }
     }
@@ -112,15 +106,11 @@
 
 <span class="kw">impl</span> <span class="ident">PowerInfo</span> {
     <span class="doccomment">/// Returns a power information at now.</span>
+    <span class="attribute">#[<span class="ident">must_use</span>]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">now</span>() -&gt; <span class="self">Self</span> {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">remaining_seconds</span> <span class="op">=</span> <span class="number">0</span>;
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">remaining_ratio</span> <span class="op">=</span> <span class="number">0</span>;
-        <span class="kw">let</span> <span class="ident">state</span> <span class="op">=</span> <span class="kw">unsafe</span> {
-            <span class="ident">bind::SDL_GetPowerInfo</span>(
-                <span class="kw-2">&amp;mut</span> <span class="ident">remaining_seconds</span> <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="kw">_</span>,
-                <span class="kw-2">&amp;mut</span> <span class="ident">remaining_ratio</span> <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="kw">_</span>,
-            )
-        };
+        <span class="kw">let</span> <span class="ident">state</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">bind::SDL_GetPowerInfo</span>(<span class="kw-2">&amp;mut</span> <span class="ident">remaining_seconds</span>, <span class="kw-2">&amp;mut</span> <span class="ident">remaining_ratio</span>) };
         <span class="self">Self</span> {
             <span class="ident">state</span>: <span class="ident">state</span>.<span class="ident">into</span>(),
             <span class="ident">remaining_seconds</span>: (<span class="number">0</span> <span class="op">&lt;</span><span class="op">=</span> <span class="ident">remaining_seconds</span>).<span class="ident">then</span>(<span class="op">|</span><span class="op">|</span> <span class="ident">remaining_seconds</span> <span class="kw">as</span> <span class="kw">_</span>),

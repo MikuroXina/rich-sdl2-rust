@@ -50,10 +50,6 @@
 <span id="44">44</span>
 <span id="45">45</span>
 <span id="46">46</span>
-<span id="47">47</span>
-<span id="48">48</span>
-<span id="49">49</span>
-<span id="50">50</span>
 </pre><pre class="rust"><code><span class="doccomment">//! Metal API support in SDL2.</span>
 
 <span class="kw">use</span> <span class="ident">std</span>::{<span class="ident">ffi::c_void</span>, <span class="ident">ptr::NonNull</span>};
@@ -68,6 +64,7 @@
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;window</span><span class="op">&gt;</span> <span class="ident">MetalView</span><span class="op">&lt;</span><span class="lifetime">&#39;window</span><span class="op">&gt;</span> {
     <span class="doccomment">/// Constructs a Metal view.</span>
+    <span class="attribute">#[<span class="ident">must_use</span>]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">window</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;window</span> <span class="ident">Window</span><span class="op">&lt;</span><span class="lifetime">&#39;window</span><span class="op">&gt;</span>) -&gt; <span class="self">Self</span> {
         <span class="kw">let</span> <span class="ident">ptr</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">bind::SDL_Metal_CreateView</span>(<span class="ident">window</span>.<span class="ident">as_ptr</span>()) };
         <span class="self">Self</span> {
@@ -77,6 +74,7 @@
     }
 
     <span class="doccomment">/// Returns the raw pointer `CAMetalLayer` from the view.</span>
+    <span class="attribute">#[<span class="ident">must_use</span>]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">metal_layer</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">*mut</span> <span class="ident">c_void</span> {
         <span class="kw">unsafe</span> { <span class="ident">bind::SDL_Metal_GetLayer</span>(<span class="self">self</span>.<span class="ident">ptr</span>.<span class="ident">as_ptr</span>()) }
     }
@@ -85,13 +83,7 @@
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">drawable_size</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">Size</span> {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">width</span> <span class="op">=</span> <span class="number">0</span>;
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">height</span> <span class="op">=</span> <span class="number">0</span>;
-        <span class="kw">unsafe</span> {
-            <span class="ident">bind::SDL_Metal_GetDrawableSize</span>(
-                <span class="self">self</span>.<span class="ident">window</span>.<span class="ident">as_ptr</span>(),
-                <span class="kw-2">&amp;mut</span> <span class="ident">width</span> <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="kw">_</span>,
-                <span class="kw-2">&amp;mut</span> <span class="ident">height</span> <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="kw">_</span>,
-            )
-        }
+        <span class="kw">unsafe</span> { <span class="ident">bind::SDL_Metal_GetDrawableSize</span>(<span class="self">self</span>.<span class="ident">window</span>.<span class="ident">as_ptr</span>(), <span class="kw-2">&amp;mut</span> <span class="ident">width</span>, <span class="kw-2">&amp;mut</span> <span class="ident">height</span>) }
         <span class="ident">Size</span> {
             <span class="ident">width</span>: <span class="ident">width</span> <span class="kw">as</span> <span class="kw">_</span>,
             <span class="ident">height</span>: <span class="ident">height</span> <span class="kw">as</span> <span class="kw">_</span>,

@@ -46,6 +46,7 @@
 <span id="40">40</span>
 <span id="41">41</span>
 <span id="42">42</span>
+<span id="43">43</span>
 </pre><pre class="rust"><code><span class="doccomment">//! Axes for a physical joystick.</span>
 
 <span class="kw">use</span> <span class="ident">std::os::raw::c_int</span>;
@@ -70,6 +71,7 @@
     }
 
     <span class="doccomment">/// Returns the state of axis.</span>
+    <span class="attribute">#[<span class="ident">must_use</span>]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">state</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">i16</span> {
         <span class="kw">unsafe</span> { <span class="ident">bind::SDL_JoystickGetAxis</span>(<span class="self">self</span>.<span class="ident">joystick</span>.<span class="ident">ptr</span>.<span class="ident">as_ptr</span>(), <span class="self">self</span>.<span class="ident">index</span>) }
     }

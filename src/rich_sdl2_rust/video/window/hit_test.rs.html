@@ -102,11 +102,16 @@
 <span id="96">96</span>
 <span id="97">97</span>
 <span id="98">98</span>
+<span id="99">99</span>
+<span id="100">100</span>
+<span id="101">101</span>
+<span id="102">102</span>
 </pre><pre class="rust"><code><span class="kw">use</span> <span class="ident">static_assertions::assert_not_impl_all</span>;
 <span class="kw">use</span> <span class="ident">std</span>::{
     <span class="ident">cell</span>::{<span class="ident">Cell</span>, <span class="ident">RefCell</span>},
     <span class="ident">collections::HashMap</span>,
     <span class="ident">ffi::c_void</span>,
+    <span class="ident">ptr::addr_of_mut</span>,
 };
 
 <span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">bind</span>, <span class="ident">geo::Point</span>, <span class="prelude-ty">Result</span>};
@@ -140,18 +145,17 @@
 
 <span class="kw">impl</span> <span class="ident">HitTestResult</span> {
     <span class="kw">fn</span> <span class="ident">into_arg</span>(<span class="self">self</span>) -&gt; <span class="ident">bind::SDL_HitTestResult</span> {
-        <span class="kw">use</span> <span class="ident">HitTestResult</span>::<span class="kw-2">*</span>;
         <span class="kw">match</span> <span class="self">self</span> {
-            <span class="ident">Normal</span> =&gt; <span class="ident">bind::SDL_HITTEST_NORMAL</span>,
-            <span class="ident">Draggable</span> =&gt; <span class="ident">bind::SDL_HITTEST_DRAGGABLE</span>,
-            <span class="ident">ResizeTopLeft</span> =&gt; <span class="ident">bind::SDL_HITTEST_RESIZE_TOPLEFT</span>,
-            <span class="ident">ResizeTop</span> =&gt; <span class="ident">bind::SDL_HITTEST_RESIZE_TOP</span>,
-            <span class="ident">ResizeTopRight</span> =&gt; <span class="ident">bind::SDL_HITTEST_RESIZE_TOPRIGHT</span>,
-            <span class="ident">ResizeRight</span> =&gt; <span class="ident">bind::SDL_HITTEST_RESIZE_RIGHT</span>,
-            <span class="ident">ResizeBottomRight</span> =&gt; <span class="ident">bind::SDL_HITTEST_RESIZE_BOTTOMRIGHT</span>,
-            <span class="ident">ResizeBottom</span> =&gt; <span class="ident">bind::SDL_HITTEST_RESIZE_BOTTOM</span>,
-            <span class="ident">ResizeBottomLeft</span> =&gt; <span class="ident">bind::SDL_HITTEST_RESIZE_BOTTOMLEFT</span>,
-            <span class="ident">ResizeLeft</span> =&gt; <span class="ident">bind::SDL_HITTEST_RESIZE_LEFT</span>,
+            <span class="ident">HitTestResult::Normal</span> =&gt; <span class="ident">bind::SDL_HITTEST_NORMAL</span>,
+            <span class="ident">HitTestResult::Draggable</span> =&gt; <span class="ident">bind::SDL_HITTEST_DRAGGABLE</span>,
+            <span class="ident">HitTestResult::ResizeTopLeft</span> =&gt; <span class="ident">bind::SDL_HITTEST_RESIZE_TOPLEFT</span>,
+            <span class="ident">HitTestResult::ResizeTop</span> =&gt; <span class="ident">bind::SDL_HITTEST_RESIZE_TOP</span>,
+            <span class="ident">HitTestResult::ResizeTopRight</span> =&gt; <span class="ident">bind::SDL_HITTEST_RESIZE_TOPRIGHT</span>,
+            <span class="ident">HitTestResult::ResizeRight</span> =&gt; <span class="ident">bind::SDL_HITTEST_RESIZE_RIGHT</span>,
+            <span class="ident">HitTestResult::ResizeBottomRight</span> =&gt; <span class="ident">bind::SDL_HITTEST_RESIZE_BOTTOMRIGHT</span>,
+            <span class="ident">HitTestResult::ResizeBottom</span> =&gt; <span class="ident">bind::SDL_HITTEST_RESIZE_BOTTOM</span>,
+            <span class="ident">HitTestResult::ResizeBottomLeft</span> =&gt; <span class="ident">bind::SDL_HITTEST_RESIZE_BOTTOMLEFT</span>,
+            <span class="ident">HitTestResult::ResizeLeft</span> =&gt; <span class="ident">bind::SDL_HITTEST_RESIZE_LEFT</span>,
         }
     }
 }
@@ -168,8 +172,12 @@
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;window</span>, <span class="ident">T</span>: <span class="ident">HitTester</span><span class="op">&lt;</span><span class="lifetime">&#39;window</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="ident">HitTest</span><span class="op">&lt;</span><span class="lifetime">&#39;window</span>, <span class="ident">T</span><span class="op">&gt;</span> {
     <span class="doccomment">/// Constructs a hit test from the window and a callback.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// # Errors</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// Returns `Err` if a hit test in the window is unsupported.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">window</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;window</span> <span class="ident">Window</span><span class="op">&lt;</span><span class="lifetime">&#39;window</span><span class="op">&gt;</span>, <span class="kw-2">mut</span> <span class="ident">tester</span>: <span class="ident">T</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="ident">data</span> <span class="op">=</span> <span class="kw-2">&amp;mut</span> <span class="ident">tester</span> <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="ident">T</span>;
+        <span class="kw">let</span> <span class="ident">data</span> <span class="op">=</span> <span class="macro">addr_of_mut!</span>(<span class="ident">tester</span>);
         <span class="kw">let</span> <span class="ident">ret</span> <span class="op">=</span> <span class="kw">unsafe</span> {
             <span class="ident">bind::SDL_SetWindowHitTest</span>(
                 <span class="ident">window</span>.<span class="ident">as_ptr</span>(),
@@ -177,10 +185,10 @@
                 <span class="ident">data</span>.<span class="ident">cast</span>(),
             )
         };
-        <span class="kw">if</span> <span class="ident">ret</span> <span class="op">!</span><span class="op">=</span> <span class="number">0</span> {
-            <span class="prelude-val">Err</span>(<span class="ident"><span class="kw">crate</span>::SdlError::UnsupportedFeature</span>)
-        } <span class="kw">else</span> {
+        <span class="kw">if</span> <span class="ident">ret</span> <span class="op">==</span> <span class="number">0</span> {
             <span class="prelude-val">Ok</span>(<span class="self">Self</span> { <span class="ident">window</span>, <span class="ident">tester</span> })
+        } <span class="kw">else</span> {
+            <span class="prelude-val">Err</span>(<span class="ident"><span class="kw">crate</span>::SdlError::UnsupportedFeature</span>)
         }
     }
 }
@@ -197,7 +205,7 @@
     <span class="ident">area</span>: <span class="kw-2">*const</span> <span class="ident">bind::SDL_Point</span>,
     <span class="ident">data</span>: <span class="kw-2">*mut</span> <span class="ident">c_void</span>,
 ) -&gt; <span class="ident">bind::SDL_HitTestResult</span> {
-    <span class="kw">let</span> <span class="ident">callback</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="kw-2">&amp;mut</span> <span class="kw-2">*</span>(<span class="ident">data</span> <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="ident">T</span>) };
+    <span class="kw">let</span> <span class="ident">callback</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="kw-2">&amp;mut</span> <span class="kw-2">*</span><span class="ident">data</span>.<span class="ident">cast</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>() };
     <span class="ident">callback</span>((<span class="kw-2">*</span><span class="ident">area</span>).<span class="ident">into</span>()).<span class="ident">into_arg</span>()
 }
 </code></pre></div>

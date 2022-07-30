@@ -72,6 +72,7 @@
 <span id="66">66</span>
 <span id="67">67</span>
 <span id="68">68</span>
+<span id="69">69</span>
 </pre><pre class="rust"><code><span class="doccomment">//! RLE (Run-Length Encoding) acceleration for a [`Surface`].</span>
 
 <span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">bind</span>, <span class="ident">Sdl</span>};
@@ -115,6 +116,7 @@
     }
 
     <span class="doccomment">/// Returns the raw pixels data.</span>
+    <span class="attribute">#[<span class="ident">must_use</span>]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">pixels</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>[<span class="ident">u8</span>] {
         <span class="kw">let</span> <span class="ident">surface</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">src</span>.<span class="ident">surface</span>.<span class="ident">as_ptr</span>().<span class="ident">as_ref</span>() };
         <span class="kw">let</span> <span class="ident">len</span> <span class="op">=</span> <span class="ident">surface</span>.<span class="ident">h</span> <span class="kw">as</span> <span class="ident">usize</span> <span class="op">*</span> <span class="ident">surface</span>.<span class="ident">pitch</span> <span class="kw">as</span> <span class="ident">usize</span>;

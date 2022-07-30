@@ -227,6 +227,31 @@
 <span id="221">221</span>
 <span id="222">222</span>
 <span id="223">223</span>
+<span id="224">224</span>
+<span id="225">225</span>
+<span id="226">226</span>
+<span id="227">227</span>
+<span id="228">228</span>
+<span id="229">229</span>
+<span id="230">230</span>
+<span id="231">231</span>
+<span id="232">232</span>
+<span id="233">233</span>
+<span id="234">234</span>
+<span id="235">235</span>
+<span id="236">236</span>
+<span id="237">237</span>
+<span id="238">238</span>
+<span id="239">239</span>
+<span id="240">240</span>
+<span id="241">241</span>
+<span id="242">242</span>
+<span id="243">243</span>
+<span id="244">244</span>
+<span id="245">245</span>
+<span id="246">246</span>
+<span id="247">247</span>
+<span id="248">248</span>
 </pre><pre class="rust"><code><span class="kw">use</span> <span class="ident">std</span>::{
     <span class="ident">ffi::CString</span>,
     <span class="ident">io</span>::{<span class="self">self</span>, <span class="ident">Seek</span>},
@@ -261,11 +286,20 @@
     <span class="doccomment">/// # Safety</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// Dereferencing the pointer and using the field is not recommended. Please use carefully.</span>
+    <span class="attribute">#[<span class="ident">must_use</span>]</span>
     <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">ptr</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">NonNull</span><span class="op">&lt;</span><span class="ident">bind::SDL_RWops</span><span class="op">&gt;</span> {
         <span class="self">self</span>.<span class="ident">ptr</span>
     }
 
-    <span class="doccomment">/// Constructs from file name with the open mode, or `Err` on failure.</span>
+    <span class="doccomment">/// Constructs from file name with the open mode.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// # Panics</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// Panics if `file_name` was empty.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// # Errors</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// Returns `Err` if failed to open the file with `mode`.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">from_file</span>(<span class="ident">file_name</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>, <span class="ident">mode</span>: <span class="ident">OpenMode</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">RwOps</span><span class="op">&lt;</span><span class="lifetime">&#39;static</span><span class="op">&gt;</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="ident">cstr</span> <span class="op">=</span> <span class="ident">CString::new</span>(<span class="ident">file_name</span>).<span class="ident">expect</span>(<span class="string">&quot;file_name must not be empty&quot;</span>);
         <span class="kw">let</span> <span class="ident">ptr</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">bind::SDL_RWFromFile</span>(<span class="ident">cstr</span>.<span class="ident">as_ptr</span>(), <span class="ident">mode</span>.<span class="ident">into_raw</span>().<span class="ident">as_ptr</span>()) };
@@ -279,7 +313,11 @@
         }
     }
 
-    <span class="doccomment">/// Constructs from the buffer `&amp;[u8]`, or `Err` on failure.</span>
+    <span class="doccomment">/// Constructs from the buffer `&amp;[u8]`.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// # Errors</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// Returns `Err` if failed to make it a read-only memory buffer.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">from_mem</span>(<span class="ident">buf</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> [<span class="ident">u8</span>]) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="ident">ptr</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">bind::SDL_RWFromConstMem</span>(<span class="ident">buf</span>.<span class="ident">as_ptr</span>().<span class="ident">cast</span>(), <span class="ident">buf</span>.<span class="ident">len</span>() <span class="kw">as</span> <span class="ident">c_int</span>) };
         <span class="kw">if</span> <span class="ident">ptr</span>.<span class="ident">is_null</span>() {
@@ -292,7 +330,11 @@
         }
     }
 
-    <span class="doccomment">/// Constructs from the mutable buffer `&amp;mut [u8]`, or `Err` on failure.</span>
+    <span class="doccomment">/// Constructs from the mutable buffer `&amp;mut [u8]`.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// # Errors</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// Returns `Err` if failed to make it a read-write memory buffer.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">from_mem_mut</span>(<span class="ident">buf</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="kw-2">mut</span> [<span class="ident">u8</span>]) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="ident">ptr</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">bind::SDL_RWFromMem</span>(<span class="ident">buf</span>.<span class="ident">as_mut_ptr</span>().<span class="ident">cast</span>(), <span class="ident">buf</span>.<span class="ident">len</span>() <span class="kw">as</span> <span class="ident">c_int</span>) };
         <span class="kw">if</span> <span class="ident">ptr</span>.<span class="ident">is_null</span>() {
@@ -306,6 +348,10 @@
     }
 
     <span class="doccomment">/// Returns the size of the read/write target.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// # Errors</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// Returns `Err` if failed to get the size of buffer.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">size</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="ident">ret</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">bind::SDL_RWsize</span>(<span class="self">self</span>.<span class="ident">ptr</span>.<span class="ident">as_ptr</span>()) };
         <span class="kw">if</span> <span class="ident">ret</span> <span class="op">&lt;</span> <span class="number">0</span> {
@@ -316,6 +362,10 @@
     }
 
     <span class="doccomment">/// Returns the current position of seeking.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// # Errors</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// Returns `Err` if failed to seek to get the current position.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">tell</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">u64</span><span class="op">&gt;</span> {
         <span class="self">self</span>.<span class="ident">seek</span>(<span class="ident">io::SeekFrom::Current</span>(<span class="number">0</span>))
     }

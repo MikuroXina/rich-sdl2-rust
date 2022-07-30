@@ -110,6 +110,11 @@
 <span id="104">104</span>
 <span id="105">105</span>
 <span id="106">106</span>
+<span id="107">107</span>
+<span id="108">108</span>
+<span id="109">109</span>
+<span id="110">110</span>
+<span id="111">111</span>
 </pre><pre class="rust"><code><span class="doccomment">//! Geometry structures such as [`Point`], [`Size`], [`Rect`] and so on.</span>
 
 <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::bind</span>;
@@ -120,6 +125,7 @@
 
 <span class="doccomment">/// A point of the cartesian coordinate system.</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Default</span>, <span class="ident">Clone</span>, <span class="ident">Copy</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>, <span class="ident">PartialOrd</span>, <span class="ident">Ord</span>)]</span>
+<span class="attribute">#[<span class="ident">must_use</span>]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Point</span> {
     <span class="doccomment">/// An x coordinate of the point.</span>
     <span class="kw">pub</span> <span class="ident">x</span>: <span class="ident">i32</span>,
@@ -156,6 +162,7 @@
     }
 
     <span class="doccomment">/// Returns whether the point is in the rectangle.</span>
+    <span class="attribute">#[<span class="ident">must_use</span>]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_in</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">rect</span>: <span class="ident">Rect</span>) -&gt; <span class="ident">bool</span> {
         <span class="kw">let</span> <span class="ident">bottom_right</span> <span class="op">=</span> <span class="ident">rect</span>.<span class="ident">bottom_right</span>();
         <span class="ident">rect</span>.<span class="ident">up_left</span>.<span class="ident">x</span> <span class="op">&lt;</span><span class="op">=</span> <span class="self">self</span>.<span class="ident">x</span>
@@ -167,6 +174,7 @@
 
 <span class="doccomment">/// A geometry size representation.</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">Copy</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>, <span class="ident">PartialOrd</span>, <span class="ident">Ord</span>)]</span>
+<span class="attribute">#[<span class="ident">must_use</span>]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Size</span> {
     <span class="doccomment">/// A width of the geometry.</span>
     <span class="kw">pub</span> <span class="ident">width</span>: <span class="ident">u32</span>,
@@ -176,6 +184,7 @@
 
 <span class="doccomment">/// A scale from the normal geometry.</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">Copy</span>, <span class="ident">PartialEq</span>, <span class="ident">PartialOrd</span>)]</span>
+<span class="attribute">#[<span class="ident">must_use</span>]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Scale</span> {
     <span class="doccomment">/// A horizontal scale, normalized.</span>
     <span class="kw">pub</span> <span class="ident">horizontal</span>: <span class="ident">f32</span>,
@@ -194,6 +203,7 @@
 
 <span class="doccomment">/// A straight line from point to point.</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">Copy</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>, <span class="ident">PartialOrd</span>, <span class="ident">Ord</span>)]</span>
+<span class="attribute">#[<span class="ident">must_use</span>]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Line</span> {
     <span class="doccomment">/// A start point of the line.</span>
     <span class="kw">pub</span> <span class="ident">start</span>: <span class="ident">Point</span>,
@@ -206,11 +216,11 @@
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">clip_with</span>(<span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">rect</span>: <span class="ident">Rect</span>) -&gt; <span class="self">Self</span> {
         <span class="kw">unsafe</span> {
             <span class="ident">bind::SDL_IntersectRectAndLine</span>(
-                <span class="kw-2">&amp;</span>(<span class="ident">rect</span>.<span class="ident">into</span>()) <span class="kw">as</span> <span class="kw-2">*const</span> <span class="kw">_</span>,
-                <span class="kw-2">&amp;mut</span> <span class="self">self</span>.<span class="ident">start</span>.<span class="ident">x</span> <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="kw">_</span>,
-                <span class="kw-2">&amp;mut</span> <span class="self">self</span>.<span class="ident">start</span>.<span class="ident">y</span> <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="kw">_</span>,
-                <span class="kw-2">&amp;mut</span> <span class="self">self</span>.<span class="ident">end</span>.<span class="ident">x</span> <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="kw">_</span>,
-                <span class="kw-2">&amp;mut</span> <span class="self">self</span>.<span class="ident">end</span>.<span class="ident">y</span> <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="kw">_</span>,
+                <span class="kw-2">&amp;</span>(<span class="ident">rect</span>.<span class="ident">into</span>()),
+                <span class="kw-2">&amp;mut</span> <span class="self">self</span>.<span class="ident">start</span>.<span class="ident">x</span>,
+                <span class="kw-2">&amp;mut</span> <span class="self">self</span>.<span class="ident">start</span>.<span class="ident">y</span>,
+                <span class="kw-2">&amp;mut</span> <span class="self">self</span>.<span class="ident">end</span>.<span class="ident">x</span>,
+                <span class="kw-2">&amp;mut</span> <span class="self">self</span>.<span class="ident">end</span>.<span class="ident">y</span>,
             );
         }
         <span class="self">self</span>

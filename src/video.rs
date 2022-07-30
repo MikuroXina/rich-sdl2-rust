@@ -32,6 +32,7 @@ assert_not_impl_all!(Video: Send, Sync);
 
 impl<'sdl> Video<'sdl> {
     /// Constructs a video controller from a root controller.
+    #[must_use]
     pub fn new(_: &'sdl Sdl) -> Self {
         let ret = unsafe { bind::SDL_InitSubSystem(bind::SDL_INIT_VIDEO) };
         if ret != 0 {
@@ -43,6 +44,7 @@ impl<'sdl> Video<'sdl> {
     }
 
     /// Returns a list of displays.
+    #[must_use]
     pub fn displays(&self) -> Vec<Display> {
         let ret = unsafe { bind::SDL_GetNumVideoDisplays() };
         if ret <= 0 {
@@ -52,6 +54,7 @@ impl<'sdl> Video<'sdl> {
     }
 
     /// Returns the names of the video drivers.
+    #[must_use]
     pub fn video_drivers(&self) -> Vec<&str> {
         let num_drivers = unsafe { bind::SDL_GetNumVideoDrivers() };
         if num_drivers <= 0 {
@@ -68,6 +71,7 @@ impl<'sdl> Video<'sdl> {
     }
 
     /// Returns the name of the current video driver.
+    #[must_use]
     pub fn current_driver(&self) -> &str {
         let raw_str = unsafe { bind::SDL_GetCurrentVideoDriver() };
         unsafe { CStr::from_ptr(raw_str) }
@@ -76,6 +80,7 @@ impl<'sdl> Video<'sdl> {
     }
 
     /// Returns whether the screen keyboard is supported.
+    #[must_use]
     pub fn has_screen_keyboard(&self) -> bool {
         unsafe { bind::SDL_HasScreenKeyboardSupport() != 0 }
     }

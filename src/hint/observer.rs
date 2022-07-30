@@ -20,8 +20,7 @@ pub trait HintCallback<'callback>: FnMut(HintEvent<'callback>) + 'callback {}
 /// An hint update observer.
 pub struct HintObserver<'callback, T: HintCallback<'callback>> {
     key: CString,
-    callback: T,
-    _phantom: PhantomData<&'callback mut ()>,
+    callback: &'callback mut T,
 }
 
 impl<'c, T: HintCallback<'c>> std::fmt::Debug for HintObserver<'c, T> {
@@ -34,33 +33,27 @@ impl<'c, T: HintCallback<'c>> std::fmt::Debug for HintObserver<'c, T> {
 
 impl<'c, T: HintCallback<'c>> HintObserver<'c, T> {
     /// Constructs an observer to observe by the key and callback.
-    pub fn new(key: &str, mut callback: T) -> Self {
+    pub fn new(key: &str, callback: &'c mut T) -> Self {
         let key = CString::new(key).expect("key must not be empty");
-        let data = &mut callback as *mut T;
         unsafe {
             bind::SDL_AddHintCallback(
                 key.as_ptr(),
                 Some(hint_observer_wrap_handler::<T>),
-                data.cast(),
-            )
+                (callback as *mut T).cast(),
+            );
         }
-        Self {
-            key,
-            callback,
-            _phantom: PhantomData,
-        }
+        Self { key, callback }
     }
 }
 
 impl<'c, T: HintCallback<'c>> Drop for HintObserver<'c, T> {
     fn drop(&mut self) {
-        let data = &mut self.callback as *mut T;
         unsafe {
             bind::SDL_DelHintCallback(
                 self.key.as_ptr(),
                 Some(hint_observer_wrap_handler::<T>),
-                data.cast(),
-            )
+                (self.callback as *mut T).cast(),
+            );
         }
     }
 }
@@ -71,7 +64,7 @@ extern "C" fn hint_observer_wrap_handler<'callback, T: HintCallback<'callback>>(
     old_value: *const c_char,
     new_value: *const c_char,
 ) {
-    let callback = unsafe { &mut *(userdata as *mut T) };
+    let callback = unsafe { &mut *userdata.cast::<T>() };
     let name = unsafe { CStr::from_ptr(name) }.to_str().unwrap();
     let old_value = unsafe { CStr::from_ptr(old_value) }.to_str().unwrap();
     let new_value = unsafe { CStr::from_ptr(new_value) }.to_str().unwrap();

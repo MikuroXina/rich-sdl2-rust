@@ -79,7 +79,25 @@
 <span id="73">73</span>
 <span id="74">74</span>
 <span id="75">75</span>
-</pre><pre class="rust"><code><span class="kw">use</span> <span class="ident">std</span>::{<span class="ident">ffi::c_void</span>, <span class="ident">num::NonZeroU32</span>, <span class="ident">ops</span>};
+<span id="76">76</span>
+<span id="77">77</span>
+<span id="78">78</span>
+<span id="79">79</span>
+<span id="80">80</span>
+<span id="81">81</span>
+<span id="82">82</span>
+<span id="83">83</span>
+<span id="84">84</span>
+<span id="85">85</span>
+<span id="86">86</span>
+<span id="87">87</span>
+<span id="88">88</span>
+<span id="89">89</span>
+<span id="90">90</span>
+<span id="91">91</span>
+<span id="92">92</span>
+<span id="93">93</span>
+</pre><pre class="rust"><code><span class="kw">use</span> <span class="ident">std</span>::{<span class="ident">ffi::c_void</span>, <span class="ident">marker::PhantomData</span>, <span class="ident">num::NonZeroU32</span>, <span class="ident">ops</span>, <span class="ident">ptr::addr_of_mut</span>};
 
 <span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">bind</span>, <span class="prelude-ty">Result</span>, <span class="ident">Sdl</span>, <span class="ident">SdlError</span>};
 
@@ -91,12 +109,13 @@
 <span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">TimerCallback</span><span class="op">&lt;</span><span class="lifetime">&#39;callback</span><span class="op">&gt;</span>: <span class="ident">FnMut</span>() -&gt; <span class="ident">u32</span> <span class="op">+</span> <span class="lifetime">&#39;callback</span> {}
 
 <span class="doccomment">/// A timer invokes a [`TimerCallback`] with the interval.</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Timer</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Timer</span><span class="op">&lt;</span><span class="lifetime">&#39;sdl</span>, <span class="ident">T</span><span class="op">&gt;</span> {
     <span class="ident">id</span>: <span class="ident">NonZeroU32</span>,
     <span class="ident">callback</span>: <span class="ident">T</span>,
+    <span class="ident">_phantom</span>: <span class="ident">PhantomData</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;sdl</span> <span class="ident">Sdl</span><span class="op">&gt;</span>,
 }
 
-<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> <span class="ident">std::fmt::Debug</span> <span class="kw">for</span> <span class="ident">Timer</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
+<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> <span class="ident">std::fmt::Debug</span> <span class="kw">for</span> <span class="ident">Timer</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span>, <span class="ident">T</span><span class="op">&gt;</span> {
     <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;mut</span> <span class="ident">std::fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">std::fmt::Result</span> {
         <span class="ident">f</span>.<span class="ident">debug_struct</span>(<span class="string">&quot;Timer&quot;</span>)
             .<span class="ident">field</span>(<span class="string">&quot;id&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">id</span>)
@@ -104,10 +123,21 @@
     }
 }
 
-<span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;callback</span>, <span class="ident">T</span>: <span class="ident">TimerCallback</span><span class="op">&lt;</span><span class="lifetime">&#39;callback</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="ident">Timer</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
+<span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;sdl</span>, <span class="lifetime">&#39;callback</span>, <span class="ident">T</span>: <span class="ident">TimerCallback</span><span class="op">&lt;</span><span class="lifetime">&#39;callback</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="ident">Timer</span><span class="op">&lt;</span><span class="lifetime">&#39;sdl</span>, <span class="ident">T</span><span class="op">&gt;</span> {
     <span class="doccomment">/// Constructs a timer with initial interval and callback.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">interval</span>: <span class="ident">u32</span>, <span class="kw-2">mut</span> <span class="ident">callback</span>: <span class="ident">T</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="ident">data</span> <span class="op">=</span> <span class="kw-2">&amp;mut</span> <span class="ident">callback</span> <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="ident">T</span>;
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// The timing may be inaccurate because of OS scheduling. Make sure to check the current time in your callback.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// # Errors</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// Returns `Err` if failed to create a new timer.</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">sdl</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;sdl</span> <span class="ident">Sdl</span>, <span class="ident">interval</span>: <span class="ident">u32</span>, <span class="kw-2">mut</span> <span class="ident">callback</span>: <span class="ident">T</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
+        <span class="kw">let</span> <span class="ident">ret</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">bind::SDL_InitSubSystem</span>(<span class="ident">bind::SDL_INIT_TIMER</span>) };
+        <span class="kw">if</span> <span class="ident">ret</span> <span class="op">!</span><span class="op">=</span> <span class="number">0</span> {
+            <span class="ident">Sdl::error_then_panic</span>(<span class="string">&quot;Sdl timer&quot;</span>);
+        }
+
+        <span class="kw">let</span> <span class="ident">data</span> <span class="op">=</span> <span class="macro">addr_of_mut!</span>(<span class="ident">callback</span>);
         <span class="kw">let</span> <span class="ident">id</span> <span class="op">=</span>
             <span class="kw">unsafe</span> { <span class="ident">bind::SDL_AddTimer</span>(<span class="ident">interval</span>, <span class="prelude-val">Some</span>(<span class="ident">timer_wrap_handler</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>), <span class="ident">data</span>.<span class="ident">cast</span>()) };
         <span class="kw">if</span> <span class="ident">id</span> <span class="op">==</span> <span class="number">0</span> {
@@ -116,6 +146,7 @@
             <span class="prelude-val">Ok</span>(<span class="self">Self</span> {
                 <span class="ident">id</span>: <span class="kw">unsafe</span> { <span class="ident">NonZeroU32::new_unchecked</span>(<span class="ident">id</span> <span class="kw">as</span> <span class="ident">u32</span>) },
                 <span class="ident">callback</span>,
+                <span class="ident">_phantom</span>: <span class="ident">PhantomData</span>,
             })
         }
     }
@@ -125,13 +156,16 @@
     <span class="kw">_</span>: <span class="ident">u32</span>,
     <span class="ident">param</span>: <span class="kw-2">*mut</span> <span class="ident">c_void</span>,
 ) -&gt; <span class="ident">u32</span> {
-    <span class="kw">let</span> <span class="ident">callback</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="kw-2">&amp;mut</span> <span class="kw-2">*</span>(<span class="ident">param</span> <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="ident">T</span>) };
+    <span class="kw">let</span> <span class="ident">callback</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="kw-2">&amp;mut</span> <span class="kw-2">*</span><span class="ident">param</span>.<span class="ident">cast</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>() };
     <span class="ident">callback</span>()
 }
 
-<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> <span class="ident">Drop</span> <span class="kw">for</span> <span class="ident">Timer</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
+<span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;sdl</span>, <span class="ident">T</span><span class="op">&gt;</span> <span class="ident">Drop</span> <span class="kw">for</span> <span class="ident">Timer</span><span class="op">&lt;</span><span class="lifetime">&#39;sdl</span>, <span class="ident">T</span><span class="op">&gt;</span> {
     <span class="kw">fn</span> <span class="ident">drop</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) {
-        <span class="kw">let</span> <span class="kw">_</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">bind::SDL_RemoveTimer</span>(<span class="self">self</span>.<span class="ident">id</span>.<span class="ident">get</span>() <span class="kw">as</span> <span class="ident">bind::SDL_TimerID</span>) };
+        <span class="kw">unsafe</span> {
+            <span class="kw">let</span> <span class="kw">_</span> <span class="op">=</span> <span class="ident">bind::SDL_RemoveTimer</span>(<span class="self">self</span>.<span class="ident">id</span>.<span class="ident">get</span>() <span class="kw">as</span> <span class="ident">bind::SDL_TimerID</span>);
+            <span class="ident">bind::SDL_QuitSubSystem</span>(<span class="ident">bind::SDL_INIT_TIMER</span>);
+        }
     }
 }
 
@@ -145,11 +179,13 @@
     <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::bind</span>;
 
     <span class="doccomment">/// Returns current counts of the high resolution counter.</span>
+    <span class="attribute">#[<span class="ident">must_use</span>]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">counter</span>() -&gt; <span class="ident">u64</span> {
         <span class="kw">unsafe</span> { <span class="ident">bind::SDL_GetPerformanceCounter</span>() }
     }
 
     <span class="doccomment">/// Returns the numbers of counts per one seconds of the high resolution counter.</span>
+    <span class="attribute">#[<span class="ident">must_use</span>]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">frequency</span>() -&gt; <span class="ident">u64</span> {
         <span class="kw">unsafe</span> { <span class="ident">bind::SDL_GetPerformanceFrequency</span>() }
     }

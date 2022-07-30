@@ -30,6 +30,10 @@ impl<'window> WindowSurface<'window> {
     }
 
     /// Applies the surface into the original window.
+    ///
+    /// # Errors
+    ///
+    /// Returns `Err` if failed to copy the window surface to the screen.
     pub fn update_window_surface(&self) -> Result<()> {
         let ret = unsafe { bind::SDL_UpdateWindowSurface(self.window.as_ptr()) };
         if ret < 0 {
@@ -40,6 +44,10 @@ impl<'window> WindowSurface<'window> {
     }
 
     /// Applies the surface into the original window area only where `rects`.
+    ///
+    /// # Errors
+    ///
+    /// Returns `Err` if failed to copy areas of the window surface to the screen.
     pub fn update_window_surface_rects(&self, rects: &[Rect]) -> Result<()> {
         let rects: Vec<_> = rects.iter().map(|&rect| rect.into()).collect();
         let ret = unsafe {

@@ -47,6 +47,10 @@
 <span id="41">41</span>
 <span id="42">42</span>
 <span id="43">43</span>
+<span id="44">44</span>
+<span id="45">45</span>
+<span id="46">46</span>
+<span id="47">47</span>
 </pre><pre class="rust"><code><span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">bind</span>, <span class="prelude-ty">Result</span>, <span class="ident">SdlError</span>};
 
 <span class="kw">use</span> <span class="ident"><span class="kw">super</span>::GlContext</span>;
@@ -65,6 +69,10 @@
 <span class="doccomment">/// An extension for [`GlContext`] to add methods for control buffers.</span>
 <span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">BufferExt</span> {
     <span class="doccomment">/// Sets the interval mode of swapping buffers.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// # Errors</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// Returns `Err` if the feature swapping them is unsupported.</span>
     <span class="kw">fn</span> <span class="ident">set_swap_interval</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">interval_kind</span>: <span class="ident">IntervalKind</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span>;
 
     <span class="doccomment">/// Swaps buffers immediately.</span>

@@ -108,8 +108,6 @@
 <span id="102">102</span>
 <span id="103">103</span>
 <span id="104">104</span>
-<span id="105">105</span>
-<span id="106">106</span>
 </pre><pre class="rust"><code><span class="kw">use</span> <span class="ident"><span class="kw">super</span>::builder::WindowFlags</span>;
 
 <span class="doccomment">/// A format of a [`super::Window`].</span>
@@ -129,17 +127,16 @@
 
 <span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">WindowFlags</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">WindowFormat</span> {
     <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">flags</span>: <span class="ident">WindowFlags</span>) -&gt; <span class="self">Self</span> {
-        <span class="kw">use</span> <span class="ident">WindowFormat</span>::<span class="kw-2">*</span>;
         <span class="kw">if</span> <span class="ident">flags</span>.<span class="ident">contains</span>(<span class="ident">WindowFlags::FULLSCREEN</span>) {
-            <span class="ident">FullScreen</span>
+            <span class="ident">WindowFormat::FullScreen</span>
         } <span class="kw">else</span> <span class="kw">if</span> <span class="ident">flags</span>.<span class="ident">contains</span>(<span class="ident">WindowFlags::FULLSCREEN_DESKTOP</span>) {
-            <span class="ident">FullScreenWithCurrentDesktop</span>
+            <span class="ident">WindowFormat::FullScreenWithCurrentDesktop</span>
         } <span class="kw">else</span> <span class="kw">if</span> <span class="ident">flags</span>.<span class="ident">contains</span>(<span class="ident">WindowFlags::MINIMIZED</span>) {
-            <span class="ident">Minimized</span>
+            <span class="ident">WindowFormat::Minimized</span>
         } <span class="kw">else</span> <span class="kw">if</span> <span class="ident">flags</span>.<span class="ident">contains</span>(<span class="ident">WindowFlags::MAXIMIZED</span>) {
-            <span class="ident">Maximized</span>
+            <span class="ident">WindowFormat::Maximized</span>
         } <span class="kw">else</span> {
-            <span class="ident">Normal</span>
+            <span class="ident">WindowFormat::Normal</span>
         }
     }
 }
@@ -159,15 +156,14 @@
 
 <span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">WindowFlags</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">WindowContextKind</span> {
     <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">flags</span>: <span class="ident">WindowFlags</span>) -&gt; <span class="self">Self</span> {
-        <span class="kw">use</span> <span class="ident">WindowContextKind</span>::<span class="kw-2">*</span>;
         <span class="kw">if</span> <span class="ident">flags</span>.<span class="ident">contains</span>(<span class="ident">WindowFlags::OPENGL</span>) {
-            <span class="ident">OpenGl</span>
+            <span class="ident">WindowContextKind::OpenGl</span>
         } <span class="kw">else</span> <span class="kw">if</span> <span class="ident">flags</span>.<span class="ident">contains</span>(<span class="ident">WindowFlags::VULKAN</span>) {
-            <span class="ident">Vulkan</span>
+            <span class="ident">WindowContextKind::Vulkan</span>
         } <span class="kw">else</span> <span class="kw">if</span> <span class="ident">flags</span>.<span class="ident">contains</span>(<span class="ident">WindowFlags::METAL</span>) {
-            <span class="ident">Metal</span>
+            <span class="ident">WindowContextKind::Metal</span>
         } <span class="kw">else</span> {
-            <span class="ident">Software</span>
+            <span class="ident">WindowContextKind::Software</span>
         }
     }
 }

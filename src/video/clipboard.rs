@@ -12,6 +12,7 @@ pub struct ClipboardText {
 
 impl ClipboardText {
     /// Get a clipboard text if exists.
+    #[must_use]
     pub fn new() -> Option<Self> {
         let ptr = unsafe { bind::SDL_GetClipboardText() };
         if ptr.is_null() {
@@ -23,11 +24,13 @@ impl ClipboardText {
     }
 
     /// Returns a reference to the clipboard string .
+    #[must_use]
     pub fn text(&self) -> &String {
         &self.text
     }
 
     /// Converts into `String`.
+    #[must_use]
     pub fn into_string(self) -> String {
         self.text
     }

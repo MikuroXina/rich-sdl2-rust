@@ -9,7 +9,7 @@ use crate::{bind, geo::Point, surface::Surface, Result, Sdl, SdlError};
 use super::Window;
 
 /// A kind of the system cursor.
-#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
 pub enum SystemCursorKind {
     /// The arrow cursor.
     Arrow,
@@ -38,21 +38,20 @@ pub enum SystemCursorKind {
 }
 
 impl SystemCursorKind {
-    pub(crate) fn as_raw(&self) -> bind::SDL_SystemCursor {
-        use SystemCursorKind::*;
+    pub(crate) fn as_raw(self) -> bind::SDL_SystemCursor {
         match self {
-            Arrow => bind::SDL_SYSTEM_CURSOR_ARROW,
-            IBeam => bind::SDL_SYSTEM_CURSOR_IBEAM,
-            Wait => bind::SDL_SYSTEM_CURSOR_WAIT,
-            Crosshair => bind::SDL_SYSTEM_CURSOR_CROSSHAIR,
-            WaitArrow => bind::SDL_SYSTEM_CURSOR_WAITARROW,
-            SizeNwse => bind::SDL_SYSTEM_CURSOR_SIZENWSE,
-            SizeNesw => bind::SDL_SYSTEM_CURSOR_SIZENESW,
-            SizeWe => bind::SDL_SYSTEM_CURSOR_SIZEWE,
-            SizeNs => bind::SDL_SYSTEM_CURSOR_SIZENS,
-            SizeAll => bind::SDL_SYSTEM_CURSOR_SIZEALL,
-            No => bind::SDL_SYSTEM_CURSOR_NO,
-            Hand => bind::SDL_SYSTEM_CURSOR_HAND,
+            SystemCursorKind::Arrow => bind::SDL_SYSTEM_CURSOR_ARROW,
+            SystemCursorKind::IBeam => bind::SDL_SYSTEM_CURSOR_IBEAM,
+            SystemCursorKind::Wait => bind::SDL_SYSTEM_CURSOR_WAIT,
+            SystemCursorKind::Crosshair => bind::SDL_SYSTEM_CURSOR_CROSSHAIR,
+            SystemCursorKind::WaitArrow => bind::SDL_SYSTEM_CURSOR_WAITARROW,
+            SystemCursorKind::SizeNwse => bind::SDL_SYSTEM_CURSOR_SIZENWSE,
+            SystemCursorKind::SizeNesw => bind::SDL_SYSTEM_CURSOR_SIZENESW,
+            SystemCursorKind::SizeWe => bind::SDL_SYSTEM_CURSOR_SIZEWE,
+            SystemCursorKind::SizeNs => bind::SDL_SYSTEM_CURSOR_SIZENS,
+            SystemCursorKind::SizeAll => bind::SDL_SYSTEM_CURSOR_SIZEALL,
+            SystemCursorKind::No => bind::SDL_SYSTEM_CURSOR_NO,
+            SystemCursorKind::Hand => bind::SDL_SYSTEM_CURSOR_HAND,
         }
     }
 }
@@ -72,7 +71,11 @@ impl std::fmt::Debug for Cursor<'_> {
 assert_not_impl_all!(Cursor: Send, Sync);
 
 impl<'window> Cursor<'window> {
-    /// Constructs a system cursor from kind, or `Err` on failure.
+    /// Constructs a system cursor from `kind`.
+    ///
+    /// # Errors
+    ///
+    /// Returns `Err` if the feature of cursor is unsupported.
     pub fn system(_: &'window Window, kind: SystemCursorKind) -> Result<Self> {
         let cursor = unsafe { bind::SDL_CreateSystemCursor(kind.as_raw()) };
         let cursor = NonNull::new(cursor).ok_or(SdlError::UnsupportedFeature)?;
@@ -82,7 +85,11 @@ impl<'window> Cursor<'window> {
         })
     }
 
-    /// Constructs a colored cursor from surface and hot spot point, or `Err` on failure.
+    /// Constructs a colored cursor from surface and hot spot point.
+    ///
+    /// # Errors
+    ///
+    /// Returns `Err` if coloring a cursor is unsupported.
     pub fn colored(_: &'window Window, surface: &impl Surface, hot_spot: Point) -> Result<Self> {
         let cursor = unsafe {
             bind::SDL_CreateColorCursor(surface.as_ptr().as_ptr(), hot_spot.x, hot_spot.y)
@@ -94,7 +101,11 @@ impl<'window> Cursor<'window> {
         })
     }
 
-    /// Constructs a completely customized color from data, mask and hot spot point, or `Err` on failure.
+    /// Constructs a completely customized color from data, mask and hot spot point.
+    ///
+    /// # Errors
+    ///
+    /// Returns `Err` if failed to create a custom cursor.
     pub fn customized(
         _: &'window Window,
         data: &[u8],
@@ -121,6 +132,7 @@ impl<'window> Cursor<'window> {
     }
 
     /// Constructs a default cursor, or `None` if unavailable.
+    #[must_use]
     pub fn default(_: &'window Window) -> Option<Self> {
         NonNull::new(unsafe { bind::SDL_GetDefaultCursor() }).map(|cursor| Self {
             cursor,

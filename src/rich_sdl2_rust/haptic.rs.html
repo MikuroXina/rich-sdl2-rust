@@ -213,6 +213,20 @@
 <span id="207">207</span>
 <span id="208">208</span>
 <span id="209">209</span>
+<span id="210">210</span>
+<span id="211">211</span>
+<span id="212">212</span>
+<span id="213">213</span>
+<span id="214">214</span>
+<span id="215">215</span>
+<span id="216">216</span>
+<span id="217">217</span>
+<span id="218">218</span>
+<span id="219">219</span>
+<span id="220">220</span>
+<span id="221">221</span>
+<span id="222">222</span>
+<span id="223">223</span>
 </pre><pre class="rust"><code><span class="doccomment">//! Haptic devices, which give the players to feedback by some force.</span>
 
 <span class="kw">use</span> <span class="ident">bitflags::bitflags</span>;
@@ -278,6 +292,7 @@
 
 <span class="kw">impl</span> <span class="ident">Haptic</span> {
     <span class="doccomment">/// Returns the name of the haptic device.</span>
+    <span class="attribute">#[<span class="ident">must_use</span>]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">name</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">String</span> {
         <span class="kw">let</span> <span class="ident">index</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">bind::SDL_HapticIndex</span>(<span class="self">self</span>.<span class="ident">ptr</span>.<span class="ident">as_ptr</span>()) };
         <span class="kw">let</span> <span class="ident">cstr</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">CStr::from_ptr</span>(<span class="ident">bind::SDL_HapticName</span>(<span class="ident">index</span>)) };
@@ -285,26 +300,32 @@
     }
 
     <span class="doccomment">/// Returns the numbers of the axes on the haptic device.</span>
+    <span class="attribute">#[<span class="ident">must_use</span>]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">num_axes</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">u32</span> {
         <span class="kw">unsafe</span> { <span class="ident">bind::SDL_HapticNumAxes</span>(<span class="self">self</span>.<span class="ident">ptr</span>.<span class="ident">as_ptr</span>()) <span class="kw">as</span> <span class="ident">u32</span> }
     }
 
     <span class="doccomment">/// Returns whether the effect is supported on the haptic device.</span>
+    <span class="attribute">#[<span class="ident">must_use</span>]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_effect_supported</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">effect</span>: <span class="kw-2">&amp;</span><span class="ident">HapticEffect</span>) -&gt; <span class="ident">bool</span> {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">raw</span> <span class="op">=</span> <span class="ident">effect</span>.<span class="ident">clone</span>().<span class="ident">into_raw</span>();
         <span class="kw">unsafe</span> {
-            <span class="ident">bind::SDL_HapticEffectSupported</span>(<span class="self">self</span>.<span class="ident">ptr</span>.<span class="ident">as_ptr</span>(), <span class="kw-2">&amp;mut</span> <span class="ident">raw</span> <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="kw">_</span>) <span class="kw">as</span> <span class="ident">bind::SDL_bool</span>
+            <span class="ident">bind::SDL_HapticEffectSupported</span>(<span class="self">self</span>.<span class="ident">ptr</span>.<span class="ident">as_ptr</span>(), <span class="kw-2">&amp;mut</span> <span class="ident">raw</span>) <span class="kw">as</span> <span class="ident">bind::SDL_bool</span>
                 <span class="op">==</span> <span class="ident">bind::SDL_TRUE</span>
         }
     }
 
-    <span class="doccomment">/// Constructs the [`PendingEffect`] from the effect specification, or `Err` on failure.</span>
+    <span class="doccomment">/// Constructs the [`PendingEffect`] from the effect specification.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// # Errors</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// Returns `Err` if this feature is unsupported, or failed to create a new haptic effect on the device.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new_effect</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">effect</span>: <span class="kw-2">&amp;</span><span class="ident">HapticEffect</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">PendingEffect</span><span class="op">&gt;</span> {
         <span class="kw">if</span> <span class="op">!</span><span class="self">self</span>.<span class="ident">is_effect_supported</span>(<span class="ident">effect</span>) {
             <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">SdlError::UnsupportedFeature</span>);
         }
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">raw</span> <span class="op">=</span> <span class="ident">effect</span>.<span class="ident">clone</span>().<span class="ident">into_raw</span>();
-        <span class="kw">let</span> <span class="ident">ret</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">bind::SDL_HapticNewEffect</span>(<span class="self">self</span>.<span class="ident">ptr</span>.<span class="ident">as_ptr</span>(), <span class="kw-2">&amp;mut</span> <span class="ident">raw</span> <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="kw">_</span>) };
+        <span class="kw">let</span> <span class="ident">ret</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">bind::SDL_HapticNewEffect</span>(<span class="self">self</span>.<span class="ident">ptr</span>.<span class="ident">as_ptr</span>(), <span class="kw-2">&amp;mut</span> <span class="ident">raw</span>) };
         <span class="kw">if</span> <span class="ident">ret</span> <span class="op">&lt;</span> <span class="number">0</span> {
             <span class="prelude-val">Err</span>(<span class="ident">SdlError::Others</span> { <span class="ident">msg</span>: <span class="ident">Sdl::error</span>() })
         } <span class="kw">else</span> {
@@ -313,11 +334,13 @@
     }
 
     <span class="doccomment">/// Returns the capacity of the effects on the haptic device.</span>
+    <span class="attribute">#[<span class="ident">must_use</span>]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">effects_creation_capacity</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">usize</span> {
         <span class="kw">unsafe</span> { <span class="ident">bind::SDL_HapticNumEffects</span>(<span class="self">self</span>.<span class="ident">ptr</span>.<span class="ident">as_ptr</span>()) <span class="kw">as</span> <span class="ident">usize</span> }
     }
 
     <span class="doccomment">/// Returns the maximum numbers of playing the effects at same time on the haptic device.</span>
+    <span class="attribute">#[<span class="ident">must_use</span>]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">effects_playing_capacity</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">usize</span> {
         <span class="kw">unsafe</span> { <span class="ident">bind::SDL_HapticNumEffectsPlaying</span>(<span class="self">self</span>.<span class="ident">ptr</span>.<span class="ident">as_ptr</span>()) <span class="kw">as</span> <span class="ident">usize</span> }
     }
@@ -354,12 +377,14 @@
     }
 
     <span class="doccomment">/// Queries a property on the haptic device.</span>
+    <span class="attribute">#[<span class="ident">must_use</span>]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">property</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">HapticProperty</span> {
         <span class="kw">let</span> <span class="ident">bits</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">bind::SDL_HapticQuery</span>(<span class="self">self</span>.<span class="ident">ptr</span>.<span class="ident">as_ptr</span>()) };
         <span class="ident">HapticProperty::from_bits</span>(<span class="ident">bits</span>).<span class="ident">unwrap</span>()
     }
 
     <span class="doccomment">/// Pauses the haptic device and converts into [`PausedHaptic`].</span>
+    <span class="attribute">#[<span class="ident">must_use</span>]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">pause</span>(<span class="self">self</span>) -&gt; <span class="ident">PausedHaptic</span> {
         <span class="kw">unsafe</span> {
             <span class="ident">bind::SDL_HapticPause</span>(<span class="self">self</span>.<span class="ident">ptr</span>.<span class="ident">as_ptr</span>());
@@ -375,6 +400,7 @@
 
 <span class="kw">impl</span> <span class="ident">PausedHaptic</span> {
     <span class="doccomment">/// Unpauses the haptic device and converts into [`Haptic`].</span>
+    <span class="attribute">#[<span class="ident">must_use</span>]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">unpause</span>(<span class="self">self</span>) -&gt; <span class="ident">Haptic</span> {
         <span class="kw">unsafe</span> {
             <span class="ident">bind::SDL_HapticUnpause</span>(<span class="self">self</span>.<span class="ident">haptic</span>.<span class="ident">ptr</span>.<span class="ident">as_ptr</span>());
@@ -388,6 +414,7 @@
 
 <span class="kw">impl</span> <span class="ident">HapticSet</span> {
     <span class="doccomment">/// Constructs and initializes the system and recognizes haptic devices.</span>
+    <span class="attribute">#[<span class="ident">must_use</span>]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>() -&gt; <span class="self">Self</span> {
         <span class="kw">let</span> <span class="ident">num_haptics</span> <span class="op">=</span> <span class="kw">unsafe</span> {
             <span class="ident">bind::SDL_InitSubSystem</span>(<span class="ident">bind::SDL_INIT_HAPTIC</span>);
@@ -395,7 +422,7 @@
         };
         <span class="self">Self</span>(
             (<span class="number">0</span>..<span class="ident">num_haptics</span>)
-                .<span class="ident">flat_map</span>(<span class="op">|</span><span class="ident">index</span><span class="op">|</span> {
+                .<span class="ident">filter_map</span>(<span class="op">|</span><span class="ident">index</span><span class="op">|</span> {
                     <span class="kw">let</span> <span class="ident">ptr</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">bind::SDL_HapticOpen</span>(<span class="ident">index</span>) };
                     <span class="ident">NonNull::new</span>(<span class="ident">ptr</span>).<span class="ident">map</span>(<span class="op">|</span><span class="ident">ptr</span><span class="op">|</span> <span class="ident">Haptic</span> { <span class="ident">ptr</span> })
                 })
@@ -404,6 +431,7 @@
     }
 
     <span class="doccomment">/// Returns the haptic devices.</span>
+    <span class="attribute">#[<span class="ident">must_use</span>]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">haptics</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>[<span class="ident">Haptic</span>] {
         <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="number">0</span>
     }

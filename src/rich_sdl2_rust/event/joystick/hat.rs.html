@@ -70,6 +70,7 @@
 <span id="64">64</span>
 <span id="65">65</span>
 <span id="66">66</span>
+<span id="67">67</span>
 </pre><pre class="rust"><code><span class="doccomment">//! Hats for a physical joystick.</span>
 
 <span class="kw">use</span> <span class="ident">bitflags::bitflags</span>;
@@ -119,6 +120,7 @@
     }
 
     <span class="doccomment">/// Returns the pov hat state of the joystick.</span>
+    <span class="attribute">#[<span class="ident">must_use</span>]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">state</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">PovHat</span> {
         <span class="kw">let</span> <span class="ident">raw</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">bind::SDL_JoystickGetHat</span>(<span class="self">self</span>.<span class="ident">joystick</span>.<span class="ident">ptr</span>.<span class="ident">as_ptr</span>(), <span class="self">self</span>.<span class="ident">index</span>) };
         <span class="ident">PovHat::from_bits</span>(<span class="ident">raw</span>).<span class="ident">expect</span>(<span class="string">&quot;hat state must be valid&quot;</span>)

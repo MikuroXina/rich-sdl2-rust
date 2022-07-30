@@ -44,6 +44,7 @@ bitflags! {
 
 impl KeyMod {
     /// Returns the current modification status on the keyboard.
+    #[must_use]
     pub fn current() -> Self {
         Self::from_bits(unsafe { bind::SDL_GetModState() } as u16).unwrap()
     }

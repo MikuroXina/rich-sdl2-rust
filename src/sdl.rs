@@ -43,6 +43,7 @@ impl Sdl {
     /// # Panics
     ///
     /// Panics if SDL2 system is already initialized such as there are existing `Sdl` instances
+    #[must_use]
     pub fn new() -> Self {
         let ret = unsafe {
             bind::SDL_SetMainReady();
@@ -57,6 +58,7 @@ impl Sdl {
     }
 
     /// Returns the version of SDL2.
+    #[must_use]
     pub fn version() -> SdlVersion {
         use bind::SDL_version;
         let mut ver = SDL_version {
@@ -64,11 +66,12 @@ impl Sdl {
             minor: 0,
             patch: 0,
         };
-        unsafe { bind::SDL_GetVersion(&mut ver as *mut _) }
+        unsafe { bind::SDL_GetVersion(&mut ver) }
         ver.into()
     }
 
     /// Returns the revision string.
+    #[must_use]
     pub fn revision_str() -> &'static str {
         let raw_str = unsafe { bind::SDL_GetRevision() };
         unsafe { std::ffi::CStr::from_ptr(raw_str) }
@@ -77,11 +80,13 @@ impl Sdl {
     }
 
     /// Returns the revision number.
+    #[must_use]
     pub fn revision_num() -> u32 {
         (unsafe { bind::SDL_GetRevisionNumber() }) as u32
     }
 
     /// Gets the platform string.
+    #[must_use]
     pub fn platform() -> &'static str {
         let cstr = unsafe { CStr::from_ptr(bind::SDL_GetPlatform()) };
         cstr.to_str().unwrap()
@@ -94,6 +99,7 @@ impl Sdl {
     }
 
     /// Reads the error string from SDL2.
+    #[must_use]
     pub fn error() -> String {
         let raw_str = unsafe { bind::SDL_GetError() };
         let error = unsafe { std::ffi::CStr::from_ptr(raw_str) }

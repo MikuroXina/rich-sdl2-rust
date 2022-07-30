@@ -88,7 +88,6 @@
 <span id="82">82</span>
 <span id="83">83</span>
 <span id="84">84</span>
-<span id="85">85</span>
 </pre><pre class="rust"><code><span class="doccomment">//! Axes for a game controller.</span>
 
 <span class="kw">use</span> <span class="ident">std</span>::{
@@ -117,32 +116,31 @@
 
 <span class="kw">impl</span> <span class="ident">Axis</span> {
     <span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn</span> <span class="ident">from_raw</span>(<span class="ident">raw</span>: <span class="ident">bind::SDL_GameControllerAxis</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
-        <span class="kw">use</span> <span class="ident">Axis</span>::<span class="kw-2">*</span>;
         <span class="kw">let</span> <span class="ident">val</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">raw</span> {
-            <span class="ident">bind::SDL_CONTROLLER_AXIS_LEFTX</span> =&gt; <span class="ident">LeftX</span>,
-            <span class="ident">bind::SDL_CONTROLLER_AXIS_LEFTY</span> =&gt; <span class="ident">LeftY</span>,
-            <span class="ident">bind::SDL_CONTROLLER_AXIS_RIGHTX</span> =&gt; <span class="ident">RightX</span>,
-            <span class="ident">bind::SDL_CONTROLLER_AXIS_RIGHTY</span> =&gt; <span class="ident">RightY</span>,
-            <span class="ident">bind::SDL_CONTROLLER_AXIS_TRIGGERLEFT</span> =&gt; <span class="ident">TriggerLeft</span>,
-            <span class="ident">bind::SDL_CONTROLLER_AXIS_TRIGGERRIGHT</span> =&gt; <span class="ident">TriggerRight</span>,
+            <span class="ident">bind::SDL_CONTROLLER_AXIS_LEFTX</span> =&gt; <span class="ident">Axis::LeftX</span>,
+            <span class="ident">bind::SDL_CONTROLLER_AXIS_LEFTY</span> =&gt; <span class="ident">Axis::LeftY</span>,
+            <span class="ident">bind::SDL_CONTROLLER_AXIS_RIGHTX</span> =&gt; <span class="ident">Axis::RightX</span>,
+            <span class="ident">bind::SDL_CONTROLLER_AXIS_RIGHTY</span> =&gt; <span class="ident">Axis::RightY</span>,
+            <span class="ident">bind::SDL_CONTROLLER_AXIS_TRIGGERLEFT</span> =&gt; <span class="ident">Axis::TriggerLeft</span>,
+            <span class="ident">bind::SDL_CONTROLLER_AXIS_TRIGGERRIGHT</span> =&gt; <span class="ident">Axis::TriggerRight</span>,
             <span class="kw">_</span> =&gt; <span class="kw">return</span> <span class="prelude-val">None</span>,
         };
         <span class="prelude-val">Some</span>(<span class="ident">val</span>)
     }
 
-    <span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn</span> <span class="ident">as_raw</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bind::SDL_GameControllerAxis</span> {
-        <span class="kw">use</span> <span class="ident">Axis</span>::<span class="kw-2">*</span>;
+    <span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn</span> <span class="ident">as_raw</span>(<span class="self">self</span>) -&gt; <span class="ident">bind::SDL_GameControllerAxis</span> {
         <span class="kw">match</span> <span class="self">self</span> {
-            <span class="ident">LeftX</span> =&gt; <span class="ident">bind::SDL_CONTROLLER_AXIS_LEFTX</span>,
-            <span class="ident">LeftY</span> =&gt; <span class="ident">bind::SDL_CONTROLLER_AXIS_LEFTY</span>,
-            <span class="ident">RightX</span> =&gt; <span class="ident">bind::SDL_CONTROLLER_AXIS_RIGHTX</span>,
-            <span class="ident">RightY</span> =&gt; <span class="ident">bind::SDL_CONTROLLER_AXIS_RIGHTY</span>,
-            <span class="ident">TriggerLeft</span> =&gt; <span class="ident">bind::SDL_CONTROLLER_AXIS_TRIGGERLEFT</span>,
-            <span class="ident">TriggerRight</span> =&gt; <span class="ident">bind::SDL_CONTROLLER_AXIS_TRIGGERRIGHT</span>,
+            <span class="ident">Axis::LeftX</span> =&gt; <span class="ident">bind::SDL_CONTROLLER_AXIS_LEFTX</span>,
+            <span class="ident">Axis::LeftY</span> =&gt; <span class="ident">bind::SDL_CONTROLLER_AXIS_LEFTY</span>,
+            <span class="ident">Axis::RightX</span> =&gt; <span class="ident">bind::SDL_CONTROLLER_AXIS_RIGHTX</span>,
+            <span class="ident">Axis::RightY</span> =&gt; <span class="ident">bind::SDL_CONTROLLER_AXIS_RIGHTY</span>,
+            <span class="ident">Axis::TriggerLeft</span> =&gt; <span class="ident">bind::SDL_CONTROLLER_AXIS_TRIGGERLEFT</span>,
+            <span class="ident">Axis::TriggerRight</span> =&gt; <span class="ident">bind::SDL_CONTROLLER_AXIS_TRIGGERRIGHT</span>,
         }
     }
 
     <span class="doccomment">/// Returns the mapping string if exists.</span>
+    <span class="attribute">#[<span class="ident">must_use</span>]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">to_mapping_string</span>(<span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="ident">ptr</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">bind::SDL_GameControllerGetStringForAxis</span>(<span class="self">self</span>.<span class="ident">as_raw</span>()) };
         <span class="kw">if</span> <span class="ident">ptr</span>.<span class="ident">is_null</span>() {

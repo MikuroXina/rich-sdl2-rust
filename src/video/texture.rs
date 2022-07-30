@@ -17,6 +17,7 @@ use lock::Lock;
 pub use query::*;
 
 /// An access type for the texture.
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
 pub enum TextureAccess {
     /// Cannot mutate and lock.
     Static,
@@ -63,7 +64,11 @@ impl std::fmt::Debug for Texture<'_> {
 assert_not_impl_all!(Texture: Send, Sync);
 
 impl<'renderer> Texture<'renderer> {
-    /// Constructs a texture from the renderer with access type, or `Err` on failure.
+    /// Constructs a texture from the renderer with access type.
+    ///
+    /// # Errors
+    ///
+    /// Returns `Err` if failed to allocate, no rendering context was active, the format was unsupported, or the width or height were out of range.
     pub fn new(renderer: &'renderer Renderer<'renderer>, access: TextureAccess) -> Result<Self> {
         use super::window::ConfigExt;
         let Size { width, height } = renderer.window().size();
@@ -109,9 +114,10 @@ impl<'renderer> Texture<'renderer> {
     }
 
     /// Returns the alpha mod of the texture.
+    #[must_use]
     pub fn alpha_mod(&self) -> u8 {
         let mut alpha = 0;
-        let ret = unsafe { bind::SDL_GetTextureAlphaMod(self.as_ptr(), &mut alpha as *mut _) };
+        let ret = unsafe { bind::SDL_GetTextureAlphaMod(self.as_ptr(), &mut alpha) };
         if ret != 0 {
             Sdl::error_then_panic("Getting texture alpha mod");
         }
@@ -119,6 +125,14 @@ impl<'renderer> Texture<'renderer> {
     }
 
     /// Sets the alpha mod of the texture.
+    ///
+    /// # Errors
+    ///
+    /// Returns `Err` if setting the alpha mod is unsupported.
+    ///
+    /// # Panics
+    ///
+    /// Panics if some unrecoverable error is occurred.
     pub fn set_alpha_mod(&self, alpha: u8) -> Result<()> {
         let ret = unsafe { bind::SDL_SetTextureAlphaMod(self.as_ptr(), alpha) };
         if ret != 0 {
@@ -134,14 +148,7 @@ impl<'renderer> Texture<'renderer> {
     /// Returns the color mod of the texture.
     pub fn color_mod(&self) -> Rgb {
         let (mut r, mut g, mut b) = (0, 0, 0);
-        let ret = unsafe {
-            bind::SDL_GetTextureColorMod(
-                self.as_ptr(),
-                &mut r as *mut _,
-                &mut g as *mut _,
-                &mut b as *mut _,
-            )
-        };
+        let ret = unsafe { bind::SDL_GetTextureColorMod(self.as_ptr(), &mut r, &mut g, &mut b) };
         if ret != 0 {
             Sdl::error_then_panic("Getting texture color mod");
         }
@@ -162,6 +169,7 @@ impl<'renderer> Texture<'renderer> {
     }
 
     /// Return the clip area of the texture if available.
+    #[must_use]
     pub fn clip(&self) -> &Option<Rect> {
         &self.clip
     }
@@ -171,27 +179,33 @@ impl<'renderer> Texture<'renderer> {
         self.clip = clip;
     }
 
-    /// Binds the texture to the current OpenGL context. And returns the size in the context, or `Err` on failure.
+    /// Binds the texture to the current OpenGL context. And returns the size in the context.
+    ///
+    /// # Errors
+    ///
+    /// Returns `Err` if failed to bind the texture.
     pub fn bind_to_current_gl_context(&self) -> Result<(f32, f32)> {
         let mut width = 0f32;
         let mut height = 0f32;
-        let ret = unsafe {
-            bind::SDL_GL_BindTexture(self.as_ptr(), &mut width as *mut _, &mut height as *mut _)
-        };
-        if ret != 0 {
-            Err(SdlError::Others { msg: Sdl::error() })
-        } else {
+        let ret = unsafe { bind::SDL_GL_BindTexture(self.as_ptr(), &mut width, &mut height) };
+        if ret == 0 {
             Ok((width, height))
+        } else {
+            Err(SdlError::Others { msg: Sdl::error() })
         }
     }
 
-    /// Unbinds the texture to the current OpenGL context, or `Err` on failure.
+    /// Unbinds the texture to the current OpenGL context.
+    ///
+    /// # Errors
+    ///
+    /// Returns `Err` if failed to unbind the texture.
     pub fn unbind_from_current_gl_context(&self) -> Result<()> {
         let ret = unsafe { bind::SDL_GL_UnbindTexture(self.as_ptr()) };
-        if ret != 0 {
-            Err(SdlError::UnsupportedFeature)
-        } else {
+        if ret == 0 {
             Ok(())
+        } else {
+            Err(SdlError::UnsupportedFeature)
         }
     }
 }
