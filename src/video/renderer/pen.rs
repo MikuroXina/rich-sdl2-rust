@@ -98,7 +98,7 @@ impl<'renderer> Pen<'renderer> {
 
     /// Draws the lines.
     pub fn lines(&self, points: impl IntoIterator<Item = Point>) {
-        let points: Vec<_> = points.into_iter().map(|p| p.into()).collect();
+        let points: Vec<_> = points.into_iter().map(Into::into).collect();
         let ret = unsafe {
             bind::SDL_RenderDrawLines(self.renderer.as_ptr(), points.as_ptr(), points.len() as i32)
         };
@@ -117,7 +117,7 @@ impl<'renderer> Pen<'renderer> {
 
     /// Draw the points.
     pub fn points(&self, points: impl IntoIterator<Item = Point>) {
-        let points: Vec<_> = points.into_iter().map(|p| p.into()).collect();
+        let points: Vec<_> = points.into_iter().map(Into::into).collect();
         let ret = unsafe {
             bind::SDL_RenderDrawPoints(self.renderer.as_ptr(), points.as_ptr(), points.len() as i32)
         };
@@ -136,7 +136,7 @@ impl<'renderer> Pen<'renderer> {
 
     /// Draw the rectangles only lines.
     pub fn stroke_rects(&self, rects: impl IntoIterator<Item = Rect>) {
-        let rects: Vec<_> = rects.into_iter().map(|r| r.into()).collect();
+        let rects: Vec<_> = rects.into_iter().map(Into::into).collect();
         let ret = unsafe {
             bind::SDL_RenderDrawRects(self.renderer.as_ptr(), rects.as_ptr(), rects.len() as i32)
         };
@@ -155,7 +155,7 @@ impl<'renderer> Pen<'renderer> {
 
     /// Draw the filled rectangles.
     pub fn fill_rects(&self, rects: impl IntoIterator<Item = Rect>) {
-        let rects: Vec<_> = rects.into_iter().map(|r| r.into()).collect();
+        let rects: Vec<_> = rects.into_iter().map(Into::into).collect();
         let ret = unsafe {
             bind::SDL_RenderFillRects(self.renderer.as_ptr(), rects.as_ptr(), rects.len() as i32)
         };

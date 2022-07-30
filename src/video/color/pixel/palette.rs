@@ -57,7 +57,7 @@ impl Palette {
     ///
     /// Panics if `colors` was too long than `num_colors` on initialized.
     pub fn set_colors(&self, colors: impl IntoIterator<Item = Rgba>) {
-        let colors: Vec<_> = colors.into_iter().map(|c| c.into()).collect();
+        let colors: Vec<_> = colors.into_iter().map(Into::into).collect();
         assert!(colors.len() <= self.num_colors());
         let ret = unsafe {
             bind::SDL_SetPaletteColors(self.palette.as_ptr(), colors.as_ptr(), 0, colors.len() as _)

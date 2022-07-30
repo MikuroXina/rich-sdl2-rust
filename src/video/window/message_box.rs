@@ -87,8 +87,8 @@ impl MessageBox {
     pub fn show(self, parent: &'_ Window<'_>) -> Result<ButtonId> {
         let title_cstr = CString::new(self.title).unwrap_or_default();
         let message_cstr = CString::new(self.message).unwrap_or_default();
-        let buttons_raw: Vec<_> = self.buttons.iter().map(|button| button.as_raw()).collect();
-        let color_scheme = self.color_scheme.map(|scheme| scheme.into());
+        let buttons_raw: Vec<_> = self.buttons.iter().map(Button::as_raw).collect();
+        let color_scheme = self.color_scheme.map(Into::into);
         let data = bind::SDL_MessageBoxData {
             flags: 0,
             window: parent.as_ptr(),

@@ -85,7 +85,7 @@ pub trait Surface {
 
     /// Fills in the `areas` with the `color`.
     fn fill_rects(&self, areas: impl IntoIterator<Item = Rect>, color: Pixel) {
-        let raw_rects: Vec<_> = areas.into_iter().map(|area| area.into()).collect();
+        let raw_rects: Vec<_> = areas.into_iter().map(Into::into).collect();
         unsafe {
             let ret = bind::SDL_FillRects(
                 self.as_ptr().as_ptr(),
