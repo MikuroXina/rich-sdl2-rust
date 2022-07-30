@@ -50,7 +50,7 @@ extern "C" fn timer_wrap_handler<'callback, T: TimerCallback<'callback>>(
     _: u32,
     param: *mut c_void,
 ) -> u32 {
-    let callback = unsafe { &mut *(param as *mut T) };
+    let callback = unsafe { &mut *param.cast::<T>() };
     callback()
 }
 

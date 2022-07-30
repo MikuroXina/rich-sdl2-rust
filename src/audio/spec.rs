@@ -45,6 +45,7 @@ impl<T> std::fmt::Debug for AudioSpec<'_, T> {
 
 impl<'callback, T: AudioCallback<'callback>> AudioSpec<'callback, T> {
     /// Constructs an audio specification with the optional callback.
+    #[must_use]
     pub fn new(mut builder: AudioSpecBuilder<'callback, T>) -> Self {
         Self {
             raw: bind::SDL_AudioSpec {
@@ -84,7 +85,7 @@ unsafe extern "C" fn audio_spec_wrap_handler<'callback, T: AudioCallback<'callba
     if userdata.is_null() {
         return;
     }
-    let func = &mut *(userdata as *mut T);
+    let func = &mut *userdata.cast::<T>();
     let slice = std::slice::from_raw_parts_mut(stream, len as usize);
     slice.fill(0);
     func(slice);

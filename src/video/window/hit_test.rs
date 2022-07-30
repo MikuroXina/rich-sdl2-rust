@@ -98,6 +98,6 @@ unsafe extern "C" fn hit_test_wrap_handler<'window, T: HitTester<'window>>(
     area: *const bind::SDL_Point,
     data: *mut c_void,
 ) -> bind::SDL_HitTestResult {
-    let callback = unsafe { &mut *(data as *mut T) };
+    let callback = unsafe { &mut *data.cast::<T>() };
     callback((*area).into()).into_arg()
 }

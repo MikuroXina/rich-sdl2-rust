@@ -64,7 +64,7 @@ extern "C" fn hint_observer_wrap_handler<'callback, T: HintCallback<'callback>>(
     old_value: *const c_char,
     new_value: *const c_char,
 ) {
-    let callback = unsafe { &mut *(userdata as *mut T) };
+    let callback = unsafe { &mut *userdata.cast::<T>() };
     let name = unsafe { CStr::from_ptr(name) }.to_str().unwrap();
     let old_value = unsafe { CStr::from_ptr(old_value) }.to_str().unwrap();
     let new_value = unsafe { CStr::from_ptr(new_value) }.to_str().unwrap();
