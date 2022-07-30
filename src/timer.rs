@@ -1,4 +1,4 @@
-use std::{ffi::c_void, num::NonZeroU32, ops, ptr::addr_of_mut};
+use std::{ffi::c_void, marker::PhantomData, num::NonZeroU32, ops, ptr::addr_of_mut};
 
 use crate::{bind, Result, Sdl, SdlError};
 
@@ -10,12 +10,13 @@ pub use ticks::*;
 pub trait TimerCallback<'callback>: FnMut() -> u32 + 'callback {}
 
 /// A timer invokes a [`TimerCallback`] with the interval.
-pub struct Timer<T> {
+pub struct Timer<'sdl, T> {
     id: NonZeroU32,
     callback: T,
+    _phantom: PhantomData<&'sdl Sdl>,
 }
 
-impl<T> std::fmt::Debug for Timer<T> {
+impl<T> std::fmt::Debug for Timer<'_, T> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         f.debug_struct("Timer")
             .field("id", &self.id)
@@ -23,7 +24,7 @@ impl<T> std::fmt::Debug for Timer<T> {
     }
 }
 
-impl<'callback, T: TimerCallback<'callback>> Timer<T> {
+impl<'sdl, 'callback, T: TimerCallback<'callback>> Timer<'sdl, T> {
     /// Constructs a timer with initial interval and callback.
     ///
     /// The timing may be inaccurate because of OS scheduling. Make sure to check the current time in your callback.
@@ -31,7 +32,12 @@ impl<'callback, T: TimerCallback<'callback>> Timer<T> {
     /// # Errors
     ///
     /// Returns `Err` if failed to create a new timer.
-    pub fn new(interval: u32, mut callback: T) -> Result<Self> {
+    pub fn new(sdl: &'sdl Sdl, interval: u32, mut callback: T) -> Result<Self> {
+        let ret = unsafe { bind::SDL_InitSubSystem(bind::SDL_INIT_TIMER) };
+        if ret != 0 {
+            Sdl::error_then_panic("Sdl timer");
+        }
+
         let data = addr_of_mut!(callback);
         let id =
             unsafe { bind::SDL_AddTimer(interval, Some(timer_wrap_handler::<T>), data.cast()) };
@@ -41,6 +47,7 @@ impl<'callback, T: TimerCallback<'callback>> Timer<T> {
             Ok(Self {
                 id: unsafe { NonZeroU32::new_unchecked(id as u32) },
                 callback,
+                _phantom: PhantomData,
             })
         }
     }
@@ -54,9 +61,12 @@ extern "C" fn timer_wrap_handler<'callback, T: TimerCallback<'callback>>(
     callback()
 }
 
-impl<T> Drop for Timer<T> {
+impl<'sdl, T> Drop for Timer<'sdl, T> {
     fn drop(&mut self) {
-        let _ = unsafe { bind::SDL_RemoveTimer(self.id.get() as bind::SDL_TimerID) };
+        unsafe {
+            let _ = bind::SDL_RemoveTimer(self.id.get() as bind::SDL_TimerID);
+            bind::SDL_QuitSubSystem(bind::SDL_INIT_TIMER);
+        }
     }
 }
 
