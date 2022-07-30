@@ -74,7 +74,7 @@ impl TouchDevice {
     pub fn touch_fingers(&self) -> Vec<TouchFinger> {
         let num = unsafe { bind::SDL_GetNumTouchFingers(self.0) };
         (0..num)
-            .flat_map(|index| {
+            .filter_map(|index| {
                 let ptr = unsafe { bind::SDL_GetTouchFinger(self.0, index) };
                 (!ptr.is_null()).then(|| TouchFinger {
                     ptr: NonNull::new(ptr).unwrap(),

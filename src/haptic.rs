@@ -193,7 +193,7 @@ impl HapticSet {
         };
         Self(
             (0..num_haptics)
-                .flat_map(|index| {
+                .filter_map(|index| {
                     let ptr = unsafe { bind::SDL_HapticOpen(index) };
                     NonNull::new(ptr).map(|ptr| Haptic { ptr })
                 })
