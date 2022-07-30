@@ -31,7 +31,7 @@ pub mod trackball;
 pub struct InputIndex(c_int);
 
 /// An id of the joystick. It can be used to share/duplicate Joystick object, but not [`Send`] and [`Sync`] due to the safety.
-#[derive(Clone, PartialEq, Eq)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash)]
 pub struct JoystickId<'joystick> {
     pub(super) id: u32,
     pub(super) _phantom: PhantomData<&'joystick Joystick>,

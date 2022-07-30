@@ -17,6 +17,7 @@ use lock::Lock;
 pub use query::*;
 
 /// An access type for the texture.
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
 pub enum TextureAccess {
     /// Cannot mutate and lock.
     Static,

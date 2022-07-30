@@ -24,7 +24,7 @@ impl AudioStream {
     /// # Errors
     ///
     /// Returns `Err` if failed to create a new audio stream.
-    pub fn new<T, U>(src: AudioBuffer<T>, dst: AudioBuffer<U>) -> Result<Self> {
+    pub fn new<T, U>(src: &AudioBuffer<T>, dst: &AudioBuffer<U>) -> Result<Self> {
         let ptr = unsafe {
             bind::SDL_NewAudioStream(
                 src.format().as_raw(),

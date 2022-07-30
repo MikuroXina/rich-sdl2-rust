@@ -22,7 +22,7 @@ impl Owned {
     /// # Errors
     ///
     /// Returns `Err` if failed to allocate the surface.
-    pub fn new(size: Size, kind: PixelFormat) -> Result<Self> {
+    pub fn new(size: Size, kind: &PixelFormat) -> Result<Self> {
         let BppMask {
             r_mask,
             g_mask,

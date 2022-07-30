@@ -168,7 +168,7 @@ impl PixelFormat {
     }
 
     /// Overwrites the palette with a new [`Palette`].
-    pub fn set_palette(&self, palette: Palette) {
+    pub fn set_palette(&self, palette: &Palette) {
         let ret =
             unsafe { bind::SDL_SetPixelFormatPalette(self.format.as_ptr(), palette.as_ptr()) };
         if ret != 0 {
