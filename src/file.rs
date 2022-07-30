@@ -17,6 +17,10 @@ pub fn base_path() -> String {
 }
 
 /// Returns the preferences path for your application.
+///
+/// # Panics
+///
+/// Panics if `org` or `app` contains a null character.
 #[must_use]
 pub fn pref_path(org: &str, app: &str) -> String {
     let org_cstr = CString::new(org).unwrap();

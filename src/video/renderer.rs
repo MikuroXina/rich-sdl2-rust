@@ -7,10 +7,12 @@ use std::ptr::NonNull;
 use clip::ClippedRenderer;
 
 use super::window::Window;
-
-use crate::geo::{Rect, Scale, Size};
-use crate::texture::Texture;
-use crate::{bind, Sdl};
+use crate::{
+    bind,
+    geo::{Rect, Scale, Size},
+    texture::Texture,
+    Result, Sdl, SdlError,
+};
 
 pub mod clip;
 pub mod driver;
@@ -58,13 +60,18 @@ impl<'window> Renderer<'window> {
     }
 
     /// Returns the geometry size of the output from the renderer.
-    pub fn output_size(&self) -> Size {
+    pub fn output_size(&self) -> Result<Size> {
         let (mut w, mut h) = (0i32, 0i32);
         let ret = unsafe { bind::SDL_GetRendererOutputSize(self.as_ptr(), &mut w, &mut h) };
-        assert!(ret == 0, "Getting output size failed");
-        Size {
-            width: w as u32,
-            height: h as u32,
+        if ret == 0 {
+            Err(SdlError::Others {
+                msg: "Getting output size failed".into(),
+            })
+        } else {
+            Ok(Size {
+                width: w as u32,
+                height: h as u32,
+            })
         }
     }
 

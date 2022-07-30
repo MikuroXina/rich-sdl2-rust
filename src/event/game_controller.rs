@@ -114,6 +114,10 @@ impl GameControllerSet {
     /// # Errors
     ///
     /// Returns `Err` if failed to open the mapping file, or it contains invalid mapping data.
+    ///
+    /// # Panics
+    ///
+    /// Panics if `file_name` contains a null character.
     pub fn add_mapping_from_file(file_name: &str) -> Result<u32> {
         let cstr = CString::new(file_name).expect("string must not be empty");
         let read_binary_mode = CStr::from_bytes_with_nul(b"rb\0").unwrap();

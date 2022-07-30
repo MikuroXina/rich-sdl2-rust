@@ -32,6 +32,10 @@ pub struct Button {
 
 impl Button {
     /// Constructs a normal button.
+    ///
+    /// # Panics
+    ///
+    /// Panics if `text` contains a null character.
     #[must_use]
     pub fn normal(id: ButtonId, text: &str) -> Self {
         Self {
@@ -41,6 +45,10 @@ impl Button {
         }
     }
     /// Constructs a confirm button.
+    ///
+    /// # Panics
+    ///
+    /// Panics if `text` contains a null character.
     #[must_use]
     pub fn confirm(id: ButtonId, text: &str) -> Self {
         Self {
@@ -50,6 +58,10 @@ impl Button {
         }
     }
     /// Constructs a cancel button.
+    ///
+    /// # Panics
+    ///
+    /// Panics if `text` contains a null character.
     #[must_use]
     pub fn cancel(id: ButtonId, text: &str) -> Self {
         Self {

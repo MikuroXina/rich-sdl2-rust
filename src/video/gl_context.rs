@@ -69,6 +69,10 @@ impl<'window> GlContext<'window> {
     }
 
     /// Returns whether the extension `name` is supported.
+    ///
+    /// # Panics
+    ///
+    /// Panics if `name` contains a null character.
     #[must_use]
     pub fn supported_extension(&self, name: &'static str) -> bool {
         let cstr = CString::new(name).unwrap();
@@ -80,6 +84,10 @@ impl<'window> GlContext<'window> {
     /// # Errors
     ///
     /// Returns `Err` if failed to load the library.
+    ///
+    /// # Panics
+    ///
+    /// Panics if `path` contains a null character.
     pub fn load_lib(&self, path: &str) -> Result<()> {
         let cstr = CString::new(path).unwrap();
         let ret = unsafe { bind::SDL_GL_LoadLibrary(cstr.as_ptr()) };
@@ -100,6 +108,10 @@ impl<'window> GlContext<'window> {
     ///
     /// This return value is valid only on supported the extension.
     /// You must check by `supported_extension` before casting to any function pointer.
+    ///
+    /// # Panics
+    ///
+    /// Panics if `proc` contains a null character.
     #[must_use]
     pub unsafe fn proc_address(&self, proc: &str) -> *mut c_void {
         let cstr = CString::new(proc).unwrap();

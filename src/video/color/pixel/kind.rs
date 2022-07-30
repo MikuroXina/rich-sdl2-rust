@@ -90,7 +90,7 @@ impl PixelFormatKind {
                 a_mask as *mut _,
             )
         };
-        (ret != 0).then_some(bpp_mask)
+        (ret != 0).then(|| bpp_mask)
     }
 
     /// Returns the name for the pixel format, or empty string if does not exist.

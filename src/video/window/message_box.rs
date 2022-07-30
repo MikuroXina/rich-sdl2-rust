@@ -48,12 +48,20 @@ impl MessageBox {
     }
 
     /// Sets the title of the message box.
+    ///
+    /// # Panics
+    ///
+    /// Panics if `title` contains a null character.
     pub fn title(&mut self, title: &str) -> &mut Self {
         self.title = CString::new(title).unwrap();
         self
     }
 
     /// Sets the message of the message box.
+    ///
+    /// # Panics
+    ///
+    /// Panics if `message` contains a null character.
     pub fn message(&mut self, message: &str) -> &mut Self {
         self.message = CString::new(message).unwrap();
         self
