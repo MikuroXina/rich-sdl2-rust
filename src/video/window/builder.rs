@@ -20,7 +20,7 @@ impl WindowCoord {
     /// Panics if `coord` is not in `-16384..=16384`.
     pub fn coord(coord: i32) -> Self {
         const MAX: i32 = 16384;
-        assert!(-MAX <= coord && coord <= MAX);
+        assert!((-MAX..=MAX).contains(&coord));
         Self { coord }
     }
     /// Constructs the undefined coordinate.
