@@ -64,13 +64,13 @@ impl<'window> Renderer<'window> {
         let (mut w, mut h) = (0i32, 0i32);
         let ret = unsafe { bind::SDL_GetRendererOutputSize(self.as_ptr(), &mut w, &mut h) };
         if ret == 0 {
-            Err(SdlError::Others {
-                msg: "Getting output size failed".into(),
-            })
-        } else {
             Ok(Size {
                 width: w as u32,
                 height: h as u32,
+            })
+        } else {
+            Err(SdlError::Others {
+                msg: "Getting output size failed".into(),
             })
         }
     }
