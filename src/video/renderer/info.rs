@@ -37,10 +37,10 @@ pub struct RendererInfo {
 
 impl From<bind::SDL_RendererInfo> for RendererInfo {
     fn from(info: bind::SDL_RendererInfo) -> Self {
-        let kind = if info.flags & bind::SDL_RENDERER_SOFTWARE as u32 != 0 {
-            RendererKind::Software
-        } else {
+        let kind = if info.flags & bind::SDL_RENDERER_SOFTWARE as u32 == 0 {
             RendererKind::Accelerated
+        } else {
+            RendererKind::Software
         };
         let supported_formats = info
             .texture_formats

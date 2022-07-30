@@ -121,10 +121,10 @@ impl ConfigExt for Window<'_> {
     fn opacity(&self) -> Opacity {
         let mut opacity = MaybeUninit::uninit();
         let ret = unsafe { bind::SDL_GetWindowOpacity(self.as_ptr(), opacity.as_mut_ptr()) };
-        let opacity = if ret != 0 {
-            1.0
-        } else {
+        let opacity = if ret == 0 {
             unsafe { opacity.assume_init() }
+        } else {
+            1.0
         };
         Opacity { opacity }
     }

@@ -77,10 +77,10 @@ impl<'window, T: HitTester<'window>> HitTest<'window, T> {
                 data.cast(),
             )
         };
-        if ret != 0 {
-            Err(crate::SdlError::UnsupportedFeature)
-        } else {
+        if ret == 0 {
             Ok(Self { window, tester })
+        } else {
+            Err(crate::SdlError::UnsupportedFeature)
         }
     }
 }

@@ -188,10 +188,10 @@ impl<'renderer> Texture<'renderer> {
         let mut width = 0f32;
         let mut height = 0f32;
         let ret = unsafe { bind::SDL_GL_BindTexture(self.as_ptr(), &mut width, &mut height) };
-        if ret != 0 {
-            Err(SdlError::Others { msg: Sdl::error() })
-        } else {
+        if ret == 0 {
             Ok((width, height))
+        } else {
+            Err(SdlError::Others { msg: Sdl::error() })
         }
     }
 
@@ -202,10 +202,10 @@ impl<'renderer> Texture<'renderer> {
     /// Returns `Err` if failed to unbind the texture.
     pub fn unbind_from_current_gl_context(&self) -> Result<()> {
         let ret = unsafe { bind::SDL_GL_UnbindTexture(self.as_ptr()) };
-        if ret != 0 {
-            Err(SdlError::UnsupportedFeature)
-        } else {
+        if ret == 0 {
             Ok(())
+        } else {
+            Err(SdlError::UnsupportedFeature)
         }
     }
 }
