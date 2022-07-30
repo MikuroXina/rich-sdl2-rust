@@ -4,7 +4,11 @@ use std::ffi::CStr;
 
 use crate::{bind, EnumInt};
 
-use super::{layout::*, order::*, ty::*};
+use super::{
+    layout::PackedPixelLayout,
+    order::{ArrayPixelOrder, BitmapPixelOrder, PackedPixelOrder},
+    ty::{ArrayPixelType, BitmapPixelType, PackedPixelType},
+};
 
 /// A kind of pixel format.
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
