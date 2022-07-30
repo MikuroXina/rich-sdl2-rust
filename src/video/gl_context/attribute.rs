@@ -110,8 +110,7 @@ impl<'gl> GlAttribute<'gl> {
     /// Returns `Err` if failed to get a value of the attribute.
     pub fn get(&self) -> Result<i32> {
         let mut value = 0;
-        let ret =
-            unsafe { bind::SDL_GL_GetAttribute(self.attr.bits as EnumInt, &mut value as *mut _) };
+        let ret = unsafe { bind::SDL_GL_GetAttribute(self.attr.bits as EnumInt, &mut value) };
         if ret != 0 {
             return Err(SdlError::Others { msg: Sdl::error() });
         }

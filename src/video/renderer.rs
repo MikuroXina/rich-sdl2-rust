@@ -60,9 +60,7 @@ impl<'window> Renderer<'window> {
     /// Returns the geometry size of the output from the renderer.
     pub fn output_size(&self) -> Size {
         let (mut w, mut h) = (0i32, 0i32);
-        let ret = unsafe {
-            bind::SDL_GetRendererOutputSize(self.as_ptr(), &mut w as *mut _, &mut h as *mut _)
-        };
+        let ret = unsafe { bind::SDL_GetRendererOutputSize(self.as_ptr(), &mut w, &mut h) };
         assert!(ret == 0, "Getting output size failed");
         Size {
             width: w as u32,
@@ -79,13 +77,7 @@ impl<'window> Renderer<'window> {
     #[must_use]
     pub fn logical_size(&self) -> Option<Size> {
         let (mut width, mut height) = (0, 0);
-        unsafe {
-            bind::SDL_RenderGetLogicalSize(
-                self.as_ptr(),
-                &mut width as *mut _,
-                &mut height as *mut _,
-            )
-        }
+        unsafe { bind::SDL_RenderGetLogicalSize(self.as_ptr(), &mut width, &mut height) }
         if width == 0 && height == 0 {
             return None;
         }
@@ -128,11 +120,7 @@ impl<'window> Renderer<'window> {
             vertical: 0.0,
         };
         unsafe {
-            bind::SDL_RenderGetScale(
-                self.as_ptr(),
-                &mut scale.horizontal as *mut _,
-                &mut scale.vertical as *mut _,
-            )
+            bind::SDL_RenderGetScale(self.as_ptr(), &mut scale.horizontal, &mut scale.vertical)
         }
         scale
     }
@@ -163,7 +151,7 @@ impl<'window> Renderer<'window> {
         let ret = unsafe {
             bind::SDL_RenderSetViewport(
                 self.as_ptr(),
-                area.map_or(std::ptr::null(), |rect| &rect.into() as *const _),
+                area.map_or(std::ptr::null(), |rect| &rect.into()),
             )
         };
         if ret != 0 {

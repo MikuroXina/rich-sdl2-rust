@@ -48,12 +48,7 @@ impl PowerInfo {
     pub fn now() -> Self {
         let mut remaining_seconds = 0;
         let mut remaining_ratio = 0;
-        let state = unsafe {
-            bind::SDL_GetPowerInfo(
-                &mut remaining_seconds as *mut _,
-                &mut remaining_ratio as *mut _,
-            )
-        };
+        let state = unsafe { bind::SDL_GetPowerInfo(&mut remaining_seconds, &mut remaining_ratio) };
         Self {
             state: state.into(),
             remaining_seconds: (0 <= remaining_seconds).then(|| remaining_seconds as _),

@@ -70,11 +70,11 @@ pub trait Surface {
 
     /// Fills in the `area` with the `color`, or whole if `area` is `None`.
     fn fill_rect(&self, area: Option<Rect>, color: Pixel) {
-        let raw_rect = area.map(|rect| rect.into());
+        let raw_rect = area.map(Into::into);
         unsafe {
             let ret = bind::SDL_FillRect(
                 self.as_ptr().as_ptr(),
-                raw_rect.map_or(std::ptr::null(), |raw| &raw as *const _),
+                raw_rect.map_or(std::ptr::null(), |raw| &raw),
                 color.as_u32(),
             );
             if ret != 0 {
@@ -119,9 +119,9 @@ pub trait Surface {
         let ret = unsafe {
             bind::SDL_UpperBlit(
                 self.as_ptr().as_ptr(),
-                &src_rect as *const _,
+                &src_rect,
                 dst.as_ptr().as_ptr(),
-                &mut dst_rect as *mut _,
+                &mut dst_rect,
             )
         };
         if ret != 0 {

@@ -26,12 +26,7 @@ impl<'joystick> Trackball<'joystick> {
     pub fn delta(&self) -> Point {
         let (mut dx, mut dy): (c_int, c_int) = (0, 0);
         let ret = unsafe {
-            bind::SDL_JoystickGetBall(
-                self.joystick.ptr.as_ptr(),
-                self.index,
-                &mut dx as *mut _,
-                &mut dy as *mut _,
-            )
+            bind::SDL_JoystickGetBall(self.joystick.ptr.as_ptr(), self.index, &mut dx, &mut dy)
         };
         debug_assert_eq!(ret, 0);
         Point { x: dx, y: dy }

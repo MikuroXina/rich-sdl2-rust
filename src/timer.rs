@@ -1,4 +1,4 @@
-use std::{ffi::c_void, num::NonZeroU32, ops};
+use std::{ffi::c_void, num::NonZeroU32, ops, ptr::addr_of_mut};
 
 use crate::{bind, Result, Sdl, SdlError};
 
@@ -32,7 +32,7 @@ impl<'callback, T: TimerCallback<'callback>> Timer<T> {
     ///
     /// Returns `Err` if failed to create a new timer.
     pub fn new(interval: u32, mut callback: T) -> Result<Self> {
-        let data = &mut callback as *mut T;
+        let data = addr_of_mut!(callback);
         let id =
             unsafe { bind::SDL_AddTimer(interval, Some(timer_wrap_handler::<T>), data.cast()) };
         if id == 0 {

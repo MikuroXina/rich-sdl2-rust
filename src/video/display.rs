@@ -72,12 +72,7 @@ impl<'video> Display<'video> {
             vdpi: 0.0,
         };
         let ret = unsafe {
-            bind::SDL_GetDisplayDPI(
-                self.index,
-                &mut dpi.ddpi as *mut _,
-                &mut dpi.hdpi as *mut _,
-                &mut dpi.vdpi as *mut _,
-            )
+            bind::SDL_GetDisplayDPI(self.index, &mut dpi.ddpi, &mut dpi.hdpi, &mut dpi.vdpi)
         };
 
         (ret == 0).then(|| dpi)

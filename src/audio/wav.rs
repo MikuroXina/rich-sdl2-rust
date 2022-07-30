@@ -38,8 +38,8 @@ impl Wav {
                 bind::SDL_RWFromFile(cstr.as_ptr(), read_binary_mode.as_ptr()),
                 1,
                 audio_spec.as_mut_ptr(),
-                &mut buffer as *mut _,
-                &mut len as *mut _,
+                &mut buffer,
+                &mut len,
             )
         };
         if ptr.is_null() {

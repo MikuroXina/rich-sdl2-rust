@@ -109,7 +109,7 @@ impl<T> AudioBuffer<T> {
             .buffer
             .resize(len * cvt.len_mult as usize, U::default());
         cvt.buf = as_u8_slice_mut(&mut other.buffer).as_mut_ptr();
-        let ret = unsafe { bind::SDL_ConvertAudio(&mut cvt as *mut _) };
+        let ret = unsafe { bind::SDL_ConvertAudio(&mut cvt) };
         if ret < 0 {
             Err(SdlError::Others { msg: Sdl::error() })
         } else {
@@ -144,7 +144,7 @@ impl<T: Default + Clone> AudioBuffer<T> {
                 self.format.as_raw(),
                 len as u32,
                 volume.min(bind::SDL_MIX_MAXVOLUME as u8) as c_int,
-            )
+            );
         }
     }
 }

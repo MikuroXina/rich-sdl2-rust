@@ -42,9 +42,9 @@ impl<'renderer> Pen<'renderer> {
         let ret = unsafe {
             bind::SDL_GetRenderDrawColor(
                 self.renderer.as_ptr(),
-                &mut r as *mut _,
-                &mut g as *mut _,
-                &mut b as *mut _,
+                &mut r,
+                &mut g,
+                &mut b,
                 std::ptr::null_mut(),
             )
         };
@@ -65,8 +65,7 @@ impl<'renderer> Pen<'renderer> {
     /// Returns the current color blend mode.
     pub fn blend_mode(&self) -> BlendMode {
         let mut raw = 0;
-        let ret =
-            unsafe { bind::SDL_GetRenderDrawBlendMode(self.renderer.as_ptr(), &mut raw as *mut _) };
+        let ret = unsafe { bind::SDL_GetRenderDrawBlendMode(self.renderer.as_ptr(), &mut raw) };
         if ret != 0 {
             Sdl::error_then_panic("Getting renderer blend mode")
         }
@@ -129,8 +128,7 @@ impl<'renderer> Pen<'renderer> {
 
     /// Draw the rectangle only lines.
     pub fn stroke_rect(&self, rect: Rect) {
-        let ret =
-            unsafe { bind::SDL_RenderDrawRect(self.renderer.as_ptr(), &rect.into() as *const _) };
+        let ret = unsafe { bind::SDL_RenderDrawRect(self.renderer.as_ptr(), &rect.into()) };
         if ret != 0 {
             Sdl::error_then_panic("Sdl pen rect")
         }
@@ -149,8 +147,7 @@ impl<'renderer> Pen<'renderer> {
 
     /// Draw the filled rectangle.
     pub fn fill_rect(&self, rect: Rect) {
-        let ret =
-            unsafe { bind::SDL_RenderFillRect(self.renderer.as_ptr(), &rect.into() as *const _) };
+        let ret = unsafe { bind::SDL_RenderFillRect(self.renderer.as_ptr(), &rect.into()) };
         if ret != 0 {
             Sdl::error_then_panic("Sdl pen rect")
         }

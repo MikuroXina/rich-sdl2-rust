@@ -99,11 +99,11 @@ impl Line {
     pub fn clip_with(mut self, rect: Rect) -> Self {
         unsafe {
             bind::SDL_IntersectRectAndLine(
-                &(rect.into()) as *const _,
-                &mut self.start.x as *mut _,
-                &mut self.start.y as *mut _,
-                &mut self.end.x as *mut _,
-                &mut self.end.y as *mut _,
+                &(rect.into()),
+                &mut self.start.x,
+                &mut self.start.y,
+                &mut self.end.x,
+                &mut self.end.y,
             );
         }
         self

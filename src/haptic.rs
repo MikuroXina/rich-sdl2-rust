@@ -81,7 +81,7 @@ impl Haptic {
     pub fn is_effect_supported(&self, effect: &HapticEffect) -> bool {
         let mut raw = effect.clone().into_raw();
         unsafe {
-            bind::SDL_HapticEffectSupported(self.ptr.as_ptr(), &mut raw as *mut _) as bind::SDL_bool
+            bind::SDL_HapticEffectSupported(self.ptr.as_ptr(), &mut raw) as bind::SDL_bool
                 == bind::SDL_TRUE
         }
     }
@@ -96,7 +96,7 @@ impl Haptic {
             return Err(SdlError::UnsupportedFeature);
         }
         let mut raw = effect.clone().into_raw();
-        let ret = unsafe { bind::SDL_HapticNewEffect(self.ptr.as_ptr(), &mut raw as *mut _) };
+        let ret = unsafe { bind::SDL_HapticNewEffect(self.ptr.as_ptr(), &mut raw) };
         if ret < 0 {
             Err(SdlError::Others { msg: Sdl::error() })
         } else {

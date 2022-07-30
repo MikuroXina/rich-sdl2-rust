@@ -1,4 +1,4 @@
-use std::mem::MaybeUninit;
+use std::{mem::MaybeUninit, ptr::addr_of};
 
 use crate::bind;
 
@@ -138,7 +138,7 @@ impl Rect {
                 points.as_ptr(),
                 points.len() as c_int,
                 clip.map(From::from)
-                    .map_or(std::ptr::null(), |r| &r as *const _),
+                    .map_or(std::ptr::null(), |r| addr_of!(r)),
                 raw.as_mut_ptr(),
             )
         };
@@ -148,22 +148,14 @@ impl Rect {
     /// Returns whether two rectangles intersected.
     #[must_use]
     pub fn has_intersection(self, other: Self) -> bool {
-        unsafe {
-            bind::SDL_HasIntersection(&self.into() as *const _, &other.into() as *const _) != 0
-        }
+        unsafe { bind::SDL_HasIntersection(&self.into(), &other.into()) != 0 }
     }
 
     /// Returns the intersection rectangle of two rectangles.
     #[must_use]
     pub fn intersect(self, other: Self) -> Option<Self> {
         let mut raw = MaybeUninit::uninit();
-        let ret = unsafe {
-            bind::SDL_IntersectRect(
-                &self.into() as *const _,
-                &other.into() as *const _,
-                raw.as_mut_ptr(),
-            )
-        };
+        let ret = unsafe { bind::SDL_IntersectRect(&self.into(), &other.into(), raw.as_mut_ptr()) };
         (ret != 0).then(|| unsafe { raw.assume_init() }.into())
     }
 
@@ -176,13 +168,7 @@ impl Rect {
     /// Returns the union of two rectangles.
     pub fn union(self, other: Self) -> Self {
         let mut raw = MaybeUninit::uninit();
-        unsafe {
-            bind::SDL_UnionRect(
-                &self.into() as *const _,
-                &other.into() as *const _,
-                raw.as_mut_ptr(),
-            )
-        }
+        unsafe { bind::SDL_UnionRect(&self.into(), &other.into(), raw.as_mut_ptr()) }
         unsafe { raw.assume_init() }.into()
     }
 

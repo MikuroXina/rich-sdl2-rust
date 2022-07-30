@@ -93,7 +93,7 @@ impl MessageBox {
                 .map_or(std::ptr::null(), |scheme| scheme as *const _),
         };
         let mut button_id = 0;
-        let ret = unsafe { bind::SDL_ShowMessageBox(&data as *const _, &mut button_id as *mut _) };
+        let ret = unsafe { bind::SDL_ShowMessageBox(&data, &mut button_id) };
         if ret != 0 {
             return Err(SdlError::Others { msg: Sdl::error() });
         }

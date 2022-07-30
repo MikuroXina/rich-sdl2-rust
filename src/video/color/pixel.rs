@@ -138,9 +138,9 @@ impl PixelFormat {
             bind::SDL_GetRGB(
                 pixel,
                 self.format.as_ptr(),
-                &mut rgb.r as *mut _,
-                &mut rgb.g as *mut _,
-                &mut rgb.b as *mut _,
+                &mut rgb.r,
+                &mut rgb.g,
+                &mut rgb.b,
             )
         }
         rgb
@@ -158,10 +158,10 @@ impl PixelFormat {
             bind::SDL_GetRGBA(
                 pixel,
                 self.format.as_ptr(),
-                &mut rgba.r as *mut _,
-                &mut rgba.g as *mut _,
-                &mut rgba.b as *mut _,
-                &mut rgba.a as *mut _,
+                &mut rgba.r,
+                &mut rgba.g,
+                &mut rgba.b,
+                &mut rgba.a,
             )
         }
         rgba

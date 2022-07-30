@@ -116,7 +116,7 @@ impl<'renderer> Texture<'renderer> {
     #[must_use]
     pub fn alpha_mod(&self) -> u8 {
         let mut alpha = 0;
-        let ret = unsafe { bind::SDL_GetTextureAlphaMod(self.as_ptr(), &mut alpha as *mut _) };
+        let ret = unsafe { bind::SDL_GetTextureAlphaMod(self.as_ptr(), &mut alpha) };
         if ret != 0 {
             Sdl::error_then_panic("Getting texture alpha mod");
         }
@@ -147,14 +147,7 @@ impl<'renderer> Texture<'renderer> {
     /// Returns the color mod of the texture.
     pub fn color_mod(&self) -> Rgb {
         let (mut r, mut g, mut b) = (0, 0, 0);
-        let ret = unsafe {
-            bind::SDL_GetTextureColorMod(
-                self.as_ptr(),
-                &mut r as *mut _,
-                &mut g as *mut _,
-                &mut b as *mut _,
-            )
-        };
+        let ret = unsafe { bind::SDL_GetTextureColorMod(self.as_ptr(), &mut r, &mut g, &mut b) };
         if ret != 0 {
             Sdl::error_then_panic("Getting texture color mod");
         }
@@ -193,9 +186,7 @@ impl<'renderer> Texture<'renderer> {
     pub fn bind_to_current_gl_context(&self) -> Result<(f32, f32)> {
         let mut width = 0f32;
         let mut height = 0f32;
-        let ret = unsafe {
-            bind::SDL_GL_BindTexture(self.as_ptr(), &mut width as *mut _, &mut height as *mut _)
-        };
+        let ret = unsafe { bind::SDL_GL_BindTexture(self.as_ptr(), &mut width, &mut height) };
         if ret != 0 {
             Err(SdlError::Others { msg: Sdl::error() })
         } else {

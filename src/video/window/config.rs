@@ -131,13 +131,7 @@ impl ConfigExt for Window<'_> {
 
     fn pos(&self) -> Point {
         let mut point = Point::default();
-        unsafe {
-            bind::SDL_GetWindowPosition(
-                self.as_ptr(),
-                &mut point.x as *mut _,
-                &mut point.y as *mut _,
-            )
-        }
+        unsafe { bind::SDL_GetWindowPosition(self.as_ptr(), &mut point.x, &mut point.y) }
         point
     }
 

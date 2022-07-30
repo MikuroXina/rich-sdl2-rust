@@ -51,10 +51,8 @@ impl PasteExt for Renderer<'_> {
             bind::SDL_RenderCopy(
                 self.as_ptr(),
                 texture.as_ptr(),
-                texture
-                    .clip()
-                    .map_or(std::ptr::null(), |rect| &rect.into() as *const _),
-                target_area.map_or(std::ptr::null(), |rect| &rect.into() as *const _),
+                texture.clip().map_or(std::ptr::null(), |rect| &rect.into()),
+                target_area.map_or(std::ptr::null(), |rect| &rect.into()),
             )
         };
         if ret != 0 {
@@ -76,12 +74,10 @@ impl PasteExt for Renderer<'_> {
             bind::SDL_RenderCopyEx(
                 self.as_ptr(),
                 texture.as_ptr(),
-                texture
-                    .clip()
-                    .map_or(std::ptr::null(), |rect| &rect.into() as *const _),
-                target_area.map_or(std::ptr::null(), |rect| &rect.into() as *const _),
+                texture.clip().map_or(std::ptr::null(), |rect| &rect.into()),
+                target_area.map_or(std::ptr::null(), |rect| &rect.into()),
                 rotation_degrees,
-                center.map_or(std::ptr::null(), |p| &p.into() as *const _),
+                center.map_or(std::ptr::null(), |p| &p.into()),
                 flip.bits as EnumInt,
             )
         };

@@ -66,7 +66,7 @@ impl Sdl {
             minor: 0,
             patch: 0,
         };
-        unsafe { bind::SDL_GetVersion(&mut ver as *mut _) }
+        unsafe { bind::SDL_GetVersion(&mut ver) }
         ver.into()
     }
 

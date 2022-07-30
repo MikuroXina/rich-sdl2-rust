@@ -31,13 +31,7 @@ impl<'window> MetalView<'window> {
     pub fn drawable_size(&self) -> Size {
         let mut width = 0;
         let mut height = 0;
-        unsafe {
-            bind::SDL_Metal_GetDrawableSize(
-                self.window.as_ptr(),
-                &mut width as *mut _,
-                &mut height as *mut _,
-            )
-        }
+        unsafe { bind::SDL_Metal_GetDrawableSize(self.window.as_ptr(), &mut width, &mut height) }
         Size {
             width: width as _,
             height: height as _,

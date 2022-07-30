@@ -3,6 +3,7 @@ use std::{
     cell::{Cell, RefCell},
     collections::HashMap,
     ffi::c_void,
+    ptr::addr_of_mut,
 };
 
 use crate::{bind, geo::Point, Result};
@@ -69,7 +70,7 @@ impl<'window, T: HitTester<'window>> HitTest<'window, T> {
     ///
     /// Returns `Err` if a hit test in the window is unsupported.
     pub fn new(window: &'window Window<'window>, mut tester: T) -> Result<Self> {
-        let data = &mut tester as *mut T;
+        let data = addr_of_mut!(tester);
         let ret = unsafe {
             bind::SDL_SetWindowHitTest(
                 window.as_ptr(),

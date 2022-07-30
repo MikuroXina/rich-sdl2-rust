@@ -23,9 +23,8 @@ impl<'haptic> PendingEffect<'haptic> {
     /// Returns `Err` if failed to update the properties.
     pub fn update(&self, effect: &HapticEffect) -> Result<()> {
         let mut raw = effect.clone().into_raw();
-        let ret = unsafe {
-            bind::SDL_HapticUpdateEffect(self.haptic.ptr.as_ptr(), self.id, &mut raw as *mut _)
-        };
+        let ret =
+            unsafe { bind::SDL_HapticUpdateEffect(self.haptic.ptr.as_ptr(), self.id, &mut raw) };
         if ret < 0 {
             Err(SdlError::Others { msg: Sdl::error() })
         } else {

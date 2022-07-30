@@ -1,9 +1,9 @@
 //! Controls of a simple text input field.
 
 use static_assertions::assert_not_impl_all;
-use std::ffi::CStr;
 use std::marker::PhantomData;
 use std::os::raw::c_char;
+use std::{ffi::CStr, ptr::addr_of};
 
 use crate::geo::Rect;
 use crate::{bind, Video};
@@ -24,7 +24,7 @@ impl From<bind::SDL_TextInputEvent> for TextInputEvent {
         Self {
             timestamp: raw.timestamp,
             window_id: raw.windowID,
-            text: unsafe { CStr::from_ptr(&raw.text as *const c_char) }
+            text: unsafe { CStr::from_ptr(addr_of!(raw.text).cast()) }
                 .to_string_lossy()
                 .into(),
         }
@@ -51,7 +51,7 @@ impl From<bind::SDL_TextEditingEvent> for TextEditingEvent {
         Self {
             timestamp: raw.timestamp,
             window_id: raw.windowID,
-            text: unsafe { CStr::from_ptr(&raw.text as *const c_char) }
+            text: unsafe { CStr::from_ptr(addr_of!(raw.text).cast()) }
                 .to_string_lossy()
                 .into(),
             start: raw.start,
@@ -79,7 +79,7 @@ impl<'video> TextInput<'video> {
     pub fn new(_: &'video Video, input_rect: Rect) -> Self {
         let mut raw_rect = input_rect.into();
         unsafe {
-            bind::SDL_SetTextInputRect(&mut raw_rect as *mut _);
+            bind::SDL_SetTextInputRect(&mut raw_rect);
             bind::SDL_StartTextInput();
         }
         Self { video: PhantomData }
