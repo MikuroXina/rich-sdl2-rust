@@ -82,7 +82,7 @@ impl PixelFormatKind {
         } = bpp_mask;
         let ret = unsafe {
             bind::SDL_PixelFormatEnumToMasks(
-                self.clone().as_raw(),
+                self.as_raw(),
                 bpp as *mut _,
                 r_mask as *mut _,
                 g_mask as *mut _,
@@ -90,17 +90,13 @@ impl PixelFormatKind {
                 a_mask as *mut _,
             )
         };
-        if ret != 0 {
-            Some(bpp_mask)
-        } else {
-            None
-        }
+        (ret != 0).then_some(bpp_mask)
     }
 
     /// Returns the name for the pixel format, or empty string if does not exist.
     #[must_use]
     pub fn name(&self) -> &'static str {
-        unsafe { CStr::from_ptr(bind::SDL_GetPixelFormatName(self.clone().as_raw())) }
+        unsafe { CStr::from_ptr(bind::SDL_GetPixelFormatName(self.as_raw())) }
             .to_str()
             .unwrap_or_default()
     }
@@ -183,12 +179,7 @@ impl PixelFormatKind {
                 let bits = bytes_per_array_pixel(ty, order);
                 calc_bits(ty.as_raw(), order.as_raw(), 0, bits, bits / 8)
             }
-            PixelFormatKind::FourCode(bytes) => {
-                (bytes[0] as u32)
-                    | (bytes[1] as u32) << 8
-                    | (bytes[2] as u32) << 16
-                    | (bytes[3] as u32) << 24
-            }
+            PixelFormatKind::FourCode(bytes) => u32::from_le_bytes(bytes),
         }) as u32
     }
 }
@@ -196,30 +187,34 @@ impl PixelFormatKind {
 fn bits_per_packed_pixel(order: PackedPixelOrder, layout: PackedPixelLayout) -> u32 {
     match (order, layout) {
         (PackedPixelOrder::Xrgb, PackedPixelLayout::_332) => 8,
-        (PackedPixelOrder::Xrgb, PackedPixelLayout::_4444) => 12,
-        (PackedPixelOrder::Xrgb, PackedPixelLayout::_1555) => 15,
-        (PackedPixelOrder::Xrgb, PackedPixelLayout::_565) => 16,
-        (PackedPixelOrder::Xrgb, PackedPixelLayout::_8888) => 24,
-        (PackedPixelOrder::Rgbx, PackedPixelLayout::_8888) => 24,
-        (PackedPixelOrder::Argb, PackedPixelLayout::_4444) => 16,
-        (PackedPixelOrder::Argb, PackedPixelLayout::_1555) => 16,
-        (PackedPixelOrder::Argb, PackedPixelLayout::_5551) => 16,
-        (PackedPixelOrder::Argb, PackedPixelLayout::_8888) => 32,
-        (PackedPixelOrder::Argb, PackedPixelLayout::_2101010) => 32,
-        (PackedPixelOrder::Rgba, PackedPixelLayout::_4444) => 32,
-        (PackedPixelOrder::Rgba, PackedPixelLayout::_5551) => 16,
-        (PackedPixelOrder::Rgba, PackedPixelLayout::_8888) => 32,
-        (PackedPixelOrder::Xbgr, PackedPixelLayout::_4444) => 12,
-        (PackedPixelOrder::Xbgr, PackedPixelLayout::_1555) => 15,
-        (PackedPixelOrder::Xbgr, PackedPixelLayout::_565) => 16,
-        (PackedPixelOrder::Xbgr, PackedPixelLayout::_8888) => 24,
-        (PackedPixelOrder::Bgrx, PackedPixelLayout::_8888) => 24,
-        (PackedPixelOrder::Abgr, PackedPixelLayout::_4444) => 16,
-        (PackedPixelOrder::Abgr, PackedPixelLayout::_1555) => 16,
-        (PackedPixelOrder::Abgr, PackedPixelLayout::_8888) => 32,
-        (PackedPixelOrder::Bgra, PackedPixelLayout::_4444) => 16,
-        (PackedPixelOrder::Bgra, PackedPixelLayout::_5551) => 16,
-        (PackedPixelOrder::Bgra, PackedPixelLayout::_8888) => 32,
+        (PackedPixelOrder::Xbgr | PackedPixelOrder::Xrgb, PackedPixelLayout::_4444) => 12,
+        (PackedPixelOrder::Xrgb | PackedPixelOrder::Xbgr, PackedPixelLayout::_1555) => 15,
+        (PackedPixelOrder::Abgr | PackedPixelOrder::Argb, PackedPixelLayout::_1555)
+        | (
+            PackedPixelOrder::Abgr | PackedPixelOrder::Argb | PackedPixelOrder::Bgra,
+            PackedPixelLayout::_4444,
+        )
+        | (
+            PackedPixelOrder::Argb | PackedPixelOrder::Bgra | PackedPixelOrder::Rgba,
+            PackedPixelLayout::_5551,
+        )
+        | (PackedPixelOrder::Xbgr | PackedPixelOrder::Xrgb, PackedPixelLayout::_565) => 16,
+        (
+            PackedPixelOrder::Rgbx
+            | PackedPixelOrder::Bgrx
+            | PackedPixelOrder::Xbgr
+            | PackedPixelOrder::Xrgb,
+            PackedPixelLayout::_8888,
+        ) => 24,
+        (PackedPixelOrder::Rgba, PackedPixelLayout::_4444)
+        | (
+            PackedPixelOrder::Abgr
+            | PackedPixelOrder::Argb
+            | PackedPixelOrder::Bgra
+            | PackedPixelOrder::Rgba,
+            PackedPixelLayout::_8888,
+        )
+        | (PackedPixelOrder::Argb, PackedPixelLayout::_2101010) => 32,
         _ => 0,
     }
 }
@@ -234,10 +229,8 @@ fn bytes_per_array_pixel(ty: ArrayPixelType, order: ArrayPixelOrder) -> u32 {
     };
     let bits_per_component = match ty {
         ArrayPixelType::U8 => 8,
-        ArrayPixelType::U16 => 16,
-        ArrayPixelType::U32 => 32,
-        ArrayPixelType::F16 => 16,
-        ArrayPixelType::F32 => 32,
+        ArrayPixelType::U16 | ArrayPixelType::F16 => 16,
+        ArrayPixelType::U32 | ArrayPixelType::F32 => 32,
     };
     components * bits_per_component
 }
