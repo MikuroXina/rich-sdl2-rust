@@ -202,13 +202,11 @@ fn open<'callback, T: AudioCallback<'callback>>(
     fallback: FallbackFlag,
 ) -> Result<(u32, AudioDeviceProperty)> {
     let is_capture_raw = if is_capture { 1 } else { 0 };
+    let device = device.map(|s| CString::new(s).expect("device name is invalid"));
     let mut actual = MaybeUninit::uninit();
     let id = unsafe {
         bind::SDL_OpenAudioDevice(
-            device.map_or(std::ptr::null_mut(), |s| {
-                let c_string = CString::new(s).unwrap();
-                c_string.into_raw()
-            }),
+            device.map_or(std::ptr::null_mut(), |s| s.into_raw()),
             is_capture_raw,
             spec.raw() as *const _,
             actual.as_mut_ptr(),

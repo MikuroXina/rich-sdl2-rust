@@ -8,7 +8,7 @@ use clip::ClippedRenderer;
 
 use super::window::Window;
 use crate::{
-    bind,
+    as_raw, bind,
     geo::{Rect, Scale, Size},
     texture::Texture,
     Result, Sdl, SdlError,
@@ -155,12 +155,8 @@ impl<'window> Renderer<'window> {
 
     /// Sets the viewport rectangle of the renderer.
     pub fn set_viewport(&self, area: Option<Rect>) {
-        let ret = unsafe {
-            bind::SDL_RenderSetViewport(
-                self.as_ptr(),
-                area.map_or(std::ptr::null(), |rect| &rect.into()),
-            )
-        };
+        let area = area.map(Into::into);
+        let ret = unsafe { bind::SDL_RenderSetViewport(self.as_ptr(), as_raw(&area)) };
         if ret != 0 {
             Sdl::error_then_panic("Setting renderer viewport");
         }

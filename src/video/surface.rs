@@ -2,10 +2,10 @@
 
 use std::ptr::NonNull;
 
-use crate::color::pixel::palette::Palette;
 use crate::color::pixel::Pixel;
 use crate::color::{BlendMode, Rgb};
 use crate::geo::{Point, Rect};
+use crate::{as_raw, color::pixel::palette::Palette};
 use crate::{bind, Sdl};
 pub use bind::SDL_Surface as RawSurface;
 
@@ -70,13 +70,9 @@ pub trait Surface {
 
     /// Fills in the `area` with the `color`, or whole if `area` is `None`.
     fn fill_rect(&self, area: Option<Rect>, color: Pixel) {
-        let raw_rect = area.map(Into::into);
+        let area = area.map(Into::into);
         unsafe {
-            let ret = bind::SDL_FillRect(
-                self.as_ptr().as_ptr(),
-                raw_rect.map_or(std::ptr::null(), |raw| &raw),
-                color.as_u32(),
-            );
+            let ret = bind::SDL_FillRect(self.as_ptr().as_ptr(), as_raw(&area), color.as_u32());
             if ret != 0 {
                 Sdl::error_then_panic("Surface filling with rectangle")
             }

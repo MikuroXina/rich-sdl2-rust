@@ -49,3 +49,21 @@ pub use video::*;
 type EnumInt = std::os::raw::c_uint;
 #[cfg(target_env = "msvc")]
 type EnumInt = std::os::raw::c_int;
+
+/// Converts an option reference into a constant raw pointer.
+///
+/// # Safety
+///
+/// The object of `opt` must live over usage of a returned pointer. Otherwise it will occur UB.
+pub(crate) unsafe fn as_raw<T>(opt: &Option<T>) -> *const T {
+    opt.as_ref().map_or(std::ptr::null(), |x| &*x)
+}
+
+/// Converts an option reference into a mutable raw pointer.
+///
+/// # Safety
+///
+/// The object of `opt` must live over usage of a returned pointer. Otherwise it will occur UB.
+pub(crate) unsafe fn as_raw_mut<T>(opt: &mut Option<T>) -> *mut T {
+    opt.as_mut().map_or(std::ptr::null_mut(), |x| &mut *x)
+}

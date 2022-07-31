@@ -1,6 +1,6 @@
 use std::{mem::MaybeUninit, ptr::addr_of};
 
-use crate::bind;
+use crate::{as_raw, bind};
 
 use super::{Point, Size};
 
@@ -130,15 +130,15 @@ impl Rect {
     /// Returns the enclosed rectangle of the points, with the clip region.
     pub fn enclosed(points: impl IntoIterator<Item = Point>, clip: Option<Rect>) -> Option<Self> {
         use std::os::raw::c_int;
-        let points: Vec<_> = points.into_iter().map(From::from).collect();
+        let points: Vec<_> = points.into_iter().map(Into::into).collect();
+        let clip = clip.map(Into::into);
 
         let mut raw = MaybeUninit::uninit();
         let ret = unsafe {
             bind::SDL_EnclosePoints(
                 points.as_ptr(),
                 points.len() as c_int,
-                clip.map(From::from)
-                    .map_or(std::ptr::null(), |r| addr_of!(r)),
+                as_raw(&clip),
                 raw.as_mut_ptr(),
             )
         };
