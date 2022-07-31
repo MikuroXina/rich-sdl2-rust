@@ -1,0 +1,15 @@
+name: Security audit
+
+on:
+  pull_request:
+    paths-ignore:
+      - "**/deny.toml"
+      - "**/Cargo.toml"
+      - "**/Cargo.lock"
+
+jobs:
+  security_audit:
+    runs-on: ubuntu-latest
+    steps:
+      - run: |
+          echo "Nothing to do"
