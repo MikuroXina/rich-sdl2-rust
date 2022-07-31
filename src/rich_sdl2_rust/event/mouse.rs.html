@@ -137,6 +137,13 @@
 <span id="137">137</span>
 <span id="138">138</span>
 <span id="139">139</span>
+<span id="140">140</span>
+<span id="141">141</span>
+<span id="142">142</span>
+<span id="143">143</span>
+<span id="144">144</span>
+<span id="145">145</span>
+<span id="146">146</span>
 </pre><pre class="rust"><code><span class="doccomment">//! Events and utilities for the mouse.</span>
 
 <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::geo::Point</span>;
@@ -251,7 +258,7 @@
 }
 
 <span class="doccomment">/// An event that the mouse wheel was scrolled.</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>)]</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">PartialEq</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">MouseWheelEvent</span> {
     <span class="doccomment">/// When this event occurred.</span>
     <span class="kw">pub</span> <span class="ident">timestamp</span>: <span class="ident">u32</span>,
@@ -259,11 +266,17 @@
     <span class="kw">pub</span> <span class="ident">window_id</span>: <span class="ident">u32</span>,
     <span class="doccomment">/// The id of the moved.</span>
     <span class="kw">pub</span> <span class="ident">mouse_id</span>: <span class="ident">u32</span>,
-    <span class="doccomment">/// How the wheel scrolled.</span>
+    <span class="doccomment">/// How much the wheel scrolled. X is the amount scrolled horizontally, positive to the right and negative to the left. Y is the amount scrolled vertically, positive away from the user and negative towards to the user.</span>
     <span class="kw">pub</span> <span class="ident">scroll_amount</span>: <span class="ident">Point</span>,
+    <span class="doccomment">/// How much the wheel scrolled with float precision. The first element is the amount scrolled horizontally, positive to the right and negative to the left. The second element is the amount scrolled vertically, positive away from the user and negative towards to the user.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// The value returned from the API does not contain NaN or infinity number. You should not edit the value because that [`MouseWheelEvent`] implements [`Eq`].</span>
+    <span class="kw">pub</span> <span class="ident">scroll_amount_precise</span>: (<span class="ident">f32</span>, <span class="ident">f32</span>),
     <span class="doccomment">/// Whether the scroll direction is inverted.</span>
     <span class="kw">pub</span> <span class="ident">is_flipped</span>: <span class="ident">bool</span>,
 }
+
+<span class="kw">impl</span> <span class="ident">Eq</span> <span class="kw">for</span> <span class="ident">MouseWheelEvent</span> {}
 
 <span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">bind::SDL_MouseWheelEvent</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">MouseWheelEvent</span> {
     <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">raw</span>: <span class="ident">bind::SDL_MouseWheelEvent</span>) -&gt; <span class="self">Self</span> {
@@ -272,6 +285,7 @@
             <span class="ident">window_id</span>: <span class="ident">raw</span>.<span class="ident">windowID</span>,
             <span class="ident">mouse_id</span>: <span class="ident">raw</span>.<span class="ident">which</span>,
             <span class="ident">scroll_amount</span>: <span class="ident">Point</span> { <span class="ident">x</span>: <span class="ident">raw</span>.<span class="ident">x</span>, <span class="ident">y</span>: <span class="ident">raw</span>.<span class="ident">y</span> },
+            <span class="ident">scroll_amount_precise</span>: (<span class="ident">raw</span>.<span class="ident">preciseX</span>, <span class="ident">raw</span>.<span class="ident">preciseY</span>),
             <span class="ident">is_flipped</span>: <span class="ident">raw</span>.<span class="ident">direction</span> <span class="kw">as</span> <span class="ident">EnumInt</span> <span class="op">==</span> <span class="ident">bind::SDL_MOUSEWHEEL_FLIPPED</span>,
         }
     }

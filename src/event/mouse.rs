@@ -112,7 +112,7 @@ impl From<bind::SDL_MouseButtonEvent> for MouseButtonEvent {
 }
 
 /// An event that the mouse wheel was scrolled.
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Debug, Clone, PartialEq)]
 pub struct MouseWheelEvent {
     /// When this event occurred.
     pub timestamp: u32,
@@ -120,11 +120,17 @@ pub struct MouseWheelEvent {
     pub window_id: u32,
     /// The id of the moved.
     pub mouse_id: u32,
-    /// How the wheel scrolled.
+    /// How much the wheel scrolled. X is the amount scrolled horizontally, positive to the right and negative to the left. Y is the amount scrolled vertically, positive away from the user and negative towards to the user.
     pub scroll_amount: Point,
+    /// How much the wheel scrolled with float precision. The first element is the amount scrolled horizontally, positive to the right and negative to the left. The second element is the amount scrolled vertically, positive away from the user and negative towards to the user.
+    ///
+    /// The value returned from the API does not contain NaN or infinity number. You should not edit the value because that [`MouseWheelEvent`] implements [`Eq`].
+    pub scroll_amount_precise: (f32, f32),
     /// Whether the scroll direction is inverted.
     pub is_flipped: bool,
 }
+
+impl Eq for MouseWheelEvent {}
 
 impl From<bind::SDL_MouseWheelEvent> for MouseWheelEvent {
     fn from(raw: bind::SDL_MouseWheelEvent) -> Self {
@@ -133,6 +139,7 @@ impl From<bind::SDL_MouseWheelEvent> for MouseWheelEvent {
             window_id: raw.windowID,
             mouse_id: raw.which,
             scroll_amount: Point { x: raw.x, y: raw.y },
+            scroll_amount_precise: (raw.preciseX, raw.preciseY),
             is_flipped: raw.direction as EnumInt == bind::SDL_MOUSEWHEEL_FLIPPED,
         }
     }
