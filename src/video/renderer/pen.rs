@@ -17,7 +17,10 @@ impl<'renderer> Pen<'renderer> {
     /// Constructs a pen from the renderer [`Renderer`].
     #[must_use]
     pub fn new(renderer: &'renderer Renderer) -> Self {
-        Self { renderer }
+        let this = Self { renderer };
+        this.set_color(Rgb { r: 0, g: 0, b: 0 });
+        this.clear();
+        this
     }
 
     /// Returns the renderer that the pen is drawing.

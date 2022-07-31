@@ -1,7 +1,10 @@
 use bitflags::bitflags;
 
-use crate::geo::{Point, Rect};
 use crate::texture::Texture;
+use crate::{
+    as_raw,
+    geo::{Point, Rect},
+};
 use crate::{bind, EnumInt, Sdl};
 
 use super::Renderer;
@@ -47,13 +50,10 @@ pub trait PasteExt {
 
 impl PasteExt for Renderer<'_> {
     fn paste(&self, texture: Texture, target_area: Option<Rect>) {
+        let src = texture.clip().map(Into::into);
+        let dst = target_area.map(Into::into);
         let ret = unsafe {
-            bind::SDL_RenderCopy(
-                self.as_ptr(),
-                texture.as_ptr(),
-                texture.clip().map_or(std::ptr::null(), |rect| &rect.into()),
-                target_area.map_or(std::ptr::null(), |rect| &rect.into()),
-            )
+            bind::SDL_RenderCopy(self.as_ptr(), texture.as_ptr(), as_raw(&src), as_raw(&dst))
         };
         if ret != 0 {
             Sdl::error_then_panic("Pasting texture to renderer");
@@ -70,14 +70,17 @@ impl PasteExt for Renderer<'_> {
             flip,
         }: PasteExOption,
     ) {
+        let src = texture.clip().map(Into::into);
+        let dst = target_area.map(Into::into);
+        let center = center.map(Into::into);
         let ret = unsafe {
             bind::SDL_RenderCopyEx(
                 self.as_ptr(),
                 texture.as_ptr(),
-                texture.clip().map_or(std::ptr::null(), |rect| &rect.into()),
-                target_area.map_or(std::ptr::null(), |rect| &rect.into()),
+                as_raw(&src),
+                as_raw(&dst),
                 rotation_degrees,
-                center.map_or(std::ptr::null(), |p| &p.into()),
+                as_raw(&center),
                 flip.bits as EnumInt,
             )
         };
