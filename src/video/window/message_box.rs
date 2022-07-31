@@ -1,6 +1,6 @@
 //! Modal control for a window.
 
-use crate::{bind, Result, Sdl, SdlError};
+use crate::{as_raw, bind, Result, Sdl, SdlError};
 use std::ffi::CString;
 
 use super::Window;
@@ -96,9 +96,7 @@ impl MessageBox {
             message: message_cstr.as_ptr(),
             numbuttons: buttons_raw.len() as i32,
             buttons: buttons_raw.as_ptr(),
-            colorScheme: color_scheme
-                .as_ref()
-                .map_or(std::ptr::null(), |scheme| scheme as *const _),
+            colorScheme: unsafe { as_raw(&color_scheme) },
         };
         let mut button_id = 0;
         let ret = unsafe { bind::SDL_ShowMessageBox(&data, &mut button_id) };

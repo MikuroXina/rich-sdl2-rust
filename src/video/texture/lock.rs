@@ -3,7 +3,10 @@
 use std::ffi::c_void;
 use std::ptr::NonNull;
 
-use crate::geo::{Rect, Size};
+use crate::{
+    as_raw,
+    geo::{Rect, Size},
+};
 use crate::{bind, Sdl};
 
 use super::Texture;
@@ -26,14 +29,10 @@ impl std::fmt::Debug for Lock<'_> {
 
 impl<'texture> Lock<'texture> {
     pub(super) fn new(texture: &'texture mut Texture<'texture>, area: Option<Rect>) -> Self {
+        let area = area.map(Into::into);
         let (mut pixels, mut pitch) = (std::ptr::null_mut(), 0);
         let ret = unsafe {
-            bind::SDL_LockTexture(
-                texture.as_ptr(),
-                area.map_or(std::ptr::null(), |area| &area.into()),
-                &mut pixels,
-                &mut pitch,
-            )
+            bind::SDL_LockTexture(texture.as_ptr(), as_raw(&area), &mut pixels, &mut pitch)
         };
         if ret != 0 {
             Sdl::error_then_panic("Obtaining texture lock");

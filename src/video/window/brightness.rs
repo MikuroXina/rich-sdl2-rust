@@ -122,19 +122,15 @@ impl GammaExt for Window<'_> {
         Ok(gamma)
     }
 
-    fn set_gamma(&self, gamma: GammaParam) -> Result<()> {
+    fn set_gamma(&self, GammaParam { red, green, blue }: GammaParam) -> Result<()> {
+        let ramp_as_ptr =
+            |ramp: Option<&GammaRamp>| ramp.map_or(std::ptr::null(), |ramp| ramp.0.as_ptr().cast());
         let ret = unsafe {
             bind::SDL_SetWindowGammaRamp(
                 self.as_ptr(),
-                gamma
-                    .red
-                    .map_or(std::ptr::null(), |ramp| ramp.0.as_ptr().cast()),
-                gamma
-                    .green
-                    .map_or(std::ptr::null(), |ramp| ramp.0.as_ptr().cast()),
-                gamma
-                    .blue
-                    .map_or(std::ptr::null(), |ramp| ramp.0.as_ptr().cast()),
+                ramp_as_ptr(red.as_ref()),
+                ramp_as_ptr(green.as_ref()),
+                ramp_as_ptr(blue.as_ref()),
             )
         };
         if ret != 0 {

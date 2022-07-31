@@ -93,6 +93,7 @@ impl Sdl {
     }
 
     /// On an unrecoverable error detected, panics with the provided `context`.
+    #[inline(always)]
     pub fn error_then_panic(context: &'static str) -> ! {
         eprintln!("{} error: {}", context, Self::error());
         panic!("Unrecoverable Sdl error occurred");
