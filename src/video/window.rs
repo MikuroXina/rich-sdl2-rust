@@ -180,7 +180,7 @@ impl<'video> Window<'video> {
     /// Gets a kind of the underlying subsystem.
     pub fn subsystem_kind(&self) -> SubsystemKind {
         let wm = self.sys_info();
-        SubsystemKind::from_raw(wm.subsystem as u32)
+        SubsystemKind::from_raw(wm.subsystem)
     }
 }
 
@@ -223,7 +223,7 @@ pub enum SubsystemKind {
 }
 
 impl SubsystemKind {
-    pub(crate) fn from_raw(raw: u32) -> Self {
+    pub(crate) fn from_raw(raw: bind::SDL_SYSWM_TYPE) -> Self {
         match raw {
             bind::SDL_SYSWM_WINDOWS => Self::Windows,
             bind::SDL_SYSWM_WINRT => Self::WinRT,
@@ -246,7 +246,7 @@ unsafe impl<'video> HasRawWindowHandle for Window<'video> {
     /// Downcasts into a raw window handle.
     fn raw_window_handle(&self) -> RawWindowHandle {
         let wm = self.sys_info();
-        let subsystem = SubsystemKind::from_raw(wm.subsystem as u32);
+        let subsystem = SubsystemKind::from_raw(wm.subsystem);
         match subsystem {
             #[cfg(target_os = "windows")]
             SubsystemKind::Windows => {
