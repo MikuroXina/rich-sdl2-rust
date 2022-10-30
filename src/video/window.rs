@@ -1,7 +1,12 @@
 //! Window managements, graphics and mouse controls.
 
+use raw_window_handle::{HasRawWindowHandle, RawWindowHandle};
 use static_assertions::assert_not_impl_all;
-use std::ptr::NonNull;
+use std::{
+    ffi::c_void,
+    mem::MaybeUninit,
+    ptr::{addr_of_mut, NonNull},
+};
 
 use super::{color::pixel::kind::PixelFormatKind, display::Display};
 use crate::surface::window::WindowSurface;
@@ -158,10 +163,167 @@ impl<'video> Window<'video> {
     pub fn surface(&self) -> WindowSurface {
         WindowSurface::new(self)
     }
+
+    fn sys_info(&self) -> bind::SDL_SysWMinfo {
+        unsafe {
+            let mut info = MaybeUninit::<bind::SDL_SysWMinfo>::uninit();
+            let ptr = info.as_mut_ptr();
+            bind::SDL_GetVersion(addr_of_mut!((*ptr).version));
+            let ret = bind::SDL_GetWindowWMInfo(self.window.as_ptr(), ptr);
+            if ret == 0 {
+                panic!("failed to get window manager info: {}", Sdl::error());
+            }
+            info.assume_init()
+        }
+    }
+
+    /// Gets a kind of the underlying subsystem.
+    pub fn subsystem_kind(&self) -> SubsystemKind {
+        let wm = self.sys_info();
+        SubsystemKind::from_raw(wm.subsystem)
+    }
 }
 
 impl<'video> Drop for Window<'video> {
     fn drop(&mut self) {
         unsafe { bind::SDL_DestroyWindow(self.window.as_ptr()) }
+    }
+}
+
+/// Supported windowing subsystems.
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+#[must_use]
+pub enum SubsystemKind {
+    /// HWND handle for Windows.
+    Windows,
+    /// CoreWindow handle for Windows Runtime.
+    WinRT,
+    /// X11 Window handle for UNIX-like.
+    X11,
+    /// IDirectFBWindow handle for UNIX-like.
+    DirectFB,
+    /// NSWindow handle for macOS.
+    Cocoa,
+    /// UIWindow handle for iOS.
+    UIKit,
+    /// wl_display handle for UNIX-like.
+    Wayland,
+    /// ANativeWindow handle for Android.
+    Android,
+    /// EGLNativeWindowType handle for Vivante VDK (EGL).
+    Vivante,
+    /// HWND handle for OS/2.
+    OS2,
+    /// For Haiku OS.
+    Haiku,
+    /// Device index for libDRM.
+    KmsDrm,
+    /// For RISC OS.
+    RiscOS,
+}
+
+impl SubsystemKind {
+    pub(crate) fn from_raw(raw: u32) -> Self {
+        match raw {
+            bind::SDL_SYSWM_WINDOWS => Self::Windows,
+            bind::SDL_SYSWM_WINRT => Self::WinRT,
+            bind::SDL_SYSWM_DIRECTFB => Self::DirectFB,
+            bind::SDL_SYSWM_COCOA => Self::Cocoa,
+            bind::SDL_SYSWM_UIKIT => Self::UIKit,
+            bind::SDL_SYSWM_WAYLAND => Self::Wayland,
+            bind::SDL_SYSWM_ANDROID => Self::Android,
+            bind::SDL_SYSWM_VIVANTE => Self::Vivante,
+            bind::SDL_SYSWM_OS2 => Self::OS2,
+            bind::SDL_SYSWM_HAIKU => Self::Haiku,
+            bind::SDL_SYSWM_KMSDRM => Self::KmsDrm,
+            bind::SDL_SYSWM_RISCOS => Self::RiscOS,
+            _ => panic!("unsupported subsystem: {}", raw),
+        }
+    }
+}
+
+unsafe impl<'video> HasRawWindowHandle for Window<'video> {
+    /// Downcasts into a raw window handle.
+    fn raw_window_handle(&self) -> RawWindowHandle {
+        let wm = self.sys_info();
+        let subsystem = SubsystemKind::from_raw(wm.subsystem);
+        match subsystem {
+            #[cfg(target_os = "windows")]
+            SubsystemKind::Windows => {
+                use raw_window_handle::Win32Handle;
+
+                let mut handle = Win32Handle::empty();
+                handle.hwnd = unsafe { wm.info.win }.window as *mut c_void;
+                RawWindowHandle::Win32(handle)
+            }
+            #[cfg(target_os = "windows")]
+            SubsystemKind::WinRT => {
+                use raw_window_handle::WinRtHandle;
+
+                let mut handle = WinRtHandle::empty();
+                handle.core_window = unsafe { wm.info.winrt }.core_window;
+                RawWindowHandle::WinRt(handle)
+            }
+            #[cfg(any(
+                target_os = "linux",
+                target_os = "dragonfly",
+                target_os = "freebsd",
+                target_os = "netbsd",
+                target_os = "openbsd",
+            ))]
+            SubsystemKind::Wayland => {
+                use raw_window_handle::WaylandHandle;
+
+                let mut handle = WaylandHandle::empty();
+                handle.surface = unsafe { wm.info.wl }.surface as *mut c_void;
+                handle.display = unsafe { wm.info.wl }.display as *mut c_void;
+                RawWindowHandle::Wayland(handle)
+            }
+            #[cfg(any(
+                target_os = "linux",
+                target_os = "dragonfly",
+                target_os = "freebsd",
+                target_os = "netbsd",
+                target_os = "openbsd",
+            ))]
+            SubsystemKind::X11 => {
+                use raw_window_handle::XlibHandle;
+
+                let mut handle = XlibHandle::empty();
+                handle.window = unsafe { wm.info.x11 }.window;
+                handle.display = unsafe { wm.info.x11 }.display as *mut c_void;
+                RawWindowHandle::Xlib(handle)
+            }
+            #[cfg(target_os = "macos")]
+            SubsystemKind::Cocoa => {
+                use raw_window_handle::macos::MacOSHandle;
+
+                let mut handle = MacOSHandle::empty();
+                handle.ns_window = unsafe { wm.info.cocoa.window }.cast();
+                RawWindowHandle::MacOS(handle)
+            }
+            #[cfg(target_os = "ios")]
+            SubsystemKind::UIKit => {
+                use raw_window_handle::ios::IOSHandle;
+
+                let mut handle = IOSHandle::empty();
+                handle.ui_window = unsafe { wm.info.uikit.window }.cast();
+                RawWindowHandle::IOS(handle)
+            }
+            #[cfg(target_os = "android")]
+            SubsystemKind::Android => {
+                use raw_window_handle::android::AndroidHandle;
+
+                let mut handle = AndroidHandle::empty();
+                handle.a_native_window = unsafe { wm.info.android.window }.cast();
+                RawWindowHandle::Android(handle)
+            }
+            _ => {
+                panic!(
+                    "unsupported window handle for this platform: {:?}",
+                    subsystem
+                );
+            }
+        }
     }
 }
