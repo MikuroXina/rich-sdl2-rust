@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/video/window/brightness.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>brightness.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../../storage.js"></script><script defer src="../../../../source-script.js"></script><script defer src="../../../../source-files.js"></script><script defer src="../../../../main.js"></script><noscript><link rel="stylesheet" href="../../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../../../rich_sdl2_rust/index.html"><div class="logo-container"><img class="rust-logo" src="../../../../rust-logo.svg" alt="logo"></div></a><h2 class="location"></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../../../rich_sdl2_rust/index.html"><div class="logo-container"><img class="rust-logo" src="../../../../rust-logo.svg" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../../../rich_sdl2_rust/index.html"><img class="rust-logo" src="../../../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/video/window/brightness.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>brightness.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" href="../../../../normalize.css"><link rel="stylesheet" href="../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" href="../../../../ayu.css" disabled><link rel="stylesheet" href="../../../../dark.css" disabled><link rel="stylesheet" href="../../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../../storage.js"></script><script defer src="../../../../source-script.js"></script><script defer src="../../../../source-files.js"></script><script defer src="../../../../main.js"></script><noscript><link rel="stylesheet" href="../../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><div class="width-limiter"><nav class="sub"><a class="sub-logo-container" href="../../../../rich_sdl2_rust/index.html"><img class="rust-logo" src="../../../../rust-logo.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../../wheel.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><pre class="src-line-numbers"><span id="1">1</span>
 <span id="2">2</span>
 <span id="3">3</span>
 <span id="4">4</span>
@@ -144,151 +144,151 @@
 <span id="144">144</span>
 <span id="145">145</span>
 <span id="146">146</span>
-</pre><pre class="rust"><code><span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::gamma_ramp::GammaRamp</span>;
-<span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">bind</span>, <span class="prelude-ty">Result</span>, <span class="ident">Sdl</span>, <span class="ident">SdlError</span>};
+</pre><pre class="rust"><code><span class="kw">use </span><span class="kw">crate</span>::gamma_ramp::GammaRamp;
+<span class="kw">use crate</span>::{bind, <span class="prelude-ty">Result</span>, Sdl, SdlError};
 
-<span class="kw">use</span> <span class="ident"><span class="kw">super</span>::Window</span>;
+<span class="kw">use </span><span class="kw">super</span>::Window;
 
-<span class="doccomment">/// A brightness in the window.</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">Copy</span>, <span class="ident">PartialEq</span>, <span class="ident">PartialOrd</span>)]</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Brightness</span> {
-    <span class="ident">brightness</span>: <span class="ident">f32</span>,
+<span class="doccomment">/// A brightness in the window.
+</span><span class="attribute">#[derive(Debug, Clone, Copy, PartialEq, PartialOrd)]
+</span><span class="kw">pub struct </span>Brightness {
+    brightness: f32,
 }
 
-<span class="kw">impl</span> <span class="ident">Brightness</span> {
-    <span class="doccomment">/// Constructs from brightness, or `None` if the value is not in `0.0..=1.0`.</span>
-    <span class="attribute">#[<span class="ident">must_use</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">brightness</span>: <span class="ident">f32</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
-        <span class="kw">if</span> (<span class="number">0.0</span>..<span class="op">=</span><span class="number">1.0</span>).<span class="ident">contains</span>(<span class="kw-2">&amp;</span><span class="ident">brightness</span>) {
-            <span class="prelude-val">Some</span>(<span class="self">Self</span> { <span class="ident">brightness</span> })
-        } <span class="kw">else</span> {
-            <span class="prelude-val">None</span>
+<span class="kw">impl </span>Brightness {
+    <span class="doccomment">/// Constructs from brightness, or `None` if the value is not in `0.0..=1.0`.
+    </span><span class="attribute">#[must_use]
+    </span><span class="kw">pub fn </span>new(brightness: f32) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="self">Self</span>&gt; {
+        <span class="kw">if </span>(<span class="number">0.0</span>..=<span class="number">1.0</span>).contains(<span class="kw-2">&amp;</span>brightness) {
+            <span class="prelude-val">Some</span>(<span class="self">Self </span>{ brightness })
+        } <span class="kw">else </span>{
+            <span class="prelude-val">None
+        </span>}
+    }
+
+    <span class="doccomment">/// Constructs from brightness, clamping to `0.0,,=1.0`.
+    </span><span class="attribute">#[must_use]
+    </span><span class="kw">pub fn </span>with_clamped(brightness: f32) -&gt; <span class="self">Self </span>{
+        <span class="self">Self </span>{
+            brightness: brightness.clamp(<span class="number">0.0</span>, <span class="number">1.0</span>),
         }
     }
 
-    <span class="doccomment">/// Constructs from brightness, clamping to `0.0,,=1.0`.</span>
-    <span class="attribute">#[<span class="ident">must_use</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">with_clamped</span>(<span class="ident">brightness</span>: <span class="ident">f32</span>) -&gt; <span class="self">Self</span> {
-        <span class="self">Self</span> {
-            <span class="ident">brightness</span>: <span class="ident">brightness</span>.<span class="ident">clamp</span>(<span class="number">0.0</span>, <span class="number">1.0</span>),
-        }
-    }
-
-    <span class="doccomment">/// Converts into `f32`.</span>
-    <span class="attribute">#[<span class="ident">must_use</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">as_f32</span>(<span class="self">self</span>) -&gt; <span class="ident">f32</span> {
-        <span class="self">self</span>.<span class="ident">brightness</span>
+    <span class="doccomment">/// Converts into `f32`.
+    </span><span class="attribute">#[must_use]
+    </span><span class="kw">pub fn </span>as_f32(<span class="self">self</span>) -&gt; f32 {
+        <span class="self">self</span>.brightness
     }
 }
 
-<span class="doccomment">/// An extension for [`Window`] to get/set the brightness.</span>
-<span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">BrightnessExt</span> {
-    <span class="doccomment">/// Returns the brightness of the window.</span>
-    <span class="kw">fn</span> <span class="ident">brightness</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">Brightness</span>;
-    <span class="doccomment">/// Sets the brightness of the Window.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # Errors</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// Returns `Err` if setting a brightness is unsupported.</span>
-    <span class="kw">fn</span> <span class="ident">set_brightness</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">brightness</span>: <span class="ident">Brightness</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span>;
+<span class="doccomment">/// An extension for [`Window`] to get/set the brightness.
+</span><span class="kw">pub trait </span>BrightnessExt {
+    <span class="doccomment">/// Returns the brightness of the window.
+    </span><span class="kw">fn </span>brightness(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; Brightness;
+    <span class="doccomment">/// Sets the brightness of the Window.
+    ///
+    /// # Errors
+    ///
+    /// Returns `Err` if setting a brightness is unsupported.
+    </span><span class="kw">fn </span>set_brightness(<span class="kw-2">&amp;</span><span class="self">self</span>, brightness: Brightness) -&gt; <span class="prelude-ty">Result</span>&lt;()&gt;;
 }
 
-<span class="kw">impl</span> <span class="ident">BrightnessExt</span> <span class="kw">for</span> <span class="ident">Window</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span> {
-    <span class="kw">fn</span> <span class="ident">brightness</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">Brightness</span> {
-        <span class="kw">let</span> <span class="ident">brightness</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">bind::SDL_GetWindowBrightness</span>(<span class="self">self</span>.<span class="ident">as_ptr</span>()) };
-        <span class="ident">Brightness</span> { <span class="ident">brightness</span> }
+<span class="kw">impl </span>BrightnessExt <span class="kw">for </span>Window&lt;<span class="lifetime">&#39;_</span>&gt; {
+    <span class="kw">fn </span>brightness(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; Brightness {
+        <span class="kw">let </span>brightness = <span class="kw">unsafe </span>{ bind::SDL_GetWindowBrightness(<span class="self">self</span>.as_ptr()) };
+        Brightness { brightness }
     }
 
-    <span class="kw">fn</span> <span class="ident">set_brightness</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">brightness</span>: <span class="ident">Brightness</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="ident">ret</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">bind::SDL_SetWindowBrightness</span>(<span class="self">self</span>.<span class="ident">as_ptr</span>(), <span class="ident">brightness</span>.<span class="ident">as_f32</span>()) };
-        <span class="kw">if</span> <span class="ident">ret</span> <span class="op">!</span><span class="op">=</span> <span class="number">0</span> {
-            <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">SdlError::UnsupportedFeature</span>);
+    <span class="kw">fn </span>set_brightness(<span class="kw-2">&amp;</span><span class="self">self</span>, brightness: Brightness) -&gt; <span class="prelude-ty">Result</span>&lt;()&gt; {
+        <span class="kw">let </span>ret = <span class="kw">unsafe </span>{ bind::SDL_SetWindowBrightness(<span class="self">self</span>.as_ptr(), brightness.as_f32()) };
+        <span class="kw">if </span>ret != <span class="number">0 </span>{
+            <span class="kw">return </span><span class="prelude-val">Err</span>(SdlError::UnsupportedFeature);
         }
         <span class="prelude-val">Ok</span>(())
     }
 }
 
-<span class="doccomment">/// A gamma ramps for a window.</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Default</span>, <span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>)]</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Gamma</span> {
-    <span class="doccomment">/// A gamma ramp of red component.</span>
-    <span class="kw">pub</span> <span class="ident">red</span>: <span class="ident">GammaRamp</span>,
-    <span class="doccomment">/// A gamma ramp of green component.</span>
-    <span class="kw">pub</span> <span class="ident">green</span>: <span class="ident">GammaRamp</span>,
-    <span class="doccomment">/// A gamma ramp of blue component.</span>
-    <span class="kw">pub</span> <span class="ident">blue</span>: <span class="ident">GammaRamp</span>,
+<span class="doccomment">/// A gamma ramps for a window.
+</span><span class="attribute">#[derive(Debug, Default, Clone, PartialEq, Eq)]
+</span><span class="kw">pub struct </span>Gamma {
+    <span class="doccomment">/// A gamma ramp of red component.
+    </span><span class="kw">pub </span>red: GammaRamp,
+    <span class="doccomment">/// A gamma ramp of green component.
+    </span><span class="kw">pub </span>green: GammaRamp,
+    <span class="doccomment">/// A gamma ramp of blue component.
+    </span><span class="kw">pub </span>blue: GammaRamp,
 }
 
-<span class="doccomment">/// A gamma ramps for setting to a window.</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Default</span>, <span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>)]</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">GammaParam</span> {
-    <span class="doccomment">/// A gamma ramp of red component. It will not set if `None`.</span>
-    <span class="kw">pub</span> <span class="ident">red</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">GammaRamp</span><span class="op">&gt;</span>,
-    <span class="doccomment">/// A gamma ramp of green component. It will not set if `None`.</span>
-    <span class="kw">pub</span> <span class="ident">green</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">GammaRamp</span><span class="op">&gt;</span>,
-    <span class="doccomment">/// A gamma ramp of blue component. It will not set if `None`.</span>
-    <span class="kw">pub</span> <span class="ident">blue</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">GammaRamp</span><span class="op">&gt;</span>,
+<span class="doccomment">/// A gamma ramps for setting to a window.
+</span><span class="attribute">#[derive(Debug, Default, Clone, PartialEq, Eq)]
+</span><span class="kw">pub struct </span>GammaParam {
+    <span class="doccomment">/// A gamma ramp of red component. It will not set if `None`.
+    </span><span class="kw">pub </span>red: <span class="prelude-ty">Option</span>&lt;GammaRamp&gt;,
+    <span class="doccomment">/// A gamma ramp of green component. It will not set if `None`.
+    </span><span class="kw">pub </span>green: <span class="prelude-ty">Option</span>&lt;GammaRamp&gt;,
+    <span class="doccomment">/// A gamma ramp of blue component. It will not set if `None`.
+    </span><span class="kw">pub </span>blue: <span class="prelude-ty">Option</span>&lt;GammaRamp&gt;,
 }
 
-<span class="doccomment">/// An extension for [`Window`] to get/set the gamma ramp.</span>
-<span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">GammaExt</span> {
-    <span class="doccomment">/// Returns the gamma ramps of the window.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # Errors</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// Returns `Err` if failed to allocate a gamma ramp, or unsupported.</span>
-    <span class="kw">fn</span> <span class="ident">gamma</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Gamma</span><span class="op">&gt;</span>;
-    <span class="doccomment">/// Sets the gamma ramps of the window.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # Errors</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// Returns `Err` if failed to allocate a gamma ramp, or unsupported.</span>
-    <span class="kw">fn</span> <span class="ident">set_gamma</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">gamma</span>: <span class="ident">GammaParam</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span>;
+<span class="doccomment">/// An extension for [`Window`] to get/set the gamma ramp.
+</span><span class="kw">pub trait </span>GammaExt {
+    <span class="doccomment">/// Returns the gamma ramps of the window.
+    ///
+    /// # Errors
+    ///
+    /// Returns `Err` if failed to allocate a gamma ramp, or unsupported.
+    </span><span class="kw">fn </span>gamma(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;Gamma&gt;;
+    <span class="doccomment">/// Sets the gamma ramps of the window.
+    ///
+    /// # Errors
+    ///
+    /// Returns `Err` if failed to allocate a gamma ramp, or unsupported.
+    </span><span class="kw">fn </span>set_gamma(<span class="kw-2">&amp;</span><span class="self">self</span>, gamma: GammaParam) -&gt; <span class="prelude-ty">Result</span>&lt;()&gt;;
 }
 
-<span class="kw">impl</span> <span class="ident">GammaExt</span> <span class="kw">for</span> <span class="ident">Window</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span> {
-    <span class="kw">fn</span> <span class="ident">gamma</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Gamma</span><span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">gamma</span> <span class="op">=</span> <span class="ident">Gamma::default</span>();
-        <span class="kw">let</span> <span class="ident">ret</span> <span class="op">=</span> <span class="kw">unsafe</span> {
-            <span class="ident">bind::SDL_GetWindowGammaRamp</span>(
-                <span class="self">self</span>.<span class="ident">as_ptr</span>(),
-                <span class="ident">gamma</span>.<span class="ident">red</span>.<span class="number">0</span>.<span class="ident">as_mut_ptr</span>().<span class="ident">cast</span>(),
-                <span class="ident">gamma</span>.<span class="ident">green</span>.<span class="number">0</span>.<span class="ident">as_mut_ptr</span>().<span class="ident">cast</span>(),
-                <span class="ident">gamma</span>.<span class="ident">blue</span>.<span class="number">0</span>.<span class="ident">as_mut_ptr</span>().<span class="ident">cast</span>(),
+<span class="kw">impl </span>GammaExt <span class="kw">for </span>Window&lt;<span class="lifetime">&#39;_</span>&gt; {
+    <span class="kw">fn </span>gamma(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;Gamma&gt; {
+        <span class="kw">let </span><span class="kw-2">mut </span>gamma = Gamma::default();
+        <span class="kw">let </span>ret = <span class="kw">unsafe </span>{
+            bind::SDL_GetWindowGammaRamp(
+                <span class="self">self</span>.as_ptr(),
+                gamma.red.<span class="number">0</span>.as_mut_ptr().cast(),
+                gamma.green.<span class="number">0</span>.as_mut_ptr().cast(),
+                gamma.blue.<span class="number">0</span>.as_mut_ptr().cast(),
             )
         };
-        <span class="kw">if</span> <span class="ident">ret</span> <span class="op">!</span><span class="op">=</span> <span class="number">0</span> {
-            <span class="kw">let</span> <span class="ident">msg</span> <span class="op">=</span> <span class="ident">Sdl::error</span>();
-            <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="kw">if</span> <span class="ident">msg</span> <span class="op">==</span> <span class="string">&quot;Out of memory&quot;</span> {
-                <span class="ident">SdlError::OutOfMemory</span>
-            } <span class="kw">else</span> {
-                <span class="ident">SdlError::UnsupportedFeature</span>
+        <span class="kw">if </span>ret != <span class="number">0 </span>{
+            <span class="kw">let </span>msg = Sdl::error();
+            <span class="kw">return </span><span class="prelude-val">Err</span>(<span class="kw">if </span>msg == <span class="string">&quot;Out of memory&quot; </span>{
+                SdlError::OutOfMemory
+            } <span class="kw">else </span>{
+                SdlError::UnsupportedFeature
             });
         }
-        <span class="prelude-val">Ok</span>(<span class="ident">gamma</span>)
+        <span class="prelude-val">Ok</span>(gamma)
     }
 
-    <span class="kw">fn</span> <span class="ident">set_gamma</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">GammaParam</span> { <span class="ident">red</span>, <span class="ident">green</span>, <span class="ident">blue</span> }: <span class="ident">GammaParam</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="ident">ramp_as_ptr</span> <span class="op">=</span>
-            <span class="op">|</span><span class="ident">ramp</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">GammaRamp</span><span class="op">&gt;</span><span class="op">|</span> <span class="ident">ramp</span>.<span class="ident">map_or</span>(<span class="ident">std::ptr::null</span>(), <span class="op">|</span><span class="ident">ramp</span><span class="op">|</span> <span class="ident">ramp</span>.<span class="number">0</span>.<span class="ident">as_ptr</span>().<span class="ident">cast</span>());
-        <span class="kw">let</span> <span class="ident">ret</span> <span class="op">=</span> <span class="kw">unsafe</span> {
-            <span class="ident">bind::SDL_SetWindowGammaRamp</span>(
-                <span class="self">self</span>.<span class="ident">as_ptr</span>(),
-                <span class="ident">ramp_as_ptr</span>(<span class="ident">red</span>.<span class="ident">as_ref</span>()),
-                <span class="ident">ramp_as_ptr</span>(<span class="ident">green</span>.<span class="ident">as_ref</span>()),
-                <span class="ident">ramp_as_ptr</span>(<span class="ident">blue</span>.<span class="ident">as_ref</span>()),
+    <span class="kw">fn </span>set_gamma(<span class="kw-2">&amp;</span><span class="self">self</span>, GammaParam { red, green, blue }: GammaParam) -&gt; <span class="prelude-ty">Result</span>&lt;()&gt; {
+        <span class="kw">let </span>ramp_as_ptr =
+            |ramp: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>GammaRamp&gt;| ramp.map_or(std::ptr::null(), |ramp| ramp.<span class="number">0</span>.as_ptr().cast());
+        <span class="kw">let </span>ret = <span class="kw">unsafe </span>{
+            bind::SDL_SetWindowGammaRamp(
+                <span class="self">self</span>.as_ptr(),
+                ramp_as_ptr(red.as_ref()),
+                ramp_as_ptr(green.as_ref()),
+                ramp_as_ptr(blue.as_ref()),
             )
         };
-        <span class="kw">if</span> <span class="ident">ret</span> <span class="op">!</span><span class="op">=</span> <span class="number">0</span> {
-            <span class="kw">let</span> <span class="ident">msg</span> <span class="op">=</span> <span class="ident">Sdl::error</span>();
-            <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="kw">if</span> <span class="ident">msg</span> <span class="op">==</span> <span class="string">&quot;Out of memory&quot;</span> {
-                <span class="ident">SdlError::OutOfMemory</span>
-            } <span class="kw">else</span> {
-                <span class="ident">SdlError::UnsupportedFeature</span>
+        <span class="kw">if </span>ret != <span class="number">0 </span>{
+            <span class="kw">let </span>msg = Sdl::error();
+            <span class="kw">return </span><span class="prelude-val">Err</span>(<span class="kw">if </span>msg == <span class="string">&quot;Out of memory&quot; </span>{
+                SdlError::OutOfMemory
+            } <span class="kw">else </span>{
+                SdlError::UnsupportedFeature
             });
         }
         <span class="prelude-val">Ok</span>(())
     }
 }
 </code></pre></div>
-</section></div></main><div id="rustdoc-vars" data-root-path="../../../../" data-current-crate="rich_sdl2_rust" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.64.0-nightly (0f4bcadb4 2022-07-30)" ></div></body></html>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../../../" data-current-crate="rich_sdl2_rust" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.66.0-nightly (5e9772042 2022-10-29)" ></div></body></html>

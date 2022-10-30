@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/audio/format.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>format.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../storage.js"></script><script defer src="../../../source-script.js"></script><script defer src="../../../source-files.js"></script><script defer src="../../../main.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../../rich_sdl2_rust/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div></a><h2 class="location"></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../../rich_sdl2_rust/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../../rich_sdl2_rust/index.html"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/audio/format.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>format.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" href="../../../normalize.css"><link rel="stylesheet" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" href="../../../ayu.css" disabled><link rel="stylesheet" href="../../../dark.css" disabled><link rel="stylesheet" href="../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../storage.js"></script><script defer src="../../../source-script.js"></script><script defer src="../../../source-files.js"></script><script defer src="../../../main.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><div class="width-limiter"><nav class="sub"><a class="sub-logo-container" href="../../../rich_sdl2_rust/index.html"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../wheel.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><pre class="src-line-numbers"><span id="1">1</span>
 <span id="2">2</span>
 <span id="3">3</span>
 <span id="4">4</span>
@@ -120,127 +120,127 @@
 <span id="120">120</span>
 <span id="121">121</span>
 <span id="122">122</span>
-</pre><pre class="rust"><code><span class="doccomment">//! Type definitions for a format of audio data.</span>
+</pre><pre class="rust"><code><span class="doccomment">//! Type definitions for a format of audio data.
 
-<span class="kw">use</span> <span class="ident">bitflags::bitflags</span>;
+</span><span class="kw">use </span>bitflags::bitflags;
 
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::bind</span>;
+<span class="kw">use </span><span class="kw">crate</span>::bind;
 
-<span class="macro">bitflags!</span> {
-    <span class="doccomment">/// A flag to represent what type is used in audio data.</span>
-    <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">AudioFormatFlag</span>: <span class="ident">u8</span> {
-        <span class="doccomment">/// Whether a type is floating-point number.</span>
-        <span class="kw">const</span> <span class="ident">FLOAT</span> <span class="op">=</span> <span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">0</span>;
-        <span class="doccomment">/// Whether a type is big endian.</span>
-        <span class="kw">const</span> <span class="ident">BIG_ENDIAN</span> <span class="op">=</span> <span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">4</span>;
-        <span class="doccomment">/// Whether a type is signed.</span>
-        <span class="kw">const</span> <span class="ident">SIGNED</span> <span class="op">=</span> <span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">7</span>;
+<span class="macro">bitflags! </span>{
+    <span class="doccomment">/// A flag to represent what type is used in audio data.
+    </span><span class="kw">pub struct </span>AudioFormatFlag: u8 {
+        <span class="doccomment">/// Whether a type is floating-point number.
+        </span><span class="kw">const </span>FLOAT = <span class="number">1 </span>&lt;&lt; <span class="number">0</span>;
+        <span class="doccomment">/// Whether a type is big endian.
+        </span><span class="kw">const </span>BIG_ENDIAN = <span class="number">1 </span>&lt;&lt; <span class="number">4</span>;
+        <span class="doccomment">/// Whether a type is signed.
+        </span><span class="kw">const </span>SIGNED = <span class="number">1 </span>&lt;&lt; <span class="number">7</span>;
     }
 }
 
-<span class="doccomment">/// A format to represent how is stored samples in audio data.</span>
-<span class="attribute">#[<span class="ident">must_use</span>]</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">Copy</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>)]</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">AudioFormat</span> {
-    <span class="doccomment">/// A flag to represent characteristics of a type.</span>
-    <span class="kw">pub</span> <span class="ident">flag</span>: <span class="ident">AudioFormatFlag</span>,
-    <span class="doccomment">/// A size in bits of a type.</span>
-    <span class="kw">pub</span> <span class="ident">bit_size</span>: <span class="ident">u8</span>,
+<span class="doccomment">/// A format to represent how is stored samples in audio data.
+</span><span class="attribute">#[must_use]
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+</span><span class="kw">pub struct </span>AudioFormat {
+    <span class="doccomment">/// A flag to represent characteristics of a type.
+    </span><span class="kw">pub </span>flag: AudioFormatFlag,
+    <span class="doccomment">/// A size in bits of a type.
+    </span><span class="kw">pub </span>bit_size: u8,
 }
 
-<span class="kw">impl</span> <span class="ident">AudioFormat</span> {
-    <span class="doccomment">/// A format for signed 8-bit data.</span>
-    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">signed8</span>() -&gt; <span class="self">Self</span> {
-        <span class="self">Self</span> {
-            <span class="ident">flag</span>: <span class="ident">AudioFormatFlag::SIGNED</span>,
-            <span class="ident">bit_size</span>: <span class="number">8</span>,
+<span class="kw">impl </span>AudioFormat {
+    <span class="doccomment">/// A format for signed 8-bit data.
+    </span><span class="kw">pub const fn </span>signed8() -&gt; <span class="self">Self </span>{
+        <span class="self">Self </span>{
+            flag: AudioFormatFlag::SIGNED,
+            bit_size: <span class="number">8</span>,
         }
     }
 
-    <span class="doccomment">/// A format for unsigned 8-bit data.</span>
-    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">unsigned8</span>() -&gt; <span class="self">Self</span> {
-        <span class="self">Self</span> {
-            <span class="ident">flag</span>: <span class="ident">AudioFormatFlag::empty</span>(),
-            <span class="ident">bit_size</span>: <span class="number">8</span>,
+    <span class="doccomment">/// A format for unsigned 8-bit data.
+    </span><span class="kw">pub const fn </span>unsigned8() -&gt; <span class="self">Self </span>{
+        <span class="self">Self </span>{
+            flag: AudioFormatFlag::empty(),
+            bit_size: <span class="number">8</span>,
         }
     }
 
-    <span class="doccomment">/// A format for signed little endian 16-bit data.</span>
-    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">signed16_lsb</span>() -&gt; <span class="self">Self</span> {
-        <span class="self">Self</span> {
-            <span class="ident">flag</span>: <span class="ident">AudioFormatFlag::SIGNED</span>,
-            <span class="ident">bit_size</span>: <span class="number">16</span>,
+    <span class="doccomment">/// A format for signed little endian 16-bit data.
+    </span><span class="kw">pub const fn </span>signed16_lsb() -&gt; <span class="self">Self </span>{
+        <span class="self">Self </span>{
+            flag: AudioFormatFlag::SIGNED,
+            bit_size: <span class="number">16</span>,
         }
     }
 
-    <span class="doccomment">/// A format for unsigned little endian 16-bit data.</span>
-    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">unsigned16_lsb</span>() -&gt; <span class="self">Self</span> {
-        <span class="self">Self</span> {
-            <span class="ident">flag</span>: <span class="ident">AudioFormatFlag::empty</span>(),
-            <span class="ident">bit_size</span>: <span class="number">16</span>,
+    <span class="doccomment">/// A format for unsigned little endian 16-bit data.
+    </span><span class="kw">pub const fn </span>unsigned16_lsb() -&gt; <span class="self">Self </span>{
+        <span class="self">Self </span>{
+            flag: AudioFormatFlag::empty(),
+            bit_size: <span class="number">16</span>,
         }
     }
 
-    <span class="doccomment">/// A format for signed big endian 16-bit data.</span>
-    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">signed16_msb</span>() -&gt; <span class="self">Self</span> {
-        <span class="self">Self</span> {
-            <span class="ident">flag</span>: <span class="ident">AudioFormatFlag::from_bits_truncate</span>(<span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">4</span> <span class="op">|</span> <span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">7</span>),
-            <span class="ident">bit_size</span>: <span class="number">16</span>,
+    <span class="doccomment">/// A format for signed big endian 16-bit data.
+    </span><span class="kw">pub const fn </span>signed16_msb() -&gt; <span class="self">Self </span>{
+        <span class="self">Self </span>{
+            flag: AudioFormatFlag::from_bits_truncate(<span class="number">1 </span>&lt;&lt; <span class="number">4 </span>| <span class="number">1 </span>&lt;&lt; <span class="number">7</span>),
+            bit_size: <span class="number">16</span>,
         }
     }
 
-    <span class="doccomment">/// A format for unsigned big endian 16-bit data.</span>
-    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">unsigned16_msb</span>() -&gt; <span class="self">Self</span> {
-        <span class="self">Self</span> {
-            <span class="ident">flag</span>: <span class="ident">AudioFormatFlag::BIG_ENDIAN</span>,
-            <span class="ident">bit_size</span>: <span class="number">16</span>,
+    <span class="doccomment">/// A format for unsigned big endian 16-bit data.
+    </span><span class="kw">pub const fn </span>unsigned16_msb() -&gt; <span class="self">Self </span>{
+        <span class="self">Self </span>{
+            flag: AudioFormatFlag::BIG_ENDIAN,
+            bit_size: <span class="number">16</span>,
         }
     }
 
-    <span class="doccomment">/// A format for signed little endian 32-bit data.</span>
-    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">signed32_lsb</span>() -&gt; <span class="self">Self</span> {
-        <span class="self">Self</span> {
-            <span class="ident">flag</span>: <span class="ident">AudioFormatFlag::SIGNED</span>,
-            <span class="ident">bit_size</span>: <span class="number">32</span>,
+    <span class="doccomment">/// A format for signed little endian 32-bit data.
+    </span><span class="kw">pub const fn </span>signed32_lsb() -&gt; <span class="self">Self </span>{
+        <span class="self">Self </span>{
+            flag: AudioFormatFlag::SIGNED,
+            bit_size: <span class="number">32</span>,
         }
     }
 
-    <span class="doccomment">/// A format for signed big endian 32-bit data.</span>
-    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">signed32_msb</span>() -&gt; <span class="self">Self</span> {
-        <span class="self">Self</span> {
-            <span class="ident">flag</span>: <span class="ident">AudioFormatFlag::from_bits_truncate</span>(<span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">4</span> <span class="op">|</span> <span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">7</span>),
-            <span class="ident">bit_size</span>: <span class="number">32</span>,
+    <span class="doccomment">/// A format for signed big endian 32-bit data.
+    </span><span class="kw">pub const fn </span>signed32_msb() -&gt; <span class="self">Self </span>{
+        <span class="self">Self </span>{
+            flag: AudioFormatFlag::from_bits_truncate(<span class="number">1 </span>&lt;&lt; <span class="number">4 </span>| <span class="number">1 </span>&lt;&lt; <span class="number">7</span>),
+            bit_size: <span class="number">32</span>,
         }
     }
 
-    <span class="doccomment">/// A format for floating-point little endian 32-bit data.</span>
-    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">float32_lsb</span>() -&gt; <span class="self">Self</span> {
-        <span class="self">Self</span> {
-            <span class="ident">flag</span>: <span class="ident">AudioFormatFlag::from_bits_truncate</span>(<span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">0</span> <span class="op">|</span> <span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">7</span>),
-            <span class="ident">bit_size</span>: <span class="number">32</span>,
+    <span class="doccomment">/// A format for floating-point little endian 32-bit data.
+    </span><span class="kw">pub const fn </span>float32_lsb() -&gt; <span class="self">Self </span>{
+        <span class="self">Self </span>{
+            flag: AudioFormatFlag::from_bits_truncate(<span class="number">1 </span>&lt;&lt; <span class="number">0 </span>| <span class="number">1 </span>&lt;&lt; <span class="number">7</span>),
+            bit_size: <span class="number">32</span>,
         }
     }
 
-    <span class="doccomment">/// A format for floating-point big endian 32-bit data.</span>
-    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">float32_msb</span>() -&gt; <span class="self">Self</span> {
-        <span class="self">Self</span> {
-            <span class="ident">flag</span>: <span class="ident">AudioFormatFlag::from_bits_truncate</span>(<span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">0</span> <span class="op">|</span> <span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">4</span> <span class="op">|</span> <span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">7</span>),
-            <span class="ident">bit_size</span>: <span class="number">32</span>,
+    <span class="doccomment">/// A format for floating-point big endian 32-bit data.
+    </span><span class="kw">pub const fn </span>float32_msb() -&gt; <span class="self">Self </span>{
+        <span class="self">Self </span>{
+            flag: AudioFormatFlag::from_bits_truncate(<span class="number">1 </span>&lt;&lt; <span class="number">0 </span>| <span class="number">1 </span>&lt;&lt; <span class="number">4 </span>| <span class="number">1 </span>&lt;&lt; <span class="number">7</span>),
+            bit_size: <span class="number">32</span>,
         }
     }
 
-    <span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn</span> <span class="ident">as_raw</span>(<span class="self">self</span>) -&gt; <span class="ident">u16</span> {
-        (<span class="self">self</span>.<span class="ident">flag</span>.<span class="ident">bits</span> <span class="kw">as</span> <span class="ident">u16</span>) <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">8</span> <span class="op">|</span> <span class="self">self</span>.<span class="ident">bit_size</span> <span class="kw">as</span> <span class="ident">u16</span>
+    <span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn </span>as_raw(<span class="self">self</span>) -&gt; u16 {
+        (<span class="self">self</span>.flag.bits <span class="kw">as </span>u16) &lt;&lt; <span class="number">8 </span>| <span class="self">self</span>.bit_size <span class="kw">as </span>u16
     }
 }
 
-<span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">u16</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">AudioFormat</span> {
-    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">raw</span>: <span class="ident">u16</span>) -&gt; <span class="self">Self</span> {
-        <span class="self">Self</span> {
-            <span class="ident">flag</span>: <span class="ident">AudioFormatFlag::from_bits</span>((<span class="ident">raw</span> <span class="op">&gt;</span><span class="op">&gt;</span> <span class="number">8</span>) <span class="kw">as</span> <span class="ident">u8</span>).<span class="ident">unwrap</span>(),
-            <span class="ident">bit_size</span>: (<span class="ident">raw</span> <span class="op">&amp;</span> <span class="number">0xff</span>) <span class="kw">as</span> <span class="ident">u8</span>,
+<span class="kw">impl </span>From&lt;u16&gt; <span class="kw">for </span>AudioFormat {
+    <span class="kw">fn </span>from(raw: u16) -&gt; <span class="self">Self </span>{
+        <span class="self">Self </span>{
+            flag: AudioFormatFlag::from_bits((raw &gt;&gt; <span class="number">8</span>) <span class="kw">as </span>u8).unwrap(),
+            bit_size: (raw &amp; <span class="number">0xff</span>) <span class="kw">as </span>u8,
         }
     }
 }
 </code></pre></div>
-</section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="rich_sdl2_rust" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.64.0-nightly (0f4bcadb4 2022-07-30)" ></div></body></html>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="rich_sdl2_rust" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.66.0-nightly (5e9772042 2022-10-29)" ></div></body></html>

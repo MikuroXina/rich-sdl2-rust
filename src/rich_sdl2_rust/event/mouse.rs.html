@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/event/mouse.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>mouse.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../storage.js"></script><script defer src="../../../source-script.js"></script><script defer src="../../../source-files.js"></script><script defer src="../../../main.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../../rich_sdl2_rust/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div></a><h2 class="location"></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../../rich_sdl2_rust/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../../rich_sdl2_rust/index.html"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/event/mouse.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>mouse.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" href="../../../normalize.css"><link rel="stylesheet" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" href="../../../ayu.css" disabled><link rel="stylesheet" href="../../../dark.css" disabled><link rel="stylesheet" href="../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../storage.js"></script><script defer src="../../../source-script.js"></script><script defer src="../../../source-files.js"></script><script defer src="../../../main.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><div class="width-limiter"><nav class="sub"><a class="sub-logo-container" href="../../../rich_sdl2_rust/index.html"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../wheel.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><pre class="src-line-numbers"><span id="1">1</span>
 <span id="2">2</span>
 <span id="3">3</span>
 <span id="4">4</span>
@@ -144,151 +144,151 @@
 <span id="144">144</span>
 <span id="145">145</span>
 <span id="146">146</span>
-</pre><pre class="rust"><code><span class="doccomment">//! Events and utilities for the mouse.</span>
+</pre><pre class="rust"><code><span class="doccomment">//! Events and utilities for the mouse.
 
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::geo::Point</span>;
-<span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">bind</span>, <span class="ident">EnumInt</span>};
+</span><span class="kw">use </span><span class="kw">crate</span>::geo::Point;
+<span class="kw">use crate</span>::{bind, EnumInt};
 
-<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">cursor</span>;
-<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">relative</span>;
+<span class="kw">pub mod </span>cursor;
+<span class="kw">pub mod </span>relative;
 
-<span class="doccomment">/// A kind of the mouse button.</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">Copy</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>)]</span>
-<span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">MouseButton</span> {
-    <span class="doccomment">/// The left button of the mouse.</span>
-    <span class="ident">Left</span>,
-    <span class="doccomment">/// The middle or wheel button of the mouse.</span>
-    <span class="ident">Middle</span>,
-    <span class="doccomment">/// The right button of the mouse.</span>
-    <span class="ident">Right</span>,
-    <span class="doccomment">/// The x1 of the mouse.</span>
-    <span class="ident">X1</span>,
-    <span class="doccomment">/// The x2 of the mouse.</span>
-    <span class="ident">X2</span>,
+<span class="doccomment">/// A kind of the mouse button.
+</span><span class="attribute">#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+</span><span class="kw">pub enum </span>MouseButton {
+    <span class="doccomment">/// The left button of the mouse.
+    </span>Left,
+    <span class="doccomment">/// The middle or wheel button of the mouse.
+    </span>Middle,
+    <span class="doccomment">/// The right button of the mouse.
+    </span>Right,
+    <span class="doccomment">/// The x1 of the mouse.
+    </span>X1,
+    <span class="doccomment">/// The x2 of the mouse.
+    </span>X2,
 }
 
-<span class="kw">impl</span> <span class="ident">MouseButton</span> {
-    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">from_bits</span>(<span class="ident">bits</span>: <span class="ident">u8</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
-        <span class="prelude-val">Some</span>(<span class="kw">match</span> <span class="ident">bits</span> {
-            <span class="number">1</span> =&gt; <span class="ident">MouseButton::Left</span>,
-            <span class="number">2</span> =&gt; <span class="ident">MouseButton::Middle</span>,
-            <span class="number">3</span> =&gt; <span class="ident">MouseButton::Right</span>,
-            <span class="number">4</span> =&gt; <span class="ident">MouseButton::X1</span>,
-            <span class="number">5</span> =&gt; <span class="ident">MouseButton::X2</span>,
-            <span class="kw">_</span> =&gt; <span class="kw">return</span> <span class="prelude-val">None</span>,
+<span class="kw">impl </span>MouseButton {
+    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn </span>from_bits(bits: u8) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="self">Self</span>&gt; {
+        <span class="prelude-val">Some</span>(<span class="kw">match </span>bits {
+            <span class="number">1 </span>=&gt; MouseButton::Left,
+            <span class="number">2 </span>=&gt; MouseButton::Middle,
+            <span class="number">3 </span>=&gt; MouseButton::Right,
+            <span class="number">4 </span>=&gt; MouseButton::X1,
+            <span class="number">5 </span>=&gt; MouseButton::X2,
+            <span class="kw">_ </span>=&gt; <span class="kw">return </span><span class="prelude-val">None</span>,
         })
     }
 }
 
-<span class="doccomment">/// An event related on the mouse.</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>)]</span>
-<span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">MouseEvent</span> {
-    <span class="doccomment">/// A motion event [`MouseMotionEvent`].</span>
-    <span class="ident">Motion</span>(<span class="ident">MouseMotionEvent</span>),
-    <span class="doccomment">/// A button event [`MouseButtonEvent`].</span>
-    <span class="ident">Button</span>(<span class="ident">MouseButtonEvent</span>),
-    <span class="doccomment">/// A wheel event [`MouseWheelEvent`].</span>
-    <span class="ident">Wheel</span>(<span class="ident">MouseWheelEvent</span>),
+<span class="doccomment">/// An event related on the mouse.
+</span><span class="attribute">#[derive(Debug, Clone, PartialEq, Eq)]
+</span><span class="kw">pub enum </span>MouseEvent {
+    <span class="doccomment">/// A motion event [`MouseMotionEvent`].
+    </span>Motion(MouseMotionEvent),
+    <span class="doccomment">/// A button event [`MouseButtonEvent`].
+    </span>Button(MouseButtonEvent),
+    <span class="doccomment">/// A wheel event [`MouseWheelEvent`].
+    </span>Wheel(MouseWheelEvent),
 }
 
-<span class="doccomment">/// An event that the mouse was moved.</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>)]</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">MouseMotionEvent</span> {
-    <span class="doccomment">/// When this event occurred.</span>
-    <span class="kw">pub</span> <span class="ident">timestamp</span>: <span class="ident">u32</span>,
-    <span class="doccomment">/// The id of the window focused.</span>
-    <span class="kw">pub</span> <span class="ident">window_id</span>: <span class="ident">u32</span>,
-    <span class="doccomment">/// The id of the moved.</span>
-    <span class="kw">pub</span> <span class="ident">mouse_id</span>: <span class="ident">u32</span>,
-    <span class="doccomment">/// The button state of the mouse.</span>
-    <span class="kw">pub</span> <span class="ident">button</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">MouseButton</span><span class="op">&gt;</span>,
-    <span class="doccomment">/// The mouse position.</span>
-    <span class="kw">pub</span> <span class="ident">pos</span>: <span class="ident">Point</span>,
-    <span class="doccomment">/// The moved amount of the mouse.</span>
-    <span class="kw">pub</span> <span class="ident">move_amount</span>: <span class="ident">Point</span>,
+<span class="doccomment">/// An event that the mouse was moved.
+</span><span class="attribute">#[derive(Debug, Clone, PartialEq, Eq)]
+</span><span class="kw">pub struct </span>MouseMotionEvent {
+    <span class="doccomment">/// When this event occurred.
+    </span><span class="kw">pub </span>timestamp: u32,
+    <span class="doccomment">/// The id of the window focused.
+    </span><span class="kw">pub </span>window_id: u32,
+    <span class="doccomment">/// The id of the moved.
+    </span><span class="kw">pub </span>mouse_id: u32,
+    <span class="doccomment">/// The button state of the mouse.
+    </span><span class="kw">pub </span>button: <span class="prelude-ty">Option</span>&lt;MouseButton&gt;,
+    <span class="doccomment">/// The mouse position.
+    </span><span class="kw">pub </span>pos: Point,
+    <span class="doccomment">/// The moved amount of the mouse.
+    </span><span class="kw">pub </span>move_amount: Point,
 }
 
-<span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">bind::SDL_MouseMotionEvent</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">MouseMotionEvent</span> {
-    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">raw</span>: <span class="ident">bind::SDL_MouseMotionEvent</span>) -&gt; <span class="self">Self</span> {
-        <span class="self">Self</span> {
-            <span class="ident">timestamp</span>: <span class="ident">raw</span>.<span class="ident">timestamp</span>,
-            <span class="ident">window_id</span>: <span class="ident">raw</span>.<span class="ident">windowID</span>,
-            <span class="ident">mouse_id</span>: <span class="ident">raw</span>.<span class="ident">which</span>,
-            <span class="ident">button</span>: <span class="ident">MouseButton::from_bits</span>(<span class="ident">raw</span>.<span class="ident">state</span> <span class="kw">as</span> <span class="ident">u8</span>),
-            <span class="ident">pos</span>: <span class="ident">Point</span> { <span class="ident">x</span>: <span class="ident">raw</span>.<span class="ident">x</span>, <span class="ident">y</span>: <span class="ident">raw</span>.<span class="ident">y</span> },
-            <span class="ident">move_amount</span>: <span class="ident">Point</span> {
-                <span class="ident">x</span>: <span class="ident">raw</span>.<span class="ident">xrel</span>,
-                <span class="ident">y</span>: <span class="ident">raw</span>.<span class="ident">yrel</span>,
+<span class="kw">impl </span>From&lt;bind::SDL_MouseMotionEvent&gt; <span class="kw">for </span>MouseMotionEvent {
+    <span class="kw">fn </span>from(raw: bind::SDL_MouseMotionEvent) -&gt; <span class="self">Self </span>{
+        <span class="self">Self </span>{
+            timestamp: raw.timestamp,
+            window_id: raw.windowID,
+            mouse_id: raw.which,
+            button: MouseButton::from_bits(raw.state <span class="kw">as </span>u8),
+            pos: Point { x: raw.x, y: raw.y },
+            move_amount: Point {
+                x: raw.xrel,
+                y: raw.yrel,
             },
         }
     }
 }
 
-<span class="doccomment">/// An event that th mouse button was pressed/released.</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>)]</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">MouseButtonEvent</span> {
-    <span class="doccomment">/// When this event occurred.</span>
-    <span class="kw">pub</span> <span class="ident">timestamp</span>: <span class="ident">u32</span>,
-    <span class="doccomment">/// The id of the window focused.</span>
-    <span class="kw">pub</span> <span class="ident">window_id</span>: <span class="ident">u32</span>,
-    <span class="doccomment">/// The id of the moved.</span>
-    <span class="kw">pub</span> <span class="ident">mouse_id</span>: <span class="ident">u32</span>,
-    <span class="doccomment">/// The button state of the mouse.</span>
-    <span class="kw">pub</span> <span class="ident">button</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">MouseButton</span><span class="op">&gt;</span>,
-    <span class="doccomment">/// Whether the mouse button is pressed.</span>
-    <span class="kw">pub</span> <span class="ident">is_pressed</span>: <span class="ident">bool</span>,
-    <span class="doccomment">/// The click count of the button.</span>
-    <span class="kw">pub</span> <span class="ident">clicks</span>: <span class="ident">u8</span>,
-    <span class="doccomment">/// The mouse position.</span>
-    <span class="kw">pub</span> <span class="ident">pos</span>: <span class="ident">Point</span>,
+<span class="doccomment">/// An event that th mouse button was pressed/released.
+</span><span class="attribute">#[derive(Debug, Clone, PartialEq, Eq)]
+</span><span class="kw">pub struct </span>MouseButtonEvent {
+    <span class="doccomment">/// When this event occurred.
+    </span><span class="kw">pub </span>timestamp: u32,
+    <span class="doccomment">/// The id of the window focused.
+    </span><span class="kw">pub </span>window_id: u32,
+    <span class="doccomment">/// The id of the moved.
+    </span><span class="kw">pub </span>mouse_id: u32,
+    <span class="doccomment">/// The button state of the mouse.
+    </span><span class="kw">pub </span>button: <span class="prelude-ty">Option</span>&lt;MouseButton&gt;,
+    <span class="doccomment">/// Whether the mouse button is pressed.
+    </span><span class="kw">pub </span>is_pressed: bool,
+    <span class="doccomment">/// The click count of the button.
+    </span><span class="kw">pub </span>clicks: u8,
+    <span class="doccomment">/// The mouse position.
+    </span><span class="kw">pub </span>pos: Point,
 }
 
-<span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">bind::SDL_MouseButtonEvent</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">MouseButtonEvent</span> {
-    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">raw</span>: <span class="ident">bind::SDL_MouseButtonEvent</span>) -&gt; <span class="self">Self</span> {
-        <span class="self">Self</span> {
-            <span class="ident">timestamp</span>: <span class="ident">raw</span>.<span class="ident">timestamp</span>,
-            <span class="ident">window_id</span>: <span class="ident">raw</span>.<span class="ident">windowID</span>,
-            <span class="ident">mouse_id</span>: <span class="ident">raw</span>.<span class="ident">which</span>,
-            <span class="ident">button</span>: <span class="ident">MouseButton::from_bits</span>(<span class="ident">raw</span>.<span class="ident">button</span>),
-            <span class="ident">is_pressed</span>: <span class="ident">raw</span>.<span class="ident">state</span> <span class="kw">as</span> <span class="ident">u32</span> <span class="op">==</span> <span class="ident">bind::SDL_PRESSED</span>,
-            <span class="ident">clicks</span>: <span class="ident">raw</span>.<span class="ident">clicks</span>,
-            <span class="ident">pos</span>: <span class="ident">Point</span> { <span class="ident">x</span>: <span class="ident">raw</span>.<span class="ident">x</span>, <span class="ident">y</span>: <span class="ident">raw</span>.<span class="ident">y</span> },
+<span class="kw">impl </span>From&lt;bind::SDL_MouseButtonEvent&gt; <span class="kw">for </span>MouseButtonEvent {
+    <span class="kw">fn </span>from(raw: bind::SDL_MouseButtonEvent) -&gt; <span class="self">Self </span>{
+        <span class="self">Self </span>{
+            timestamp: raw.timestamp,
+            window_id: raw.windowID,
+            mouse_id: raw.which,
+            button: MouseButton::from_bits(raw.button),
+            is_pressed: raw.state <span class="kw">as </span>u32 == bind::SDL_PRESSED,
+            clicks: raw.clicks,
+            pos: Point { x: raw.x, y: raw.y },
         }
     }
 }
 
-<span class="doccomment">/// An event that the mouse wheel was scrolled.</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">PartialEq</span>)]</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">MouseWheelEvent</span> {
-    <span class="doccomment">/// When this event occurred.</span>
-    <span class="kw">pub</span> <span class="ident">timestamp</span>: <span class="ident">u32</span>,
-    <span class="doccomment">/// The id of the window focused.</span>
-    <span class="kw">pub</span> <span class="ident">window_id</span>: <span class="ident">u32</span>,
-    <span class="doccomment">/// The id of the moved.</span>
-    <span class="kw">pub</span> <span class="ident">mouse_id</span>: <span class="ident">u32</span>,
-    <span class="doccomment">/// How much the wheel scrolled. X is the amount scrolled horizontally, positive to the right and negative to the left. Y is the amount scrolled vertically, positive away from the user and negative towards to the user.</span>
-    <span class="kw">pub</span> <span class="ident">scroll_amount</span>: <span class="ident">Point</span>,
-    <span class="doccomment">/// How much the wheel scrolled with float precision. The first element is the amount scrolled horizontally, positive to the right and negative to the left. The second element is the amount scrolled vertically, positive away from the user and negative towards to the user.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// The value returned from the API does not contain NaN or infinity number. You should not edit the value because that [`MouseWheelEvent`] implements [`Eq`].</span>
-    <span class="kw">pub</span> <span class="ident">scroll_amount_precise</span>: (<span class="ident">f32</span>, <span class="ident">f32</span>),
-    <span class="doccomment">/// Whether the scroll direction is inverted.</span>
-    <span class="kw">pub</span> <span class="ident">is_flipped</span>: <span class="ident">bool</span>,
+<span class="doccomment">/// An event that the mouse wheel was scrolled.
+</span><span class="attribute">#[derive(Debug, Clone, PartialEq)]
+</span><span class="kw">pub struct </span>MouseWheelEvent {
+    <span class="doccomment">/// When this event occurred.
+    </span><span class="kw">pub </span>timestamp: u32,
+    <span class="doccomment">/// The id of the window focused.
+    </span><span class="kw">pub </span>window_id: u32,
+    <span class="doccomment">/// The id of the moved.
+    </span><span class="kw">pub </span>mouse_id: u32,
+    <span class="doccomment">/// How much the wheel scrolled. X is the amount scrolled horizontally, positive to the right and negative to the left. Y is the amount scrolled vertically, positive away from the user and negative towards to the user.
+    </span><span class="kw">pub </span>scroll_amount: Point,
+    <span class="doccomment">/// How much the wheel scrolled with float precision. The first element is the amount scrolled horizontally, positive to the right and negative to the left. The second element is the amount scrolled vertically, positive away from the user and negative towards to the user.
+    ///
+    /// The value returned from the API does not contain NaN or infinity number. You should not edit the value because that [`MouseWheelEvent`] implements [`Eq`].
+    </span><span class="kw">pub </span>scroll_amount_precise: (f32, f32),
+    <span class="doccomment">/// Whether the scroll direction is inverted.
+    </span><span class="kw">pub </span>is_flipped: bool,
 }
 
-<span class="kw">impl</span> <span class="ident">Eq</span> <span class="kw">for</span> <span class="ident">MouseWheelEvent</span> {}
+<span class="kw">impl </span>Eq <span class="kw">for </span>MouseWheelEvent {}
 
-<span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">bind::SDL_MouseWheelEvent</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">MouseWheelEvent</span> {
-    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">raw</span>: <span class="ident">bind::SDL_MouseWheelEvent</span>) -&gt; <span class="self">Self</span> {
-        <span class="self">Self</span> {
-            <span class="ident">timestamp</span>: <span class="ident">raw</span>.<span class="ident">timestamp</span>,
-            <span class="ident">window_id</span>: <span class="ident">raw</span>.<span class="ident">windowID</span>,
-            <span class="ident">mouse_id</span>: <span class="ident">raw</span>.<span class="ident">which</span>,
-            <span class="ident">scroll_amount</span>: <span class="ident">Point</span> { <span class="ident">x</span>: <span class="ident">raw</span>.<span class="ident">x</span>, <span class="ident">y</span>: <span class="ident">raw</span>.<span class="ident">y</span> },
-            <span class="ident">scroll_amount_precise</span>: (<span class="ident">raw</span>.<span class="ident">preciseX</span>, <span class="ident">raw</span>.<span class="ident">preciseY</span>),
-            <span class="ident">is_flipped</span>: <span class="ident">raw</span>.<span class="ident">direction</span> <span class="kw">as</span> <span class="ident">EnumInt</span> <span class="op">==</span> <span class="ident">bind::SDL_MOUSEWHEEL_FLIPPED</span>,
+<span class="kw">impl </span>From&lt;bind::SDL_MouseWheelEvent&gt; <span class="kw">for </span>MouseWheelEvent {
+    <span class="kw">fn </span>from(raw: bind::SDL_MouseWheelEvent) -&gt; <span class="self">Self </span>{
+        <span class="self">Self </span>{
+            timestamp: raw.timestamp,
+            window_id: raw.windowID,
+            mouse_id: raw.which,
+            scroll_amount: Point { x: raw.x, y: raw.y },
+            scroll_amount_precise: (raw.preciseX, raw.preciseY),
+            is_flipped: raw.direction <span class="kw">as </span>EnumInt == bind::SDL_MOUSEWHEEL_FLIPPED,
         }
     }
 }
 </code></pre></div>
-</section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="rich_sdl2_rust" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.64.0-nightly (0f4bcadb4 2022-07-30)" ></div></body></html>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="rich_sdl2_rust" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.66.0-nightly (5e9772042 2022-10-29)" ></div></body></html>

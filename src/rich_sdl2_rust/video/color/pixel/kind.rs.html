@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/video/color/pixel/kind.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>kind.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../../../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../../../storage.js"></script><script defer src="../../../../../source-script.js"></script><script defer src="../../../../../source-files.js"></script><script defer src="../../../../../main.js"></script><noscript><link rel="stylesheet" href="../../../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../../../../rich_sdl2_rust/index.html"><div class="logo-container"><img class="rust-logo" src="../../../../../rust-logo.svg" alt="logo"></div></a><h2 class="location"></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../../../../rich_sdl2_rust/index.html"><div class="logo-container"><img class="rust-logo" src="../../../../../rust-logo.svg" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../../../../rich_sdl2_rust/index.html"><img class="rust-logo" src="../../../../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/video/color/pixel/kind.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>kind.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" href="../../../../../normalize.css"><link rel="stylesheet" href="../../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" href="../../../../../ayu.css" disabled><link rel="stylesheet" href="../../../../../dark.css" disabled><link rel="stylesheet" href="../../../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../../../storage.js"></script><script defer src="../../../../../source-script.js"></script><script defer src="../../../../../source-files.js"></script><script defer src="../../../../../main.js"></script><noscript><link rel="stylesheet" href="../../../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><div class="width-limiter"><nav class="sub"><a class="sub-logo-container" href="../../../../../rich_sdl2_rust/index.html"><img class="rust-logo" src="../../../../../rust-logo.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../../../wheel.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><pre class="src-line-numbers"><span id="1">1</span>
 <span id="2">2</span>
 <span id="3">3</span>
 <span id="4">4</span>
@@ -242,249 +242,249 @@
 <span id="242">242</span>
 <span id="243">243</span>
 <span id="244">244</span>
-</pre><pre class="rust"><code><span class="doccomment">//! Kinds for a pixel format, aggregates type, layout and order.</span>
+</pre><pre class="rust"><code><span class="doccomment">//! Kinds for a pixel format, aggregates type, layout and order.
 
-<span class="kw">use</span> <span class="ident">std::ffi::CStr</span>;
+</span><span class="kw">use </span>std::ffi::CStr;
 
-<span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">bind</span>, <span class="ident">EnumInt</span>};
+<span class="kw">use crate</span>::{bind, EnumInt};
 
-<span class="kw">use</span> <span class="kw">super</span>::{
-    <span class="ident">layout::PackedPixelLayout</span>,
-    <span class="ident">order</span>::{<span class="ident">ArrayPixelOrder</span>, <span class="ident">BitmapPixelOrder</span>, <span class="ident">PackedPixelOrder</span>},
-    <span class="ident">ty</span>::{<span class="ident">ArrayPixelType</span>, <span class="ident">BitmapPixelType</span>, <span class="ident">PackedPixelType</span>},
+<span class="kw">use super</span>::{
+    layout::PackedPixelLayout,
+    order::{ArrayPixelOrder, BitmapPixelOrder, PackedPixelOrder},
+    ty::{ArrayPixelType, BitmapPixelType, PackedPixelType},
 };
 
-<span class="doccomment">/// A kind of pixel format.</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">Copy</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>, <span class="ident">Hash</span>)]</span>
-<span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">PixelFormatKind</span> {
-    <span class="doccomment">/// A format not supported by SDL2.</span>
-    <span class="ident">Unknown</span>,
-    <span class="doccomment">/// An indexed bitmap format with a palette.</span>
-    <span class="ident">Bitmap</span> {
-        <span class="doccomment">/// The type of the bitmap.</span>
-        <span class="ident">ty</span>: <span class="ident">BitmapPixelType</span>,
-        <span class="doccomment">/// The type of the bitmap.</span>
-        <span class="ident">order</span>: <span class="ident">BitmapPixelOrder</span>,
+<span class="doccomment">/// A kind of pixel format.
+</span><span class="attribute">#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+</span><span class="kw">pub enum </span>PixelFormatKind {
+    <span class="doccomment">/// A format not supported by SDL2.
+    </span>Unknown,
+    <span class="doccomment">/// An indexed bitmap format with a palette.
+    </span>Bitmap {
+        <span class="doccomment">/// The type of the bitmap.
+        </span>ty: BitmapPixelType,
+        <span class="doccomment">/// The type of the bitmap.
+        </span>order: BitmapPixelOrder,
     },
-    <span class="doccomment">/// A packed pixel format.</span>
-    <span class="ident">Packed</span> {
-        <span class="doccomment">/// The type of the pack.</span>
-        <span class="ident">ty</span>: <span class="ident">PackedPixelType</span>,
-        <span class="doccomment">/// The order of the pack.</span>
-        <span class="ident">order</span>: <span class="ident">PackedPixelOrder</span>,
-        <span class="doccomment">/// The layout of the pack.</span>
-        <span class="ident">layout</span>: <span class="ident">PackedPixelLayout</span>,
+    <span class="doccomment">/// A packed pixel format.
+    </span>Packed {
+        <span class="doccomment">/// The type of the pack.
+        </span>ty: PackedPixelType,
+        <span class="doccomment">/// The order of the pack.
+        </span>order: PackedPixelOrder,
+        <span class="doccomment">/// The layout of the pack.
+        </span>layout: PackedPixelLayout,
     },
-    <span class="doccomment">/// A pixel array format.</span>
-    <span class="ident">Array</span> {
-        <span class="doccomment">/// The type of the array.</span>
-        <span class="ident">ty</span>: <span class="ident">ArrayPixelType</span>,
-        <span class="doccomment">/// The order of the array.</span>
-        <span class="ident">order</span>: <span class="ident">ArrayPixelOrder</span>,
+    <span class="doccomment">/// A pixel array format.
+    </span>Array {
+        <span class="doccomment">/// The type of the array.
+        </span>ty: ArrayPixelType,
+        <span class="doccomment">/// The order of the array.
+        </span>order: ArrayPixelOrder,
     },
-    <span class="doccomment">/// A special format such as YUV in FourCC code.</span>
-    <span class="ident">FourCode</span>([<span class="ident">u8</span>; <span class="number">4</span>]),
+    <span class="doccomment">/// A special format such as YUV in FourCC code.
+    </span>FourCode([u8; <span class="number">4</span>]),
 }
 
-<span class="doccomment">/// Bpp and RGBA mask.</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Default</span>)]</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">BppMask</span> {
-    <span class="doccomment">/// Bits per pixel, normally 15, 16 or 32.</span>
-    <span class="kw">pub</span> <span class="ident">bpp</span>: <span class="ident">std::os::raw::c_int</span>,
-    <span class="doccomment">/// Mask for the red component.</span>
-    <span class="kw">pub</span> <span class="ident">r_mask</span>: <span class="ident">u32</span>,
-    <span class="doccomment">/// Mask for the green component.</span>
-    <span class="kw">pub</span> <span class="ident">g_mask</span>: <span class="ident">u32</span>,
-    <span class="doccomment">/// Mask for the blue component.</span>
-    <span class="kw">pub</span> <span class="ident">b_mask</span>: <span class="ident">u32</span>,
-    <span class="doccomment">/// Mask for the alpha component.</span>
-    <span class="kw">pub</span> <span class="ident">a_mask</span>: <span class="ident">u32</span>,
+<span class="doccomment">/// Bpp and RGBA mask.
+</span><span class="attribute">#[derive(Debug, Default)]
+</span><span class="kw">pub struct </span>BppMask {
+    <span class="doccomment">/// Bits per pixel, normally 15, 16 or 32.
+    </span><span class="kw">pub </span>bpp: std::os::raw::c_int,
+    <span class="doccomment">/// Mask for the red component.
+    </span><span class="kw">pub </span>r_mask: u32,
+    <span class="doccomment">/// Mask for the green component.
+    </span><span class="kw">pub </span>g_mask: u32,
+    <span class="doccomment">/// Mask for the blue component.
+    </span><span class="kw">pub </span>b_mask: u32,
+    <span class="doccomment">/// Mask for the alpha component.
+    </span><span class="kw">pub </span>a_mask: u32,
 }
 
-<span class="kw">impl</span> <span class="ident">PixelFormatKind</span> {
-    <span class="doccomment">/// Constructs from [`BppMask`].</span>
-    <span class="attribute">#[<span class="ident">must_use</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">from_bpp_mask</span>(
-        <span class="ident">BppMask</span> {
-            <span class="ident">bpp</span>,
-            <span class="ident">r_mask</span>,
-            <span class="ident">g_mask</span>,
-            <span class="ident">b_mask</span>,
-            <span class="ident">a_mask</span>,
-        }: <span class="ident">BppMask</span>,
-    ) -&gt; <span class="self">Self</span> {
-        <span class="kw">let</span> <span class="ident">raw</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">bind::SDL_MasksToPixelFormatEnum</span>(<span class="ident">bpp</span>, <span class="ident">r_mask</span>, <span class="ident">g_mask</span>, <span class="ident">b_mask</span>, <span class="ident">a_mask</span>) };
-        <span class="ident"><span class="self">Self</span>::from_raw</span>(<span class="ident">raw</span> <span class="kw">as</span> <span class="ident">EnumInt</span>)
+<span class="kw">impl </span>PixelFormatKind {
+    <span class="doccomment">/// Constructs from [`BppMask`].
+    </span><span class="attribute">#[must_use]
+    </span><span class="kw">pub fn </span>from_bpp_mask(
+        BppMask {
+            bpp,
+            r_mask,
+            g_mask,
+            b_mask,
+            a_mask,
+        }: BppMask,
+    ) -&gt; <span class="self">Self </span>{
+        <span class="kw">let </span>raw = <span class="kw">unsafe </span>{ bind::SDL_MasksToPixelFormatEnum(bpp, r_mask, g_mask, b_mask, a_mask) };
+        <span class="self">Self</span>::from_raw(raw <span class="kw">as </span>EnumInt)
     }
 
-    <span class="doccomment">/// Converts to [`BppMask`], if able to do.</span>
-    <span class="attribute">#[<span class="ident">must_use</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">to_bpp_mask</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">BppMask</span><span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">bpp_mask</span> <span class="op">=</span> <span class="ident">BppMask::default</span>();
-        <span class="kw">let</span> <span class="ident">BppMask</span> {
-            <span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">bpp</span>,
-            <span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">r_mask</span>,
-            <span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">g_mask</span>,
-            <span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">b_mask</span>,
-            <span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">a_mask</span>,
-        } <span class="op">=</span> <span class="ident">bpp_mask</span>;
-        <span class="kw">let</span> <span class="ident">ret</span> <span class="op">=</span> <span class="kw">unsafe</span> {
-            <span class="ident">bind::SDL_PixelFormatEnumToMasks</span>(
-                <span class="self">self</span>.<span class="ident">as_raw</span>(),
-                <span class="ident">bpp</span> <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="kw">_</span>,
-                <span class="ident">r_mask</span> <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="kw">_</span>,
-                <span class="ident">g_mask</span> <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="kw">_</span>,
-                <span class="ident">b_mask</span> <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="kw">_</span>,
-                <span class="ident">a_mask</span> <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="kw">_</span>,
+    <span class="doccomment">/// Converts to [`BppMask`], if able to do.
+    </span><span class="attribute">#[must_use]
+    </span><span class="kw">pub fn </span>to_bpp_mask(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;BppMask&gt; {
+        <span class="kw">let </span><span class="kw-2">mut </span>bpp_mask = BppMask::default();
+        <span class="kw">let </span>BppMask {
+            <span class="kw-2">ref mut </span>bpp,
+            <span class="kw-2">ref mut </span>r_mask,
+            <span class="kw-2">ref mut </span>g_mask,
+            <span class="kw-2">ref mut </span>b_mask,
+            <span class="kw-2">ref mut </span>a_mask,
+        } = bpp_mask;
+        <span class="kw">let </span>ret = <span class="kw">unsafe </span>{
+            bind::SDL_PixelFormatEnumToMasks(
+                <span class="self">self</span>.as_raw(),
+                bpp <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
+                r_mask <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
+                g_mask <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
+                b_mask <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
+                a_mask <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
             )
         };
-        (<span class="ident">ret</span> <span class="op">!</span><span class="op">=</span> <span class="number">0</span>).<span class="ident">then</span>(<span class="op">|</span><span class="op">|</span> <span class="ident">bpp_mask</span>)
+        (ret != <span class="number">0</span>).then(|| bpp_mask)
     }
 
-    <span class="doccomment">/// Returns the name for the pixel format, or empty string if does not exist.</span>
-    <span class="attribute">#[<span class="ident">must_use</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">name</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span> {
-        <span class="kw">unsafe</span> { <span class="ident">CStr::from_ptr</span>(<span class="ident">bind::SDL_GetPixelFormatName</span>(<span class="self">self</span>.<span class="ident">as_raw</span>())) }
-            .<span class="ident">to_str</span>()
-            .<span class="ident">unwrap_or_default</span>()
+    <span class="doccomment">/// Returns the name for the pixel format, or empty string if does not exist.
+    </span><span class="attribute">#[must_use]
+    </span><span class="kw">pub fn </span>name(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str {
+        <span class="kw">unsafe </span>{ CStr::from_ptr(bind::SDL_GetPixelFormatName(<span class="self">self</span>.as_raw())) }
+            .to_str()
+            .unwrap_or_default()
     }
 
-    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">from_raw</span>(<span class="ident">raw</span>: <span class="ident">EnumInt</span>) -&gt; <span class="self">Self</span> {
-        <span class="kw">if</span> (<span class="ident">raw</span> <span class="op">&gt;</span><span class="op">&gt;</span> <span class="number">28</span>) <span class="op">&amp;</span> <span class="number">0x0F</span> <span class="op">!</span><span class="op">=</span> <span class="number">1</span> {
-            <span class="kw">let</span> <span class="ident">bytes</span> <span class="op">=</span> ((<span class="ident">raw</span> <span class="op">&gt;</span><span class="op">&gt;</span> <span class="number">24</span>) <span class="op">&amp;</span> <span class="number">0xf</span>).<span class="ident">to_le_bytes</span>();
-            <span class="kw">return</span> <span class="ident">PixelFormatKind::FourCode</span>(<span class="ident">bytes</span>);
+    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn </span>from_raw(raw: EnumInt) -&gt; <span class="self">Self </span>{
+        <span class="kw">if </span>(raw &gt;&gt; <span class="number">28</span>) &amp; <span class="number">0x0F </span>!= <span class="number">1 </span>{
+            <span class="kw">let </span>bytes = ((raw &gt;&gt; <span class="number">24</span>) &amp; <span class="number">0xf</span>).to_le_bytes();
+            <span class="kw">return </span>PixelFormatKind::FourCode(bytes);
         }
-        <span class="kw">match</span> (<span class="ident">raw</span> <span class="op">&gt;</span><span class="op">&gt;</span> <span class="number">24</span>) <span class="op">&amp;</span> <span class="number">0xf</span> {
-            <span class="ident">bind::SDL_PIXELTYPE_INDEX1</span> =&gt; <span class="ident">PixelFormatKind::Bitmap</span> {
-                <span class="ident">ty</span>: <span class="ident">BitmapPixelType::Index1</span>,
-                <span class="ident">order</span>: <span class="ident">raw</span>.<span class="ident">into</span>(),
+        <span class="kw">match </span>(raw &gt;&gt; <span class="number">24</span>) &amp; <span class="number">0xf </span>{
+            bind::SDL_PIXELTYPE_INDEX1 =&gt; PixelFormatKind::Bitmap {
+                ty: BitmapPixelType::Index1,
+                order: raw.into(),
             },
-            <span class="ident">bind::SDL_PIXELTYPE_INDEX4</span> =&gt; <span class="ident">PixelFormatKind::Bitmap</span> {
-                <span class="ident">ty</span>: <span class="ident">BitmapPixelType::Index4</span>,
-                <span class="ident">order</span>: <span class="ident">raw</span>.<span class="ident">into</span>(),
+            bind::SDL_PIXELTYPE_INDEX4 =&gt; PixelFormatKind::Bitmap {
+                ty: BitmapPixelType::Index4,
+                order: raw.into(),
             },
-            <span class="ident">bind::SDL_PIXELTYPE_INDEX8</span> =&gt; <span class="ident">PixelFormatKind::Bitmap</span> {
-                <span class="ident">ty</span>: <span class="ident">BitmapPixelType::Index8</span>,
-                <span class="ident">order</span>: <span class="ident">raw</span>.<span class="ident">into</span>(),
+            bind::SDL_PIXELTYPE_INDEX8 =&gt; PixelFormatKind::Bitmap {
+                ty: BitmapPixelType::Index8,
+                order: raw.into(),
             },
-            <span class="ident">bind::SDL_PIXELTYPE_PACKED8</span> =&gt; <span class="ident">PixelFormatKind::Packed</span> {
-                <span class="ident">ty</span>: <span class="ident">PackedPixelType::_8</span>,
-                <span class="ident">order</span>: <span class="ident">raw</span>.<span class="ident">into</span>(),
-                <span class="ident">layout</span>: <span class="ident">raw</span>.<span class="ident">into</span>(),
+            bind::SDL_PIXELTYPE_PACKED8 =&gt; PixelFormatKind::Packed {
+                ty: PackedPixelType::_8,
+                order: raw.into(),
+                layout: raw.into(),
             },
-            <span class="ident">bind::SDL_PIXELTYPE_PACKED16</span> =&gt; <span class="ident">PixelFormatKind::Packed</span> {
-                <span class="ident">ty</span>: <span class="ident">PackedPixelType::_16</span>,
-                <span class="ident">order</span>: <span class="ident">raw</span>.<span class="ident">into</span>(),
-                <span class="ident">layout</span>: <span class="ident">raw</span>.<span class="ident">into</span>(),
+            bind::SDL_PIXELTYPE_PACKED16 =&gt; PixelFormatKind::Packed {
+                ty: PackedPixelType::_16,
+                order: raw.into(),
+                layout: raw.into(),
             },
-            <span class="ident">bind::SDL_PIXELTYPE_PACKED32</span> =&gt; <span class="ident">PixelFormatKind::Packed</span> {
-                <span class="ident">ty</span>: <span class="ident">PackedPixelType::_32</span>,
-                <span class="ident">order</span>: <span class="ident">raw</span>.<span class="ident">into</span>(),
-                <span class="ident">layout</span>: <span class="ident">raw</span>.<span class="ident">into</span>(),
+            bind::SDL_PIXELTYPE_PACKED32 =&gt; PixelFormatKind::Packed {
+                ty: PackedPixelType::_32,
+                order: raw.into(),
+                layout: raw.into(),
             },
-            <span class="ident">bind::SDL_PIXELTYPE_ARRAYU8</span> =&gt; <span class="ident">PixelFormatKind::Array</span> {
-                <span class="ident">ty</span>: <span class="ident">ArrayPixelType::U8</span>,
-                <span class="ident">order</span>: <span class="ident">raw</span>.<span class="ident">into</span>(),
+            bind::SDL_PIXELTYPE_ARRAYU8 =&gt; PixelFormatKind::Array {
+                ty: ArrayPixelType::U8,
+                order: raw.into(),
             },
-            <span class="ident">bind::SDL_PIXELTYPE_ARRAYU16</span> =&gt; <span class="ident">PixelFormatKind::Array</span> {
-                <span class="ident">ty</span>: <span class="ident">ArrayPixelType::U16</span>,
-                <span class="ident">order</span>: <span class="ident">raw</span>.<span class="ident">into</span>(),
+            bind::SDL_PIXELTYPE_ARRAYU16 =&gt; PixelFormatKind::Array {
+                ty: ArrayPixelType::U16,
+                order: raw.into(),
             },
-            <span class="ident">bind::SDL_PIXELTYPE_ARRAYU32</span> =&gt; <span class="ident">PixelFormatKind::Array</span> {
-                <span class="ident">ty</span>: <span class="ident">ArrayPixelType::U32</span>,
-                <span class="ident">order</span>: <span class="ident">raw</span>.<span class="ident">into</span>(),
+            bind::SDL_PIXELTYPE_ARRAYU32 =&gt; PixelFormatKind::Array {
+                ty: ArrayPixelType::U32,
+                order: raw.into(),
             },
-            <span class="ident">bind::SDL_PIXELTYPE_ARRAYF16</span> =&gt; <span class="ident">PixelFormatKind::Array</span> {
-                <span class="ident">ty</span>: <span class="ident">ArrayPixelType::F16</span>,
-                <span class="ident">order</span>: <span class="ident">raw</span>.<span class="ident">into</span>(),
+            bind::SDL_PIXELTYPE_ARRAYF16 =&gt; PixelFormatKind::Array {
+                ty: ArrayPixelType::F16,
+                order: raw.into(),
             },
-            <span class="ident">bind::SDL_PIXELTYPE_ARRAYF32</span> =&gt; <span class="ident">PixelFormatKind::Array</span> {
-                <span class="ident">ty</span>: <span class="ident">ArrayPixelType::F32</span>,
-                <span class="ident">order</span>: <span class="ident">raw</span>.<span class="ident">into</span>(),
+            bind::SDL_PIXELTYPE_ARRAYF32 =&gt; PixelFormatKind::Array {
+                ty: ArrayPixelType::F32,
+                order: raw.into(),
             },
-            <span class="kw">_</span> =&gt; <span class="ident">PixelFormatKind::Unknown</span>,
+            <span class="kw">_ </span>=&gt; PixelFormatKind::Unknown,
         }
     }
 
-    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">as_raw</span>(<span class="self">self</span>) -&gt; <span class="ident">u32</span> {
-        (<span class="kw">match</span> <span class="self">self</span> {
-            <span class="ident">PixelFormatKind::Unknown</span> =&gt; <span class="number">0</span>,
-            <span class="ident">PixelFormatKind::Bitmap</span> { <span class="ident">ty</span>, <span class="ident">order</span> } =&gt; <span class="ident">calc_bits</span>(
-                <span class="ident">ty</span>.<span class="ident">as_raw</span>(),
-                <span class="ident">order</span>.<span class="ident">as_raw</span>(),
+    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn </span>as_raw(<span class="self">self</span>) -&gt; u32 {
+        (<span class="kw">match </span><span class="self">self </span>{
+            PixelFormatKind::Unknown =&gt; <span class="number">0</span>,
+            PixelFormatKind::Bitmap { ty, order } =&gt; calc_bits(
+                ty.as_raw(),
+                order.as_raw(),
                 <span class="number">0</span>,
-                <span class="ident">ty</span>.<span class="ident">bits_per_pixel</span>(),
-                <span class="ident">ty</span>.<span class="ident">bytes_per_pixel</span>(),
+                ty.bits_per_pixel(),
+                ty.bytes_per_pixel(),
             ),
-            <span class="ident">PixelFormatKind::Packed</span> { <span class="ident">ty</span>, <span class="ident">order</span>, <span class="ident">layout</span> } =&gt; <span class="ident">calc_bits</span>(
-                <span class="ident">ty</span>.<span class="ident">as_raw</span>(),
-                <span class="ident">order</span>.<span class="ident">as_raw</span>(),
-                <span class="ident">layout</span>.<span class="ident">as_raw</span>(),
-                <span class="ident">bits_per_packed_pixel</span>(<span class="ident">order</span>, <span class="ident">layout</span>),
-                <span class="ident">ty</span>.<span class="ident">bytes_per_pixel</span>(),
+            PixelFormatKind::Packed { ty, order, layout } =&gt; calc_bits(
+                ty.as_raw(),
+                order.as_raw(),
+                layout.as_raw(),
+                bits_per_packed_pixel(order, layout),
+                ty.bytes_per_pixel(),
             ),
-            <span class="ident">PixelFormatKind::Array</span> { <span class="ident">ty</span>, <span class="ident">order</span> } =&gt; {
-                <span class="kw">let</span> <span class="ident">bits</span> <span class="op">=</span> <span class="ident">bytes_per_array_pixel</span>(<span class="ident">ty</span>, <span class="ident">order</span>);
-                <span class="ident">calc_bits</span>(<span class="ident">ty</span>.<span class="ident">as_raw</span>(), <span class="ident">order</span>.<span class="ident">as_raw</span>(), <span class="number">0</span>, <span class="ident">bits</span>, <span class="ident">bits</span> <span class="op">/</span> <span class="number">8</span>)
+            PixelFormatKind::Array { ty, order } =&gt; {
+                <span class="kw">let </span>bits = bytes_per_array_pixel(ty, order);
+                calc_bits(ty.as_raw(), order.as_raw(), <span class="number">0</span>, bits, bits / <span class="number">8</span>)
             }
-            <span class="ident">PixelFormatKind::FourCode</span>(<span class="ident">bytes</span>) =&gt; <span class="ident">u32::from_le_bytes</span>(<span class="ident">bytes</span>),
-        }) <span class="kw">as</span> <span class="ident">u32</span>
+            PixelFormatKind::FourCode(bytes) =&gt; u32::from_le_bytes(bytes),
+        }) <span class="kw">as </span>u32
     }
 }
 
-<span class="kw">fn</span> <span class="ident">bits_per_packed_pixel</span>(<span class="ident">order</span>: <span class="ident">PackedPixelOrder</span>, <span class="ident">layout</span>: <span class="ident">PackedPixelLayout</span>) -&gt; <span class="ident">u32</span> {
-    <span class="kw">match</span> (<span class="ident">order</span>, <span class="ident">layout</span>) {
-        (<span class="ident">PackedPixelOrder::Xrgb</span>, <span class="ident">PackedPixelLayout::_332</span>) =&gt; <span class="number">8</span>,
-        (<span class="ident">PackedPixelOrder::Xbgr</span> <span class="op">|</span> <span class="ident">PackedPixelOrder::Xrgb</span>, <span class="ident">PackedPixelLayout::_4444</span>) =&gt; <span class="number">12</span>,
-        (<span class="ident">PackedPixelOrder::Xrgb</span> <span class="op">|</span> <span class="ident">PackedPixelOrder::Xbgr</span>, <span class="ident">PackedPixelLayout::_1555</span>) =&gt; <span class="number">15</span>,
-        (<span class="ident">PackedPixelOrder::Abgr</span> <span class="op">|</span> <span class="ident">PackedPixelOrder::Argb</span>, <span class="ident">PackedPixelLayout::_1555</span>)
-        <span class="op">|</span> (
-            <span class="ident">PackedPixelOrder::Abgr</span> <span class="op">|</span> <span class="ident">PackedPixelOrder::Argb</span> <span class="op">|</span> <span class="ident">PackedPixelOrder::Bgra</span>,
-            <span class="ident">PackedPixelLayout::_4444</span>,
+<span class="kw">fn </span>bits_per_packed_pixel(order: PackedPixelOrder, layout: PackedPixelLayout) -&gt; u32 {
+    <span class="kw">match </span>(order, layout) {
+        (PackedPixelOrder::Xrgb, PackedPixelLayout::_332) =&gt; <span class="number">8</span>,
+        (PackedPixelOrder::Xbgr | PackedPixelOrder::Xrgb, PackedPixelLayout::_4444) =&gt; <span class="number">12</span>,
+        (PackedPixelOrder::Xrgb | PackedPixelOrder::Xbgr, PackedPixelLayout::_1555) =&gt; <span class="number">15</span>,
+        (PackedPixelOrder::Abgr | PackedPixelOrder::Argb, PackedPixelLayout::_1555)
+        | (
+            PackedPixelOrder::Abgr | PackedPixelOrder::Argb | PackedPixelOrder::Bgra,
+            PackedPixelLayout::_4444,
         )
-        <span class="op">|</span> (
-            <span class="ident">PackedPixelOrder::Argb</span> <span class="op">|</span> <span class="ident">PackedPixelOrder::Bgra</span> <span class="op">|</span> <span class="ident">PackedPixelOrder::Rgba</span>,
-            <span class="ident">PackedPixelLayout::_5551</span>,
+        | (
+            PackedPixelOrder::Argb | PackedPixelOrder::Bgra | PackedPixelOrder::Rgba,
+            PackedPixelLayout::_5551,
         )
-        <span class="op">|</span> (<span class="ident">PackedPixelOrder::Xbgr</span> <span class="op">|</span> <span class="ident">PackedPixelOrder::Xrgb</span>, <span class="ident">PackedPixelLayout::_565</span>) =&gt; <span class="number">16</span>,
+        | (PackedPixelOrder::Xbgr | PackedPixelOrder::Xrgb, PackedPixelLayout::_565) =&gt; <span class="number">16</span>,
         (
-            <span class="ident">PackedPixelOrder::Rgbx</span>
-            <span class="op">|</span> <span class="ident">PackedPixelOrder::Bgrx</span>
-            <span class="op">|</span> <span class="ident">PackedPixelOrder::Xbgr</span>
-            <span class="op">|</span> <span class="ident">PackedPixelOrder::Xrgb</span>,
-            <span class="ident">PackedPixelLayout::_8888</span>,
+            PackedPixelOrder::Rgbx
+            | PackedPixelOrder::Bgrx
+            | PackedPixelOrder::Xbgr
+            | PackedPixelOrder::Xrgb,
+            PackedPixelLayout::_8888,
         ) =&gt; <span class="number">24</span>,
-        (<span class="ident">PackedPixelOrder::Rgba</span>, <span class="ident">PackedPixelLayout::_4444</span>)
-        <span class="op">|</span> (
-            <span class="ident">PackedPixelOrder::Abgr</span>
-            <span class="op">|</span> <span class="ident">PackedPixelOrder::Argb</span>
-            <span class="op">|</span> <span class="ident">PackedPixelOrder::Bgra</span>
-            <span class="op">|</span> <span class="ident">PackedPixelOrder::Rgba</span>,
-            <span class="ident">PackedPixelLayout::_8888</span>,
+        (PackedPixelOrder::Rgba, PackedPixelLayout::_4444)
+        | (
+            PackedPixelOrder::Abgr
+            | PackedPixelOrder::Argb
+            | PackedPixelOrder::Bgra
+            | PackedPixelOrder::Rgba,
+            PackedPixelLayout::_8888,
         )
-        <span class="op">|</span> (<span class="ident">PackedPixelOrder::Argb</span>, <span class="ident">PackedPixelLayout::_2101010</span>) =&gt; <span class="number">32</span>,
-        <span class="kw">_</span> =&gt; <span class="number">0</span>,
+        | (PackedPixelOrder::Argb, PackedPixelLayout::_2101010) =&gt; <span class="number">32</span>,
+        <span class="kw">_ </span>=&gt; <span class="number">0</span>,
     }
 }
 
-<span class="kw">fn</span> <span class="ident">bytes_per_array_pixel</span>(<span class="ident">ty</span>: <span class="ident">ArrayPixelType</span>, <span class="ident">order</span>: <span class="ident">ArrayPixelOrder</span>) -&gt; <span class="ident">u32</span> {
-    <span class="kw">let</span> <span class="ident">components</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">order</span> {
-        <span class="ident">ArrayPixelOrder::Rgb</span> <span class="op">|</span> <span class="ident">ArrayPixelOrder::Bgr</span> =&gt; <span class="number">3</span>,
-        <span class="ident">ArrayPixelOrder::Rgba</span>
-        <span class="op">|</span> <span class="ident">ArrayPixelOrder::Argb</span>
-        <span class="op">|</span> <span class="ident">ArrayPixelOrder::Bgra</span>
-        <span class="op">|</span> <span class="ident">ArrayPixelOrder::Abgr</span> =&gt; <span class="number">4</span>,
+<span class="kw">fn </span>bytes_per_array_pixel(ty: ArrayPixelType, order: ArrayPixelOrder) -&gt; u32 {
+    <span class="kw">let </span>components = <span class="kw">match </span>order {
+        ArrayPixelOrder::Rgb | ArrayPixelOrder::Bgr =&gt; <span class="number">3</span>,
+        ArrayPixelOrder::Rgba
+        | ArrayPixelOrder::Argb
+        | ArrayPixelOrder::Bgra
+        | ArrayPixelOrder::Abgr =&gt; <span class="number">4</span>,
     };
-    <span class="kw">let</span> <span class="ident">bits_per_component</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">ty</span> {
-        <span class="ident">ArrayPixelType::U8</span> =&gt; <span class="number">8</span>,
-        <span class="ident">ArrayPixelType::U16</span> <span class="op">|</span> <span class="ident">ArrayPixelType::F16</span> =&gt; <span class="number">16</span>,
-        <span class="ident">ArrayPixelType::U32</span> <span class="op">|</span> <span class="ident">ArrayPixelType::F32</span> =&gt; <span class="number">32</span>,
+    <span class="kw">let </span>bits_per_component = <span class="kw">match </span>ty {
+        ArrayPixelType::U8 =&gt; <span class="number">8</span>,
+        ArrayPixelType::U16 | ArrayPixelType::F16 =&gt; <span class="number">16</span>,
+        ArrayPixelType::U32 | ArrayPixelType::F32 =&gt; <span class="number">32</span>,
     };
-    <span class="ident">components</span> <span class="op">*</span> <span class="ident">bits_per_component</span>
+    components * bits_per_component
 }
 
-<span class="kw">fn</span> <span class="ident">calc_bits</span>(<span class="ident">ty</span>: <span class="ident">u32</span>, <span class="ident">order</span>: <span class="ident">u32</span>, <span class="ident">layout</span>: <span class="ident">u32</span>, <span class="ident">bits_per_pixel</span>: <span class="ident">u32</span>, <span class="ident">bytes_per_pixel</span>: <span class="ident">u32</span>) -&gt; <span class="ident">u32</span> {
-    <span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">28</span> <span class="op">|</span> <span class="ident">ty</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">24</span> <span class="op">|</span> <span class="ident">order</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">20</span> <span class="op">|</span> <span class="ident">layout</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">16</span> <span class="op">|</span> <span class="ident">bits_per_pixel</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">8</span> <span class="op">|</span> <span class="ident">bytes_per_pixel</span>
+<span class="kw">fn </span>calc_bits(ty: u32, order: u32, layout: u32, bits_per_pixel: u32, bytes_per_pixel: u32) -&gt; u32 {
+    <span class="number">1 </span>&lt;&lt; <span class="number">28 </span>| ty &lt;&lt; <span class="number">24 </span>| order &lt;&lt; <span class="number">20 </span>| layout &lt;&lt; <span class="number">16 </span>| bits_per_pixel &lt;&lt; <span class="number">8 </span>| bytes_per_pixel
 }
 </code></pre></div>
-</section></div></main><div id="rustdoc-vars" data-root-path="../../../../../" data-current-crate="rich_sdl2_rust" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.64.0-nightly (0f4bcadb4 2022-07-30)" ></div></body></html>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../../../../" data-current-crate="rich_sdl2_rust" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.66.0-nightly (5e9772042 2022-10-29)" ></div></body></html>

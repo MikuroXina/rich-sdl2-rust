@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/mixer/device.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>device.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../storage.js"></script><script defer src="../../../source-script.js"></script><script defer src="../../../source-files.js"></script><script defer src="../../../main.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../../rich_sdl2_rust/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div></a><h2 class="location"></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../../rich_sdl2_rust/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../../rich_sdl2_rust/index.html"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/mixer/device.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>device.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" href="../../../normalize.css"><link rel="stylesheet" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" href="../../../ayu.css" disabled><link rel="stylesheet" href="../../../dark.css" disabled><link rel="stylesheet" href="../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../storage.js"></script><script defer src="../../../source-script.js"></script><script defer src="../../../source-files.js"></script><script defer src="../../../main.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><div class="width-limiter"><nav class="sub"><a class="sub-logo-container" href="../../../rich_sdl2_rust/index.html"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../wheel.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><pre class="src-line-numbers"><span id="1">1</span>
 <span id="2">2</span>
 <span id="3">3</span>
 <span id="4">4</span>
@@ -183,190 +183,190 @@
 <span id="183">183</span>
 <span id="184">184</span>
 <span id="185">185</span>
-</pre><pre class="rust"><code><span class="doccomment">//! Audio specifications for SDL2_mixer.</span>
+</pre><pre class="rust"><code><span class="doccomment">//! Audio specifications for SDL2_mixer.
 
-<span class="kw">use</span> <span class="ident">std</span>::{<span class="ident">borrow::Cow</span>, <span class="ident">ffi::CStr</span>, <span class="ident">marker::PhantomData</span>};
+</span><span class="kw">use </span>std::{borrow::Cow, ffi::CStr, marker::PhantomData};
 
-<span class="kw">use</span> <span class="kw">crate</span>::{
-    <span class="ident">audio::format::AudioFormat</span>,
-    <span class="ident">bind</span>,
-    <span class="ident">mixer</span>::{
-        <span class="ident">chunk::channel</span>::{
-            <span class="ident">effect</span>::{<span class="ident">effect_attach_done_handler</span>, <span class="ident">effect_attach_effect_handler</span>, <span class="ident">Effect</span>},
-            <span class="ident">ChannelGroup</span>,
+<span class="kw">use crate</span>::{
+    audio::format::AudioFormat,
+    bind,
+    mixer::{
+        chunk::channel::{
+            effect::{effect_attach_done_handler, effect_attach_effect_handler, Effect},
+            ChannelGroup,
         },
-        <span class="ident">Mix</span>,
+        Mix,
     },
-    <span class="prelude-ty">Result</span>, <span class="ident">Sdl</span>, <span class="ident">SdlError</span>,
+    <span class="prelude-ty">Result</span>, Sdl, SdlError,
 };
 
-<span class="doccomment">/// A builder for [`MixDevice`].</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>)]</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">MixDeviceBuilder</span> {
-    <span class="ident">frequency</span>: <span class="ident">u32</span>,
-    <span class="ident">format</span>: <span class="ident">AudioFormat</span>,
-    <span class="ident">channels</span>: <span class="ident">u32</span>,
-    <span class="ident">chunk_size</span>: <span class="ident">u32</span>,
+<span class="doccomment">/// A builder for [`MixDevice`].
+</span><span class="attribute">#[derive(Debug, Clone)]
+</span><span class="kw">pub struct </span>MixDeviceBuilder {
+    frequency: u32,
+    format: AudioFormat,
+    channels: u32,
+    chunk_size: u32,
 }
 
-<span class="kw">impl</span> <span class="ident">MixDeviceBuilder</span> {
-    <span class="doccomment">/// Constructs a default builder.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>() -&gt; <span class="self">Self</span> {
-        <span class="self">Self</span> {
-            <span class="ident">frequency</span>: <span class="ident">bind::MIX_DEFAULT_FREQUENCY</span>,
-            <span class="ident">format</span>: <span class="kw">if</span> <span class="macro">cfg!</span>(<span class="ident">target_endian</span> <span class="op">=</span> <span class="string">&quot;big&quot;</span>) {
-                <span class="ident">AudioFormat::signed16_msb</span>()
-            } <span class="kw">else</span> {
-                <span class="ident">AudioFormat::signed16_lsb</span>()
+<span class="kw">impl </span>MixDeviceBuilder {
+    <span class="doccomment">/// Constructs a default builder.
+    </span><span class="kw">pub fn </span>new() -&gt; <span class="self">Self </span>{
+        <span class="self">Self </span>{
+            frequency: bind::MIX_DEFAULT_FREQUENCY,
+            format: <span class="kw">if </span><span class="macro">cfg!</span>(target_endian = <span class="string">&quot;big&quot;</span>) {
+                AudioFormat::signed16_msb()
+            } <span class="kw">else </span>{
+                AudioFormat::signed16_lsb()
             },
-            <span class="ident">channels</span>: <span class="number">2</span>,
-            <span class="ident">chunk_size</span>: <span class="ident">bind::MIX_DEFAULT_CHANNELS</span>,
+            channels: <span class="number">2</span>,
+            chunk_size: bind::MIX_DEFAULT_CHANNELS,
         }
     }
 
-    <span class="doccomment">/// Changes the sampling frequencies.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">frequency</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">frequency</span>: <span class="ident">u32</span>) -&gt; <span class="kw-2">&amp;mut</span> <span class="self">Self</span> {
-        <span class="self">self</span>.<span class="ident">frequency</span> <span class="op">=</span> <span class="ident">frequency</span>;
-        <span class="self">self</span>
-    }
+    <span class="doccomment">/// Changes the sampling frequencies.
+    </span><span class="kw">pub fn </span>frequency(<span class="kw-2">&amp;mut </span><span class="self">self</span>, frequency: u32) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
+        <span class="self">self</span>.frequency = frequency;
+        <span class="self">self
+    </span>}
 
-    <span class="doccomment">/// Changes the audio format.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">format</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">format</span>: <span class="ident">AudioFormat</span>) -&gt; <span class="kw-2">&amp;mut</span> <span class="self">Self</span> {
-        <span class="self">self</span>.<span class="ident">format</span> <span class="op">=</span> <span class="ident">format</span>;
-        <span class="self">self</span>
-    }
+    <span class="doccomment">/// Changes the audio format.
+    </span><span class="kw">pub fn </span>format(<span class="kw-2">&amp;mut </span><span class="self">self</span>, format: AudioFormat) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
+        <span class="self">self</span>.format = format;
+        <span class="self">self
+    </span>}
 
-    <span class="doccomment">/// Changes the numbers of channels.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">channels</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">channels</span>: <span class="ident">u32</span>) -&gt; <span class="kw-2">&amp;mut</span> <span class="self">Self</span> {
-        <span class="self">self</span>.<span class="ident">channels</span> <span class="op">=</span> <span class="ident">channels</span>;
-        <span class="self">self</span>
-    }
+    <span class="doccomment">/// Changes the numbers of channels.
+    </span><span class="kw">pub fn </span>channels(<span class="kw-2">&amp;mut </span><span class="self">self</span>, channels: u32) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
+        <span class="self">self</span>.channels = channels;
+        <span class="self">self
+    </span>}
 
-    <span class="doccomment">/// Changes the output chunk size. If it is too low, the sound may skip.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">chunk_size</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">chunk_size</span>: <span class="ident">u32</span>) -&gt; <span class="kw-2">&amp;mut</span> <span class="self">Self</span> {
-        <span class="self">self</span>.<span class="ident">chunk_size</span> <span class="op">=</span> <span class="ident">chunk_size</span>;
-        <span class="self">self</span>
-    }
+    <span class="doccomment">/// Changes the output chunk size. If it is too low, the sound may skip.
+    </span><span class="kw">pub fn </span>chunk_size(<span class="kw-2">&amp;mut </span><span class="self">self</span>, chunk_size: u32) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
+        <span class="self">self</span>.chunk_size = chunk_size;
+        <span class="self">self
+    </span>}
 
-    <span class="doccomment">/// Opens a [`MixDevice`] with a root controller, or `Err` on failure.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">build</span>(<span class="self">self</span>, <span class="ident">_mix</span>: <span class="kw-2">&amp;</span><span class="ident">Mix</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">MixDevice</span><span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="ident">format</span> <span class="op">=</span> (<span class="self">self</span>.<span class="ident">format</span>.<span class="ident">flag</span>.<span class="ident">bits</span>() <span class="kw">as</span> <span class="ident">u16</span>) <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">8</span> <span class="op">|</span> <span class="self">self</span>.<span class="ident">format</span>.<span class="ident">bit_size</span> <span class="kw">as</span> <span class="ident">u16</span>;
-        <span class="kw">let</span> <span class="ident">ret</span> <span class="op">=</span> <span class="kw">unsafe</span> {
-            <span class="ident">bind::Mix_OpenAudio</span>(
-                <span class="self">self</span>.<span class="ident">frequency</span> <span class="kw">as</span> <span class="kw">_</span>,
-                <span class="ident">format</span>,
-                <span class="self">self</span>.<span class="ident">channels</span> <span class="kw">as</span> <span class="kw">_</span>,
-                <span class="self">self</span>.<span class="ident">chunk_size</span> <span class="kw">as</span> <span class="kw">_</span>,
+    <span class="doccomment">/// Opens a [`MixDevice`] with a root controller, or `Err` on failure.
+    </span><span class="kw">pub fn </span>build(<span class="self">self</span>, _mix: <span class="kw-2">&amp;</span>Mix) -&gt; <span class="prelude-ty">Result</span>&lt;MixDevice&gt; {
+        <span class="kw">let </span>format = (<span class="self">self</span>.format.flag.bits() <span class="kw">as </span>u16) &lt;&lt; <span class="number">8 </span>| <span class="self">self</span>.format.bit_size <span class="kw">as </span>u16;
+        <span class="kw">let </span>ret = <span class="kw">unsafe </span>{
+            bind::Mix_OpenAudio(
+                <span class="self">self</span>.frequency <span class="kw">as _</span>,
+                format,
+                <span class="self">self</span>.channels <span class="kw">as _</span>,
+                <span class="self">self</span>.chunk_size <span class="kw">as _</span>,
             )
         };
-        <span class="kw">if</span> <span class="ident">ret</span> <span class="op">!</span><span class="op">=</span> <span class="number">0</span> {
-            <span class="prelude-val">Err</span>(<span class="ident">SdlError::Others</span> { <span class="ident">msg</span>: <span class="ident">Sdl::error</span>() })
-        } <span class="kw">else</span> {
-            <span class="prelude-val">Ok</span>(<span class="ident">MixDevice</span> {
-                <span class="ident">_phantom</span>: <span class="ident">PhantomData</span>,
+        <span class="kw">if </span>ret != <span class="number">0 </span>{
+            <span class="prelude-val">Err</span>(SdlError::Others { msg: Sdl::error() })
+        } <span class="kw">else </span>{
+            <span class="prelude-val">Ok</span>(MixDevice {
+                _phantom: PhantomData,
             })
         }
     }
 }
 
-<span class="kw">impl</span> <span class="ident">Default</span> <span class="kw">for</span> <span class="ident">MixDeviceBuilder</span> {
-    <span class="kw">fn</span> <span class="ident">default</span>() -&gt; <span class="self">Self</span> {
-        <span class="ident"><span class="self">Self</span>::new</span>()
+<span class="kw">impl </span>Default <span class="kw">for </span>MixDeviceBuilder {
+    <span class="kw">fn </span>default() -&gt; <span class="self">Self </span>{
+        <span class="self">Self</span>::new()
     }
 }
 
-<span class="doccomment">/// A specification of the [`MixDevice`], returned from [`MixDevice::query`].</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">Copy</span>)]</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">MixSpec</span> {
-    <span class="doccomment">/// The sampling frequency of the audio device.</span>
-    <span class="kw">pub</span> <span class="ident">frequency</span>: <span class="ident">u32</span>,
-    <span class="doccomment">/// The output format of the audio device.</span>
-    <span class="kw">pub</span> <span class="ident">format</span>: <span class="ident">AudioFormat</span>,
-    <span class="doccomment">/// The numbers of channels of the audio device.</span>
-    <span class="kw">pub</span> <span class="ident">channels</span>: <span class="ident">u32</span>,
+<span class="doccomment">/// A specification of the [`MixDevice`], returned from [`MixDevice::query`].
+</span><span class="attribute">#[derive(Debug, Clone, Copy)]
+</span><span class="kw">pub struct </span>MixSpec {
+    <span class="doccomment">/// The sampling frequency of the audio device.
+    </span><span class="kw">pub </span>frequency: u32,
+    <span class="doccomment">/// The output format of the audio device.
+    </span><span class="kw">pub </span>format: AudioFormat,
+    <span class="doccomment">/// The numbers of channels of the audio device.
+    </span><span class="kw">pub </span>channels: u32,
 }
 
-<span class="doccomment">/// An audio device built from [`MixDeviceBuilder`].</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">MixDevice</span><span class="op">&lt;</span><span class="lifetime">&#39;mix</span><span class="op">&gt;</span> {
-    <span class="ident">_phantom</span>: <span class="ident">PhantomData</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;mix</span> <span class="ident">Mix</span><span class="op">&gt;</span>,
+<span class="doccomment">/// An audio device built from [`MixDeviceBuilder`].
+</span><span class="kw">pub struct </span>MixDevice&lt;<span class="lifetime">&#39;mix</span>&gt; {
+    _phantom: PhantomData&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;mix </span>Mix&gt;,
 }
 
-<span class="kw">impl</span> <span class="ident">MixDevice</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span> {
-    <span class="doccomment">/// Queries the specification of the audio device.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">query</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">MixSpec</span> {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">frequency</span> <span class="op">=</span> <span class="number">0</span>;
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">format</span> <span class="op">=</span> <span class="number">0</span>;
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">channels</span> <span class="op">=</span> <span class="number">0</span>;
-        <span class="kw">let</span> <span class="kw">_</span> <span class="op">=</span> <span class="kw">unsafe</span> {
-            <span class="ident">bind::Mix_QuerySpec</span>(
-                <span class="kw-2">&amp;mut</span> <span class="ident">frequency</span> <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="kw">_</span>,
-                <span class="kw-2">&amp;mut</span> <span class="ident">format</span> <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="kw">_</span>,
-                <span class="kw-2">&amp;mut</span> <span class="ident">channels</span> <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="kw">_</span>,
+<span class="kw">impl </span>MixDevice&lt;<span class="lifetime">&#39;_</span>&gt; {
+    <span class="doccomment">/// Queries the specification of the audio device.
+    </span><span class="kw">pub fn </span>query(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; MixSpec {
+        <span class="kw">let </span><span class="kw-2">mut </span>frequency = <span class="number">0</span>;
+        <span class="kw">let </span><span class="kw-2">mut </span>format = <span class="number">0</span>;
+        <span class="kw">let </span><span class="kw-2">mut </span>channels = <span class="number">0</span>;
+        <span class="kw">let _ </span>= <span class="kw">unsafe </span>{
+            bind::Mix_QuerySpec(
+                <span class="kw-2">&amp;mut </span>frequency <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
+                <span class="kw-2">&amp;mut </span>format <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
+                <span class="kw-2">&amp;mut </span>channels <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
             )
         };
-        <span class="ident">MixSpec</span> {
-            <span class="ident">frequency</span>: <span class="ident">frequency</span> <span class="kw">as</span> <span class="kw">_</span>,
-            <span class="ident">format</span>: <span class="ident">format</span>.<span class="ident">into</span>(),
-            <span class="ident">channels</span>: <span class="ident">channels</span> <span class="kw">as</span> <span class="kw">_</span>,
+        MixSpec {
+            frequency: frequency <span class="kw">as _</span>,
+            format: format.into(),
+            channels: channels <span class="kw">as _</span>,
         }
     }
 
-    <span class="doccomment">/// Returns the decoder names for the mix chunk.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">chunk_decoders</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">Cow</span><span class="op">&lt;</span><span class="ident">str</span><span class="op">&gt;</span><span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="ident">num</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">bind::Mix_GetNumChunkDecoders</span>() };
-        (<span class="number">0</span>..<span class="ident">num</span>)
-            .<span class="ident">map</span>(<span class="op">|</span><span class="ident">index</span><span class="op">|</span> {
-                <span class="kw">let</span> <span class="ident">cstr</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">CStr::from_ptr</span>(<span class="ident">bind::Mix_GetChunkDecoder</span>(<span class="ident">index</span>)) };
-                <span class="ident">cstr</span>.<span class="ident">to_string_lossy</span>()
+    <span class="doccomment">/// Returns the decoder names for the mix chunk.
+    </span><span class="kw">pub fn </span>chunk_decoders(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; Vec&lt;Cow&lt;str&gt;&gt; {
+        <span class="kw">let </span>num = <span class="kw">unsafe </span>{ bind::Mix_GetNumChunkDecoders() };
+        (<span class="number">0</span>..num)
+            .map(|index| {
+                <span class="kw">let </span>cstr = <span class="kw">unsafe </span>{ CStr::from_ptr(bind::Mix_GetChunkDecoder(index)) };
+                cstr.to_string_lossy()
             })
-            .<span class="ident">collect</span>()
+            .collect()
     }
 
-    <span class="doccomment">/// Returns the decoder names for the mix music.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">music_decoders</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">Cow</span><span class="op">&lt;</span><span class="ident">str</span><span class="op">&gt;</span><span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="ident">num</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">bind::Mix_GetNumMusicDecoders</span>() };
-        (<span class="number">0</span>..<span class="ident">num</span>)
-            .<span class="ident">map</span>(<span class="op">|</span><span class="ident">index</span><span class="op">|</span> {
-                <span class="kw">let</span> <span class="ident">cstr</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">CStr::from_ptr</span>(<span class="ident">bind::Mix_GetMusicDecoder</span>(<span class="ident">index</span>)) };
-                <span class="ident">cstr</span>.<span class="ident">to_string_lossy</span>()
+    <span class="doccomment">/// Returns the decoder names for the mix music.
+    </span><span class="kw">pub fn </span>music_decoders(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; Vec&lt;Cow&lt;str&gt;&gt; {
+        <span class="kw">let </span>num = <span class="kw">unsafe </span>{ bind::Mix_GetNumMusicDecoders() };
+        (<span class="number">0</span>..num)
+            .map(|index| {
+                <span class="kw">let </span>cstr = <span class="kw">unsafe </span>{ CStr::from_ptr(bind::Mix_GetMusicDecoder(index)) };
+                cstr.to_string_lossy()
             })
-            .<span class="ident">collect</span>()
+            .collect()
     }
 
-    <span class="doccomment">/// Returns the numbers of playing channels.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">playing_channels</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">usize</span> {
-        <span class="kw">unsafe</span> { <span class="ident">bind::Mix_Playing</span>(<span class="op">-</span><span class="number">1</span>) <span class="kw">as</span> <span class="kw">_</span> }
+    <span class="doccomment">/// Returns the numbers of playing channels.
+    </span><span class="kw">pub fn </span>playing_channels(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; usize {
+        <span class="kw">unsafe </span>{ bind::Mix_Playing(-<span class="number">1</span>) <span class="kw">as _ </span>}
     }
 
-    <span class="doccomment">/// Constructs the channel group.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new_channels</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">len</span>: <span class="ident">usize</span>) -&gt; <span class="ident">ChannelGroup</span> {
-        <span class="ident">ChannelGroup::new</span>(<span class="self">self</span>, <span class="ident">len</span>)
+    <span class="doccomment">/// Constructs the channel group.
+    </span><span class="kw">pub fn </span>new_channels(<span class="kw-2">&amp;</span><span class="self">self</span>, len: usize) -&gt; ChannelGroup {
+        ChannelGroup::new(<span class="self">self</span>, len)
     }
 
-    <span class="doccomment">/// Attaches the effect to the special, post effect channel.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">attach_post_effect</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">effect</span>: <span class="ident">Effect</span>) {
-        <span class="kw">let</span> <span class="ident">wrapped</span> <span class="op">=</span> <span class="ident">Box::new</span>(<span class="ident">effect</span>);
-        <span class="kw">let</span> <span class="ident">raw</span> <span class="op">=</span> <span class="ident">Box::into_raw</span>(<span class="ident">wrapped</span>);
-        <span class="kw">let</span> <span class="kw">_</span> <span class="op">=</span> <span class="kw">unsafe</span> {
-            <span class="ident">bind::Mix_RegisterEffect</span>(
-                <span class="ident">bind::MIX_CHANNEL_POST</span>,
-                <span class="prelude-val">Some</span>(<span class="ident">effect_attach_effect_handler</span>),
-                <span class="prelude-val">Some</span>(<span class="ident">effect_attach_done_handler</span>),
-                <span class="ident">raw</span>.<span class="ident">cast</span>(),
+    <span class="doccomment">/// Attaches the effect to the special, post effect channel.
+    </span><span class="kw">pub fn </span>attach_post_effect(<span class="kw-2">&amp;</span><span class="self">self</span>, effect: Effect) {
+        <span class="kw">let </span>wrapped = Box::new(effect);
+        <span class="kw">let </span>raw = Box::into_raw(wrapped);
+        <span class="kw">let _ </span>= <span class="kw">unsafe </span>{
+            bind::Mix_RegisterEffect(
+                bind::MIX_CHANNEL_POST,
+                <span class="prelude-val">Some</span>(effect_attach_effect_handler),
+                <span class="prelude-val">Some</span>(effect_attach_done_handler),
+                raw.cast(),
             )
         };
     }
 
-    <span class="doccomment">/// Detaches all the effect from the special, post effect channel.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">detach_all_post_effect</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) {
-        <span class="kw">let</span> <span class="kw">_</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">bind::Mix_UnregisterAllEffects</span>(<span class="ident">bind::MIX_CHANNEL_POST</span>) };
+    <span class="doccomment">/// Detaches all the effect from the special, post effect channel.
+    </span><span class="kw">pub fn </span>detach_all_post_effect(<span class="kw-2">&amp;</span><span class="self">self</span>) {
+        <span class="kw">let _ </span>= <span class="kw">unsafe </span>{ bind::Mix_UnregisterAllEffects(bind::MIX_CHANNEL_POST) };
     }
 }
 
-<span class="kw">impl</span> <span class="ident">Drop</span> <span class="kw">for</span> <span class="ident">MixDevice</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span> {
-    <span class="kw">fn</span> <span class="ident">drop</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) {
-        <span class="kw">unsafe</span> { <span class="ident">bind::Mix_CloseAudio</span>() }
+<span class="kw">impl </span>Drop <span class="kw">for </span>MixDevice&lt;<span class="lifetime">&#39;_</span>&gt; {
+    <span class="kw">fn </span>drop(<span class="kw-2">&amp;mut </span><span class="self">self</span>) {
+        <span class="kw">unsafe </span>{ bind::Mix_CloseAudio() }
     }
 }
 </code></pre></div>
-</section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="rich_sdl2_rust" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.64.0-nightly (0f4bcadb4 2022-07-30)" ></div></body></html>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="rich_sdl2_rust" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.66.0-nightly (5e9772042 2022-10-29)" ></div></body></html>

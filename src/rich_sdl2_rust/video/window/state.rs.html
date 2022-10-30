@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/video/window/state.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>state.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../../storage.js"></script><script defer src="../../../../source-script.js"></script><script defer src="../../../../source-files.js"></script><script defer src="../../../../main.js"></script><noscript><link rel="stylesheet" href="../../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../../../rich_sdl2_rust/index.html"><div class="logo-container"><img class="rust-logo" src="../../../../rust-logo.svg" alt="logo"></div></a><h2 class="location"></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../../../rich_sdl2_rust/index.html"><div class="logo-container"><img class="rust-logo" src="../../../../rust-logo.svg" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../../../rich_sdl2_rust/index.html"><img class="rust-logo" src="../../../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/video/window/state.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>state.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" href="../../../../normalize.css"><link rel="stylesheet" href="../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" href="../../../../ayu.css" disabled><link rel="stylesheet" href="../../../../dark.css" disabled><link rel="stylesheet" href="../../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../../storage.js"></script><script defer src="../../../../source-script.js"></script><script defer src="../../../../source-files.js"></script><script defer src="../../../../main.js"></script><noscript><link rel="stylesheet" href="../../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><div class="width-limiter"><nav class="sub"><a class="sub-logo-container" href="../../../../rich_sdl2_rust/index.html"><img class="rust-logo" src="../../../../rust-logo.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../../wheel.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><pre class="src-line-numbers"><span id="1">1</span>
 <span id="2">2</span>
 <span id="3">3</span>
 <span id="4">4</span>
@@ -102,109 +102,109 @@
 <span id="102">102</span>
 <span id="103">103</span>
 <span id="104">104</span>
-</pre><pre class="rust"><code><span class="kw">use</span> <span class="ident"><span class="kw">super</span>::builder::WindowFlags</span>;
+</pre><pre class="rust"><code><span class="kw">use </span><span class="kw">super</span>::builder::WindowFlags;
 
-<span class="doccomment">/// A format of a [`super::Window`].</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">Copy</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>)]</span>
-<span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">WindowFormat</span> {
-    <span class="doccomment">/// A normal window.</span>
-    <span class="ident">Normal</span>,
-    <span class="doccomment">/// A full screen window.</span>
-    <span class="ident">FullScreen</span>,
-    <span class="doccomment">/// A full screen window on the current desktop.</span>
-    <span class="ident">FullScreenWithCurrentDesktop</span>,
-    <span class="doccomment">/// A minimized window.</span>
-    <span class="ident">Minimized</span>,
-    <span class="doccomment">/// A maximized window.</span>
-    <span class="ident">Maximized</span>,
+<span class="doccomment">/// A format of a [`super::Window`].
+</span><span class="attribute">#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+</span><span class="kw">pub enum </span>WindowFormat {
+    <span class="doccomment">/// A normal window.
+    </span>Normal,
+    <span class="doccomment">/// A full screen window.
+    </span>FullScreen,
+    <span class="doccomment">/// A full screen window on the current desktop.
+    </span>FullScreenWithCurrentDesktop,
+    <span class="doccomment">/// A minimized window.
+    </span>Minimized,
+    <span class="doccomment">/// A maximized window.
+    </span>Maximized,
 }
 
-<span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">WindowFlags</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">WindowFormat</span> {
-    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">flags</span>: <span class="ident">WindowFlags</span>) -&gt; <span class="self">Self</span> {
-        <span class="kw">if</span> <span class="ident">flags</span>.<span class="ident">contains</span>(<span class="ident">WindowFlags::FULLSCREEN</span>) {
-            <span class="ident">WindowFormat::FullScreen</span>
-        } <span class="kw">else</span> <span class="kw">if</span> <span class="ident">flags</span>.<span class="ident">contains</span>(<span class="ident">WindowFlags::FULLSCREEN_DESKTOP</span>) {
-            <span class="ident">WindowFormat::FullScreenWithCurrentDesktop</span>
-        } <span class="kw">else</span> <span class="kw">if</span> <span class="ident">flags</span>.<span class="ident">contains</span>(<span class="ident">WindowFlags::MINIMIZED</span>) {
-            <span class="ident">WindowFormat::Minimized</span>
-        } <span class="kw">else</span> <span class="kw">if</span> <span class="ident">flags</span>.<span class="ident">contains</span>(<span class="ident">WindowFlags::MAXIMIZED</span>) {
-            <span class="ident">WindowFormat::Maximized</span>
-        } <span class="kw">else</span> {
-            <span class="ident">WindowFormat::Normal</span>
+<span class="kw">impl </span>From&lt;WindowFlags&gt; <span class="kw">for </span>WindowFormat {
+    <span class="kw">fn </span>from(flags: WindowFlags) -&gt; <span class="self">Self </span>{
+        <span class="kw">if </span>flags.contains(WindowFlags::FULLSCREEN) {
+            WindowFormat::FullScreen
+        } <span class="kw">else if </span>flags.contains(WindowFlags::FULLSCREEN_DESKTOP) {
+            WindowFormat::FullScreenWithCurrentDesktop
+        } <span class="kw">else if </span>flags.contains(WindowFlags::MINIMIZED) {
+            WindowFormat::Minimized
+        } <span class="kw">else if </span>flags.contains(WindowFlags::MAXIMIZED) {
+            WindowFormat::Maximized
+        } <span class="kw">else </span>{
+            WindowFormat::Normal
         }
     }
 }
 
-<span class="doccomment">/// A kind of a window&#39;s context.</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">Copy</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>)]</span>
-<span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">WindowContextKind</span> {
-    <span class="doccomment">/// Using software render context.</span>
-    <span class="ident">Software</span>,
-    <span class="doccomment">/// Using OpenGL render context.</span>
-    <span class="ident">OpenGl</span>,
-    <span class="doccomment">/// Using Vulkan render context.</span>
-    <span class="ident">Vulkan</span>,
-    <span class="doccomment">/// Using Metal render context.</span>
-    <span class="ident">Metal</span>,
+<span class="doccomment">/// A kind of a window&#39;s context.
+</span><span class="attribute">#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+</span><span class="kw">pub enum </span>WindowContextKind {
+    <span class="doccomment">/// Using software render context.
+    </span>Software,
+    <span class="doccomment">/// Using OpenGL render context.
+    </span>OpenGl,
+    <span class="doccomment">/// Using Vulkan render context.
+    </span>Vulkan,
+    <span class="doccomment">/// Using Metal render context.
+    </span>Metal,
 }
 
-<span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">WindowFlags</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">WindowContextKind</span> {
-    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">flags</span>: <span class="ident">WindowFlags</span>) -&gt; <span class="self">Self</span> {
-        <span class="kw">if</span> <span class="ident">flags</span>.<span class="ident">contains</span>(<span class="ident">WindowFlags::OPENGL</span>) {
-            <span class="ident">WindowContextKind::OpenGl</span>
-        } <span class="kw">else</span> <span class="kw">if</span> <span class="ident">flags</span>.<span class="ident">contains</span>(<span class="ident">WindowFlags::VULKAN</span>) {
-            <span class="ident">WindowContextKind::Vulkan</span>
-        } <span class="kw">else</span> <span class="kw">if</span> <span class="ident">flags</span>.<span class="ident">contains</span>(<span class="ident">WindowFlags::METAL</span>) {
-            <span class="ident">WindowContextKind::Metal</span>
-        } <span class="kw">else</span> {
-            <span class="ident">WindowContextKind::Software</span>
+<span class="kw">impl </span>From&lt;WindowFlags&gt; <span class="kw">for </span>WindowContextKind {
+    <span class="kw">fn </span>from(flags: WindowFlags) -&gt; <span class="self">Self </span>{
+        <span class="kw">if </span>flags.contains(WindowFlags::OPENGL) {
+            WindowContextKind::OpenGl
+        } <span class="kw">else if </span>flags.contains(WindowFlags::VULKAN) {
+            WindowContextKind::Vulkan
+        } <span class="kw">else if </span>flags.contains(WindowFlags::METAL) {
+            WindowContextKind::Metal
+        } <span class="kw">else </span>{
+            WindowContextKind::Software
         }
     }
 }
 
-<span class="doccomment">/// A state of a [`super::Window`].</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">Copy</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>)]</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">WindowState</span> {
-    <span class="doccomment">/// A format of the window.</span>
-    <span class="kw">pub</span> <span class="ident">format</span>: <span class="ident">WindowFormat</span>,
-    <span class="doccomment">/// A kind of render context of the window.</span>
-    <span class="kw">pub</span> <span class="ident">context_kind</span>: <span class="ident">WindowContextKind</span>,
-    <span class="doccomment">/// Whether the window is hidden.</span>
-    <span class="kw">pub</span> <span class="ident">hidden</span>: <span class="ident">bool</span>,
-    <span class="doccomment">/// Whether the window is borderless.</span>
-    <span class="kw">pub</span> <span class="ident">borderless</span>: <span class="ident">bool</span>,
-    <span class="doccomment">/// Whether the window is resizable.</span>
-    <span class="kw">pub</span> <span class="ident">resizable</span>: <span class="ident">bool</span>,
-    <span class="doccomment">/// Whether the window is grabbed the input.</span>
-    <span class="kw">pub</span> <span class="ident">input_grabbed</span>: <span class="ident">bool</span>,
-    <span class="doccomment">/// Whether the window is on focus.</span>
-    <span class="kw">pub</span> <span class="ident">on_focus</span>: <span class="ident">bool</span>,
-    <span class="doccomment">/// Whether the window is on the mouse.</span>
-    <span class="kw">pub</span> <span class="ident">on_mouse</span>: <span class="ident">bool</span>,
-    <span class="doccomment">/// Whether the window comes from the foreign.</span>
-    <span class="kw">pub</span> <span class="ident">foreign</span>: <span class="ident">bool</span>,
-    <span class="doccomment">/// Whether the window allows high dpi.</span>
-    <span class="kw">pub</span> <span class="ident">allow_high_dpi</span>: <span class="ident">bool</span>,
-    <span class="doccomment">/// Whether the window captures the mouse.</span>
-    <span class="kw">pub</span> <span class="ident">mouse_capture</span>: <span class="ident">bool</span>,
+<span class="doccomment">/// A state of a [`super::Window`].
+</span><span class="attribute">#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+</span><span class="kw">pub struct </span>WindowState {
+    <span class="doccomment">/// A format of the window.
+    </span><span class="kw">pub </span>format: WindowFormat,
+    <span class="doccomment">/// A kind of render context of the window.
+    </span><span class="kw">pub </span>context_kind: WindowContextKind,
+    <span class="doccomment">/// Whether the window is hidden.
+    </span><span class="kw">pub </span>hidden: bool,
+    <span class="doccomment">/// Whether the window is borderless.
+    </span><span class="kw">pub </span>borderless: bool,
+    <span class="doccomment">/// Whether the window is resizable.
+    </span><span class="kw">pub </span>resizable: bool,
+    <span class="doccomment">/// Whether the window is grabbed the input.
+    </span><span class="kw">pub </span>input_grabbed: bool,
+    <span class="doccomment">/// Whether the window is on focus.
+    </span><span class="kw">pub </span>on_focus: bool,
+    <span class="doccomment">/// Whether the window is on the mouse.
+    </span><span class="kw">pub </span>on_mouse: bool,
+    <span class="doccomment">/// Whether the window comes from the foreign.
+    </span><span class="kw">pub </span>foreign: bool,
+    <span class="doccomment">/// Whether the window allows high dpi.
+    </span><span class="kw">pub </span>allow_high_dpi: bool,
+    <span class="doccomment">/// Whether the window captures the mouse.
+    </span><span class="kw">pub </span>mouse_capture: bool,
 }
 
-<span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">WindowFlags</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">WindowState</span> {
-    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">flags</span>: <span class="ident">WindowFlags</span>) -&gt; <span class="self">Self</span> {
-        <span class="self">Self</span> {
-            <span class="ident">format</span>: <span class="ident">flags</span>.<span class="ident">into</span>(),
-            <span class="ident">context_kind</span>: <span class="ident">flags</span>.<span class="ident">into</span>(),
-            <span class="ident">hidden</span>: <span class="ident">flags</span>.<span class="ident">contains</span>(<span class="ident">WindowFlags::HIDDEN</span>),
-            <span class="ident">borderless</span>: <span class="ident">flags</span>.<span class="ident">contains</span>(<span class="ident">WindowFlags::BORDERLESS</span>),
-            <span class="ident">resizable</span>: <span class="ident">flags</span>.<span class="ident">contains</span>(<span class="ident">WindowFlags::RESIZABLE</span>),
-            <span class="ident">input_grabbed</span>: <span class="ident">flags</span>.<span class="ident">contains</span>(<span class="ident">WindowFlags::INPUT_GRABBED</span>),
-            <span class="ident">on_focus</span>: <span class="ident">flags</span>.<span class="ident">contains</span>(<span class="ident">WindowFlags::INPUT_FOCUS</span>),
-            <span class="ident">on_mouse</span>: <span class="ident">flags</span>.<span class="ident">contains</span>(<span class="ident">WindowFlags::MOUSE_FOCUS</span>),
-            <span class="ident">foreign</span>: <span class="ident">flags</span>.<span class="ident">contains</span>(<span class="ident">WindowFlags::FOREIGN</span>),
-            <span class="ident">allow_high_dpi</span>: <span class="ident">flags</span>.<span class="ident">contains</span>(<span class="ident">WindowFlags::ALLOW_HIGHDPI</span>),
-            <span class="ident">mouse_capture</span>: <span class="ident">flags</span>.<span class="ident">contains</span>(<span class="ident">WindowFlags::MOUSE_CAPTURE</span>),
+<span class="kw">impl </span>From&lt;WindowFlags&gt; <span class="kw">for </span>WindowState {
+    <span class="kw">fn </span>from(flags: WindowFlags) -&gt; <span class="self">Self </span>{
+        <span class="self">Self </span>{
+            format: flags.into(),
+            context_kind: flags.into(),
+            hidden: flags.contains(WindowFlags::HIDDEN),
+            borderless: flags.contains(WindowFlags::BORDERLESS),
+            resizable: flags.contains(WindowFlags::RESIZABLE),
+            input_grabbed: flags.contains(WindowFlags::INPUT_GRABBED),
+            on_focus: flags.contains(WindowFlags::INPUT_FOCUS),
+            on_mouse: flags.contains(WindowFlags::MOUSE_FOCUS),
+            foreign: flags.contains(WindowFlags::FOREIGN),
+            allow_high_dpi: flags.contains(WindowFlags::ALLOW_HIGHDPI),
+            mouse_capture: flags.contains(WindowFlags::MOUSE_CAPTURE),
         }
     }
 }
 </code></pre></div>
-</section></div></main><div id="rustdoc-vars" data-root-path="../../../../" data-current-crate="rich_sdl2_rust" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.64.0-nightly (0f4bcadb4 2022-07-30)" ></div></body></html>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../../../" data-current-crate="rich_sdl2_rust" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.66.0-nightly (5e9772042 2022-10-29)" ></div></body></html>

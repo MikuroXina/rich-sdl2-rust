@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/ttf/font/glyph.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>glyph.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../../storage.js"></script><script defer src="../../../../source-script.js"></script><script defer src="../../../../source-files.js"></script><script defer src="../../../../main.js"></script><noscript><link rel="stylesheet" href="../../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../../../rich_sdl2_rust/index.html"><div class="logo-container"><img class="rust-logo" src="../../../../rust-logo.svg" alt="logo"></div></a><h2 class="location"></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../../../rich_sdl2_rust/index.html"><div class="logo-container"><img class="rust-logo" src="../../../../rust-logo.svg" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../../../rich_sdl2_rust/index.html"><img class="rust-logo" src="../../../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/ttf/font/glyph.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>glyph.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" href="../../../../normalize.css"><link rel="stylesheet" href="../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" href="../../../../ayu.css" disabled><link rel="stylesheet" href="../../../../dark.css" disabled><link rel="stylesheet" href="../../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../../storage.js"></script><script defer src="../../../../source-script.js"></script><script defer src="../../../../source-files.js"></script><script defer src="../../../../main.js"></script><noscript><link rel="stylesheet" href="../../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><div class="width-limiter"><nav class="sub"><a class="sub-logo-container" href="../../../../rich_sdl2_rust/index.html"><img class="rust-logo" src="../../../../rust-logo.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../../wheel.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><pre class="src-line-numbers"><span id="1">1</span>
 <span id="2">2</span>
 <span id="3">3</span>
 <span id="4">4</span>
@@ -64,71 +64,71 @@
 <span id="64">64</span>
 <span id="65">65</span>
 <span id="66">66</span>
-</pre><pre class="rust"><code><span class="doccomment">//! Glyph metrics.</span>
+</pre><pre class="rust"><code><span class="doccomment">//! Glyph metrics.
 
-<span class="kw">use</span> <span class="ident">std::marker::PhantomData</span>;
+</span><span class="kw">use </span>std::marker::PhantomData;
 
-<span class="kw">use</span> <span class="ident"><span class="kw">super</span>::Font</span>;
-<span class="kw">use</span> <span class="kw">crate</span>::{
-    <span class="ident">bind</span>,
-    <span class="ident">geo</span>::{<span class="ident">Point</span>, <span class="ident">Rect</span>, <span class="ident">Size</span>},
+<span class="kw">use </span><span class="kw">super</span>::Font;
+<span class="kw">use crate</span>::{
+    bind,
+    geo::{Point, Rect, Size},
 };
 
-<span class="doccomment">/// A glyph in a font.</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Glyph</span><span class="op">&lt;</span><span class="lifetime">&#39;font</span><span class="op">&gt;</span> {
-    <span class="ident">rect</span>: <span class="ident">Rect</span>,
-    <span class="ident">advance</span>: <span class="ident">i32</span>,
-    <span class="ident">_phantom</span>: <span class="ident">PhantomData</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;font</span> <span class="ident">Font</span><span class="op">&lt;</span><span class="lifetime">&#39;font</span><span class="op">&gt;</span><span class="op">&gt;</span>,
+<span class="doccomment">/// A glyph in a font.
+</span><span class="kw">pub struct </span>Glyph&lt;<span class="lifetime">&#39;font</span>&gt; {
+    rect: Rect,
+    advance: i32,
+    _phantom: PhantomData&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;font </span>Font&lt;<span class="lifetime">&#39;font</span>&gt;&gt;,
 }
 
-<span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;font</span><span class="op">&gt;</span> <span class="ident">Glyph</span><span class="op">&lt;</span><span class="lifetime">&#39;font</span><span class="op">&gt;</span> {
-    <span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">font</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;font</span> <span class="ident">Font</span><span class="op">&lt;</span><span class="lifetime">&#39;font</span><span class="op">&gt;</span>, <span class="ident">ch</span>: <span class="ident">char</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="ident">provided</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">bind::TTF_GlyphIsProvided32</span>(<span class="ident">font</span>.<span class="ident">ptr</span>.<span class="ident">as_ptr</span>(), <span class="ident">ch</span> <span class="kw">as</span> <span class="ident">u32</span>) <span class="op">!</span><span class="op">=</span> <span class="number">0</span> };
-        <span class="kw">if</span> <span class="op">!</span><span class="ident">provided</span> {
-            <span class="kw">return</span> <span class="prelude-val">None</span>;
+<span class="kw">impl</span>&lt;<span class="lifetime">&#39;font</span>&gt; Glyph&lt;<span class="lifetime">&#39;font</span>&gt; {
+    <span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn </span>new(font: <span class="kw-2">&amp;</span><span class="lifetime">&#39;font </span>Font&lt;<span class="lifetime">&#39;font</span>&gt;, ch: char) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="self">Self</span>&gt; {
+        <span class="kw">let </span>provided = <span class="kw">unsafe </span>{ bind::TTF_GlyphIsProvided32(font.ptr.as_ptr(), ch <span class="kw">as </span>u32) != <span class="number">0 </span>};
+        <span class="kw">if </span>!provided {
+            <span class="kw">return </span><span class="prelude-val">None</span>;
         }
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">min_x</span> <span class="op">=</span> <span class="number">0</span>;
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">max_x</span> <span class="op">=</span> <span class="number">0</span>;
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">min_y</span> <span class="op">=</span> <span class="number">0</span>;
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">max_y</span> <span class="op">=</span> <span class="number">0</span>;
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">advance</span> <span class="op">=</span> <span class="number">0</span>;
-        <span class="kw">let</span> <span class="ident">ret</span> <span class="op">=</span> <span class="kw">unsafe</span> {
-            <span class="ident">bind::TTF_GlyphMetrics32</span>(
-                <span class="ident">font</span>.<span class="ident">ptr</span>.<span class="ident">as_ptr</span>(),
-                <span class="ident">ch</span> <span class="kw">as</span> <span class="ident">u32</span>,
-                <span class="kw-2">&amp;mut</span> <span class="ident">min_x</span> <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="kw">_</span>,
-                <span class="kw-2">&amp;mut</span> <span class="ident">max_x</span> <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="kw">_</span>,
-                <span class="kw-2">&amp;mut</span> <span class="ident">min_y</span> <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="kw">_</span>,
-                <span class="kw-2">&amp;mut</span> <span class="ident">max_y</span> <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="kw">_</span>,
-                <span class="kw-2">&amp;mut</span> <span class="ident">advance</span> <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="kw">_</span>,
+        <span class="kw">let </span><span class="kw-2">mut </span>min_x = <span class="number">0</span>;
+        <span class="kw">let </span><span class="kw-2">mut </span>max_x = <span class="number">0</span>;
+        <span class="kw">let </span><span class="kw-2">mut </span>min_y = <span class="number">0</span>;
+        <span class="kw">let </span><span class="kw-2">mut </span>max_y = <span class="number">0</span>;
+        <span class="kw">let </span><span class="kw-2">mut </span>advance = <span class="number">0</span>;
+        <span class="kw">let </span>ret = <span class="kw">unsafe </span>{
+            bind::TTF_GlyphMetrics32(
+                font.ptr.as_ptr(),
+                ch <span class="kw">as </span>u32,
+                <span class="kw-2">&amp;mut </span>min_x <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
+                <span class="kw-2">&amp;mut </span>max_x <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
+                <span class="kw-2">&amp;mut </span>min_y <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
+                <span class="kw-2">&amp;mut </span>max_y <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
+                <span class="kw-2">&amp;mut </span>advance <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
             )
         };
-        <span class="kw">if</span> <span class="ident">ret</span> <span class="op">!</span><span class="op">=</span> <span class="number">0</span> {
-            <span class="kw">return</span> <span class="prelude-val">None</span>;
+        <span class="kw">if </span>ret != <span class="number">0 </span>{
+            <span class="kw">return </span><span class="prelude-val">None</span>;
         }
-        <span class="kw">let</span> <span class="ident">rect</span> <span class="op">=</span> <span class="ident">Rect</span> {
-            <span class="ident">up_left</span>: <span class="ident">Point</span> { <span class="ident">x</span>: <span class="ident">min_x</span>, <span class="ident">y</span>: <span class="ident">max_y</span> },
-            <span class="ident">size</span>: <span class="ident">Size</span> {
-                <span class="ident">width</span>: (<span class="ident">max_x</span> <span class="op">-</span> <span class="ident">min_x</span>) <span class="kw">as</span> <span class="ident">u32</span>,
-                <span class="ident">height</span>: (<span class="ident">max_y</span> <span class="op">-</span> <span class="ident">min_y</span>) <span class="kw">as</span> <span class="ident">u32</span>,
+        <span class="kw">let </span>rect = Rect {
+            up_left: Point { x: min_x, y: max_y },
+            size: Size {
+                width: (max_x - min_x) <span class="kw">as </span>u32,
+                height: (max_y - min_y) <span class="kw">as </span>u32,
             },
         };
-        <span class="prelude-val">Some</span>(<span class="self">Self</span> {
-            <span class="ident">rect</span>,
-            <span class="ident">advance</span>,
-            <span class="ident">_phantom</span>: <span class="ident">PhantomData</span>,
+        <span class="prelude-val">Some</span>(<span class="self">Self </span>{
+            rect,
+            advance,
+            _phantom: PhantomData,
         })
     }
 
-    <span class="doccomment">/// Returns the geometry box of the glyph.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">rect</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">Rect</span> {
-        <span class="self">self</span>.<span class="ident">rect</span>
+    <span class="doccomment">/// Returns the geometry box of the glyph.
+    </span><span class="kw">pub fn </span>rect(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; Rect {
+        <span class="self">self</span>.rect
     }
 
-    <span class="doccomment">/// Returns the advance, the offset to the next character in pixels.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">advance</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">i32</span> {
-        <span class="self">self</span>.<span class="ident">advance</span>
+    <span class="doccomment">/// Returns the advance, the offset to the next character in pixels.
+    </span><span class="kw">pub fn </span>advance(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; i32 {
+        <span class="self">self</span>.advance
     }
 }
 </code></pre></div>
-</section></div></main><div id="rustdoc-vars" data-root-path="../../../../" data-current-crate="rich_sdl2_rust" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.64.0-nightly (0f4bcadb4 2022-07-30)" ></div></body></html>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../../../" data-current-crate="rich_sdl2_rust" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.66.0-nightly (5e9772042 2022-10-29)" ></div></body></html>

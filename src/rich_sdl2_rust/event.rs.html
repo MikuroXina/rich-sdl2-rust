@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/event.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>event.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../storage.js"></script><script defer src="../../source-script.js"></script><script defer src="../../source-files.js"></script><script defer src="../../main.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../rich_sdl2_rust/index.html"><div class="logo-container"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></div></a><h2 class="location"></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../rich_sdl2_rust/index.html"><div class="logo-container"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../rich_sdl2_rust/index.html"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/event.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>event.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" href="../../normalize.css"><link rel="stylesheet" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" href="../../ayu.css" disabled><link rel="stylesheet" href="../../dark.css" disabled><link rel="stylesheet" href="../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../storage.js"></script><script defer src="../../source-script.js"></script><script defer src="../../source-files.js"></script><script defer src="../../main.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><div class="width-limiter"><nav class="sub"><a class="sub-logo-container" href="../../rich_sdl2_rust/index.html"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../wheel.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><pre class="src-line-numbers"><span id="1">1</span>
 <span id="2">2</span>
 <span id="3">3</span>
 <span id="4">4</span>
@@ -273,280 +273,280 @@
 <span id="273">273</span>
 <span id="274">274</span>
 <span id="275">275</span>
-</pre><pre class="rust"><code><span class="doccomment">//! SDL2 event system and handlers.</span>
-<span class="doccomment">//!</span>
-<span class="doccomment">//! Most event structures are defined in these sub modules, but [`crate::audio::event::AudioDeviceEvent`] is defined in the external module.</span>
+</pre><pre class="rust"><code><span class="doccomment">//! SDL2 event system and handlers.
+//!
+//! Most event structures are defined in these sub modules, but [`crate::audio::event::AudioDeviceEvent`] is defined in the external module.
 
-<span class="kw">use</span> <span class="ident">static_assertions::assert_not_impl_all</span>;
-<span class="kw">use</span> <span class="ident">std::marker::PhantomData</span>;
+</span><span class="kw">use </span>static_assertions::assert_not_impl_all;
+<span class="kw">use </span>std::marker::PhantomData;
 
-<span class="kw">use</span> <span class="self">self</span>::{
-    <span class="ident">app::QuitEvent</span>,
-    <span class="ident">drop::DropEvent</span>,
-    <span class="ident">game_controller::event::ControllerEvent</span>,
-    <span class="ident">joystick::event::JoystickEvent</span>,
-    <span class="ident">keyboard::KeyboardEvent</span>,
-    <span class="ident">mouse</span>::{<span class="ident">MouseButtonEvent</span>, <span class="ident">MouseEvent</span>, <span class="ident">MouseMotionEvent</span>, <span class="ident">MouseWheelEvent</span>},
-    <span class="ident">text</span>::{<span class="ident">TextEditingEvent</span>, <span class="ident">TextInputEvent</span>},
-    <span class="ident">touch::gesture::GestureEvent</span>,
-    <span class="ident">window::WindowEvent</span>,
+<span class="kw">use </span><span class="self">self</span>::{
+    app::QuitEvent,
+    drop::DropEvent,
+    game_controller::event::ControllerEvent,
+    joystick::event::JoystickEvent,
+    keyboard::KeyboardEvent,
+    mouse::{MouseButtonEvent, MouseEvent, MouseMotionEvent, MouseWheelEvent},
+    text::{TextEditingEvent, TextInputEvent},
+    touch::gesture::GestureEvent,
+    window::WindowEvent,
 };
 
-<span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">audio::event::AudioDeviceEvent</span>, <span class="ident">bind</span>, <span class="ident">EnumInt</span>, <span class="ident">Sdl</span>, <span class="ident">Video</span>};
+<span class="kw">use crate</span>::{audio::event::AudioDeviceEvent, bind, EnumInt, Sdl, Video};
 
-<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">app</span>;
-<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">drop</span>;
-<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">game_controller</span>;
-<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">joystick</span>;
-<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">keyboard</span>;
-<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">mouse</span>;
-<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">sensor</span>;
-<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">text</span>;
-<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">touch</span>;
-<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">window</span>;
+<span class="kw">pub mod </span>app;
+<span class="kw">pub mod </span>drop;
+<span class="kw">pub mod </span>game_controller;
+<span class="kw">pub mod </span>joystick;
+<span class="kw">pub mod </span>keyboard;
+<span class="kw">pub mod </span>mouse;
+<span class="kw">pub mod </span>sensor;
+<span class="kw">pub mod </span>text;
+<span class="kw">pub mod </span>touch;
+<span class="kw">pub mod </span>window;
 
-<span class="doccomment">/// An event handler to receive some event structure,</span>
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">EventHandler</span><span class="op">&lt;</span><span class="lifetime">&#39;video</span>, <span class="ident">T</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">Box</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">Fn</span>(<span class="kw-2">&amp;</span><span class="ident">T</span>) <span class="op">+</span> <span class="lifetime">&#39;video</span><span class="op">&gt;</span>;
+<span class="doccomment">/// An event handler to receive some event structure,
+</span><span class="kw">pub type </span>EventHandler&lt;<span class="lifetime">&#39;video</span>, T&gt; = Box&lt;<span class="kw">dyn </span>Fn(<span class="kw-2">&amp;</span>T) + <span class="lifetime">&#39;video</span>&gt;;
 
-<span class="kw">struct</span> <span class="ident">EventHandlers</span><span class="op">&lt;</span><span class="lifetime">&#39;video</span>, <span class="ident">T</span><span class="op">&gt;</span>(<span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">EventHandler</span><span class="op">&lt;</span><span class="lifetime">&#39;video</span>, <span class="ident">T</span><span class="op">&gt;</span><span class="op">&gt;</span>);
+<span class="kw">struct </span>EventHandlers&lt;<span class="lifetime">&#39;video</span>, T&gt;(Vec&lt;EventHandler&lt;<span class="lifetime">&#39;video</span>, T&gt;&gt;);
 
-<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> <span class="ident">Default</span> <span class="kw">for</span> <span class="ident">EventHandlers</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span>, <span class="ident">T</span><span class="op">&gt;</span> {
-    <span class="kw">fn</span> <span class="ident">default</span>() -&gt; <span class="self">Self</span> {
+<span class="kw">impl</span>&lt;T&gt; Default <span class="kw">for </span>EventHandlers&lt;<span class="lifetime">&#39;_</span>, T&gt; {
+    <span class="kw">fn </span>default() -&gt; <span class="self">Self </span>{
         <span class="self">Self</span>(<span class="macro">vec!</span>[])
     }
 }
 
-<span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;video</span>, <span class="ident">T</span><span class="op">&gt;</span> <span class="ident">EventHandlers</span><span class="op">&lt;</span><span class="lifetime">&#39;video</span>, <span class="ident">T</span><span class="op">&gt;</span> {
-    <span class="kw">fn</span> <span class="ident">push</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">handler</span>: <span class="ident">EventHandler</span><span class="op">&lt;</span><span class="lifetime">&#39;video</span>, <span class="ident">T</span><span class="op">&gt;</span>) {
-        <span class="self">self</span>.<span class="number">0</span>.<span class="ident">push</span>(<span class="ident">handler</span>);
+<span class="kw">impl</span>&lt;<span class="lifetime">&#39;video</span>, T&gt; EventHandlers&lt;<span class="lifetime">&#39;video</span>, T&gt; {
+    <span class="kw">fn </span>push(<span class="kw-2">&amp;mut </span><span class="self">self</span>, handler: EventHandler&lt;<span class="lifetime">&#39;video</span>, T&gt;) {
+        <span class="self">self</span>.<span class="number">0</span>.push(handler);
     }
 
-    <span class="kw">fn</span> <span class="ident">call_handlers</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">event</span>: <span class="kw-2">&amp;</span><span class="ident">T</span>) {
-        <span class="self">self</span>.<span class="number">0</span>.<span class="ident">iter</span>().<span class="ident">for_each</span>(<span class="op">|</span><span class="ident">handler</span><span class="op">|</span> <span class="ident">handler</span>(<span class="ident">event</span>));
+    <span class="kw">fn </span>call_handlers(<span class="kw-2">&amp;</span><span class="self">self</span>, event: <span class="kw-2">&amp;</span>T) {
+        <span class="self">self</span>.<span class="number">0</span>.iter().for_each(|handler| handler(event));
     }
 }
 
-<span class="doccomment">/// It takes the closure of handler to register, and delivers events to your event handlers by polling.</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">EventBox</span><span class="op">&lt;</span><span class="lifetime">&#39;video</span><span class="op">&gt;</span> {
-    <span class="ident">quit_event_handlers</span>: <span class="ident">EventHandlers</span><span class="op">&lt;</span><span class="lifetime">&#39;video</span>, <span class="ident">QuitEvent</span><span class="op">&gt;</span>,
-    <span class="ident">window_event_handlers</span>: <span class="ident">EventHandlers</span><span class="op">&lt;</span><span class="lifetime">&#39;video</span>, <span class="ident">WindowEvent</span><span class="op">&gt;</span>,
-    <span class="ident">keyboard_event_handlers</span>: <span class="ident">EventHandlers</span><span class="op">&lt;</span><span class="lifetime">&#39;video</span>, <span class="ident">KeyboardEvent</span><span class="op">&gt;</span>,
-    <span class="ident">input_event_handlers</span>: <span class="ident">EventHandlers</span><span class="op">&lt;</span><span class="lifetime">&#39;video</span>, <span class="ident">TextInputEvent</span><span class="op">&gt;</span>,
-    <span class="ident">editing_event_handlers</span>: <span class="ident">EventHandlers</span><span class="op">&lt;</span><span class="lifetime">&#39;video</span>, <span class="ident">TextEditingEvent</span><span class="op">&gt;</span>,
-    <span class="ident">mouse_event_handlers</span>: <span class="ident">EventHandlers</span><span class="op">&lt;</span><span class="lifetime">&#39;video</span>, <span class="ident">MouseEvent</span><span class="op">&gt;</span>,
-    <span class="ident">controller_event_handlers</span>: <span class="ident">EventHandlers</span><span class="op">&lt;</span><span class="lifetime">&#39;video</span>, <span class="ident">ControllerEvent</span><span class="op">&lt;</span><span class="lifetime">&#39;video</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-    <span class="ident">joystick_event_handlers</span>: <span class="ident">EventHandlers</span><span class="op">&lt;</span><span class="lifetime">&#39;video</span>, <span class="ident">JoystickEvent</span><span class="op">&lt;</span><span class="lifetime">&#39;video</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-    <span class="ident">audio_device_event_handlers</span>: <span class="ident">EventHandlers</span><span class="op">&lt;</span><span class="lifetime">&#39;video</span>, <span class="ident">AudioDeviceEvent</span><span class="op">&gt;</span>,
-    <span class="ident">drop_event_handlers</span>: <span class="ident">EventHandlers</span><span class="op">&lt;</span><span class="lifetime">&#39;video</span>, <span class="ident">DropEvent</span><span class="op">&gt;</span>,
-    <span class="ident">gesture_event_handlers</span>: <span class="ident">EventHandlers</span><span class="op">&lt;</span><span class="lifetime">&#39;video</span>, <span class="ident">GestureEvent</span><span class="op">&gt;</span>,
-    <span class="ident">_phantom</span>: <span class="ident">PhantomData</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;video</span> ()<span class="op">&gt;</span>,
+<span class="doccomment">/// It takes the closure of handler to register, and delivers events to your event handlers by polling.
+</span><span class="kw">pub struct </span>EventBox&lt;<span class="lifetime">&#39;video</span>&gt; {
+    quit_event_handlers: EventHandlers&lt;<span class="lifetime">&#39;video</span>, QuitEvent&gt;,
+    window_event_handlers: EventHandlers&lt;<span class="lifetime">&#39;video</span>, WindowEvent&gt;,
+    keyboard_event_handlers: EventHandlers&lt;<span class="lifetime">&#39;video</span>, KeyboardEvent&gt;,
+    input_event_handlers: EventHandlers&lt;<span class="lifetime">&#39;video</span>, TextInputEvent&gt;,
+    editing_event_handlers: EventHandlers&lt;<span class="lifetime">&#39;video</span>, TextEditingEvent&gt;,
+    mouse_event_handlers: EventHandlers&lt;<span class="lifetime">&#39;video</span>, MouseEvent&gt;,
+    controller_event_handlers: EventHandlers&lt;<span class="lifetime">&#39;video</span>, ControllerEvent&lt;<span class="lifetime">&#39;video</span>&gt;&gt;,
+    joystick_event_handlers: EventHandlers&lt;<span class="lifetime">&#39;video</span>, JoystickEvent&lt;<span class="lifetime">&#39;video</span>&gt;&gt;,
+    audio_device_event_handlers: EventHandlers&lt;<span class="lifetime">&#39;video</span>, AudioDeviceEvent&gt;,
+    drop_event_handlers: EventHandlers&lt;<span class="lifetime">&#39;video</span>, DropEvent&gt;,
+    gesture_event_handlers: EventHandlers&lt;<span class="lifetime">&#39;video</span>, GestureEvent&gt;,
+    _phantom: PhantomData&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;video </span>()&gt;,
 }
 
-<span class="macro">assert_not_impl_all!</span>(<span class="ident">EventBox</span>: <span class="ident">Send</span>, <span class="ident">Sync</span>);
+<span class="macro">assert_not_impl_all!</span>(EventBox: Send, Sync);
 
-<span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;video</span><span class="op">&gt;</span> <span class="ident">EventBox</span><span class="op">&lt;</span><span class="lifetime">&#39;video</span><span class="op">&gt;</span> {
-    <span class="doccomment">/// Constructs an event box from the video system.</span>
-    <span class="attribute">#[<span class="ident">must_use</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="kw">_</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;video</span> <span class="ident">Video</span>) -&gt; <span class="self">Self</span> {
-        <span class="kw">let</span> <span class="ident">ret</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">bind::SDL_InitSubSystem</span>(<span class="ident">bind::SDL_INIT_EVENTS</span>) };
-        <span class="kw">if</span> <span class="ident">ret</span> <span class="op">!</span><span class="op">=</span> <span class="number">0</span> {
-            <span class="ident">Sdl::error_then_panic</span>(<span class="string">&quot;Sdl event&quot;</span>)
+<span class="kw">impl</span>&lt;<span class="lifetime">&#39;video</span>&gt; EventBox&lt;<span class="lifetime">&#39;video</span>&gt; {
+    <span class="doccomment">/// Constructs an event box from the video system.
+    </span><span class="attribute">#[must_use]
+    </span><span class="kw">pub fn </span>new(<span class="kw">_</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;video </span>Video) -&gt; <span class="self">Self </span>{
+        <span class="kw">let </span>ret = <span class="kw">unsafe </span>{ bind::SDL_InitSubSystem(bind::SDL_INIT_EVENTS) };
+        <span class="kw">if </span>ret != <span class="number">0 </span>{
+            Sdl::error_then_panic(<span class="string">&quot;Sdl event&quot;</span>)
         }
-        <span class="self">Self</span> {
-            <span class="ident">quit_event_handlers</span>: <span class="ident">EventHandlers::default</span>(),
-            <span class="ident">window_event_handlers</span>: <span class="ident">EventHandlers::default</span>(),
-            <span class="ident">keyboard_event_handlers</span>: <span class="ident">EventHandlers::default</span>(),
-            <span class="ident">input_event_handlers</span>: <span class="ident">EventHandlers::default</span>(),
-            <span class="ident">editing_event_handlers</span>: <span class="ident">EventHandlers::default</span>(),
-            <span class="ident">mouse_event_handlers</span>: <span class="ident">EventHandlers::default</span>(),
-            <span class="ident">controller_event_handlers</span>: <span class="ident">EventHandlers::default</span>(),
-            <span class="ident">joystick_event_handlers</span>: <span class="ident">EventHandlers::default</span>(),
-            <span class="ident">audio_device_event_handlers</span>: <span class="ident">EventHandlers::default</span>(),
-            <span class="ident">drop_event_handlers</span>: <span class="ident">EventHandlers::default</span>(),
-            <span class="ident">gesture_event_handlers</span>: <span class="ident">EventHandlers::default</span>(),
-            <span class="ident">_phantom</span>: <span class="ident">PhantomData</span>,
-        }
-    }
-
-    <span class="doccomment">/// Registers the handler to handle [`QuitEvent`].</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">handle_quit</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">handler</span>: <span class="ident">EventHandler</span><span class="op">&lt;</span><span class="lifetime">&#39;video</span>, <span class="ident">QuitEvent</span><span class="op">&gt;</span>) {
-        <span class="self">self</span>.<span class="ident">quit_event_handlers</span>.<span class="ident">push</span>(<span class="ident">handler</span>);
-    }
-
-    <span class="doccomment">/// Registers the handler to handle [`WindowEvent`].</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">handle_window</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">handler</span>: <span class="ident">EventHandler</span><span class="op">&lt;</span><span class="lifetime">&#39;video</span>, <span class="ident">WindowEvent</span><span class="op">&gt;</span>) {
-        <span class="self">self</span>.<span class="ident">window_event_handlers</span>.<span class="ident">push</span>(<span class="ident">handler</span>);
-    }
-
-    <span class="doccomment">/// Registers the handler to handle [`KeyboardEvent`].</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">handle_keyboard</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">handler</span>: <span class="ident">EventHandler</span><span class="op">&lt;</span><span class="lifetime">&#39;video</span>, <span class="ident">KeyboardEvent</span><span class="op">&gt;</span>) {
-        <span class="self">self</span>.<span class="ident">keyboard_event_handlers</span>.<span class="ident">push</span>(<span class="ident">handler</span>);
-    }
-
-    <span class="doccomment">/// Registers the handler to handle [`TextInputEvent`].</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">handle_input</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">handler</span>: <span class="ident">EventHandler</span><span class="op">&lt;</span><span class="lifetime">&#39;video</span>, <span class="ident">TextInputEvent</span><span class="op">&gt;</span>) {
-        <span class="self">self</span>.<span class="ident">input_event_handlers</span>.<span class="ident">push</span>(<span class="ident">handler</span>);
-    }
-
-    <span class="doccomment">/// Registers the handler to handle [`TextEditingEvent`].</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">handle_editing</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">handler</span>: <span class="ident">EventHandler</span><span class="op">&lt;</span><span class="lifetime">&#39;video</span>, <span class="ident">TextEditingEvent</span><span class="op">&gt;</span>) {
-        <span class="self">self</span>.<span class="ident">editing_event_handlers</span>.<span class="ident">push</span>(<span class="ident">handler</span>);
-    }
-
-    <span class="doccomment">/// Registers the handler to handle [`MouseEvent`].</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">handle_mouse</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">handler</span>: <span class="ident">EventHandler</span><span class="op">&lt;</span><span class="lifetime">&#39;video</span>, <span class="ident">MouseEvent</span><span class="op">&gt;</span>) {
-        <span class="self">self</span>.<span class="ident">mouse_event_handlers</span>.<span class="ident">push</span>(<span class="ident">handler</span>);
-    }
-
-    <span class="doccomment">/// Registers the handler to handle [`ControllerEvent`].</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">handle_controller</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">handler</span>: <span class="ident">EventHandler</span><span class="op">&lt;</span><span class="lifetime">&#39;video</span>, <span class="ident">ControllerEvent</span><span class="op">&lt;</span><span class="lifetime">&#39;video</span><span class="op">&gt;</span><span class="op">&gt;</span>) {
-        <span class="self">self</span>.<span class="ident">controller_event_handlers</span>.<span class="ident">push</span>(<span class="ident">handler</span>);
-    }
-
-    <span class="doccomment">/// Registers the handler to handle [`JoystickEvent`].</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">handle_joystick</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">handler</span>: <span class="ident">EventHandler</span><span class="op">&lt;</span><span class="lifetime">&#39;video</span>, <span class="ident">JoystickEvent</span><span class="op">&lt;</span><span class="lifetime">&#39;video</span><span class="op">&gt;</span><span class="op">&gt;</span>) {
-        <span class="self">self</span>.<span class="ident">joystick_event_handlers</span>.<span class="ident">push</span>(<span class="ident">handler</span>);
-    }
-
-    <span class="doccomment">/// Registers the handler to handle [`AudioDeviceEvent`].</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">handle_audio_device</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">handler</span>: <span class="ident">EventHandler</span><span class="op">&lt;</span><span class="lifetime">&#39;video</span>, <span class="ident">AudioDeviceEvent</span><span class="op">&gt;</span>) {
-        <span class="self">self</span>.<span class="ident">audio_device_event_handlers</span>.<span class="ident">push</span>(<span class="ident">handler</span>);
-    }
-
-    <span class="doccomment">/// Registers the handler to handle [`DropEvent`].</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">handle_drop</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">handler</span>: <span class="ident">EventHandler</span><span class="op">&lt;</span><span class="lifetime">&#39;video</span>, <span class="ident">DropEvent</span><span class="op">&gt;</span>) {
-        <span class="self">self</span>.<span class="ident">drop_event_handlers</span>.<span class="ident">push</span>(<span class="ident">handler</span>);
-    }
-
-    <span class="doccomment">/// Registers the handler to handle [`GestureEvent`].</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">handle_gesture</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">handler</span>: <span class="ident">EventHandler</span><span class="op">&lt;</span><span class="lifetime">&#39;video</span>, <span class="ident">GestureEvent</span><span class="op">&gt;</span>) {
-        <span class="self">self</span>.<span class="ident">gesture_event_handlers</span>.<span class="ident">push</span>(<span class="ident">handler</span>);
-    }
-
-    <span class="kw">fn</span> <span class="ident">handle_event</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">event</span>: <span class="ident">bind::SDL_Event</span>) {
-        <span class="kw">let</span> <span class="ident">ty</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">event</span>.<span class="ident">type_</span> };
-        <span class="kw">match</span> <span class="ident">ty</span> <span class="kw">as</span> <span class="ident">EnumInt</span> {
-            <span class="ident">bind::SDL_QUIT</span> =&gt; {
-                <span class="kw">let</span> <span class="ident">quit</span>: <span class="ident">QuitEvent</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">event</span>.<span class="ident">quit</span> }.<span class="ident">into</span>();
-                <span class="self">self</span>.<span class="ident">quit_event_handlers</span>.<span class="ident">call_handlers</span>(<span class="kw-2">&amp;</span><span class="ident">quit</span>);
-            }
-            <span class="ident">bind::SDL_WINDOWEVENT</span> =&gt; {
-                <span class="kw">let</span> <span class="ident">window</span>: <span class="ident">WindowEvent</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">event</span>.<span class="ident">window</span> }.<span class="ident">into</span>();
-                <span class="self">self</span>.<span class="ident">window_event_handlers</span>.<span class="ident">call_handlers</span>(<span class="kw-2">&amp;</span><span class="ident">window</span>);
-            }
-            <span class="ident">bind::SDL_KEYDOWN</span> <span class="op">|</span> <span class="ident">bind::SDL_KEYUP</span> =&gt; {
-                <span class="kw">let</span> <span class="ident">keyboard</span>: <span class="ident">KeyboardEvent</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">event</span>.<span class="ident">key</span> }.<span class="ident">into</span>();
-                <span class="self">self</span>.<span class="ident">keyboard_event_handlers</span>.<span class="ident">call_handlers</span>(<span class="kw-2">&amp;</span><span class="ident">keyboard</span>);
-            }
-            <span class="ident">bind::SDL_TEXTINPUT</span> =&gt; {
-                <span class="kw">let</span> <span class="ident">input</span>: <span class="ident">TextInputEvent</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">event</span>.<span class="ident">text</span> }.<span class="ident">into</span>();
-                <span class="self">self</span>.<span class="ident">input_event_handlers</span>.<span class="ident">call_handlers</span>(<span class="kw-2">&amp;</span><span class="ident">input</span>);
-            }
-            <span class="ident">bind::SDL_TEXTEDITING</span> =&gt; {
-                <span class="kw">let</span> <span class="ident">editing</span>: <span class="ident">TextEditingEvent</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">event</span>.<span class="ident">edit</span> }.<span class="ident">into</span>();
-                <span class="self">self</span>.<span class="ident">editing_event_handlers</span>.<span class="ident">call_handlers</span>(<span class="kw-2">&amp;</span><span class="ident">editing</span>);
-            }
-            <span class="ident">bind::SDL_MOUSEMOTION</span> =&gt; {
-                <span class="kw">let</span> <span class="ident">motion</span>: <span class="ident">MouseMotionEvent</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">event</span>.<span class="ident">motion</span> }.<span class="ident">into</span>();
-                <span class="kw">let</span> <span class="ident">mouse</span> <span class="op">=</span> <span class="ident">MouseEvent::Motion</span>(<span class="ident">motion</span>);
-                <span class="self">self</span>.<span class="ident">mouse_event_handlers</span>.<span class="ident">call_handlers</span>(<span class="kw-2">&amp;</span><span class="ident">mouse</span>);
-            }
-            <span class="ident">bind::SDL_MOUSEBUTTONDOWN</span> <span class="op">|</span> <span class="ident">bind::SDL_MOUSEBUTTONUP</span> =&gt; {
-                <span class="kw">let</span> <span class="ident">button</span>: <span class="ident">MouseButtonEvent</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">event</span>.<span class="ident">button</span> }.<span class="ident">into</span>();
-                <span class="kw">let</span> <span class="ident">mouse</span> <span class="op">=</span> <span class="ident">MouseEvent::Button</span>(<span class="ident">button</span>);
-                <span class="self">self</span>.<span class="ident">mouse_event_handlers</span>.<span class="ident">call_handlers</span>(<span class="kw-2">&amp;</span><span class="ident">mouse</span>);
-            }
-            <span class="ident">bind::SDL_MOUSEWHEEL</span> =&gt; {
-                <span class="kw">let</span> <span class="ident">wheel</span>: <span class="ident">MouseWheelEvent</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">event</span>.<span class="ident">wheel</span> }.<span class="ident">into</span>();
-                <span class="kw">let</span> <span class="ident">mouse</span> <span class="op">=</span> <span class="ident">MouseEvent::Wheel</span>(<span class="ident">wheel</span>);
-                <span class="self">self</span>.<span class="ident">mouse_event_handlers</span>.<span class="ident">call_handlers</span>(<span class="kw-2">&amp;</span><span class="ident">mouse</span>);
-            }
-            <span class="ident">bind::SDL_CONTROLLERAXISMOTION</span> =&gt; {
-                <span class="kw">let</span> <span class="ident">con</span>: <span class="ident">ControllerEvent</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">event</span>.<span class="ident">caxis</span> }.<span class="ident">into</span>();
-                <span class="self">self</span>.<span class="ident">controller_event_handlers</span>.<span class="ident">call_handlers</span>(<span class="kw-2">&amp;</span><span class="ident">con</span>);
-            }
-            <span class="ident">bind::SDL_CONTROLLERBUTTONDOWN</span> <span class="op">|</span> <span class="ident">bind::SDL_CONTROLLERBUTTONUP</span> =&gt; {
-                <span class="kw">let</span> <span class="ident">con</span>: <span class="ident">ControllerEvent</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">event</span>.<span class="ident">cbutton</span> }.<span class="ident">into</span>();
-                <span class="self">self</span>.<span class="ident">controller_event_handlers</span>.<span class="ident">call_handlers</span>(<span class="kw-2">&amp;</span><span class="ident">con</span>);
-            }
-            <span class="ident">bind::SDL_CONTROLLERDEVICEADDED</span>
-            <span class="op">|</span> <span class="ident">bind::SDL_CONTROLLERDEVICEREMOVED</span>
-            <span class="op">|</span> <span class="ident">bind::SDL_CONTROLLERDEVICEREMAPPED</span> =&gt; {
-                <span class="kw">let</span> <span class="ident">con</span>: <span class="ident">ControllerEvent</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">event</span>.<span class="ident">cdevice</span> }.<span class="ident">into</span>();
-                <span class="self">self</span>.<span class="ident">controller_event_handlers</span>.<span class="ident">call_handlers</span>(<span class="kw-2">&amp;</span><span class="ident">con</span>);
-            }
-            <span class="ident">bind::SDL_JOYAXISMOTION</span> =&gt; {
-                <span class="kw">let</span> <span class="ident">joy</span>: <span class="ident">JoystickEvent</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">event</span>.<span class="ident">jaxis</span> }.<span class="ident">into</span>();
-                <span class="self">self</span>.<span class="ident">joystick_event_handlers</span>.<span class="ident">call_handlers</span>(<span class="kw-2">&amp;</span><span class="ident">joy</span>);
-            }
-            <span class="ident">bind::SDL_JOYBALLMOTION</span> =&gt; {
-                <span class="kw">let</span> <span class="ident">joy</span>: <span class="ident">JoystickEvent</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">event</span>.<span class="ident">jball</span> }.<span class="ident">into</span>();
-                <span class="self">self</span>.<span class="ident">joystick_event_handlers</span>.<span class="ident">call_handlers</span>(<span class="kw-2">&amp;</span><span class="ident">joy</span>);
-            }
-            <span class="ident">bind::SDL_JOYBUTTONDOWN</span> <span class="op">|</span> <span class="ident">bind::SDL_JOYBUTTONUP</span> =&gt; {
-                <span class="kw">let</span> <span class="ident">joy</span>: <span class="ident">JoystickEvent</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">event</span>.<span class="ident">jbutton</span> }.<span class="ident">into</span>();
-                <span class="self">self</span>.<span class="ident">joystick_event_handlers</span>.<span class="ident">call_handlers</span>(<span class="kw-2">&amp;</span><span class="ident">joy</span>);
-            }
-            <span class="ident">bind::SDL_JOYDEVICEADDED</span> <span class="op">|</span> <span class="ident">bind::SDL_JOYDEVICEREMOVED</span> =&gt; {
-                <span class="kw">let</span> <span class="ident">joy</span>: <span class="ident">JoystickEvent</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">event</span>.<span class="ident">jdevice</span> }.<span class="ident">into</span>();
-                <span class="self">self</span>.<span class="ident">joystick_event_handlers</span>.<span class="ident">call_handlers</span>(<span class="kw-2">&amp;</span><span class="ident">joy</span>);
-            }
-            <span class="ident">bind::SDL_JOYHATMOTION</span> =&gt; {
-                <span class="kw">let</span> <span class="ident">joy</span>: <span class="ident">JoystickEvent</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">event</span>.<span class="ident">jhat</span> }.<span class="ident">into</span>();
-                <span class="self">self</span>.<span class="ident">joystick_event_handlers</span>.<span class="ident">call_handlers</span>(<span class="kw-2">&amp;</span><span class="ident">joy</span>);
-            }
-            <span class="ident">bind::SDL_AUDIODEVICEADDED</span> <span class="op">|</span> <span class="ident">bind::SDL_AUDIODEVICEREMOVED</span> =&gt; {
-                <span class="kw">let</span> <span class="ident">audio</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">event</span>.<span class="ident">adevice</span> }.<span class="ident">into</span>();
-                <span class="self">self</span>.<span class="ident">audio_device_event_handlers</span>.<span class="ident">call_handlers</span>(<span class="kw-2">&amp;</span><span class="ident">audio</span>);
-            }
-            <span class="ident">bind::SDL_DROPFILE</span>
-            <span class="op">|</span> <span class="ident">bind::SDL_DROPTEXT</span>
-            <span class="op">|</span> <span class="ident">bind::SDL_DROPBEGIN</span>
-            <span class="op">|</span> <span class="ident">bind::SDL_DROPCOMPLETE</span> =&gt; {
-                <span class="kw">let</span> <span class="ident">drop</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">event</span>.<span class="ident">drop</span> }.<span class="ident">into</span>();
-                <span class="self">self</span>.<span class="ident">drop_event_handlers</span>.<span class="ident">call_handlers</span>(<span class="kw-2">&amp;</span><span class="ident">drop</span>);
-            }
-            <span class="ident">bind::SDL_MULTIGESTURE</span> =&gt; {
-                <span class="kw">let</span> <span class="ident">gesture</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">event</span>.<span class="ident">mgesture</span> }.<span class="ident">into</span>();
-                <span class="self">self</span>.<span class="ident">gesture_event_handlers</span>.<span class="ident">call_handlers</span>(<span class="kw-2">&amp;</span><span class="ident">gesture</span>);
-            }
-            <span class="ident">bind::SDL_DOLLARGESTURE</span> =&gt; {
-                <span class="kw">let</span> <span class="ident">gesture</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">event</span>.<span class="ident">dgesture</span> }.<span class="ident">into</span>();
-                <span class="self">self</span>.<span class="ident">gesture_event_handlers</span>.<span class="ident">call_handlers</span>(<span class="kw-2">&amp;</span><span class="ident">gesture</span>);
-            }
-            <span class="kw">_</span> =&gt; {}
+        <span class="self">Self </span>{
+            quit_event_handlers: EventHandlers::default(),
+            window_event_handlers: EventHandlers::default(),
+            keyboard_event_handlers: EventHandlers::default(),
+            input_event_handlers: EventHandlers::default(),
+            editing_event_handlers: EventHandlers::default(),
+            mouse_event_handlers: EventHandlers::default(),
+            controller_event_handlers: EventHandlers::default(),
+            joystick_event_handlers: EventHandlers::default(),
+            audio_device_event_handlers: EventHandlers::default(),
+            drop_event_handlers: EventHandlers::default(),
+            gesture_event_handlers: EventHandlers::default(),
+            _phantom: PhantomData,
         }
     }
 
-    <span class="doccomment">/// Polling the events and triggers the event handlers.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">poll</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) {
-        <span class="kw">use</span> <span class="ident">std::mem::MaybeUninit</span>;
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">event</span> <span class="op">=</span> <span class="ident">MaybeUninit::uninit</span>();
-        <span class="kw">let</span> <span class="ident">remaining_events</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">bind::SDL_PollEvent</span>(<span class="ident">event</span>.<span class="ident">as_mut_ptr</span>()) };
-        <span class="kw">let</span> <span class="ident">event</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">event</span>.<span class="ident">assume_init</span>() };
-        <span class="kw">if</span> <span class="ident">remaining_events</span> <span class="op">==</span> <span class="number">0</span> {
+    <span class="doccomment">/// Registers the handler to handle [`QuitEvent`].
+    </span><span class="kw">pub fn </span>handle_quit(<span class="kw-2">&amp;mut </span><span class="self">self</span>, handler: EventHandler&lt;<span class="lifetime">&#39;video</span>, QuitEvent&gt;) {
+        <span class="self">self</span>.quit_event_handlers.push(handler);
+    }
+
+    <span class="doccomment">/// Registers the handler to handle [`WindowEvent`].
+    </span><span class="kw">pub fn </span>handle_window(<span class="kw-2">&amp;mut </span><span class="self">self</span>, handler: EventHandler&lt;<span class="lifetime">&#39;video</span>, WindowEvent&gt;) {
+        <span class="self">self</span>.window_event_handlers.push(handler);
+    }
+
+    <span class="doccomment">/// Registers the handler to handle [`KeyboardEvent`].
+    </span><span class="kw">pub fn </span>handle_keyboard(<span class="kw-2">&amp;mut </span><span class="self">self</span>, handler: EventHandler&lt;<span class="lifetime">&#39;video</span>, KeyboardEvent&gt;) {
+        <span class="self">self</span>.keyboard_event_handlers.push(handler);
+    }
+
+    <span class="doccomment">/// Registers the handler to handle [`TextInputEvent`].
+    </span><span class="kw">pub fn </span>handle_input(<span class="kw-2">&amp;mut </span><span class="self">self</span>, handler: EventHandler&lt;<span class="lifetime">&#39;video</span>, TextInputEvent&gt;) {
+        <span class="self">self</span>.input_event_handlers.push(handler);
+    }
+
+    <span class="doccomment">/// Registers the handler to handle [`TextEditingEvent`].
+    </span><span class="kw">pub fn </span>handle_editing(<span class="kw-2">&amp;mut </span><span class="self">self</span>, handler: EventHandler&lt;<span class="lifetime">&#39;video</span>, TextEditingEvent&gt;) {
+        <span class="self">self</span>.editing_event_handlers.push(handler);
+    }
+
+    <span class="doccomment">/// Registers the handler to handle [`MouseEvent`].
+    </span><span class="kw">pub fn </span>handle_mouse(<span class="kw-2">&amp;mut </span><span class="self">self</span>, handler: EventHandler&lt;<span class="lifetime">&#39;video</span>, MouseEvent&gt;) {
+        <span class="self">self</span>.mouse_event_handlers.push(handler);
+    }
+
+    <span class="doccomment">/// Registers the handler to handle [`ControllerEvent`].
+    </span><span class="kw">pub fn </span>handle_controller(<span class="kw-2">&amp;mut </span><span class="self">self</span>, handler: EventHandler&lt;<span class="lifetime">&#39;video</span>, ControllerEvent&lt;<span class="lifetime">&#39;video</span>&gt;&gt;) {
+        <span class="self">self</span>.controller_event_handlers.push(handler);
+    }
+
+    <span class="doccomment">/// Registers the handler to handle [`JoystickEvent`].
+    </span><span class="kw">pub fn </span>handle_joystick(<span class="kw-2">&amp;mut </span><span class="self">self</span>, handler: EventHandler&lt;<span class="lifetime">&#39;video</span>, JoystickEvent&lt;<span class="lifetime">&#39;video</span>&gt;&gt;) {
+        <span class="self">self</span>.joystick_event_handlers.push(handler);
+    }
+
+    <span class="doccomment">/// Registers the handler to handle [`AudioDeviceEvent`].
+    </span><span class="kw">pub fn </span>handle_audio_device(<span class="kw-2">&amp;mut </span><span class="self">self</span>, handler: EventHandler&lt;<span class="lifetime">&#39;video</span>, AudioDeviceEvent&gt;) {
+        <span class="self">self</span>.audio_device_event_handlers.push(handler);
+    }
+
+    <span class="doccomment">/// Registers the handler to handle [`DropEvent`].
+    </span><span class="kw">pub fn </span>handle_drop(<span class="kw-2">&amp;mut </span><span class="self">self</span>, handler: EventHandler&lt;<span class="lifetime">&#39;video</span>, DropEvent&gt;) {
+        <span class="self">self</span>.drop_event_handlers.push(handler);
+    }
+
+    <span class="doccomment">/// Registers the handler to handle [`GestureEvent`].
+    </span><span class="kw">pub fn </span>handle_gesture(<span class="kw-2">&amp;mut </span><span class="self">self</span>, handler: EventHandler&lt;<span class="lifetime">&#39;video</span>, GestureEvent&gt;) {
+        <span class="self">self</span>.gesture_event_handlers.push(handler);
+    }
+
+    <span class="kw">fn </span>handle_event(<span class="kw-2">&amp;</span><span class="self">self</span>, event: bind::SDL_Event) {
+        <span class="kw">let </span>ty = <span class="kw">unsafe </span>{ event.type_ };
+        <span class="kw">match </span>ty <span class="kw">as </span>EnumInt {
+            bind::SDL_QUIT =&gt; {
+                <span class="kw">let </span>quit: QuitEvent = <span class="kw">unsafe </span>{ event.quit }.into();
+                <span class="self">self</span>.quit_event_handlers.call_handlers(<span class="kw-2">&amp;</span>quit);
+            }
+            bind::SDL_WINDOWEVENT =&gt; {
+                <span class="kw">let </span>window: WindowEvent = <span class="kw">unsafe </span>{ event.window }.into();
+                <span class="self">self</span>.window_event_handlers.call_handlers(<span class="kw-2">&amp;</span>window);
+            }
+            bind::SDL_KEYDOWN | bind::SDL_KEYUP =&gt; {
+                <span class="kw">let </span>keyboard: KeyboardEvent = <span class="kw">unsafe </span>{ event.key }.into();
+                <span class="self">self</span>.keyboard_event_handlers.call_handlers(<span class="kw-2">&amp;</span>keyboard);
+            }
+            bind::SDL_TEXTINPUT =&gt; {
+                <span class="kw">let </span>input: TextInputEvent = <span class="kw">unsafe </span>{ event.text }.into();
+                <span class="self">self</span>.input_event_handlers.call_handlers(<span class="kw-2">&amp;</span>input);
+            }
+            bind::SDL_TEXTEDITING =&gt; {
+                <span class="kw">let </span>editing: TextEditingEvent = <span class="kw">unsafe </span>{ event.edit }.into();
+                <span class="self">self</span>.editing_event_handlers.call_handlers(<span class="kw-2">&amp;</span>editing);
+            }
+            bind::SDL_MOUSEMOTION =&gt; {
+                <span class="kw">let </span>motion: MouseMotionEvent = <span class="kw">unsafe </span>{ event.motion }.into();
+                <span class="kw">let </span>mouse = MouseEvent::Motion(motion);
+                <span class="self">self</span>.mouse_event_handlers.call_handlers(<span class="kw-2">&amp;</span>mouse);
+            }
+            bind::SDL_MOUSEBUTTONDOWN | bind::SDL_MOUSEBUTTONUP =&gt; {
+                <span class="kw">let </span>button: MouseButtonEvent = <span class="kw">unsafe </span>{ event.button }.into();
+                <span class="kw">let </span>mouse = MouseEvent::Button(button);
+                <span class="self">self</span>.mouse_event_handlers.call_handlers(<span class="kw-2">&amp;</span>mouse);
+            }
+            bind::SDL_MOUSEWHEEL =&gt; {
+                <span class="kw">let </span>wheel: MouseWheelEvent = <span class="kw">unsafe </span>{ event.wheel }.into();
+                <span class="kw">let </span>mouse = MouseEvent::Wheel(wheel);
+                <span class="self">self</span>.mouse_event_handlers.call_handlers(<span class="kw-2">&amp;</span>mouse);
+            }
+            bind::SDL_CONTROLLERAXISMOTION =&gt; {
+                <span class="kw">let </span>con: ControllerEvent = <span class="kw">unsafe </span>{ event.caxis }.into();
+                <span class="self">self</span>.controller_event_handlers.call_handlers(<span class="kw-2">&amp;</span>con);
+            }
+            bind::SDL_CONTROLLERBUTTONDOWN | bind::SDL_CONTROLLERBUTTONUP =&gt; {
+                <span class="kw">let </span>con: ControllerEvent = <span class="kw">unsafe </span>{ event.cbutton }.into();
+                <span class="self">self</span>.controller_event_handlers.call_handlers(<span class="kw-2">&amp;</span>con);
+            }
+            bind::SDL_CONTROLLERDEVICEADDED
+            | bind::SDL_CONTROLLERDEVICEREMOVED
+            | bind::SDL_CONTROLLERDEVICEREMAPPED =&gt; {
+                <span class="kw">let </span>con: ControllerEvent = <span class="kw">unsafe </span>{ event.cdevice }.into();
+                <span class="self">self</span>.controller_event_handlers.call_handlers(<span class="kw-2">&amp;</span>con);
+            }
+            bind::SDL_JOYAXISMOTION =&gt; {
+                <span class="kw">let </span>joy: JoystickEvent = <span class="kw">unsafe </span>{ event.jaxis }.into();
+                <span class="self">self</span>.joystick_event_handlers.call_handlers(<span class="kw-2">&amp;</span>joy);
+            }
+            bind::SDL_JOYBALLMOTION =&gt; {
+                <span class="kw">let </span>joy: JoystickEvent = <span class="kw">unsafe </span>{ event.jball }.into();
+                <span class="self">self</span>.joystick_event_handlers.call_handlers(<span class="kw-2">&amp;</span>joy);
+            }
+            bind::SDL_JOYBUTTONDOWN | bind::SDL_JOYBUTTONUP =&gt; {
+                <span class="kw">let </span>joy: JoystickEvent = <span class="kw">unsafe </span>{ event.jbutton }.into();
+                <span class="self">self</span>.joystick_event_handlers.call_handlers(<span class="kw-2">&amp;</span>joy);
+            }
+            bind::SDL_JOYDEVICEADDED | bind::SDL_JOYDEVICEREMOVED =&gt; {
+                <span class="kw">let </span>joy: JoystickEvent = <span class="kw">unsafe </span>{ event.jdevice }.into();
+                <span class="self">self</span>.joystick_event_handlers.call_handlers(<span class="kw-2">&amp;</span>joy);
+            }
+            bind::SDL_JOYHATMOTION =&gt; {
+                <span class="kw">let </span>joy: JoystickEvent = <span class="kw">unsafe </span>{ event.jhat }.into();
+                <span class="self">self</span>.joystick_event_handlers.call_handlers(<span class="kw-2">&amp;</span>joy);
+            }
+            bind::SDL_AUDIODEVICEADDED | bind::SDL_AUDIODEVICEREMOVED =&gt; {
+                <span class="kw">let </span>audio = <span class="kw">unsafe </span>{ event.adevice }.into();
+                <span class="self">self</span>.audio_device_event_handlers.call_handlers(<span class="kw-2">&amp;</span>audio);
+            }
+            bind::SDL_DROPFILE
+            | bind::SDL_DROPTEXT
+            | bind::SDL_DROPBEGIN
+            | bind::SDL_DROPCOMPLETE =&gt; {
+                <span class="kw">let </span>drop = <span class="kw">unsafe </span>{ event.drop }.into();
+                <span class="self">self</span>.drop_event_handlers.call_handlers(<span class="kw-2">&amp;</span>drop);
+            }
+            bind::SDL_MULTIGESTURE =&gt; {
+                <span class="kw">let </span>gesture = <span class="kw">unsafe </span>{ event.mgesture }.into();
+                <span class="self">self</span>.gesture_event_handlers.call_handlers(<span class="kw-2">&amp;</span>gesture);
+            }
+            bind::SDL_DOLLARGESTURE =&gt; {
+                <span class="kw">let </span>gesture = <span class="kw">unsafe </span>{ event.dgesture }.into();
+                <span class="self">self</span>.gesture_event_handlers.call_handlers(<span class="kw-2">&amp;</span>gesture);
+            }
+            <span class="kw">_ </span>=&gt; {}
+        }
+    }
+
+    <span class="doccomment">/// Polling the events and triggers the event handlers.
+    </span><span class="kw">pub fn </span>poll(<span class="kw-2">&amp;</span><span class="self">self</span>) {
+        <span class="kw">use </span>std::mem::MaybeUninit;
+        <span class="kw">let </span><span class="kw-2">mut </span>event = MaybeUninit::uninit();
+        <span class="kw">let </span>remaining_events = <span class="kw">unsafe </span>{ bind::SDL_PollEvent(event.as_mut_ptr()) };
+        <span class="kw">let </span>event = <span class="kw">unsafe </span>{ event.assume_init() };
+        <span class="kw">if </span>remaining_events == <span class="number">0 </span>{
             <span class="kw">return</span>;
         }
-        <span class="self">self</span>.<span class="ident">handle_event</span>(<span class="ident">event</span>);
+        <span class="self">self</span>.handle_event(event);
     }
 
-    <span class="doccomment">/// Waits until the next event occurs, but unlock with timeout seconds.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">wait_next_event_with</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">timeout_ms</span>: <span class="ident">u32</span>) {
-        <span class="kw">use</span> <span class="ident">std::mem::MaybeUninit</span>;
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">event</span> <span class="op">=</span> <span class="ident">MaybeUninit::uninit</span>();
-        <span class="kw">let</span> <span class="ident">ret</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">bind::SDL_WaitEventTimeout</span>(<span class="ident">event</span>.<span class="ident">as_mut_ptr</span>(), <span class="ident">timeout_ms</span> <span class="kw">as</span> <span class="ident">i32</span>) };
-        <span class="kw">if</span> <span class="ident">ret</span> <span class="op">==</span> <span class="number">0</span> {
+    <span class="doccomment">/// Waits until the next event occurs, but unlock with timeout seconds.
+    </span><span class="kw">pub fn </span>wait_next_event_with(<span class="kw-2">&amp;</span><span class="self">self</span>, timeout_ms: u32) {
+        <span class="kw">use </span>std::mem::MaybeUninit;
+        <span class="kw">let </span><span class="kw-2">mut </span>event = MaybeUninit::uninit();
+        <span class="kw">let </span>ret = <span class="kw">unsafe </span>{ bind::SDL_WaitEventTimeout(event.as_mut_ptr(), timeout_ms <span class="kw">as </span>i32) };
+        <span class="kw">if </span>ret == <span class="number">0 </span>{
             <span class="kw">return</span>;
         }
-        <span class="kw">let</span> <span class="ident">event</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">event</span>.<span class="ident">assume_init</span>() };
-        <span class="self">self</span>.<span class="ident">handle_event</span>(<span class="ident">event</span>);
+        <span class="kw">let </span>event = <span class="kw">unsafe </span>{ event.assume_init() };
+        <span class="self">self</span>.handle_event(event);
     }
 }
 
-<span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;video</span><span class="op">&gt;</span> <span class="ident">Drop</span> <span class="kw">for</span> <span class="ident">EventBox</span><span class="op">&lt;</span><span class="lifetime">&#39;video</span><span class="op">&gt;</span> {
-    <span class="kw">fn</span> <span class="ident">drop</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) {
-        <span class="kw">unsafe</span> { <span class="ident">bind::SDL_QuitSubSystem</span>(<span class="ident">bind::SDL_INIT_EVENTS</span>) }
+<span class="kw">impl</span>&lt;<span class="lifetime">&#39;video</span>&gt; Drop <span class="kw">for </span>EventBox&lt;<span class="lifetime">&#39;video</span>&gt; {
+    <span class="kw">fn </span>drop(<span class="kw-2">&amp;mut </span><span class="self">self</span>) {
+        <span class="kw">unsafe </span>{ bind::SDL_QuitSubSystem(bind::SDL_INIT_EVENTS) }
     }
 }
 </code></pre></div>
-</section></div></main><div id="rustdoc-vars" data-root-path="../../" data-current-crate="rich_sdl2_rust" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.64.0-nightly (0f4bcadb4 2022-07-30)" ></div></body></html>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../" data-current-crate="rich_sdl2_rust" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.66.0-nightly (5e9772042 2022-10-29)" ></div></body></html>

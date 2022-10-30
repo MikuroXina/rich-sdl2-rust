@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/system.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>system.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../storage.js"></script><script defer src="../../source-script.js"></script><script defer src="../../source-files.js"></script><script defer src="../../main.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../rich_sdl2_rust/index.html"><div class="logo-container"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></div></a><h2 class="location"></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../rich_sdl2_rust/index.html"><div class="logo-container"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../rich_sdl2_rust/index.html"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/system.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>system.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" href="../../normalize.css"><link rel="stylesheet" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" href="../../ayu.css" disabled><link rel="stylesheet" href="../../dark.css" disabled><link rel="stylesheet" href="../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../storage.js"></script><script defer src="../../source-script.js"></script><script defer src="../../source-files.js"></script><script defer src="../../main.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><div class="width-limiter"><nav class="sub"><a class="sub-logo-container" href="../../rich_sdl2_rust/index.html"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../wheel.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><pre class="src-line-numbers"><span id="1">1</span>
 <span id="2">2</span>
 <span id="3">3</span>
 <span id="4">4</span>
@@ -103,110 +103,110 @@
 <span id="103">103</span>
 <span id="104">104</span>
 <span id="105">105</span>
-</pre><pre class="rust"><code><span class="doccomment">//! Querying some system information.</span>
+</pre><pre class="rust"><code><span class="doccomment">//! Querying some system information.
 
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::bind</span>;
+</span><span class="kw">use </span><span class="kw">crate</span>::bind;
 
-<span class="doccomment">/// Returns the size of the system RAM.</span>
-<span class="attribute">#[<span class="ident">must_use</span>]</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">ram_size</span>() -&gt; <span class="ident">usize</span> {
-    <span class="kw">unsafe</span> { <span class="ident">bind::SDL_GetSystemRAM</span>() <span class="kw">as</span> <span class="ident">usize</span> }
+<span class="doccomment">/// Returns the size of the system RAM.
+</span><span class="attribute">#[must_use]
+</span><span class="kw">pub fn </span>ram_size() -&gt; usize {
+    <span class="kw">unsafe </span>{ bind::SDL_GetSystemRAM() <span class="kw">as </span>usize }
 }
 
-<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">simd_alloc</span>;
+<span class="kw">pub mod </span>simd_alloc;
 
-<span class="doccomment">/// System CPU information.</span>
-<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">cpu</span> {
-    <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::bind</span>;
+<span class="doccomment">/// System CPU information.
+</span><span class="kw">pub mod </span>cpu {
+    <span class="kw">use </span><span class="kw">crate</span>::bind;
 
-    <span class="doccomment">/// Counts the system CPU.</span>
-    <span class="attribute">#[<span class="ident">must_use</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">count</span>() -&gt; <span class="ident">u32</span> {
-        <span class="kw">unsafe</span> { <span class="ident">bind::SDL_GetCPUCount</span>() <span class="kw">as</span> <span class="ident">u32</span> }
-    }
-
-    <span class="doccomment">/// Returns the cache line size of the system CPU.</span>
-    <span class="attribute">#[<span class="ident">must_use</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">cache_line_size</span>() -&gt; <span class="ident">usize</span> {
-        <span class="kw">unsafe</span> { <span class="ident">bind::SDL_GetCPUCacheLineSize</span>() <span class="kw">as</span> <span class="ident">usize</span> }
+    <span class="doccomment">/// Counts the system CPU.
+    </span><span class="attribute">#[must_use]
+    </span><span class="kw">pub fn </span>count() -&gt; u32 {
+        <span class="kw">unsafe </span>{ bind::SDL_GetCPUCount() <span class="kw">as </span>u32 }
     }
 
-    <span class="doccomment">/// Returns the SIMD alignment of the system CPU.</span>
-    <span class="attribute">#[<span class="ident">must_use</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">simd_alignment</span>() -&gt; <span class="ident">usize</span> {
-        <span class="kw">unsafe</span> { <span class="ident">bind::SDL_SIMDGetAlignment</span>() <span class="kw">as</span> <span class="ident">usize</span> }
+    <span class="doccomment">/// Returns the cache line size of the system CPU.
+    </span><span class="attribute">#[must_use]
+    </span><span class="kw">pub fn </span>cache_line_size() -&gt; usize {
+        <span class="kw">unsafe </span>{ bind::SDL_GetCPUCacheLineSize() <span class="kw">as </span>usize }
     }
 
-    <span class="doccomment">/// Returns whether the system CPU has RDTSC.</span>
-    <span class="attribute">#[<span class="ident">must_use</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">has_rdtsc</span>() -&gt; <span class="ident">bool</span> {
-        <span class="kw">unsafe</span> { <span class="ident">bind::SDL_HasRDTSC</span>() <span class="op">==</span> <span class="ident">bind::SDL_TRUE</span> }
+    <span class="doccomment">/// Returns the SIMD alignment of the system CPU.
+    </span><span class="attribute">#[must_use]
+    </span><span class="kw">pub fn </span>simd_alignment() -&gt; usize {
+        <span class="kw">unsafe </span>{ bind::SDL_SIMDGetAlignment() <span class="kw">as </span>usize }
     }
-    <span class="doccomment">/// Returns whether the system CPU has AltiVec.</span>
-    <span class="attribute">#[<span class="ident">must_use</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">has_alti_vec</span>() -&gt; <span class="ident">bool</span> {
-        <span class="kw">unsafe</span> { <span class="ident">bind::SDL_HasAltiVec</span>() <span class="op">==</span> <span class="ident">bind::SDL_TRUE</span> }
+
+    <span class="doccomment">/// Returns whether the system CPU has RDTSC.
+    </span><span class="attribute">#[must_use]
+    </span><span class="kw">pub fn </span>has_rdtsc() -&gt; bool {
+        <span class="kw">unsafe </span>{ bind::SDL_HasRDTSC() == bind::SDL_TRUE }
     }
-    <span class="doccomment">/// Returns whether the system CPU has MMX.</span>
-    <span class="attribute">#[<span class="ident">must_use</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">has_mmx</span>() -&gt; <span class="ident">bool</span> {
-        <span class="kw">unsafe</span> { <span class="ident">bind::SDL_HasMMX</span>() <span class="op">==</span> <span class="ident">bind::SDL_TRUE</span> }
+    <span class="doccomment">/// Returns whether the system CPU has AltiVec.
+    </span><span class="attribute">#[must_use]
+    </span><span class="kw">pub fn </span>has_alti_vec() -&gt; bool {
+        <span class="kw">unsafe </span>{ bind::SDL_HasAltiVec() == bind::SDL_TRUE }
     }
-    <span class="doccomment">/// Returns whether the system CPU has 3DNow!.</span>
-    <span class="attribute">#[<span class="ident">must_use</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">has_3d_now</span>() -&gt; <span class="ident">bool</span> {
-        <span class="kw">unsafe</span> { <span class="ident">bind::SDL_Has3DNow</span>() <span class="op">==</span> <span class="ident">bind::SDL_TRUE</span> }
+    <span class="doccomment">/// Returns whether the system CPU has MMX.
+    </span><span class="attribute">#[must_use]
+    </span><span class="kw">pub fn </span>has_mmx() -&gt; bool {
+        <span class="kw">unsafe </span>{ bind::SDL_HasMMX() == bind::SDL_TRUE }
     }
-    <span class="doccomment">/// Returns whether the system CPU has SSE.</span>
-    <span class="attribute">#[<span class="ident">must_use</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">has_sse</span>() -&gt; <span class="ident">bool</span> {
-        <span class="kw">unsafe</span> { <span class="ident">bind::SDL_HasSSE</span>() <span class="op">==</span> <span class="ident">bind::SDL_TRUE</span> }
+    <span class="doccomment">/// Returns whether the system CPU has 3DNow!.
+    </span><span class="attribute">#[must_use]
+    </span><span class="kw">pub fn </span>has_3d_now() -&gt; bool {
+        <span class="kw">unsafe </span>{ bind::SDL_Has3DNow() == bind::SDL_TRUE }
     }
-    <span class="doccomment">/// Returns whether the system CPU has SSE2.</span>
-    <span class="attribute">#[<span class="ident">must_use</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">has_sse2</span>() -&gt; <span class="ident">bool</span> {
-        <span class="kw">unsafe</span> { <span class="ident">bind::SDL_HasSSE2</span>() <span class="op">==</span> <span class="ident">bind::SDL_TRUE</span> }
+    <span class="doccomment">/// Returns whether the system CPU has SSE.
+    </span><span class="attribute">#[must_use]
+    </span><span class="kw">pub fn </span>has_sse() -&gt; bool {
+        <span class="kw">unsafe </span>{ bind::SDL_HasSSE() == bind::SDL_TRUE }
     }
-    <span class="doccomment">/// Returns whether the system CPU has SSE3.</span>
-    <span class="attribute">#[<span class="ident">must_use</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">has_sse3</span>() -&gt; <span class="ident">bool</span> {
-        <span class="kw">unsafe</span> { <span class="ident">bind::SDL_HasSSE3</span>() <span class="op">==</span> <span class="ident">bind::SDL_TRUE</span> }
+    <span class="doccomment">/// Returns whether the system CPU has SSE2.
+    </span><span class="attribute">#[must_use]
+    </span><span class="kw">pub fn </span>has_sse2() -&gt; bool {
+        <span class="kw">unsafe </span>{ bind::SDL_HasSSE2() == bind::SDL_TRUE }
     }
-    <span class="doccomment">/// Returns whether the system CPU has SSE4.1.</span>
-    <span class="attribute">#[<span class="ident">must_use</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">has_sse41</span>() -&gt; <span class="ident">bool</span> {
-        <span class="kw">unsafe</span> { <span class="ident">bind::SDL_HasSSE41</span>() <span class="op">==</span> <span class="ident">bind::SDL_TRUE</span> }
+    <span class="doccomment">/// Returns whether the system CPU has SSE3.
+    </span><span class="attribute">#[must_use]
+    </span><span class="kw">pub fn </span>has_sse3() -&gt; bool {
+        <span class="kw">unsafe </span>{ bind::SDL_HasSSE3() == bind::SDL_TRUE }
     }
-    <span class="doccomment">/// Returns whether the system CPU has SSE4.2.</span>
-    <span class="attribute">#[<span class="ident">must_use</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">has_sse42</span>() -&gt; <span class="ident">bool</span> {
-        <span class="kw">unsafe</span> { <span class="ident">bind::SDL_HasSSE42</span>() <span class="op">==</span> <span class="ident">bind::SDL_TRUE</span> }
+    <span class="doccomment">/// Returns whether the system CPU has SSE4.1.
+    </span><span class="attribute">#[must_use]
+    </span><span class="kw">pub fn </span>has_sse41() -&gt; bool {
+        <span class="kw">unsafe </span>{ bind::SDL_HasSSE41() == bind::SDL_TRUE }
     }
-    <span class="doccomment">/// Returns whether the system CPU has AVX.</span>
-    <span class="attribute">#[<span class="ident">must_use</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">has_avx</span>() -&gt; <span class="ident">bool</span> {
-        <span class="kw">unsafe</span> { <span class="ident">bind::SDL_HasAVX</span>() <span class="op">==</span> <span class="ident">bind::SDL_TRUE</span> }
+    <span class="doccomment">/// Returns whether the system CPU has SSE4.2.
+    </span><span class="attribute">#[must_use]
+    </span><span class="kw">pub fn </span>has_sse42() -&gt; bool {
+        <span class="kw">unsafe </span>{ bind::SDL_HasSSE42() == bind::SDL_TRUE }
     }
-    <span class="doccomment">/// Returns whether the system CPU has AVX2.</span>
-    <span class="attribute">#[<span class="ident">must_use</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">has_avx2</span>() -&gt; <span class="ident">bool</span> {
-        <span class="kw">unsafe</span> { <span class="ident">bind::SDL_HasAVX2</span>() <span class="op">==</span> <span class="ident">bind::SDL_TRUE</span> }
+    <span class="doccomment">/// Returns whether the system CPU has AVX.
+    </span><span class="attribute">#[must_use]
+    </span><span class="kw">pub fn </span>has_avx() -&gt; bool {
+        <span class="kw">unsafe </span>{ bind::SDL_HasAVX() == bind::SDL_TRUE }
     }
-    <span class="doccomment">/// Returns whether the system CPU has AVX-512F.</span>
-    <span class="attribute">#[<span class="ident">must_use</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">has_avx512f</span>() -&gt; <span class="ident">bool</span> {
-        <span class="kw">unsafe</span> { <span class="ident">bind::SDL_HasAVX512F</span>() <span class="op">==</span> <span class="ident">bind::SDL_TRUE</span> }
+    <span class="doccomment">/// Returns whether the system CPU has AVX2.
+    </span><span class="attribute">#[must_use]
+    </span><span class="kw">pub fn </span>has_avx2() -&gt; bool {
+        <span class="kw">unsafe </span>{ bind::SDL_HasAVX2() == bind::SDL_TRUE }
     }
-    <span class="doccomment">/// Returns whether the system CPU has ARM SIMD.</span>
-    <span class="attribute">#[<span class="ident">must_use</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">has_arm_simd</span>() -&gt; <span class="ident">bool</span> {
-        <span class="kw">unsafe</span> { <span class="ident">bind::SDL_HasARMSIMD</span>() <span class="op">==</span> <span class="ident">bind::SDL_TRUE</span> }
+    <span class="doccomment">/// Returns whether the system CPU has AVX-512F.
+    </span><span class="attribute">#[must_use]
+    </span><span class="kw">pub fn </span>has_avx512f() -&gt; bool {
+        <span class="kw">unsafe </span>{ bind::SDL_HasAVX512F() == bind::SDL_TRUE }
     }
-    <span class="doccomment">/// Returns whether the system CPU has NEON, Advanced SIMD.</span>
-    <span class="attribute">#[<span class="ident">must_use</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">has_neon</span>() -&gt; <span class="ident">bool</span> {
-        <span class="kw">unsafe</span> { <span class="ident">bind::SDL_HasNEON</span>() <span class="op">==</span> <span class="ident">bind::SDL_TRUE</span> }
+    <span class="doccomment">/// Returns whether the system CPU has ARM SIMD.
+    </span><span class="attribute">#[must_use]
+    </span><span class="kw">pub fn </span>has_arm_simd() -&gt; bool {
+        <span class="kw">unsafe </span>{ bind::SDL_HasARMSIMD() == bind::SDL_TRUE }
+    }
+    <span class="doccomment">/// Returns whether the system CPU has NEON, Advanced SIMD.
+    </span><span class="attribute">#[must_use]
+    </span><span class="kw">pub fn </span>has_neon() -&gt; bool {
+        <span class="kw">unsafe </span>{ bind::SDL_HasNEON() == bind::SDL_TRUE }
     }
 }
 </code></pre></div>
-</section></div></main><div id="rustdoc-vars" data-root-path="../../" data-current-crate="rich_sdl2_rust" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.64.0-nightly (0f4bcadb4 2022-07-30)" ></div></body></html>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../" data-current-crate="rich_sdl2_rust" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.66.0-nightly (5e9772042 2022-10-29)" ></div></body></html>

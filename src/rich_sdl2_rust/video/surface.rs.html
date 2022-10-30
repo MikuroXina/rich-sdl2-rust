@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/video/surface.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>surface.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../storage.js"></script><script defer src="../../../source-script.js"></script><script defer src="../../../source-files.js"></script><script defer src="../../../main.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../../rich_sdl2_rust/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div></a><h2 class="location"></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../../rich_sdl2_rust/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../../rich_sdl2_rust/index.html"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/video/surface.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>surface.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" href="../../../normalize.css"><link rel="stylesheet" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" href="../../../ayu.css" disabled><link rel="stylesheet" href="../../../dark.css" disabled><link rel="stylesheet" href="../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../storage.js"></script><script defer src="../../../source-script.js"></script><script defer src="../../../source-files.js"></script><script defer src="../../../main.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><div class="width-limiter"><nav class="sub"><a class="sub-logo-container" href="../../../rich_sdl2_rust/index.html"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../wheel.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><pre class="src-line-numbers"><span id="1">1</span>
 <span id="2">2</span>
 <span id="3">3</span>
 <span id="4">4</span>
@@ -133,140 +133,140 @@
 <span id="133">133</span>
 <span id="134">134</span>
 <span id="135">135</span>
-</pre><pre class="rust"><code><span class="doccomment">//! Surface, providing flexible modification for the pixels.</span>
+</pre><pre class="rust"><code><span class="doccomment">//! Surface, providing flexible modification for the pixels.
 
-<span class="kw">use</span> <span class="ident">std::ptr::NonNull</span>;
+</span><span class="kw">use </span>std::ptr::NonNull;
 
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::color::pixel::Pixel</span>;
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::color</span>::{<span class="ident">BlendMode</span>, <span class="ident">Rgb</span>};
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::geo</span>::{<span class="ident">Point</span>, <span class="ident">Rect</span>};
-<span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">as_raw</span>, <span class="ident">color::pixel::palette::Palette</span>};
-<span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">bind</span>, <span class="ident">Sdl</span>};
-<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">bind::SDL_Surface</span> <span class="kw">as</span> <span class="ident">RawSurface</span>;
+<span class="kw">use </span><span class="kw">crate</span>::color::pixel::Pixel;
+<span class="kw">use </span><span class="kw">crate</span>::color::{BlendMode, Rgb};
+<span class="kw">use </span><span class="kw">crate</span>::geo::{Point, Rect};
+<span class="kw">use crate</span>::{as_raw, color::pixel::palette::Palette};
+<span class="kw">use crate</span>::{bind, Sdl};
+<span class="kw">pub use </span>bind::SDL_Surface <span class="kw">as </span>RawSurface;
 
-<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">alpha</span>;
-<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">blend</span>;
-<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">bmp</span>;
-<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">clipped</span>;
-<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">cloned</span>;
-<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">color</span>;
-<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">owned</span>;
-<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">rle</span>;
-<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">window</span>;
+<span class="kw">pub mod </span>alpha;
+<span class="kw">pub mod </span>blend;
+<span class="kw">pub mod </span>bmp;
+<span class="kw">pub mod </span>clipped;
+<span class="kw">pub mod </span>cloned;
+<span class="kw">pub mod </span>color;
+<span class="kw">pub mod </span>owned;
+<span class="kw">pub mod </span>rle;
+<span class="kw">pub mod </span>window;
 
-<span class="kw">use</span> <span class="ident">alpha::AlphaMod</span>;
-<span class="kw">use</span> <span class="ident">blend::Blended</span>;
-<span class="kw">use</span> <span class="ident">clipped::Clipped</span>;
-<span class="kw">use</span> <span class="ident">cloned::Cloned</span>;
-<span class="kw">use</span> <span class="ident">color::ColorMod</span>;
-<span class="kw">use</span> <span class="ident">rle::Rle</span>;
+<span class="kw">use </span>alpha::AlphaMod;
+<span class="kw">use </span>blend::Blended;
+<span class="kw">use </span>clipped::Clipped;
+<span class="kw">use </span>cloned::Cloned;
+<span class="kw">use </span>color::ColorMod;
+<span class="kw">use </span>rle::Rle;
 
-<span class="doccomment">/// A trait that provides flexible modification methods.</span>
-<span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">Surface</span> {
-    <span class="doccomment">/// Returns the raw non-null pointer.</span>
-    <span class="kw">fn</span> <span class="ident">as_ptr</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">NonNull</span><span class="op">&lt;</span><span class="ident">RawSurface</span><span class="op">&gt;</span>;
+<span class="doccomment">/// A trait that provides flexible modification methods.
+</span><span class="kw">pub trait </span>Surface {
+    <span class="doccomment">/// Returns the raw non-null pointer.
+    </span><span class="kw">fn </span>as_ptr(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; NonNull&lt;RawSurface&gt;;
 
-    <span class="doccomment">/// Clones the surface.</span>
-    <span class="kw">fn</span> <span class="ident">cloned</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">Cloned</span> {
-        <span class="ident">Cloned::new</span>(<span class="self">self</span>.<span class="ident">as_ptr</span>())
+    <span class="doccomment">/// Clones the surface.
+    </span><span class="kw">fn </span>cloned(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; Cloned {
+        Cloned::new(<span class="self">self</span>.as_ptr())
     }
 
-    <span class="doccomment">/// Clips the surface by `area`.</span>
-    <span class="kw">fn</span> <span class="ident">clipped</span>(<span class="self">self</span>, <span class="ident">area</span>: <span class="ident">Rect</span>) -&gt; <span class="ident">Clipped</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span>
-    <span class="kw">where</span>
-        <span class="self">Self</span>: <span class="ident">Sized</span>,
+    <span class="doccomment">/// Clips the surface by `area`.
+    </span><span class="kw">fn </span>clipped(<span class="self">self</span>, area: Rect) -&gt; Clipped&lt;<span class="self">Self</span>&gt;
+    <span class="kw">where
+        </span><span class="self">Self</span>: Sized,
     {
-        <span class="ident">Clipped::new</span>(<span class="self">self</span>, <span class="ident">area</span>)
+        Clipped::new(<span class="self">self</span>, area)
     }
 
-    <span class="doccomment">/// Changes blend mode of the surface.</span>
-    <span class="kw">fn</span> <span class="ident">blend</span>(<span class="self">self</span>, <span class="ident">mode</span>: <span class="ident">BlendMode</span>) -&gt; <span class="ident">Blended</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span>
-    <span class="kw">where</span>
-        <span class="self">Self</span>: <span class="ident">Sized</span>,
+    <span class="doccomment">/// Changes blend mode of the surface.
+    </span><span class="kw">fn </span>blend(<span class="self">self</span>, mode: BlendMode) -&gt; Blended&lt;<span class="self">Self</span>&gt;
+    <span class="kw">where
+        </span><span class="self">Self</span>: Sized,
     {
-        <span class="ident">Blended::new</span>(<span class="self">self</span>, <span class="ident">mode</span>)
+        Blended::new(<span class="self">self</span>, mode)
     }
 
-    <span class="doccomment">/// Modifies the alpha of the surface.</span>
-    <span class="kw">fn</span> <span class="ident">alpha_mod</span>(<span class="self">self</span>, <span class="ident">alpha</span>: <span class="ident">u8</span>) -&gt; <span class="ident">AlphaMod</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span>
-    <span class="kw">where</span>
-        <span class="self">Self</span>: <span class="ident">Sized</span>,
+    <span class="doccomment">/// Modifies the alpha of the surface.
+    </span><span class="kw">fn </span>alpha_mod(<span class="self">self</span>, alpha: u8) -&gt; AlphaMod&lt;<span class="self">Self</span>&gt;
+    <span class="kw">where
+        </span><span class="self">Self</span>: Sized,
     {
-        <span class="ident">AlphaMod::new</span>(<span class="self">self</span>, <span class="ident">alpha</span>)
+        AlphaMod::new(<span class="self">self</span>, alpha)
     }
 
-    <span class="doccomment">/// Modifies the color of the surface.</span>
-    <span class="kw">fn</span> <span class="ident">color_mod</span>(<span class="self">self</span>, <span class="ident">color</span>: <span class="ident">Rgb</span>) -&gt; <span class="ident">ColorMod</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span>
-    <span class="kw">where</span>
-        <span class="self">Self</span>: <span class="ident">Sized</span>,
+    <span class="doccomment">/// Modifies the color of the surface.
+    </span><span class="kw">fn </span>color_mod(<span class="self">self</span>, color: Rgb) -&gt; ColorMod&lt;<span class="self">Self</span>&gt;
+    <span class="kw">where
+        </span><span class="self">Self</span>: Sized,
     {
-        <span class="ident">ColorMod::new</span>(<span class="self">self</span>, <span class="ident">color</span>)
+        ColorMod::new(<span class="self">self</span>, color)
     }
 
-    <span class="doccomment">/// Fills in the `area` with the `color`, or whole if `area` is `None`.</span>
-    <span class="kw">fn</span> <span class="ident">fill_rect</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">area</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Rect</span><span class="op">&gt;</span>, <span class="ident">color</span>: <span class="ident">Pixel</span>) {
-        <span class="kw">let</span> <span class="ident">area</span> <span class="op">=</span> <span class="ident">area</span>.<span class="ident">map</span>(<span class="ident">Into::into</span>);
-        <span class="kw">unsafe</span> {
-            <span class="kw">let</span> <span class="ident">ret</span> <span class="op">=</span> <span class="ident">bind::SDL_FillRect</span>(<span class="self">self</span>.<span class="ident">as_ptr</span>().<span class="ident">as_ptr</span>(), <span class="ident">as_raw</span>(<span class="kw-2">&amp;</span><span class="ident">area</span>), <span class="ident">color</span>.<span class="ident">as_u32</span>());
-            <span class="kw">if</span> <span class="ident">ret</span> <span class="op">!</span><span class="op">=</span> <span class="number">0</span> {
-                <span class="ident">Sdl::error_then_panic</span>(<span class="string">&quot;Surface filling with rectangle&quot;</span>)
+    <span class="doccomment">/// Fills in the `area` with the `color`, or whole if `area` is `None`.
+    </span><span class="kw">fn </span>fill_rect(<span class="kw-2">&amp;</span><span class="self">self</span>, area: <span class="prelude-ty">Option</span>&lt;Rect&gt;, color: Pixel) {
+        <span class="kw">let </span>area = area.map(Into::into);
+        <span class="kw">unsafe </span>{
+            <span class="kw">let </span>ret = bind::SDL_FillRect(<span class="self">self</span>.as_ptr().as_ptr(), as_raw(<span class="kw-2">&amp;</span>area), color.as_u32());
+            <span class="kw">if </span>ret != <span class="number">0 </span>{
+                Sdl::error_then_panic(<span class="string">&quot;Surface filling with rectangle&quot;</span>)
             }
         }
     }
 
-    <span class="doccomment">/// Fills in the `areas` with the `color`.</span>
-    <span class="kw">fn</span> <span class="ident">fill_rects</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">areas</span>: <span class="kw">impl</span> <span class="ident">IntoIterator</span><span class="op">&lt;</span><span class="ident">Item</span> <span class="op">=</span> <span class="ident">Rect</span><span class="op">&gt;</span>, <span class="ident">color</span>: <span class="ident">Pixel</span>) {
-        <span class="kw">let</span> <span class="ident">raw_rects</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="kw">_</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">areas</span>.<span class="ident">into_iter</span>().<span class="ident">map</span>(<span class="ident">Into::into</span>).<span class="ident">collect</span>();
-        <span class="kw">unsafe</span> {
-            <span class="kw">let</span> <span class="ident">ret</span> <span class="op">=</span> <span class="ident">bind::SDL_FillRects</span>(
-                <span class="self">self</span>.<span class="ident">as_ptr</span>().<span class="ident">as_ptr</span>(),
-                <span class="ident">raw_rects</span>.<span class="ident">as_ptr</span>(),
-                <span class="ident">raw_rects</span>.<span class="ident">len</span>() <span class="kw">as</span> <span class="ident">i32</span>,
-                <span class="ident">color</span>.<span class="ident">as_u32</span>(),
+    <span class="doccomment">/// Fills in the `areas` with the `color`.
+    </span><span class="kw">fn </span>fill_rects(<span class="kw-2">&amp;</span><span class="self">self</span>, areas: <span class="kw">impl </span>IntoIterator&lt;Item = Rect&gt;, color: Pixel) {
+        <span class="kw">let </span>raw_rects: Vec&lt;<span class="kw">_</span>&gt; = areas.into_iter().map(Into::into).collect();
+        <span class="kw">unsafe </span>{
+            <span class="kw">let </span>ret = bind::SDL_FillRects(
+                <span class="self">self</span>.as_ptr().as_ptr(),
+                raw_rects.as_ptr(),
+                raw_rects.len() <span class="kw">as </span>i32,
+                color.as_u32(),
             );
-            <span class="kw">if</span> <span class="ident">ret</span> <span class="op">!</span><span class="op">=</span> <span class="number">0</span> {
-                <span class="ident">Sdl::error_then_panic</span>(<span class="string">&quot;Surface filling with rectangles&quot;</span>)
+            <span class="kw">if </span>ret != <span class="number">0 </span>{
+                Sdl::error_then_panic(<span class="string">&quot;Surface filling with rectangles&quot;</span>)
             }
         }
     }
 
-    <span class="doccomment">/// Overwrites the palette of the surface.</span>
-    <span class="kw">fn</span> <span class="ident">set_palette</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">palette</span>: <span class="kw-2">&amp;</span><span class="ident">Palette</span>) {
-        <span class="kw">let</span> <span class="ident">ret</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">bind::SDL_SetSurfacePalette</span>(<span class="self">self</span>.<span class="ident">as_ptr</span>().<span class="ident">as_ptr</span>(), <span class="ident">palette</span>.<span class="ident">as_ptr</span>()) };
-        <span class="kw">if</span> <span class="ident">ret</span> <span class="op">!</span><span class="op">=</span> <span class="number">0</span> {
-            <span class="ident">Sdl::error_then_panic</span>(<span class="string">&quot;Surface setting palette&quot;</span>);
+    <span class="doccomment">/// Overwrites the palette of the surface.
+    </span><span class="kw">fn </span>set_palette(<span class="kw-2">&amp;</span><span class="self">self</span>, palette: <span class="kw-2">&amp;</span>Palette) {
+        <span class="kw">let </span>ret = <span class="kw">unsafe </span>{ bind::SDL_SetSurfacePalette(<span class="self">self</span>.as_ptr().as_ptr(), palette.as_ptr()) };
+        <span class="kw">if </span>ret != <span class="number">0 </span>{
+            Sdl::error_then_panic(<span class="string">&quot;Surface setting palette&quot;</span>);
         }
     }
 
-    <span class="doccomment">/// Copies `src_area` area in the surface into `dst_pos` on another surface.</span>
-    <span class="kw">fn</span> <span class="ident">copy_to</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">src_area</span>: <span class="ident">Rect</span>, <span class="ident">dst</span>: <span class="kw-2">&amp;</span><span class="self">Self</span>, <span class="ident">dst_pos</span>: <span class="ident">Point</span>) {
-        <span class="kw">let</span> <span class="ident">src_rect</span> <span class="op">=</span> <span class="ident">src_area</span>.<span class="ident">into</span>();
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">dst_rect</span> <span class="op">=</span> <span class="ident">bind::SDL_Rect</span> {
-            <span class="ident">x</span>: <span class="ident">dst_pos</span>.<span class="ident">x</span>,
-            <span class="ident">y</span>: <span class="ident">dst_pos</span>.<span class="ident">y</span>,
-            <span class="ident">w</span>: <span class="number">0</span>,
-            <span class="ident">h</span>: <span class="number">0</span>,
+    <span class="doccomment">/// Copies `src_area` area in the surface into `dst_pos` on another surface.
+    </span><span class="kw">fn </span>copy_to(<span class="kw-2">&amp;</span><span class="self">self</span>, src_area: Rect, dst: <span class="kw-2">&amp;</span><span class="self">Self</span>, dst_pos: Point) {
+        <span class="kw">let </span>src_rect = src_area.into();
+        <span class="kw">let </span><span class="kw-2">mut </span>dst_rect = bind::SDL_Rect {
+            x: dst_pos.x,
+            y: dst_pos.y,
+            w: <span class="number">0</span>,
+            h: <span class="number">0</span>,
         };
-        <span class="kw">let</span> <span class="ident">ret</span> <span class="op">=</span> <span class="kw">unsafe</span> {
-            <span class="ident">bind::SDL_UpperBlit</span>(
-                <span class="self">self</span>.<span class="ident">as_ptr</span>().<span class="ident">as_ptr</span>(),
-                <span class="kw-2">&amp;</span><span class="ident">src_rect</span>,
-                <span class="ident">dst</span>.<span class="ident">as_ptr</span>().<span class="ident">as_ptr</span>(),
-                <span class="kw-2">&amp;mut</span> <span class="ident">dst_rect</span>,
+        <span class="kw">let </span>ret = <span class="kw">unsafe </span>{
+            bind::SDL_UpperBlit(
+                <span class="self">self</span>.as_ptr().as_ptr(),
+                <span class="kw-2">&amp;</span>src_rect,
+                dst.as_ptr().as_ptr(),
+                <span class="kw-2">&amp;mut </span>dst_rect,
             )
         };
-        <span class="kw">if</span> <span class="ident">ret</span> <span class="op">!</span><span class="op">=</span> <span class="number">0</span> {
-            <span class="ident">Sdl::error_then_panic</span>(<span class="string">&quot;Surface copying to another&quot;</span>);
+        <span class="kw">if </span>ret != <span class="number">0 </span>{
+            Sdl::error_then_panic(<span class="string">&quot;Surface copying to another&quot;</span>);
         }
     }
 
-    <span class="doccomment">/// Run-length encodes the surface.</span>
-    <span class="kw">fn</span> <span class="ident">rle</span>(<span class="kw-2">&amp;</span><span class="lifetime">&#39;_</span> <span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="ident">Rle</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span>, <span class="self">Self</span><span class="op">&gt;</span>
-    <span class="kw">where</span>
-        <span class="self">Self</span>: <span class="ident">Sized</span>,
+    <span class="doccomment">/// Run-length encodes the surface.
+    </span><span class="kw">fn </span>rle(<span class="kw-2">&amp;</span><span class="lifetime">&#39;_ </span><span class="kw-2">mut </span><span class="self">self</span>) -&gt; Rle&lt;<span class="lifetime">&#39;_</span>, <span class="self">Self</span>&gt;
+    <span class="kw">where
+        </span><span class="self">Self</span>: Sized,
     {
-        <span class="ident">Rle::new</span>(<span class="self">self</span>)
+        Rle::new(<span class="self">self</span>)
     }
 }
 </code></pre></div>
-</section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="rich_sdl2_rust" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.64.0-nightly (0f4bcadb4 2022-07-30)" ></div></body></html>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="rich_sdl2_rust" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.66.0-nightly (5e9772042 2022-10-29)" ></div></body></html>

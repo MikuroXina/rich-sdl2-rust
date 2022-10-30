@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/event/game_controller.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>game_controller.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../storage.js"></script><script defer src="../../../source-script.js"></script><script defer src="../../../source-files.js"></script><script defer src="../../../main.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../../rich_sdl2_rust/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div></a><h2 class="location"></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../../rich_sdl2_rust/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../../rich_sdl2_rust/index.html"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/event/game_controller.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>game_controller.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" href="../../../normalize.css"><link rel="stylesheet" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" href="../../../ayu.css" disabled><link rel="stylesheet" href="../../../dark.css" disabled><link rel="stylesheet" href="../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../storage.js"></script><script defer src="../../../source-script.js"></script><script defer src="../../../source-files.js"></script><script defer src="../../../main.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><div class="width-limiter"><nav class="sub"><a class="sub-logo-container" href="../../../rich_sdl2_rust/index.html"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../wheel.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><pre class="src-line-numbers"><span id="1">1</span>
 <span id="2">2</span>
 <span id="3">3</span>
 <span id="4">4</span>
@@ -155,162 +155,162 @@
 <span id="155">155</span>
 <span id="156">156</span>
 <span id="157">157</span>
-</pre><pre class="rust"><code><span class="doccomment">//! A logical game controller that attached to a physical device.</span>
+</pre><pre class="rust"><code><span class="doccomment">//! A logical game controller that attached to a physical device.
 
-<span class="kw">use</span> <span class="ident">static_assertions::assert_not_impl_all</span>;
-<span class="kw">use</span> <span class="ident">std</span>::{
-    <span class="ident">ffi</span>::{<span class="ident">CStr</span>, <span class="ident">CString</span>},
-    <span class="ident">ptr::NonNull</span>,
+</span><span class="kw">use </span>static_assertions::assert_not_impl_all;
+<span class="kw">use </span>std::{
+    ffi::{CStr, CString},
+    ptr::NonNull,
 };
 
-<span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">bind</span>, <span class="prelude-ty">Result</span>, <span class="ident">Sdl</span>, <span class="ident">SdlError</span>};
+<span class="kw">use crate</span>::{bind, <span class="prelude-ty">Result</span>, Sdl, SdlError};
 
-<span class="kw">use</span> <span class="self">self</span>::{<span class="ident">axis::Axis</span>, <span class="ident">button::Button</span>, <span class="ident">map::MapInput</span>};
+<span class="kw">use </span><span class="self">self</span>::{axis::Axis, button::Button, map::MapInput};
 
-<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">axis</span>;
-<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">button</span>;
-<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">event</span>;
-<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">map</span>;
+<span class="kw">pub mod </span>axis;
+<span class="kw">pub mod </span>button;
+<span class="kw">pub mod </span>event;
+<span class="kw">pub mod </span>map;
 
-<span class="doccomment">/// A logical game controller manages binding of the physical devices.</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">GameController</span> {
-    <span class="kw">pub</span>(<span class="kw">in</span> <span class="ident"><span class="kw">crate</span>::event</span>) <span class="ident">ptr</span>: <span class="ident">NonNull</span><span class="op">&lt;</span><span class="ident">bind::SDL_GameController</span><span class="op">&gt;</span>,
+<span class="doccomment">/// A logical game controller manages binding of the physical devices.
+</span><span class="kw">pub struct </span>GameController {
+    <span class="kw">pub</span>(<span class="kw">in </span><span class="kw">crate</span>::event) ptr: NonNull&lt;bind::SDL_GameController&gt;,
 }
 
-<span class="kw">impl</span> <span class="ident">std::fmt::Debug</span> <span class="kw">for</span> <span class="ident">GameController</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;mut</span> <span class="ident">std::fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">std::fmt::Result</span> {
-        <span class="ident">f</span>.<span class="ident">debug_struct</span>(<span class="string">&quot;GameController&quot;</span>)
-            .<span class="ident">field</span>(<span class="string">&quot;name&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">name</span>())
-            .<span class="ident">finish_non_exhaustive</span>()
+<span class="kw">impl </span>std::fmt::Debug <span class="kw">for </span>GameController {
+    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>std::fmt::Formatter&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; std::fmt::Result {
+        f.debug_struct(<span class="string">&quot;GameController&quot;</span>)
+            .field(<span class="string">&quot;name&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.name())
+            .finish_non_exhaustive()
     }
 }
 
-<span class="macro">assert_not_impl_all!</span>(<span class="ident">GameController</span>: <span class="ident">Send</span>, <span class="ident">Sync</span>);
+<span class="macro">assert_not_impl_all!</span>(GameController: Send, Sync);
 
-<span class="kw">impl</span> <span class="ident">GameController</span> {
-    <span class="doccomment">/// Returns the string of all mapping `GameController` holds.</span>
-    <span class="attribute">#[<span class="ident">must_use</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">mapping</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">String</span> {
-        <span class="kw">let</span> <span class="ident">ptr</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">bind::SDL_GameControllerMapping</span>(<span class="self">self</span>.<span class="ident">ptr</span>.<span class="ident">as_ptr</span>()) };
-        <span class="kw">let</span> <span class="ident">cstr</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">CStr::from_ptr</span>(<span class="ident">ptr</span>) };
-        <span class="kw">let</span> <span class="ident">ret</span> <span class="op">=</span> <span class="ident">cstr</span>.<span class="ident">to_string_lossy</span>().<span class="ident">to_string</span>();
-        <span class="kw">unsafe</span> { <span class="ident">bind::SDL_free</span>(<span class="ident">ptr</span>.<span class="ident">cast</span>()) };
-        <span class="ident">ret</span>
+<span class="kw">impl </span>GameController {
+    <span class="doccomment">/// Returns the string of all mapping `GameController` holds.
+    </span><span class="attribute">#[must_use]
+    </span><span class="kw">pub fn </span>mapping(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; String {
+        <span class="kw">let </span>ptr = <span class="kw">unsafe </span>{ bind::SDL_GameControllerMapping(<span class="self">self</span>.ptr.as_ptr()) };
+        <span class="kw">let </span>cstr = <span class="kw">unsafe </span>{ CStr::from_ptr(ptr) };
+        <span class="kw">let </span>ret = cstr.to_string_lossy().to_string();
+        <span class="kw">unsafe </span>{ bind::SDL_free(ptr.cast()) };
+        ret
     }
 
-    <span class="doccomment">/// Returns the name of the game controller.</span>
-    <span class="attribute">#[<span class="ident">must_use</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">name</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">String</span> {
-        <span class="kw">let</span> <span class="ident">ptr</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">bind::SDL_GameControllerName</span>(<span class="self">self</span>.<span class="ident">ptr</span>.<span class="ident">as_ptr</span>()) };
-        <span class="kw">if</span> <span class="ident">ptr</span>.<span class="ident">is_null</span>() {
-            <span class="kw">return</span> <span class="string">&quot;&quot;</span>.<span class="ident">into</span>();
+    <span class="doccomment">/// Returns the name of the game controller.
+    </span><span class="attribute">#[must_use]
+    </span><span class="kw">pub fn </span>name(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; String {
+        <span class="kw">let </span>ptr = <span class="kw">unsafe </span>{ bind::SDL_GameControllerName(<span class="self">self</span>.ptr.as_ptr()) };
+        <span class="kw">if </span>ptr.is_null() {
+            <span class="kw">return </span><span class="string">&quot;&quot;</span>.into();
         }
-        <span class="kw">let</span> <span class="ident">cstr</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">CStr::from_ptr</span>(<span class="ident">ptr</span>) };
-        <span class="ident">cstr</span>.<span class="ident">to_string_lossy</span>().<span class="ident">to_string</span>()
+        <span class="kw">let </span>cstr = <span class="kw">unsafe </span>{ CStr::from_ptr(ptr) };
+        cstr.to_string_lossy().to_string()
     }
 
-    <span class="doccomment">/// Returns the bind for an axis if exists.</span>
-    <span class="attribute">#[<span class="ident">must_use</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">bind_for_axis</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">axis</span>: <span class="ident">Axis</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">MapInput</span><span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="ident">ret</span> <span class="op">=</span>
-            <span class="kw">unsafe</span> { <span class="ident">bind::SDL_GameControllerGetBindForAxis</span>(<span class="self">self</span>.<span class="ident">ptr</span>.<span class="ident">as_ptr</span>(), <span class="ident">axis</span>.<span class="ident">as_raw</span>()) };
-        (<span class="ident">ret</span>.<span class="ident">bindType</span> <span class="op">!</span><span class="op">=</span> <span class="ident">bind::SDL_CONTROLLER_BINDTYPE_NONE</span>).<span class="ident">then</span>(<span class="op">|</span><span class="op">|</span> <span class="ident">ret</span>.<span class="ident">into</span>())
+    <span class="doccomment">/// Returns the bind for an axis if exists.
+    </span><span class="attribute">#[must_use]
+    </span><span class="kw">pub fn </span>bind_for_axis(<span class="kw-2">&amp;</span><span class="self">self</span>, axis: Axis) -&gt; <span class="prelude-ty">Option</span>&lt;MapInput&gt; {
+        <span class="kw">let </span>ret =
+            <span class="kw">unsafe </span>{ bind::SDL_GameControllerGetBindForAxis(<span class="self">self</span>.ptr.as_ptr(), axis.as_raw()) };
+        (ret.bindType != bind::SDL_CONTROLLER_BINDTYPE_NONE).then(|| ret.into())
     }
 
-    <span class="doccomment">/// Returns the bind for a button if exists.</span>
-    <span class="attribute">#[<span class="ident">must_use</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">bind_for_button</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">button</span>: <span class="ident">Button</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">MapInput</span><span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="ident">ret</span> <span class="op">=</span>
-            <span class="kw">unsafe</span> { <span class="ident">bind::SDL_GameControllerGetBindForButton</span>(<span class="self">self</span>.<span class="ident">ptr</span>.<span class="ident">as_ptr</span>(), <span class="ident">button</span>.<span class="ident">as_raw</span>()) };
-        (<span class="ident">ret</span>.<span class="ident">bindType</span> <span class="op">!</span><span class="op">=</span> <span class="ident">bind::SDL_CONTROLLER_BINDTYPE_NONE</span>).<span class="ident">then</span>(<span class="op">|</span><span class="op">|</span> <span class="ident">ret</span>.<span class="ident">into</span>())
+    <span class="doccomment">/// Returns the bind for a button if exists.
+    </span><span class="attribute">#[must_use]
+    </span><span class="kw">pub fn </span>bind_for_button(<span class="kw-2">&amp;</span><span class="self">self</span>, button: Button) -&gt; <span class="prelude-ty">Option</span>&lt;MapInput&gt; {
+        <span class="kw">let </span>ret =
+            <span class="kw">unsafe </span>{ bind::SDL_GameControllerGetBindForButton(<span class="self">self</span>.ptr.as_ptr(), button.as_raw()) };
+        (ret.bindType != bind::SDL_CONTROLLER_BINDTYPE_NONE).then(|| ret.into())
     }
 }
 
-<span class="doccomment">/// All of recognized game controllers at initialized.</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>)]</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">GameControllerSet</span> {
-    <span class="ident">controls</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">GameController</span><span class="op">&gt;</span>,
+<span class="doccomment">/// All of recognized game controllers at initialized.
+</span><span class="attribute">#[derive(Debug)]
+</span><span class="kw">pub struct </span>GameControllerSet {
+    controls: Vec&lt;GameController&gt;,
 }
 
-<span class="kw">impl</span> <span class="ident">GameControllerSet</span> {
-    <span class="doccomment">/// Constructs and initializes the system and recognizes controllers.</span>
-    <span class="attribute">#[<span class="ident">must_use</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>() -&gt; <span class="self">Self</span> {
-        <span class="kw">let</span> <span class="ident">num_controls</span> <span class="op">=</span> <span class="kw">unsafe</span> {
-            <span class="ident">bind::SDL_InitSubSystem</span>(<span class="ident">bind::SDL_INIT_JOYSTICK</span>);
-            <span class="ident">bind::SDL_NumJoysticks</span>()
+<span class="kw">impl </span>GameControllerSet {
+    <span class="doccomment">/// Constructs and initializes the system and recognizes controllers.
+    </span><span class="attribute">#[must_use]
+    </span><span class="kw">pub fn </span>new() -&gt; <span class="self">Self </span>{
+        <span class="kw">let </span>num_controls = <span class="kw">unsafe </span>{
+            bind::SDL_InitSubSystem(bind::SDL_INIT_JOYSTICK);
+            bind::SDL_NumJoysticks()
         };
-        <span class="kw">let</span> <span class="ident">controls</span> <span class="op">=</span> (<span class="number">0</span>..<span class="ident">num_controls</span>)
-            .<span class="ident">filter</span>(<span class="op">|</span><span class="kw-2">&amp;</span><span class="ident">index</span><span class="op">|</span> <span class="kw">unsafe</span> { <span class="ident">bind::SDL_IsGameController</span>(<span class="ident">index</span>) <span class="op">!</span><span class="op">=</span> <span class="number">0</span> })
-            .<span class="ident">filter_map</span>(<span class="op">|</span><span class="ident">index</span><span class="op">|</span> {
-                <span class="kw">let</span> <span class="ident">raw</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">bind::SDL_GameControllerOpen</span>(<span class="ident">index</span>) };
-                <span class="ident">NonNull::new</span>(<span class="ident">raw</span>)
+        <span class="kw">let </span>controls = (<span class="number">0</span>..num_controls)
+            .filter(|<span class="kw-2">&amp;</span>index| <span class="kw">unsafe </span>{ bind::SDL_IsGameController(index) != <span class="number">0 </span>})
+            .filter_map(|index| {
+                <span class="kw">let </span>raw = <span class="kw">unsafe </span>{ bind::SDL_GameControllerOpen(index) };
+                NonNull::new(raw)
             })
-            .<span class="ident">map</span>(<span class="op">|</span><span class="ident">ptr</span><span class="op">|</span> <span class="ident">GameController</span> { <span class="ident">ptr</span> })
-            .<span class="ident">collect</span>();
-        <span class="self">Self</span> { <span class="ident">controls</span> }
+            .map(|ptr| GameController { ptr })
+            .collect();
+        <span class="self">Self </span>{ controls }
     }
 
-    <span class="doccomment">/// Applies mapping string.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # Errors</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// Returns `Err` if failed to apply the mapping `string`.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">add_mapping</span>(<span class="ident">string</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">bool</span><span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="ident">cstr</span> <span class="op">=</span> <span class="ident">CString::new</span>(<span class="ident">string</span>).<span class="ident">expect</span>(<span class="string">&quot;string must not be empty&quot;</span>);
-        <span class="kw">let</span> <span class="ident">ret</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">bind::SDL_GameControllerAddMapping</span>(<span class="ident">cstr</span>.<span class="ident">as_ptr</span>()) };
-        <span class="kw">if</span> <span class="ident">ret</span> <span class="op">==</span> <span class="op">-</span><span class="number">1</span> {
-            <span class="prelude-val">Err</span>(<span class="ident">SdlError::Others</span> { <span class="ident">msg</span>: <span class="ident">Sdl::error</span>() })
-        } <span class="kw">else</span> {
-            <span class="prelude-val">Ok</span>(<span class="ident">ret</span> <span class="op">==</span> <span class="number">1</span>)
+    <span class="doccomment">/// Applies mapping string.
+    ///
+    /// # Errors
+    ///
+    /// Returns `Err` if failed to apply the mapping `string`.
+    </span><span class="kw">pub fn </span>add_mapping(string: <span class="kw-2">&amp;</span>str) -&gt; <span class="prelude-ty">Result</span>&lt;bool&gt; {
+        <span class="kw">let </span>cstr = CString::new(string).expect(<span class="string">&quot;string must not be empty&quot;</span>);
+        <span class="kw">let </span>ret = <span class="kw">unsafe </span>{ bind::SDL_GameControllerAddMapping(cstr.as_ptr()) };
+        <span class="kw">if </span>ret == -<span class="number">1 </span>{
+            <span class="prelude-val">Err</span>(SdlError::Others { msg: Sdl::error() })
+        } <span class="kw">else </span>{
+            <span class="prelude-val">Ok</span>(ret == <span class="number">1</span>)
         }
     }
 
-    <span class="doccomment">/// Applies mapping file, or returns `Err` on failure.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # Errors</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// Returns `Err` if failed to open the mapping file, or it contains invalid mapping data.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # Panics</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// Panics if `file_name` contains a null character.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">add_mapping_from_file</span>(<span class="ident">file_name</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">u32</span><span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="ident">cstr</span> <span class="op">=</span> <span class="ident">CString::new</span>(<span class="ident">file_name</span>).<span class="ident">expect</span>(<span class="string">&quot;string must not be empty&quot;</span>);
-        <span class="kw">let</span> <span class="ident">read_binary_mode</span> <span class="op">=</span> <span class="ident">CStr::from_bytes_with_nul</span>(<span class="string">b&quot;rb\0&quot;</span>).<span class="ident">unwrap</span>();
-        <span class="kw">let</span> <span class="ident">ret</span> <span class="op">=</span> <span class="kw">unsafe</span> {
-            <span class="ident">bind::SDL_GameControllerAddMappingsFromRW</span>(
-                <span class="ident">bind::SDL_RWFromFile</span>(<span class="ident">cstr</span>.<span class="ident">as_ptr</span>(), <span class="ident">read_binary_mode</span>.<span class="ident">as_ptr</span>()),
+    <span class="doccomment">/// Applies mapping file, or returns `Err` on failure.
+    ///
+    /// # Errors
+    ///
+    /// Returns `Err` if failed to open the mapping file, or it contains invalid mapping data.
+    ///
+    /// # Panics
+    ///
+    /// Panics if `file_name` contains a null character.
+    </span><span class="kw">pub fn </span>add_mapping_from_file(file_name: <span class="kw-2">&amp;</span>str) -&gt; <span class="prelude-ty">Result</span>&lt;u32&gt; {
+        <span class="kw">let </span>cstr = CString::new(file_name).expect(<span class="string">&quot;string must not be empty&quot;</span>);
+        <span class="kw">let </span>read_binary_mode = CStr::from_bytes_with_nul(<span class="string">b&quot;rb\0&quot;</span>).unwrap();
+        <span class="kw">let </span>ret = <span class="kw">unsafe </span>{
+            bind::SDL_GameControllerAddMappingsFromRW(
+                bind::SDL_RWFromFile(cstr.as_ptr(), read_binary_mode.as_ptr()),
                 <span class="number">1</span>,
             )
         };
-        <span class="kw">if</span> <span class="ident">ret</span> <span class="op">&lt;</span> <span class="number">0</span> {
-            <span class="prelude-val">Err</span>(<span class="ident">SdlError::Others</span> { <span class="ident">msg</span>: <span class="ident">Sdl::error</span>() })
-        } <span class="kw">else</span> {
-            <span class="prelude-val">Ok</span>(<span class="ident">ret</span> <span class="kw">as</span> <span class="ident">u32</span>)
+        <span class="kw">if </span>ret &lt; <span class="number">0 </span>{
+            <span class="prelude-val">Err</span>(SdlError::Others { msg: Sdl::error() })
+        } <span class="kw">else </span>{
+            <span class="prelude-val">Ok</span>(ret <span class="kw">as </span>u32)
         }
     }
 
-    <span class="doccomment">/// Returns the `GameController` list.</span>
-    <span class="attribute">#[<span class="ident">must_use</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">controllers</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>[<span class="ident">GameController</span>] {
-        <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">controls</span>
+    <span class="doccomment">/// Returns the `GameController` list.
+    </span><span class="attribute">#[must_use]
+    </span><span class="kw">pub fn </span>controllers(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>[GameController] {
+        <span class="kw-2">&amp;</span><span class="self">self</span>.controls
     }
 }
 
-<span class="kw">impl</span> <span class="ident">Default</span> <span class="kw">for</span> <span class="ident">GameControllerSet</span> {
-    <span class="kw">fn</span> <span class="ident">default</span>() -&gt; <span class="self">Self</span> {
-        <span class="ident"><span class="self">Self</span>::new</span>()
+<span class="kw">impl </span>Default <span class="kw">for </span>GameControllerSet {
+    <span class="kw">fn </span>default() -&gt; <span class="self">Self </span>{
+        <span class="self">Self</span>::new()
     }
 }
 
-<span class="kw">impl</span> <span class="ident">Drop</span> <span class="kw">for</span> <span class="ident">GameControllerSet</span> {
-    <span class="kw">fn</span> <span class="ident">drop</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) {
-        <span class="kw">for</span> <span class="ident">control</span> <span class="kw">in</span> <span class="kw-2">&amp;mut</span> <span class="self">self</span>.<span class="ident">controls</span> {
-            <span class="kw">unsafe</span> { <span class="ident">bind::SDL_GameControllerClose</span>(<span class="ident">control</span>.<span class="ident">ptr</span>.<span class="ident">as_ptr</span>()) }
+<span class="kw">impl </span>Drop <span class="kw">for </span>GameControllerSet {
+    <span class="kw">fn </span>drop(<span class="kw-2">&amp;mut </span><span class="self">self</span>) {
+        <span class="kw">for </span>control <span class="kw">in </span><span class="kw-2">&amp;mut </span><span class="self">self</span>.controls {
+            <span class="kw">unsafe </span>{ bind::SDL_GameControllerClose(control.ptr.as_ptr()) }
         }
-        <span class="kw">unsafe</span> { <span class="ident">bind::SDL_QuitSubSystem</span>(<span class="ident">bind::SDL_INIT_JOYSTICK</span>) }
+        <span class="kw">unsafe </span>{ bind::SDL_QuitSubSystem(bind::SDL_INIT_JOYSTICK) }
     }
 }
 </code></pre></div>
-</section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="rich_sdl2_rust" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.64.0-nightly (0f4bcadb4 2022-07-30)" ></div></body></html>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="rich_sdl2_rust" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.66.0-nightly (5e9772042 2022-10-29)" ></div></body></html>

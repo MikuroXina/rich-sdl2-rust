@@ -1,3 +1,3 @@
-(function() {var implementors = {};
-implementors["rich_sdl2_rust"] = [{"text":"impl <a class=\"trait\" href=\"https://doc.rust-lang.org/nightly/core/alloc/trait.Allocator.html\" title=\"trait core::alloc::Allocator\">Allocator</a> for <a class=\"struct\" href=\"rich_sdl2_rust/system/simd_alloc/struct.SimdAllocator.html\" title=\"struct rich_sdl2_rust::system::simd_alloc::SimdAllocator\">SimdAllocator</a>","synthetic":false,"types":["rich_sdl2_rust::system::simd_alloc::SimdAllocator"]}];
-if (window.register_implementors) {window.register_implementors(implementors);} else {window.pending_implementors = implementors;}})()
+(function() {var implementors = {
+"rich_sdl2_rust":[["impl <a class=\"trait\" href=\"https://doc.rust-lang.org/nightly/core/alloc/trait.Allocator.html\" title=\"trait core::alloc::Allocator\">Allocator</a> for <a class=\"struct\" href=\"rich_sdl2_rust/system/simd_alloc/struct.SimdAllocator.html\" title=\"struct rich_sdl2_rust::system::simd_alloc::SimdAllocator\">SimdAllocator</a>"]]
+};if (window.register_implementors) {window.register_implementors(implementors);} else {window.pending_implementors = implementors;}})()

@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/video/renderer.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>renderer.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../storage.js"></script><script defer src="../../../source-script.js"></script><script defer src="../../../source-files.js"></script><script defer src="../../../main.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../../rich_sdl2_rust/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div></a><h2 class="location"></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../../rich_sdl2_rust/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../../rich_sdl2_rust/index.html"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/video/renderer.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>renderer.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" href="../../../normalize.css"><link rel="stylesheet" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" href="../../../ayu.css" disabled><link rel="stylesheet" href="../../../dark.css" disabled><link rel="stylesheet" href="../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../storage.js"></script><script defer src="../../../source-script.js"></script><script defer src="../../../source-files.js"></script><script defer src="../../../main.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><div class="width-limiter"><nav class="sub"><a class="sub-logo-container" href="../../../rich_sdl2_rust/index.html"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../wheel.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><pre class="src-line-numbers"><span id="1">1</span>
 <span id="2">2</span>
 <span id="3">3</span>
 <span id="4">4</span>
@@ -184,191 +184,191 @@
 <span id="184">184</span>
 <span id="185">185</span>
 <span id="186">186</span>
-</pre><pre class="rust"><code><span class="doccomment">//! Renderer for a window, to render some geometries or query driver information.</span>
+</pre><pre class="rust"><code><span class="doccomment">//! Renderer for a window, to render some geometries or query driver information.
 
-<span class="kw">use</span> <span class="ident">static_assertions::assert_not_impl_all</span>;
-<span class="kw">use</span> <span class="ident">std::mem::MaybeUninit</span>;
-<span class="kw">use</span> <span class="ident">std::ptr::NonNull</span>;
+</span><span class="kw">use </span>static_assertions::assert_not_impl_all;
+<span class="kw">use </span>std::mem::MaybeUninit;
+<span class="kw">use </span>std::ptr::NonNull;
 
-<span class="kw">use</span> <span class="ident">clip::ClippedRenderer</span>;
+<span class="kw">use </span>clip::ClippedRenderer;
 
-<span class="kw">use</span> <span class="ident"><span class="kw">super</span>::window::Window</span>;
-<span class="kw">use</span> <span class="kw">crate</span>::{
-    <span class="ident">as_raw</span>, <span class="ident">bind</span>,
-    <span class="ident">geo</span>::{<span class="ident">Rect</span>, <span class="ident">Scale</span>, <span class="ident">Size</span>},
-    <span class="ident">texture::Texture</span>,
-    <span class="prelude-ty">Result</span>, <span class="ident">Sdl</span>, <span class="ident">SdlError</span>,
+<span class="kw">use </span><span class="kw">super</span>::window::Window;
+<span class="kw">use crate</span>::{
+    as_raw, bind,
+    geo::{Rect, Scale, Size},
+    texture::Texture,
+    <span class="prelude-ty">Result</span>, Sdl, SdlError,
 };
 
-<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">clip</span>;
-<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">driver</span>;
-<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">info</span>;
-<span class="kw">mod</span> <span class="ident">paste</span>;
-<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">pen</span>;
+<span class="kw">pub mod </span>clip;
+<span class="kw">pub mod </span>driver;
+<span class="kw">pub mod </span>info;
+<span class="kw">mod </span>paste;
+<span class="kw">pub mod </span>pen;
 
-<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">paste</span>::<span class="kw-2">*</span>;
+<span class="kw">pub use </span>paste::<span class="kw-2">*</span>;
 
-<span class="doccomment">/// A SDL2 renderer. This is often used for rendering with [`pen::Pen`].</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Renderer</span><span class="op">&lt;</span><span class="lifetime">&#39;window</span><span class="op">&gt;</span> {
-    <span class="ident">renderer</span>: <span class="ident">NonNull</span><span class="op">&lt;</span><span class="ident">bind::SDL_Renderer</span><span class="op">&gt;</span>,
-    <span class="ident">window</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;window</span> <span class="ident">Window</span><span class="op">&lt;</span><span class="lifetime">&#39;window</span><span class="op">&gt;</span>,
+<span class="doccomment">/// A SDL2 renderer. This is often used for rendering with [`pen::Pen`].
+</span><span class="kw">pub struct </span>Renderer&lt;<span class="lifetime">&#39;window</span>&gt; {
+    renderer: NonNull&lt;bind::SDL_Renderer&gt;,
+    window: <span class="kw-2">&amp;</span><span class="lifetime">&#39;window </span>Window&lt;<span class="lifetime">&#39;window</span>&gt;,
 }
 
-<span class="kw">impl</span> <span class="ident">std::fmt::Debug</span> <span class="kw">for</span> <span class="ident">Renderer</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;mut</span> <span class="ident">std::fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">std::fmt::Result</span> {
-        <span class="ident">f</span>.<span class="ident">debug_struct</span>(<span class="string">&quot;Renderer&quot;</span>)
-            .<span class="ident">field</span>(<span class="string">&quot;window&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">window</span>)
-            .<span class="ident">finish_non_exhaustive</span>()
+<span class="kw">impl </span>std::fmt::Debug <span class="kw">for </span>Renderer&lt;<span class="lifetime">&#39;_</span>&gt; {
+    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>std::fmt::Formatter&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; std::fmt::Result {
+        f.debug_struct(<span class="string">&quot;Renderer&quot;</span>)
+            .field(<span class="string">&quot;window&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.window)
+            .finish_non_exhaustive()
     }
 }
 
-<span class="macro">assert_not_impl_all!</span>(<span class="ident">Renderer</span>: <span class="ident">Send</span>, <span class="ident">Sync</span>);
+<span class="macro">assert_not_impl_all!</span>(Renderer: Send, Sync);
 
-<span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;window</span><span class="op">&gt;</span> <span class="ident">Renderer</span><span class="op">&lt;</span><span class="lifetime">&#39;window</span><span class="op">&gt;</span> {
-    <span class="doccomment">/// Constructs a renderer from the window.</span>
-    <span class="attribute">#[<span class="ident">must_use</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">window</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;window</span> <span class="ident">Window</span>) -&gt; <span class="self">Self</span> {
-        <span class="kw">let</span> <span class="ident">raw</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">bind::SDL_CreateRenderer</span>(<span class="ident">window</span>.<span class="ident">as_ptr</span>(), <span class="op">-</span><span class="number">1</span>, <span class="number">0</span>) };
-        <span class="ident">NonNull::new</span>(<span class="ident">raw</span>).<span class="ident">map_or_else</span>(
-            <span class="op">|</span><span class="op">|</span> <span class="ident">Sdl::error_then_panic</span>(<span class="string">&quot;Sdl renderer&quot;</span>),
-            <span class="op">|</span><span class="ident">renderer</span><span class="op">|</span> <span class="self">Self</span> { <span class="ident">renderer</span>, <span class="ident">window</span> },
+<span class="kw">impl</span>&lt;<span class="lifetime">&#39;window</span>&gt; Renderer&lt;<span class="lifetime">&#39;window</span>&gt; {
+    <span class="doccomment">/// Constructs a renderer from the window.
+    </span><span class="attribute">#[must_use]
+    </span><span class="kw">pub fn </span>new(window: <span class="kw-2">&amp;</span><span class="lifetime">&#39;window </span>Window) -&gt; <span class="self">Self </span>{
+        <span class="kw">let </span>raw = <span class="kw">unsafe </span>{ bind::SDL_CreateRenderer(window.as_ptr(), -<span class="number">1</span>, <span class="number">0</span>) };
+        NonNull::new(raw).map_or_else(
+            || Sdl::error_then_panic(<span class="string">&quot;Sdl renderer&quot;</span>),
+            |renderer| <span class="self">Self </span>{ renderer, window },
         )
     }
 
-    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">as_ptr</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">*mut</span> <span class="ident">bind::SDL_Renderer</span> {
-        <span class="self">self</span>.<span class="ident">renderer</span>.<span class="ident">as_ptr</span>()
+    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn </span>as_ptr(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">*mut </span>bind::SDL_Renderer {
+        <span class="self">self</span>.renderer.as_ptr()
     }
 
-    <span class="doccomment">/// Returns the borrowing window.</span>
-    <span class="attribute">#[<span class="ident">must_use</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">window</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="ident">Window</span> {
-        <span class="self">self</span>.<span class="ident">window</span>
+    <span class="doccomment">/// Returns the borrowing window.
+    </span><span class="attribute">#[must_use]
+    </span><span class="kw">pub fn </span>window(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>Window {
+        <span class="self">self</span>.window
     }
 
-    <span class="doccomment">/// Returns the geometry size of the output from the renderer.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">output_size</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Size</span><span class="op">&gt;</span> {
-        <span class="kw">let</span> (<span class="kw-2">mut</span> <span class="ident">w</span>, <span class="kw-2">mut</span> <span class="ident">h</span>) <span class="op">=</span> (<span class="number">0i32</span>, <span class="number">0i32</span>);
-        <span class="kw">let</span> <span class="ident">ret</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">bind::SDL_GetRendererOutputSize</span>(<span class="self">self</span>.<span class="ident">as_ptr</span>(), <span class="kw-2">&amp;mut</span> <span class="ident">w</span>, <span class="kw-2">&amp;mut</span> <span class="ident">h</span>) };
-        <span class="kw">if</span> <span class="ident">ret</span> <span class="op">==</span> <span class="number">0</span> {
-            <span class="prelude-val">Ok</span>(<span class="ident">Size</span> {
-                <span class="ident">width</span>: <span class="ident">w</span> <span class="kw">as</span> <span class="ident">u32</span>,
-                <span class="ident">height</span>: <span class="ident">h</span> <span class="kw">as</span> <span class="ident">u32</span>,
+    <span class="doccomment">/// Returns the geometry size of the output from the renderer.
+    </span><span class="kw">pub fn </span>output_size(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;Size&gt; {
+        <span class="kw">let </span>(<span class="kw-2">mut </span>w, <span class="kw-2">mut </span>h) = (<span class="number">0i32</span>, <span class="number">0i32</span>);
+        <span class="kw">let </span>ret = <span class="kw">unsafe </span>{ bind::SDL_GetRendererOutputSize(<span class="self">self</span>.as_ptr(), <span class="kw-2">&amp;mut </span>w, <span class="kw-2">&amp;mut </span>h) };
+        <span class="kw">if </span>ret == <span class="number">0 </span>{
+            <span class="prelude-val">Ok</span>(Size {
+                width: w <span class="kw">as </span>u32,
+                height: h <span class="kw">as </span>u32,
             })
-        } <span class="kw">else</span> {
-            <span class="prelude-val">Err</span>(<span class="ident">SdlError::Others</span> {
-                <span class="ident">msg</span>: <span class="string">&quot;Getting output size failed&quot;</span>.<span class="ident">into</span>(),
+        } <span class="kw">else </span>{
+            <span class="prelude-val">Err</span>(SdlError::Others {
+                msg: <span class="string">&quot;Getting output size failed&quot;</span>.into(),
             })
         }
     }
 
-    <span class="doccomment">/// Clips the renderer by `area`.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">clip</span>(<span class="kw-2">&amp;</span><span class="lifetime">&#39;window</span> <span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">area</span>: <span class="ident">Rect</span>) -&gt; <span class="ident">ClippedRenderer</span><span class="op">&lt;</span><span class="lifetime">&#39;window</span><span class="op">&gt;</span> {
-        <span class="ident">ClippedRenderer::new</span>(<span class="self">self</span>, <span class="ident">area</span>)
+    <span class="doccomment">/// Clips the renderer by `area`.
+    </span><span class="kw">pub fn </span>clip(<span class="kw-2">&amp;</span><span class="lifetime">&#39;window </span><span class="kw-2">mut </span><span class="self">self</span>, area: Rect) -&gt; ClippedRenderer&lt;<span class="lifetime">&#39;window</span>&gt; {
+        ClippedRenderer::new(<span class="self">self</span>, area)
     }
 
-    <span class="doccomment">/// Returns the logical size of the renderer if available.</span>
-    <span class="attribute">#[<span class="ident">must_use</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">logical_size</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Size</span><span class="op">&gt;</span> {
-        <span class="kw">let</span> (<span class="kw-2">mut</span> <span class="ident">width</span>, <span class="kw-2">mut</span> <span class="ident">height</span>) <span class="op">=</span> (<span class="number">0</span>, <span class="number">0</span>);
-        <span class="kw">unsafe</span> { <span class="ident">bind::SDL_RenderGetLogicalSize</span>(<span class="self">self</span>.<span class="ident">as_ptr</span>(), <span class="kw-2">&amp;mut</span> <span class="ident">width</span>, <span class="kw-2">&amp;mut</span> <span class="ident">height</span>) }
-        <span class="kw">if</span> <span class="ident">width</span> <span class="op">==</span> <span class="number">0</span> <span class="op">&amp;&amp;</span> <span class="ident">height</span> <span class="op">==</span> <span class="number">0</span> {
-            <span class="kw">return</span> <span class="prelude-val">None</span>;
+    <span class="doccomment">/// Returns the logical size of the renderer if available.
+    </span><span class="attribute">#[must_use]
+    </span><span class="kw">pub fn </span>logical_size(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;Size&gt; {
+        <span class="kw">let </span>(<span class="kw-2">mut </span>width, <span class="kw-2">mut </span>height) = (<span class="number">0</span>, <span class="number">0</span>);
+        <span class="kw">unsafe </span>{ bind::SDL_RenderGetLogicalSize(<span class="self">self</span>.as_ptr(), <span class="kw-2">&amp;mut </span>width, <span class="kw-2">&amp;mut </span>height) }
+        <span class="kw">if </span>width == <span class="number">0 </span>&amp;&amp; height == <span class="number">0 </span>{
+            <span class="kw">return </span><span class="prelude-val">None</span>;
         }
-        <span class="prelude-val">Some</span>(<span class="ident">Size</span> {
-            <span class="ident">width</span>: <span class="ident">width</span> <span class="kw">as</span> <span class="ident">u32</span>,
-            <span class="ident">height</span>: <span class="ident">height</span> <span class="kw">as</span> <span class="ident">u32</span>,
+        <span class="prelude-val">Some</span>(Size {
+            width: width <span class="kw">as </span>u32,
+            height: height <span class="kw">as </span>u32,
         })
     }
 
-    <span class="doccomment">/// Sets the logical size of the renderer.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_logical_size</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">Size</span> { <span class="ident">width</span>, <span class="ident">height</span> }: <span class="ident">Size</span>) {
-        <span class="kw">use</span> <span class="ident">std::os::raw::c_int</span>;
-        <span class="kw">let</span> <span class="ident">ret</span> <span class="op">=</span> <span class="kw">unsafe</span> {
-            <span class="ident">bind::SDL_RenderSetLogicalSize</span>(<span class="self">self</span>.<span class="ident">as_ptr</span>(), <span class="ident">width</span> <span class="kw">as</span> <span class="ident">c_int</span>, <span class="ident">height</span> <span class="kw">as</span> <span class="ident">c_int</span>)
+    <span class="doccomment">/// Sets the logical size of the renderer.
+    </span><span class="kw">pub fn </span>set_logical_size(<span class="kw-2">&amp;</span><span class="self">self</span>, Size { width, height }: Size) {
+        <span class="kw">use </span>std::os::raw::c_int;
+        <span class="kw">let </span>ret = <span class="kw">unsafe </span>{
+            bind::SDL_RenderSetLogicalSize(<span class="self">self</span>.as_ptr(), width <span class="kw">as </span>c_int, height <span class="kw">as </span>c_int)
         };
-        <span class="kw">if</span> <span class="ident">ret</span> <span class="op">!</span><span class="op">=</span> <span class="number">0</span> {
-            <span class="ident">Sdl::error_then_panic</span>(<span class="string">&quot;Setting renderer logical size&quot;</span>);
+        <span class="kw">if </span>ret != <span class="number">0 </span>{
+            Sdl::error_then_panic(<span class="string">&quot;Setting renderer logical size&quot;</span>);
         }
     }
 
-    <span class="doccomment">/// Returns whether integer scaled is forced.</span>
-    <span class="attribute">#[<span class="ident">must_use</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_forced_integer_scale</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
-        <span class="kw">unsafe</span> { <span class="ident">bind::SDL_RenderGetIntegerScale</span>(<span class="self">self</span>.<span class="ident">as_ptr</span>()) <span class="op">!</span><span class="op">=</span> <span class="number">0</span> }
+    <span class="doccomment">/// Returns whether integer scaled is forced.
+    </span><span class="attribute">#[must_use]
+    </span><span class="kw">pub fn </span>is_forced_integer_scale(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool {
+        <span class="kw">unsafe </span>{ bind::SDL_RenderGetIntegerScale(<span class="self">self</span>.as_ptr()) != <span class="number">0 </span>}
     }
 
-    <span class="doccomment">/// Sets whether integer scaled is forced.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">force_integer_scale</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">enabled</span>: <span class="ident">bool</span>) {
-        <span class="kw">let</span> <span class="ident">ret</span> <span class="op">=</span>
-            <span class="kw">unsafe</span> { <span class="ident">bind::SDL_RenderSetIntegerScale</span>(<span class="self">self</span>.<span class="ident">as_ptr</span>(), <span class="kw">if</span> <span class="ident">enabled</span> { <span class="number">1</span> } <span class="kw">else</span> { <span class="number">0</span> }) };
-        <span class="kw">if</span> <span class="ident">ret</span> <span class="op">!</span><span class="op">=</span> <span class="number">0</span> {
-            <span class="ident">Sdl::error_then_panic</span>(<span class="string">&quot;Setting renderer integer scale&quot;</span>);
+    <span class="doccomment">/// Sets whether integer scaled is forced.
+    </span><span class="kw">pub fn </span>force_integer_scale(<span class="kw-2">&amp;</span><span class="self">self</span>, enabled: bool) {
+        <span class="kw">let </span>ret =
+            <span class="kw">unsafe </span>{ bind::SDL_RenderSetIntegerScale(<span class="self">self</span>.as_ptr(), <span class="kw">if </span>enabled { <span class="number">1 </span>} <span class="kw">else </span>{ <span class="number">0 </span>}) };
+        <span class="kw">if </span>ret != <span class="number">0 </span>{
+            Sdl::error_then_panic(<span class="string">&quot;Setting renderer integer scale&quot;</span>);
         }
     }
 
-    <span class="doccomment">/// Returns the scale of th renderer.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">scale</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">Scale</span> {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">scale</span> <span class="op">=</span> <span class="ident">Scale</span> {
-            <span class="ident">horizontal</span>: <span class="number">0.0</span>,
-            <span class="ident">vertical</span>: <span class="number">0.0</span>,
+    <span class="doccomment">/// Returns the scale of th renderer.
+    </span><span class="kw">pub fn </span>scale(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; Scale {
+        <span class="kw">let </span><span class="kw-2">mut </span>scale = Scale {
+            horizontal: <span class="number">0.0</span>,
+            vertical: <span class="number">0.0</span>,
         };
-        <span class="kw">unsafe</span> {
-            <span class="ident">bind::SDL_RenderGetScale</span>(<span class="self">self</span>.<span class="ident">as_ptr</span>(), <span class="kw-2">&amp;mut</span> <span class="ident">scale</span>.<span class="ident">horizontal</span>, <span class="kw-2">&amp;mut</span> <span class="ident">scale</span>.<span class="ident">vertical</span>);
+        <span class="kw">unsafe </span>{
+            bind::SDL_RenderGetScale(<span class="self">self</span>.as_ptr(), <span class="kw-2">&amp;mut </span>scale.horizontal, <span class="kw-2">&amp;mut </span>scale.vertical);
         }
-        <span class="ident">scale</span>
+        scale
     }
 
-    <span class="doccomment">/// Sets the scale of the renderer.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_scale</span>(
+    <span class="doccomment">/// Sets the scale of the renderer.
+    </span><span class="kw">pub fn </span>set_scale(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
-        <span class="ident">Scale</span> {
-            <span class="ident">horizontal</span>,
-            <span class="ident">vertical</span>,
-        }: <span class="ident">Scale</span>,
+        Scale {
+            horizontal,
+            vertical,
+        }: Scale,
     ) {
-        <span class="kw">let</span> <span class="ident">ret</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">bind::SDL_RenderSetScale</span>(<span class="self">self</span>.<span class="ident">as_ptr</span>(), <span class="ident">horizontal</span>, <span class="ident">vertical</span>) };
-        <span class="kw">if</span> <span class="ident">ret</span> <span class="op">!</span><span class="op">=</span> <span class="number">0</span> {
-            <span class="ident">Sdl::error_then_panic</span>(<span class="string">&quot;Setting renderer scale&quot;</span>);
+        <span class="kw">let </span>ret = <span class="kw">unsafe </span>{ bind::SDL_RenderSetScale(<span class="self">self</span>.as_ptr(), horizontal, vertical) };
+        <span class="kw">if </span>ret != <span class="number">0 </span>{
+            Sdl::error_then_panic(<span class="string">&quot;Setting renderer scale&quot;</span>);
         }
     }
 
-    <span class="doccomment">/// Returns the viewport rectangle of the renderer.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">viewport</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">Rect</span> {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">raw_rect</span> <span class="op">=</span> <span class="ident">MaybeUninit::uninit</span>();
-        <span class="kw">unsafe</span> { <span class="ident">bind::SDL_RenderGetViewport</span>(<span class="self">self</span>.<span class="ident">as_ptr</span>(), <span class="ident">raw_rect</span>.<span class="ident">as_mut_ptr</span>()) }
-        <span class="kw">unsafe</span> { <span class="ident">raw_rect</span>.<span class="ident">assume_init</span>() }.<span class="ident">into</span>()
+    <span class="doccomment">/// Returns the viewport rectangle of the renderer.
+    </span><span class="kw">pub fn </span>viewport(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; Rect {
+        <span class="kw">let </span><span class="kw-2">mut </span>raw_rect = MaybeUninit::uninit();
+        <span class="kw">unsafe </span>{ bind::SDL_RenderGetViewport(<span class="self">self</span>.as_ptr(), raw_rect.as_mut_ptr()) }
+        <span class="kw">unsafe </span>{ raw_rect.assume_init() }.into()
     }
 
-    <span class="doccomment">/// Sets the viewport rectangle of the renderer.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_viewport</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">area</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Rect</span><span class="op">&gt;</span>) {
-        <span class="kw">let</span> <span class="ident">area</span> <span class="op">=</span> <span class="ident">area</span>.<span class="ident">map</span>(<span class="ident">Into::into</span>);
-        <span class="kw">let</span> <span class="ident">ret</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">bind::SDL_RenderSetViewport</span>(<span class="self">self</span>.<span class="ident">as_ptr</span>(), <span class="ident">as_raw</span>(<span class="kw-2">&amp;</span><span class="ident">area</span>)) };
-        <span class="kw">if</span> <span class="ident">ret</span> <span class="op">!</span><span class="op">=</span> <span class="number">0</span> {
-            <span class="ident">Sdl::error_then_panic</span>(<span class="string">&quot;Setting renderer viewport&quot;</span>);
+    <span class="doccomment">/// Sets the viewport rectangle of the renderer.
+    </span><span class="kw">pub fn </span>set_viewport(<span class="kw-2">&amp;</span><span class="self">self</span>, area: <span class="prelude-ty">Option</span>&lt;Rect&gt;) {
+        <span class="kw">let </span>area = area.map(Into::into);
+        <span class="kw">let </span>ret = <span class="kw">unsafe </span>{ bind::SDL_RenderSetViewport(<span class="self">self</span>.as_ptr(), as_raw(<span class="kw-2">&amp;</span>area)) };
+        <span class="kw">if </span>ret != <span class="number">0 </span>{
+            Sdl::error_then_panic(<span class="string">&quot;Setting renderer viewport&quot;</span>);
         }
     }
 
-    <span class="doccomment">/// Sets the render target to the texture.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_target</span><span class="op">&lt;</span><span class="lifetime">&#39;texture</span>: <span class="lifetime">&#39;window</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="lifetime">&#39;window</span> <span class="self">self</span>, <span class="ident">texture</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;texture</span> <span class="ident">Texture</span>) {
-        <span class="kw">let</span> <span class="ident">ret</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">bind::SDL_SetRenderTarget</span>(<span class="self">self</span>.<span class="ident">as_ptr</span>(), <span class="ident">texture</span>.<span class="ident">as_ptr</span>()) };
-        <span class="kw">if</span> <span class="ident">ret</span> <span class="op">!</span><span class="op">=</span> <span class="number">0</span> {
-            <span class="ident">Sdl::error_then_panic</span>(<span class="string">&quot;Setting renderer target texture&quot;</span>);
+    <span class="doccomment">/// Sets the render target to the texture.
+    </span><span class="kw">pub fn </span>set_target&lt;<span class="lifetime">&#39;texture</span>: <span class="lifetime">&#39;window</span>&gt;(<span class="kw-2">&amp;</span><span class="lifetime">&#39;window </span><span class="self">self</span>, texture: <span class="kw-2">&amp;</span><span class="lifetime">&#39;texture </span>Texture) {
+        <span class="kw">let </span>ret = <span class="kw">unsafe </span>{ bind::SDL_SetRenderTarget(<span class="self">self</span>.as_ptr(), texture.as_ptr()) };
+        <span class="kw">if </span>ret != <span class="number">0 </span>{
+            Sdl::error_then_panic(<span class="string">&quot;Setting renderer target texture&quot;</span>);
         }
     }
 
-    <span class="doccomment">/// Resets the render target to the original window.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_target_default</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) {
-        <span class="kw">let</span> <span class="ident">ret</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">bind::SDL_SetRenderTarget</span>(<span class="self">self</span>.<span class="ident">as_ptr</span>(), <span class="ident">std::ptr::null_mut</span>()) };
-        <span class="kw">if</span> <span class="ident">ret</span> <span class="op">!</span><span class="op">=</span> <span class="number">0</span> {
-            <span class="ident">Sdl::error_then_panic</span>(<span class="string">&quot;Setting renderer target default&quot;</span>);
+    <span class="doccomment">/// Resets the render target to the original window.
+    </span><span class="kw">pub fn </span>set_target_default(<span class="kw-2">&amp;</span><span class="self">self</span>) {
+        <span class="kw">let </span>ret = <span class="kw">unsafe </span>{ bind::SDL_SetRenderTarget(<span class="self">self</span>.as_ptr(), std::ptr::null_mut()) };
+        <span class="kw">if </span>ret != <span class="number">0 </span>{
+            Sdl::error_then_panic(<span class="string">&quot;Setting renderer target default&quot;</span>);
         }
     }
 }
 
-<span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;window</span><span class="op">&gt;</span> <span class="ident">Drop</span> <span class="kw">for</span> <span class="ident">Renderer</span><span class="op">&lt;</span><span class="lifetime">&#39;window</span><span class="op">&gt;</span> {
-    <span class="kw">fn</span> <span class="ident">drop</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) {
-        <span class="kw">unsafe</span> { <span class="ident">bind::SDL_DestroyRenderer</span>(<span class="self">self</span>.<span class="ident">renderer</span>.<span class="ident">as_ptr</span>()) }
+<span class="kw">impl</span>&lt;<span class="lifetime">&#39;window</span>&gt; Drop <span class="kw">for </span>Renderer&lt;<span class="lifetime">&#39;window</span>&gt; {
+    <span class="kw">fn </span>drop(<span class="kw-2">&amp;mut </span><span class="self">self</span>) {
+        <span class="kw">unsafe </span>{ bind::SDL_DestroyRenderer(<span class="self">self</span>.renderer.as_ptr()) }
     }
 }
 </code></pre></div>
-</section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="rich_sdl2_rust" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.64.0-nightly (0f4bcadb4 2022-07-30)" ></div></body></html>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="rich_sdl2_rust" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.66.0-nightly (5e9772042 2022-10-29)" ></div></body></html>

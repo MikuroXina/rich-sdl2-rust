@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/haptic.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>haptic.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../storage.js"></script><script defer src="../../source-script.js"></script><script defer src="../../source-files.js"></script><script defer src="../../main.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../rich_sdl2_rust/index.html"><div class="logo-container"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></div></a><h2 class="location"></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../rich_sdl2_rust/index.html"><div class="logo-container"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../rich_sdl2_rust/index.html"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/haptic.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>haptic.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" href="../../normalize.css"><link rel="stylesheet" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" href="../../ayu.css" disabled><link rel="stylesheet" href="../../dark.css" disabled><link rel="stylesheet" href="../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../storage.js"></script><script defer src="../../source-script.js"></script><script defer src="../../source-files.js"></script><script defer src="../../main.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><div class="width-limiter"><nav class="sub"><a class="sub-logo-container" href="../../rich_sdl2_rust/index.html"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../wheel.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><pre class="src-line-numbers"><span id="1">1</span>
 <span id="2">2</span>
 <span id="3">3</span>
 <span id="4">4</span>
@@ -221,228 +221,228 @@
 <span id="221">221</span>
 <span id="222">222</span>
 <span id="223">223</span>
-</pre><pre class="rust"><code><span class="doccomment">//! Haptic devices, which give the players to feedback by some force.</span>
+</pre><pre class="rust"><code><span class="doccomment">//! Haptic devices, which give the players to feedback by some force.
 
-<span class="kw">use</span> <span class="ident">bitflags::bitflags</span>;
-<span class="kw">use</span> <span class="ident">std</span>::{<span class="ident">ffi::CStr</span>, <span class="ident">marker::PhantomData</span>, <span class="ident">os::raw::c_int</span>, <span class="ident">ptr::NonNull</span>};
+</span><span class="kw">use </span>bitflags::bitflags;
+<span class="kw">use </span>std::{ffi::CStr, marker::PhantomData, os::raw::c_int, ptr::NonNull};
 
-<span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">bind</span>, <span class="ident">event::joystick::Joystick</span>, <span class="prelude-ty">Result</span>, <span class="ident">Sdl</span>, <span class="ident">SdlError</span>};
+<span class="kw">use crate</span>::{bind, event::joystick::Joystick, <span class="prelude-ty">Result</span>, Sdl, SdlError};
 
-<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">direction</span>;
-<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">effect</span>;
-<span class="kw">mod</span> <span class="ident">joystick</span>;
-<span class="kw">mod</span> <span class="ident">mouse</span>;
-<span class="kw">mod</span> <span class="ident">playing</span>;
-<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">rumble</span>;
+<span class="kw">pub mod </span>direction;
+<span class="kw">pub mod </span>effect;
+<span class="kw">mod </span>joystick;
+<span class="kw">mod </span>mouse;
+<span class="kw">mod </span>playing;
+<span class="kw">pub mod </span>rumble;
 
-<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">joystick</span>::<span class="kw-2">*</span>;
-<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">mouse</span>::<span class="kw-2">*</span>;
-<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">playing</span>::<span class="kw-2">*</span>;
+<span class="kw">pub use </span>joystick::<span class="kw-2">*</span>;
+<span class="kw">pub use </span>mouse::<span class="kw-2">*</span>;
+<span class="kw">pub use </span>playing::<span class="kw-2">*</span>;
 
-<span class="kw">use</span> <span class="ident"><span class="self">self</span>::effect::HapticEffect</span>;
+<span class="kw">use </span><span class="self">self</span>::effect::HapticEffect;
 
-<span class="macro">bitflags!</span> {
-    <span class="doccomment">/// A property of the haptic device.</span>
-    <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">HapticProperty</span>: <span class="ident">u32</span> {
-        <span class="doccomment">/// Supported a constant effect.</span>
-        <span class="kw">const</span> <span class="ident">CONSTANT</span> <span class="op">=</span> <span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">0</span>;
-        <span class="doccomment">/// Supported a sine wave periodic effect.</span>
-        <span class="kw">const</span> <span class="ident">SINE</span> <span class="op">=</span> <span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">1</span>;
-        <span class="doccomment">/// Supported a left/right effect.</span>
-        <span class="kw">const</span> <span class="ident">LEFT_RIGHT</span> <span class="op">=</span> <span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">2</span>;
-        <span class="doccomment">/// Supported a triangle wave periodic effect.</span>
-        <span class="kw">const</span> <span class="ident">TRIANGLE</span> <span class="op">=</span> <span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">3</span>;
-        <span class="doccomment">/// Supported an upwards sawtooth wave periodic effect.</span>
-        <span class="kw">const</span> <span class="ident">SAW_TOOTH_UP</span> <span class="op">=</span> <span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">4</span>;
-        <span class="doccomment">/// Supported a downwards sawtooth wave periodic effect.</span>
-        <span class="kw">const</span> <span class="ident">SAW_TOOTH_DOWN</span> <span class="op">=</span> <span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">5</span>;
-        <span class="doccomment">/// Supported a ramp effect.</span>
-        <span class="kw">const</span> <span class="ident">RAMP</span> <span class="op">=</span> <span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">6</span>;
-        <span class="doccomment">/// Supported a custom effect.</span>
-        <span class="kw">const</span> <span class="ident">CUSTOM</span> <span class="op">=</span> <span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">11</span>;
-        <span class="doccomment">/// Supported setting the global gain.</span>
-        <span class="kw">const</span> <span class="ident">GAIN</span> <span class="op">=</span> <span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">12</span>;
-        <span class="doccomment">/// Supported setting auto-center.</span>
-        <span class="kw">const</span> <span class="ident">AUTO_CENTER</span> <span class="op">=</span> <span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">13</span>;
-        <span class="doccomment">/// Supported querying the status of the effect.</span>
-        <span class="kw">const</span> <span class="ident">STATUS</span> <span class="op">=</span> <span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">14</span>;
-        <span class="doccomment">/// Supported pausing the effect.</span>
-        <span class="kw">const</span> <span class="ident">PAUSE</span> <span class="op">=</span> <span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">15</span>;
+<span class="macro">bitflags! </span>{
+    <span class="doccomment">/// A property of the haptic device.
+    </span><span class="kw">pub struct </span>HapticProperty: u32 {
+        <span class="doccomment">/// Supported a constant effect.
+        </span><span class="kw">const </span>CONSTANT = <span class="number">1 </span>&lt;&lt; <span class="number">0</span>;
+        <span class="doccomment">/// Supported a sine wave periodic effect.
+        </span><span class="kw">const </span>SINE = <span class="number">1 </span>&lt;&lt; <span class="number">1</span>;
+        <span class="doccomment">/// Supported a left/right effect.
+        </span><span class="kw">const </span>LEFT_RIGHT = <span class="number">1 </span>&lt;&lt; <span class="number">2</span>;
+        <span class="doccomment">/// Supported a triangle wave periodic effect.
+        </span><span class="kw">const </span>TRIANGLE = <span class="number">1 </span>&lt;&lt; <span class="number">3</span>;
+        <span class="doccomment">/// Supported an upwards sawtooth wave periodic effect.
+        </span><span class="kw">const </span>SAW_TOOTH_UP = <span class="number">1 </span>&lt;&lt; <span class="number">4</span>;
+        <span class="doccomment">/// Supported a downwards sawtooth wave periodic effect.
+        </span><span class="kw">const </span>SAW_TOOTH_DOWN = <span class="number">1 </span>&lt;&lt; <span class="number">5</span>;
+        <span class="doccomment">/// Supported a ramp effect.
+        </span><span class="kw">const </span>RAMP = <span class="number">1 </span>&lt;&lt; <span class="number">6</span>;
+        <span class="doccomment">/// Supported a custom effect.
+        </span><span class="kw">const </span>CUSTOM = <span class="number">1 </span>&lt;&lt; <span class="number">11</span>;
+        <span class="doccomment">/// Supported setting the global gain.
+        </span><span class="kw">const </span>GAIN = <span class="number">1 </span>&lt;&lt; <span class="number">12</span>;
+        <span class="doccomment">/// Supported setting auto-center.
+        </span><span class="kw">const </span>AUTO_CENTER = <span class="number">1 </span>&lt;&lt; <span class="number">13</span>;
+        <span class="doccomment">/// Supported querying the status of the effect.
+        </span><span class="kw">const </span>STATUS = <span class="number">1 </span>&lt;&lt; <span class="number">14</span>;
+        <span class="doccomment">/// Supported pausing the effect.
+        </span><span class="kw">const </span>PAUSE = <span class="number">1 </span>&lt;&lt; <span class="number">15</span>;
     }
 }
 
-<span class="doccomment">/// A haptic device.</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Haptic</span> {
-    <span class="ident">ptr</span>: <span class="ident">NonNull</span><span class="op">&lt;</span><span class="ident">bind::SDL_Haptic</span><span class="op">&gt;</span>,
+<span class="doccomment">/// A haptic device.
+</span><span class="kw">pub struct </span>Haptic {
+    ptr: NonNull&lt;bind::SDL_Haptic&gt;,
 }
 
-<span class="kw">impl</span> <span class="ident">std::fmt::Debug</span> <span class="kw">for</span> <span class="ident">Haptic</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;mut</span> <span class="ident">std::fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">std::fmt::Result</span> {
-        <span class="ident">f</span>.<span class="ident">debug_struct</span>(<span class="string">&quot;Haptic&quot;</span>)
-            .<span class="ident">field</span>(<span class="string">&quot;name&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">name</span>())
-            .<span class="ident">finish_non_exhaustive</span>()
+<span class="kw">impl </span>std::fmt::Debug <span class="kw">for </span>Haptic {
+    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>std::fmt::Formatter&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; std::fmt::Result {
+        f.debug_struct(<span class="string">&quot;Haptic&quot;</span>)
+            .field(<span class="string">&quot;name&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.name())
+            .finish_non_exhaustive()
     }
 }
 
-<span class="kw">impl</span> <span class="ident">Haptic</span> {
-    <span class="doccomment">/// Returns the name of the haptic device.</span>
-    <span class="attribute">#[<span class="ident">must_use</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">name</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">String</span> {
-        <span class="kw">let</span> <span class="ident">index</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">bind::SDL_HapticIndex</span>(<span class="self">self</span>.<span class="ident">ptr</span>.<span class="ident">as_ptr</span>()) };
-        <span class="kw">let</span> <span class="ident">cstr</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">CStr::from_ptr</span>(<span class="ident">bind::SDL_HapticName</span>(<span class="ident">index</span>)) };
-        <span class="ident">cstr</span>.<span class="ident">to_string_lossy</span>().<span class="ident">to_string</span>()
+<span class="kw">impl </span>Haptic {
+    <span class="doccomment">/// Returns the name of the haptic device.
+    </span><span class="attribute">#[must_use]
+    </span><span class="kw">pub fn </span>name(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; String {
+        <span class="kw">let </span>index = <span class="kw">unsafe </span>{ bind::SDL_HapticIndex(<span class="self">self</span>.ptr.as_ptr()) };
+        <span class="kw">let </span>cstr = <span class="kw">unsafe </span>{ CStr::from_ptr(bind::SDL_HapticName(index)) };
+        cstr.to_string_lossy().to_string()
     }
 
-    <span class="doccomment">/// Returns the numbers of the axes on the haptic device.</span>
-    <span class="attribute">#[<span class="ident">must_use</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">num_axes</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">u32</span> {
-        <span class="kw">unsafe</span> { <span class="ident">bind::SDL_HapticNumAxes</span>(<span class="self">self</span>.<span class="ident">ptr</span>.<span class="ident">as_ptr</span>()) <span class="kw">as</span> <span class="ident">u32</span> }
+    <span class="doccomment">/// Returns the numbers of the axes on the haptic device.
+    </span><span class="attribute">#[must_use]
+    </span><span class="kw">pub fn </span>num_axes(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; u32 {
+        <span class="kw">unsafe </span>{ bind::SDL_HapticNumAxes(<span class="self">self</span>.ptr.as_ptr()) <span class="kw">as </span>u32 }
     }
 
-    <span class="doccomment">/// Returns whether the effect is supported on the haptic device.</span>
-    <span class="attribute">#[<span class="ident">must_use</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_effect_supported</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">effect</span>: <span class="kw-2">&amp;</span><span class="ident">HapticEffect</span>) -&gt; <span class="ident">bool</span> {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">raw</span> <span class="op">=</span> <span class="ident">effect</span>.<span class="ident">clone</span>().<span class="ident">into_raw</span>();
-        <span class="kw">unsafe</span> {
-            <span class="ident">bind::SDL_HapticEffectSupported</span>(<span class="self">self</span>.<span class="ident">ptr</span>.<span class="ident">as_ptr</span>(), <span class="kw-2">&amp;mut</span> <span class="ident">raw</span>) <span class="kw">as</span> <span class="ident">bind::SDL_bool</span>
-                <span class="op">==</span> <span class="ident">bind::SDL_TRUE</span>
+    <span class="doccomment">/// Returns whether the effect is supported on the haptic device.
+    </span><span class="attribute">#[must_use]
+    </span><span class="kw">pub fn </span>is_effect_supported(<span class="kw-2">&amp;</span><span class="self">self</span>, effect: <span class="kw-2">&amp;</span>HapticEffect) -&gt; bool {
+        <span class="kw">let </span><span class="kw-2">mut </span>raw = effect.clone().into_raw();
+        <span class="kw">unsafe </span>{
+            bind::SDL_HapticEffectSupported(<span class="self">self</span>.ptr.as_ptr(), <span class="kw-2">&amp;mut </span>raw) <span class="kw">as </span>bind::SDL_bool
+                == bind::SDL_TRUE
         }
     }
 
-    <span class="doccomment">/// Constructs the [`PendingEffect`] from the effect specification.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # Errors</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// Returns `Err` if this feature is unsupported, or failed to create a new haptic effect on the device.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new_effect</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">effect</span>: <span class="kw-2">&amp;</span><span class="ident">HapticEffect</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">PendingEffect</span><span class="op">&gt;</span> {
-        <span class="kw">if</span> <span class="op">!</span><span class="self">self</span>.<span class="ident">is_effect_supported</span>(<span class="ident">effect</span>) {
-            <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">SdlError::UnsupportedFeature</span>);
+    <span class="doccomment">/// Constructs the [`PendingEffect`] from the effect specification.
+    ///
+    /// # Errors
+    ///
+    /// Returns `Err` if this feature is unsupported, or failed to create a new haptic effect on the device.
+    </span><span class="kw">pub fn </span>new_effect(<span class="kw-2">&amp;</span><span class="self">self</span>, effect: <span class="kw-2">&amp;</span>HapticEffect) -&gt; <span class="prelude-ty">Result</span>&lt;PendingEffect&gt; {
+        <span class="kw">if </span>!<span class="self">self</span>.is_effect_supported(effect) {
+            <span class="kw">return </span><span class="prelude-val">Err</span>(SdlError::UnsupportedFeature);
         }
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">raw</span> <span class="op">=</span> <span class="ident">effect</span>.<span class="ident">clone</span>().<span class="ident">into_raw</span>();
-        <span class="kw">let</span> <span class="ident">ret</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">bind::SDL_HapticNewEffect</span>(<span class="self">self</span>.<span class="ident">ptr</span>.<span class="ident">as_ptr</span>(), <span class="kw-2">&amp;mut</span> <span class="ident">raw</span>) };
-        <span class="kw">if</span> <span class="ident">ret</span> <span class="op">&lt;</span> <span class="number">0</span> {
-            <span class="prelude-val">Err</span>(<span class="ident">SdlError::Others</span> { <span class="ident">msg</span>: <span class="ident">Sdl::error</span>() })
-        } <span class="kw">else</span> {
-            <span class="prelude-val">Ok</span>(<span class="ident">PendingEffect::new</span>(<span class="ident">ret</span>, <span class="self">self</span>))
-        }
-    }
-
-    <span class="doccomment">/// Returns the capacity of the effects on the haptic device.</span>
-    <span class="attribute">#[<span class="ident">must_use</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">effects_creation_capacity</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">usize</span> {
-        <span class="kw">unsafe</span> { <span class="ident">bind::SDL_HapticNumEffects</span>(<span class="self">self</span>.<span class="ident">ptr</span>.<span class="ident">as_ptr</span>()) <span class="kw">as</span> <span class="ident">usize</span> }
-    }
-
-    <span class="doccomment">/// Returns the maximum numbers of playing the effects at same time on the haptic device.</span>
-    <span class="attribute">#[<span class="ident">must_use</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">effects_playing_capacity</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">usize</span> {
-        <span class="kw">unsafe</span> { <span class="ident">bind::SDL_HapticNumEffectsPlaying</span>(<span class="self">self</span>.<span class="ident">ptr</span>.<span class="ident">as_ptr</span>()) <span class="kw">as</span> <span class="ident">usize</span> }
-    }
-
-    <span class="doccomment">/// Stops all the playing effect.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">stop_all_effect</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) {
-        <span class="kw">unsafe</span> {
-            <span class="ident">bind::SDL_HapticStopAll</span>(<span class="self">self</span>.<span class="ident">ptr</span>.<span class="ident">as_ptr</span>());
+        <span class="kw">let </span><span class="kw-2">mut </span>raw = effect.clone().into_raw();
+        <span class="kw">let </span>ret = <span class="kw">unsafe </span>{ bind::SDL_HapticNewEffect(<span class="self">self</span>.ptr.as_ptr(), <span class="kw-2">&amp;mut </span>raw) };
+        <span class="kw">if </span>ret &lt; <span class="number">0 </span>{
+            <span class="prelude-val">Err</span>(SdlError::Others { msg: Sdl::error() })
+        } <span class="kw">else </span>{
+            <span class="prelude-val">Ok</span>(PendingEffect::new(ret, <span class="self">self</span>))
         }
     }
 
-    <span class="doccomment">/// Sets the global gain. If not supported, this has no effects.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_gain</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">gain</span>: <span class="ident">u32</span>) {
-        <span class="kw">if</span> <span class="op">!</span><span class="self">self</span>.<span class="ident">property</span>().<span class="ident">contains</span>(<span class="ident">HapticProperty::GAIN</span>) {
+    <span class="doccomment">/// Returns the capacity of the effects on the haptic device.
+    </span><span class="attribute">#[must_use]
+    </span><span class="kw">pub fn </span>effects_creation_capacity(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; usize {
+        <span class="kw">unsafe </span>{ bind::SDL_HapticNumEffects(<span class="self">self</span>.ptr.as_ptr()) <span class="kw">as </span>usize }
+    }
+
+    <span class="doccomment">/// Returns the maximum numbers of playing the effects at same time on the haptic device.
+    </span><span class="attribute">#[must_use]
+    </span><span class="kw">pub fn </span>effects_playing_capacity(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; usize {
+        <span class="kw">unsafe </span>{ bind::SDL_HapticNumEffectsPlaying(<span class="self">self</span>.ptr.as_ptr()) <span class="kw">as </span>usize }
+    }
+
+    <span class="doccomment">/// Stops all the playing effect.
+    </span><span class="kw">pub fn </span>stop_all_effect(<span class="kw-2">&amp;</span><span class="self">self</span>) {
+        <span class="kw">unsafe </span>{
+            bind::SDL_HapticStopAll(<span class="self">self</span>.ptr.as_ptr());
+        }
+    }
+
+    <span class="doccomment">/// Sets the global gain. If not supported, this has no effects.
+    </span><span class="kw">pub fn </span>set_gain(<span class="kw-2">&amp;</span><span class="self">self</span>, gain: u32) {
+        <span class="kw">if </span>!<span class="self">self</span>.property().contains(HapticProperty::GAIN) {
             <span class="kw">return</span>;
         }
-        <span class="kw">let</span> <span class="ident">ret</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">bind::SDL_HapticSetGain</span>(<span class="self">self</span>.<span class="ident">ptr</span>.<span class="ident">as_ptr</span>(), <span class="ident">gain</span>.<span class="ident">min</span>(<span class="number">100</span>) <span class="kw">as</span> <span class="ident">c_int</span>) };
-        <span class="kw">if</span> <span class="ident">ret</span> <span class="op">&lt;</span> <span class="number">0</span> {
-            <span class="macro">eprintln!</span>(<span class="string">&quot;{}&quot;</span>, <span class="ident">Sdl::error</span>());
+        <span class="kw">let </span>ret = <span class="kw">unsafe </span>{ bind::SDL_HapticSetGain(<span class="self">self</span>.ptr.as_ptr(), gain.min(<span class="number">100</span>) <span class="kw">as </span>c_int) };
+        <span class="kw">if </span>ret &lt; <span class="number">0 </span>{
+            <span class="macro">eprintln!</span>(<span class="string">&quot;{}&quot;</span>, Sdl::error());
         }
     }
 
-    <span class="doccomment">/// Sets auto-center. If not supported, this has no effects.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_auto_center</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">auto_center</span>: <span class="ident">u32</span>) {
-        <span class="kw">if</span> <span class="op">!</span><span class="self">self</span>.<span class="ident">property</span>().<span class="ident">contains</span>(<span class="ident">HapticProperty::AUTO_CENTER</span>) {
+    <span class="doccomment">/// Sets auto-center. If not supported, this has no effects.
+    </span><span class="kw">pub fn </span>set_auto_center(<span class="kw-2">&amp;</span><span class="self">self</span>, auto_center: u32) {
+        <span class="kw">if </span>!<span class="self">self</span>.property().contains(HapticProperty::AUTO_CENTER) {
             <span class="kw">return</span>;
         }
-        <span class="kw">let</span> <span class="ident">ret</span> <span class="op">=</span> <span class="kw">unsafe</span> {
-            <span class="ident">bind::SDL_HapticSetAutocenter</span>(<span class="self">self</span>.<span class="ident">ptr</span>.<span class="ident">as_ptr</span>(), <span class="ident">auto_center</span>.<span class="ident">min</span>(<span class="number">100</span>) <span class="kw">as</span> <span class="ident">c_int</span>)
+        <span class="kw">let </span>ret = <span class="kw">unsafe </span>{
+            bind::SDL_HapticSetAutocenter(<span class="self">self</span>.ptr.as_ptr(), auto_center.min(<span class="number">100</span>) <span class="kw">as </span>c_int)
         };
-        <span class="kw">if</span> <span class="ident">ret</span> <span class="op">&lt;</span> <span class="number">0</span> {
-            <span class="macro">eprintln!</span>(<span class="string">&quot;{}&quot;</span>, <span class="ident">Sdl::error</span>());
+        <span class="kw">if </span>ret &lt; <span class="number">0 </span>{
+            <span class="macro">eprintln!</span>(<span class="string">&quot;{}&quot;</span>, Sdl::error());
         }
     }
 
-    <span class="doccomment">/// Queries a property on the haptic device.</span>
-    <span class="attribute">#[<span class="ident">must_use</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">property</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">HapticProperty</span> {
-        <span class="kw">let</span> <span class="ident">bits</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">bind::SDL_HapticQuery</span>(<span class="self">self</span>.<span class="ident">ptr</span>.<span class="ident">as_ptr</span>()) };
-        <span class="ident">HapticProperty::from_bits</span>(<span class="ident">bits</span>).<span class="ident">unwrap</span>()
+    <span class="doccomment">/// Queries a property on the haptic device.
+    </span><span class="attribute">#[must_use]
+    </span><span class="kw">pub fn </span>property(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; HapticProperty {
+        <span class="kw">let </span>bits = <span class="kw">unsafe </span>{ bind::SDL_HapticQuery(<span class="self">self</span>.ptr.as_ptr()) };
+        HapticProperty::from_bits(bits).unwrap()
     }
 
-    <span class="doccomment">/// Pauses the haptic device and converts into [`PausedHaptic`].</span>
-    <span class="attribute">#[<span class="ident">must_use</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">pause</span>(<span class="self">self</span>) -&gt; <span class="ident">PausedHaptic</span> {
-        <span class="kw">unsafe</span> {
-            <span class="ident">bind::SDL_HapticPause</span>(<span class="self">self</span>.<span class="ident">ptr</span>.<span class="ident">as_ptr</span>());
+    <span class="doccomment">/// Pauses the haptic device and converts into [`PausedHaptic`].
+    </span><span class="attribute">#[must_use]
+    </span><span class="kw">pub fn </span>pause(<span class="self">self</span>) -&gt; PausedHaptic {
+        <span class="kw">unsafe </span>{
+            bind::SDL_HapticPause(<span class="self">self</span>.ptr.as_ptr());
         }
-        <span class="ident">PausedHaptic</span> { <span class="ident">haptic</span>: <span class="self">self</span> }
+        PausedHaptic { haptic: <span class="self">self </span>}
     }
 }
 
-<span class="doccomment">/// A haptic device but frozen not to interact.</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">PausedHaptic</span> {
-    <span class="ident">haptic</span>: <span class="ident">Haptic</span>,
+<span class="doccomment">/// A haptic device but frozen not to interact.
+</span><span class="kw">pub struct </span>PausedHaptic {
+    haptic: Haptic,
 }
 
-<span class="kw">impl</span> <span class="ident">PausedHaptic</span> {
-    <span class="doccomment">/// Unpauses the haptic device and converts into [`Haptic`].</span>
-    <span class="attribute">#[<span class="ident">must_use</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">unpause</span>(<span class="self">self</span>) -&gt; <span class="ident">Haptic</span> {
-        <span class="kw">unsafe</span> {
-            <span class="ident">bind::SDL_HapticUnpause</span>(<span class="self">self</span>.<span class="ident">haptic</span>.<span class="ident">ptr</span>.<span class="ident">as_ptr</span>());
+<span class="kw">impl </span>PausedHaptic {
+    <span class="doccomment">/// Unpauses the haptic device and converts into [`Haptic`].
+    </span><span class="attribute">#[must_use]
+    </span><span class="kw">pub fn </span>unpause(<span class="self">self</span>) -&gt; Haptic {
+        <span class="kw">unsafe </span>{
+            bind::SDL_HapticUnpause(<span class="self">self</span>.haptic.ptr.as_ptr());
         }
-        <span class="self">self</span>.<span class="ident">haptic</span>
+        <span class="self">self</span>.haptic
     }
 }
 
-<span class="doccomment">/// All of recognized haptic devices at initialized.</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">HapticSet</span>(<span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">Haptic</span><span class="op">&gt;</span>);
+<span class="doccomment">/// All of recognized haptic devices at initialized.
+</span><span class="kw">pub struct </span>HapticSet(Vec&lt;Haptic&gt;);
 
-<span class="kw">impl</span> <span class="ident">HapticSet</span> {
-    <span class="doccomment">/// Constructs and initializes the system and recognizes haptic devices.</span>
-    <span class="attribute">#[<span class="ident">must_use</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>() -&gt; <span class="self">Self</span> {
-        <span class="kw">let</span> <span class="ident">num_haptics</span> <span class="op">=</span> <span class="kw">unsafe</span> {
-            <span class="ident">bind::SDL_InitSubSystem</span>(<span class="ident">bind::SDL_INIT_HAPTIC</span>);
-            <span class="ident">bind::SDL_NumHaptics</span>()
+<span class="kw">impl </span>HapticSet {
+    <span class="doccomment">/// Constructs and initializes the system and recognizes haptic devices.
+    </span><span class="attribute">#[must_use]
+    </span><span class="kw">pub fn </span>new() -&gt; <span class="self">Self </span>{
+        <span class="kw">let </span>num_haptics = <span class="kw">unsafe </span>{
+            bind::SDL_InitSubSystem(bind::SDL_INIT_HAPTIC);
+            bind::SDL_NumHaptics()
         };
         <span class="self">Self</span>(
-            (<span class="number">0</span>..<span class="ident">num_haptics</span>)
-                .<span class="ident">filter_map</span>(<span class="op">|</span><span class="ident">index</span><span class="op">|</span> {
-                    <span class="kw">let</span> <span class="ident">ptr</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">bind::SDL_HapticOpen</span>(<span class="ident">index</span>) };
-                    <span class="ident">NonNull::new</span>(<span class="ident">ptr</span>).<span class="ident">map</span>(<span class="op">|</span><span class="ident">ptr</span><span class="op">|</span> <span class="ident">Haptic</span> { <span class="ident">ptr</span> })
+            (<span class="number">0</span>..num_haptics)
+                .filter_map(|index| {
+                    <span class="kw">let </span>ptr = <span class="kw">unsafe </span>{ bind::SDL_HapticOpen(index) };
+                    NonNull::new(ptr).map(|ptr| Haptic { ptr })
                 })
-                .<span class="ident">collect</span>(),
+                .collect(),
         )
     }
 
-    <span class="doccomment">/// Returns the haptic devices.</span>
-    <span class="attribute">#[<span class="ident">must_use</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">haptics</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>[<span class="ident">Haptic</span>] {
-        <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="number">0</span>
+    <span class="doccomment">/// Returns the haptic devices.
+    </span><span class="attribute">#[must_use]
+    </span><span class="kw">pub fn </span>haptics(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>[Haptic] {
+        <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="number">0
+    </span>}
+}
+
+<span class="kw">impl </span>Default <span class="kw">for </span>HapticSet {
+    <span class="kw">fn </span>default() -&gt; <span class="self">Self </span>{
+        <span class="self">Self</span>::new()
     }
 }
 
-<span class="kw">impl</span> <span class="ident">Default</span> <span class="kw">for</span> <span class="ident">HapticSet</span> {
-    <span class="kw">fn</span> <span class="ident">default</span>() -&gt; <span class="self">Self</span> {
-        <span class="ident"><span class="self">Self</span>::new</span>()
-    }
-}
-
-<span class="kw">impl</span> <span class="ident">Drop</span> <span class="kw">for</span> <span class="ident">HapticSet</span> {
-    <span class="kw">fn</span> <span class="ident">drop</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) {
-        <span class="kw">for</span> <span class="ident">haptic</span> <span class="kw">in</span> <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="number">0</span> {
-            <span class="kw">unsafe</span> { <span class="ident">bind::SDL_HapticClose</span>(<span class="ident">haptic</span>.<span class="ident">ptr</span>.<span class="ident">as_ptr</span>()) }
+<span class="kw">impl </span>Drop <span class="kw">for </span>HapticSet {
+    <span class="kw">fn </span>drop(<span class="kw-2">&amp;mut </span><span class="self">self</span>) {
+        <span class="kw">for </span>haptic <span class="kw">in </span><span class="kw-2">&amp;</span><span class="self">self</span>.<span class="number">0 </span>{
+            <span class="kw">unsafe </span>{ bind::SDL_HapticClose(haptic.ptr.as_ptr()) }
         }
     }
 }
 </code></pre></div>
-</section></div></main><div id="rustdoc-vars" data-root-path="../../" data-current-crate="rich_sdl2_rust" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.64.0-nightly (0f4bcadb4 2022-07-30)" ></div></body></html>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../" data-current-crate="rich_sdl2_rust" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.66.0-nightly (5e9772042 2022-10-29)" ></div></body></html>

@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/event/game_controller/event.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>event.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../../storage.js"></script><script defer src="../../../../source-script.js"></script><script defer src="../../../../source-files.js"></script><script defer src="../../../../main.js"></script><noscript><link rel="stylesheet" href="../../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../../../rich_sdl2_rust/index.html"><div class="logo-container"><img class="rust-logo" src="../../../../rust-logo.svg" alt="logo"></div></a><h2 class="location"></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../../../rich_sdl2_rust/index.html"><div class="logo-container"><img class="rust-logo" src="../../../../rust-logo.svg" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../../../rich_sdl2_rust/index.html"><img class="rust-logo" src="../../../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/event/game_controller/event.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>event.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" href="../../../../normalize.css"><link rel="stylesheet" href="../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" href="../../../../ayu.css" disabled><link rel="stylesheet" href="../../../../dark.css" disabled><link rel="stylesheet" href="../../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../../storage.js"></script><script defer src="../../../../source-script.js"></script><script defer src="../../../../source-files.js"></script><script defer src="../../../../main.js"></script><noscript><link rel="stylesheet" href="../../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><div class="width-limiter"><nav class="sub"><a class="sub-logo-container" href="../../../../rich_sdl2_rust/index.html"><img class="rust-logo" src="../../../../rust-logo.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../../wheel.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><pre class="src-line-numbers"><span id="1">1</span>
 <span id="2">2</span>
 <span id="3">3</span>
 <span id="4">4</span>
@@ -108,115 +108,115 @@
 <span id="108">108</span>
 <span id="109">109</span>
 <span id="110">110</span>
-</pre><pre class="rust"><code><span class="doccomment">//! An event related on a game controller.</span>
+</pre><pre class="rust"><code><span class="doccomment">//! An event related on a game controller.
 
-<span class="kw">use</span> <span class="ident">std::marker::PhantomData</span>;
+</span><span class="kw">use </span>std::marker::PhantomData;
 
-<span class="kw">use</span> <span class="kw">super</span>::{<span class="ident">axis::Axis</span>, <span class="ident">button::Button</span>};
-<span class="kw">use</span> <span class="kw">crate</span>::{
-    <span class="ident">bind</span>,
-    <span class="ident">event::joystick</span>::{<span class="ident">Joystick</span>, <span class="ident">JoystickId</span>},
-    <span class="ident">EnumInt</span>,
+<span class="kw">use super</span>::{axis::Axis, button::Button};
+<span class="kw">use crate</span>::{
+    bind,
+    event::joystick::{Joystick, JoystickId},
+    EnumInt,
 };
 
-<span class="doccomment">/// An event occurs on inputted from a game controller or changed a game controller.</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>)]</span>
-<span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">ControllerEvent</span><span class="op">&lt;</span><span class="lifetime">&#39;joystick</span><span class="op">&gt;</span> {
-    <span class="doccomment">/// An axis was changed.</span>
-    <span class="ident">Axis</span> {
-        <span class="doccomment">/// When this event occurred.</span>
-        <span class="ident">timestamp</span>: <span class="ident">u32</span>,
-        <span class="doccomment">/// An id of the joystick having this axis.</span>
-        <span class="ident">id</span>: <span class="ident">JoystickId</span><span class="op">&lt;</span><span class="lifetime">&#39;joystick</span><span class="op">&gt;</span>,
-        <span class="doccomment">/// A changed axis.</span>
-        <span class="ident">axis</span>: <span class="ident">Axis</span>,
-        <span class="doccomment">/// The changed value. The directions &quot;down&quot; and &quot;right&quot; are positive.</span>
-        <span class="ident">value</span>: <span class="ident">i16</span>,
+<span class="doccomment">/// An event occurs on inputted from a game controller or changed a game controller.
+</span><span class="attribute">#[derive(Debug, Clone)]
+</span><span class="kw">pub enum </span>ControllerEvent&lt;<span class="lifetime">&#39;joystick</span>&gt; {
+    <span class="doccomment">/// An axis was changed.
+    </span>Axis {
+        <span class="doccomment">/// When this event occurred.
+        </span>timestamp: u32,
+        <span class="doccomment">/// An id of the joystick having this axis.
+        </span>id: JoystickId&lt;<span class="lifetime">&#39;joystick</span>&gt;,
+        <span class="doccomment">/// A changed axis.
+        </span>axis: Axis,
+        <span class="doccomment">/// The changed value. The directions &quot;down&quot; and &quot;right&quot; are positive.
+        </span>value: i16,
     },
-    <span class="doccomment">/// A button was changed.</span>
-    <span class="ident">Button</span> {
-        <span class="doccomment">/// When this event occurred.</span>
-        <span class="ident">timestamp</span>: <span class="ident">u32</span>,
-        <span class="doccomment">/// An id of the joystick having this button.</span>
-        <span class="ident">id</span>: <span class="ident">JoystickId</span><span class="op">&lt;</span><span class="lifetime">&#39;joystick</span><span class="op">&gt;</span>,
-        <span class="doccomment">/// A changed button.</span>
-        <span class="ident">button</span>: <span class="ident">Button</span>,
-        <span class="doccomment">/// Whether the button was pressed.</span>
-        <span class="ident">is_pressed</span>: <span class="ident">bool</span>,
+    <span class="doccomment">/// A button was changed.
+    </span>Button {
+        <span class="doccomment">/// When this event occurred.
+        </span>timestamp: u32,
+        <span class="doccomment">/// An id of the joystick having this button.
+        </span>id: JoystickId&lt;<span class="lifetime">&#39;joystick</span>&gt;,
+        <span class="doccomment">/// A changed button.
+        </span>button: Button,
+        <span class="doccomment">/// Whether the button was pressed.
+        </span>is_pressed: bool,
     },
-    <span class="doccomment">/// A game controller was added.</span>
-    <span class="ident">DeviceAdded</span> {
-        <span class="doccomment">/// When this event occurred.</span>
-        <span class="ident">timestamp</span>: <span class="ident">u32</span>,
-        <span class="doccomment">/// An added joystick.</span>
-        <span class="ident">joystick</span>: <span class="ident">Joystick</span>,
+    <span class="doccomment">/// A game controller was added.
+    </span>DeviceAdded {
+        <span class="doccomment">/// When this event occurred.
+        </span>timestamp: u32,
+        <span class="doccomment">/// An added joystick.
+        </span>joystick: Joystick,
     },
-    <span class="doccomment">/// The game controller was removed.</span>
-    <span class="ident">DeviceRemoved</span> {
-        <span class="doccomment">/// When this event occurred.</span>
-        <span class="ident">timestamp</span>: <span class="ident">u32</span>,
-        <span class="doccomment">/// The id of the removed joystick.</span>
-        <span class="ident">id</span>: <span class="ident">JoystickId</span><span class="op">&lt;</span><span class="lifetime">&#39;joystick</span><span class="op">&gt;</span>,
+    <span class="doccomment">/// The game controller was removed.
+    </span>DeviceRemoved {
+        <span class="doccomment">/// When this event occurred.
+        </span>timestamp: u32,
+        <span class="doccomment">/// The id of the removed joystick.
+        </span>id: JoystickId&lt;<span class="lifetime">&#39;joystick</span>&gt;,
     },
-    <span class="doccomment">/// The game controller was remapped.</span>
-    <span class="ident">DeviceRemapped</span> {
-        <span class="doccomment">/// When this event occurred.</span>
-        <span class="ident">timestamp</span>: <span class="ident">u32</span>,
-        <span class="doccomment">/// The id of the remapped joystick.</span>
-        <span class="ident">id</span>: <span class="ident">JoystickId</span><span class="op">&lt;</span><span class="lifetime">&#39;joystick</span><span class="op">&gt;</span>,
+    <span class="doccomment">/// The game controller was remapped.
+    </span>DeviceRemapped {
+        <span class="doccomment">/// When this event occurred.
+        </span>timestamp: u32,
+        <span class="doccomment">/// The id of the remapped joystick.
+        </span>id: JoystickId&lt;<span class="lifetime">&#39;joystick</span>&gt;,
     },
 }
 
-<span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">bind::SDL_ControllerAxisEvent</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">ControllerEvent</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span> {
-    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">raw</span>: <span class="ident">bind::SDL_ControllerAxisEvent</span>) -&gt; <span class="self">Self</span> {
-        <span class="ident"><span class="self">Self</span>::Axis</span> {
-            <span class="ident">timestamp</span>: <span class="ident">raw</span>.<span class="ident">timestamp</span>,
-            <span class="ident">id</span>: <span class="ident">JoystickId</span> {
-                <span class="ident">id</span>: <span class="ident">raw</span>.<span class="ident">which</span> <span class="kw">as</span> <span class="ident">u32</span>,
-                <span class="ident">_phantom</span>: <span class="ident">PhantomData</span>,
+<span class="kw">impl </span>From&lt;bind::SDL_ControllerAxisEvent&gt; <span class="kw">for </span>ControllerEvent&lt;<span class="lifetime">&#39;_</span>&gt; {
+    <span class="kw">fn </span>from(raw: bind::SDL_ControllerAxisEvent) -&gt; <span class="self">Self </span>{
+        <span class="self">Self</span>::Axis {
+            timestamp: raw.timestamp,
+            id: JoystickId {
+                id: raw.which <span class="kw">as </span>u32,
+                _phantom: PhantomData,
             },
-            <span class="ident">axis</span>: <span class="ident">Axis::from_raw</span>(<span class="ident">raw</span>.<span class="ident">axis</span> <span class="kw">as</span> <span class="ident">bind::SDL_GameControllerAxis</span>).<span class="ident">unwrap</span>(),
-            <span class="ident">value</span>: <span class="ident">raw</span>.<span class="ident">value</span>,
+            axis: Axis::from_raw(raw.axis <span class="kw">as </span>bind::SDL_GameControllerAxis).unwrap(),
+            value: raw.value,
         }
     }
 }
 
-<span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">bind::SDL_ControllerButtonEvent</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">ControllerEvent</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span> {
-    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">raw</span>: <span class="ident">bind::SDL_ControllerButtonEvent</span>) -&gt; <span class="self">Self</span> {
-        <span class="ident"><span class="self">Self</span>::Button</span> {
-            <span class="ident">timestamp</span>: <span class="ident">raw</span>.<span class="ident">timestamp</span>,
-            <span class="ident">id</span>: <span class="ident">JoystickId</span> {
-                <span class="ident">id</span>: <span class="ident">raw</span>.<span class="ident">which</span> <span class="kw">as</span> <span class="ident">u32</span>,
-                <span class="ident">_phantom</span>: <span class="ident">PhantomData</span>,
+<span class="kw">impl </span>From&lt;bind::SDL_ControllerButtonEvent&gt; <span class="kw">for </span>ControllerEvent&lt;<span class="lifetime">&#39;_</span>&gt; {
+    <span class="kw">fn </span>from(raw: bind::SDL_ControllerButtonEvent) -&gt; <span class="self">Self </span>{
+        <span class="self">Self</span>::Button {
+            timestamp: raw.timestamp,
+            id: JoystickId {
+                id: raw.which <span class="kw">as </span>u32,
+                _phantom: PhantomData,
             },
-            <span class="ident">button</span>: <span class="ident">Button::from_raw</span>(<span class="ident">raw</span>.<span class="ident">button</span> <span class="kw">as</span> <span class="ident">bind::SDL_GameControllerButton</span>).<span class="ident">unwrap</span>(),
-            <span class="ident">is_pressed</span>: <span class="ident">raw</span>.<span class="ident">state</span> <span class="kw">as</span> <span class="ident">u32</span> <span class="op">==</span> <span class="ident">bind::SDL_PRESSED</span>,
+            button: Button::from_raw(raw.button <span class="kw">as </span>bind::SDL_GameControllerButton).unwrap(),
+            is_pressed: raw.state <span class="kw">as </span>u32 == bind::SDL_PRESSED,
         }
     }
 }
 
-<span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">bind::SDL_ControllerDeviceEvent</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">ControllerEvent</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span> {
-    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">raw</span>: <span class="ident">bind::SDL_ControllerDeviceEvent</span>) -&gt; <span class="self">Self</span> {
-        <span class="kw">let</span> <span class="ident">id</span> <span class="op">=</span> <span class="ident">JoystickId</span> {
-            <span class="ident">id</span>: <span class="ident">raw</span>.<span class="ident">which</span> <span class="kw">as</span> <span class="ident">u32</span>,
-            <span class="ident">_phantom</span>: <span class="ident">PhantomData</span>,
+<span class="kw">impl </span>From&lt;bind::SDL_ControllerDeviceEvent&gt; <span class="kw">for </span>ControllerEvent&lt;<span class="lifetime">&#39;_</span>&gt; {
+    <span class="kw">fn </span>from(raw: bind::SDL_ControllerDeviceEvent) -&gt; <span class="self">Self </span>{
+        <span class="kw">let </span>id = JoystickId {
+            id: raw.which <span class="kw">as </span>u32,
+            _phantom: PhantomData,
         };
-        <span class="kw">match</span> <span class="ident">raw</span>.<span class="ident">type_</span> <span class="kw">as</span> <span class="ident">EnumInt</span> {
-            <span class="ident">bind::SDL_CONTROLLERDEVICEADDED</span> =&gt; <span class="ident"><span class="self">Self</span>::DeviceAdded</span> {
-                <span class="ident">timestamp</span>: <span class="ident">raw</span>.<span class="ident">timestamp</span>,
-                <span class="ident">joystick</span>: <span class="ident">Joystick::from_id</span>(<span class="ident">id</span>).<span class="ident">unwrap</span>(),
+        <span class="kw">match </span>raw.type_ <span class="kw">as </span>EnumInt {
+            bind::SDL_CONTROLLERDEVICEADDED =&gt; <span class="self">Self</span>::DeviceAdded {
+                timestamp: raw.timestamp,
+                joystick: Joystick::from_id(id).unwrap(),
             },
-            <span class="ident">bind::SDL_CONTROLLERDEVICEREMOVED</span> =&gt; <span class="ident"><span class="self">Self</span>::DeviceRemoved</span> {
-                <span class="ident">timestamp</span>: <span class="ident">raw</span>.<span class="ident">timestamp</span>,
-                <span class="ident">id</span>,
+            bind::SDL_CONTROLLERDEVICEREMOVED =&gt; <span class="self">Self</span>::DeviceRemoved {
+                timestamp: raw.timestamp,
+                id,
             },
-            <span class="ident">bind::SDL_CONTROLLERDEVICEREMAPPED</span> =&gt; <span class="ident"><span class="self">Self</span>::DeviceRemapped</span> {
-                <span class="ident">timestamp</span>: <span class="ident">raw</span>.<span class="ident">timestamp</span>,
-                <span class="ident">id</span>,
+            bind::SDL_CONTROLLERDEVICEREMAPPED =&gt; <span class="self">Self</span>::DeviceRemapped {
+                timestamp: raw.timestamp,
+                id,
             },
-            <span class="kw">_</span> =&gt; <span class="macro">unreachable!</span>(),
+            <span class="kw">_ </span>=&gt; <span class="macro">unreachable!</span>(),
         }
     }
 }
 </code></pre></div>
-</section></div></main><div id="rustdoc-vars" data-root-path="../../../../" data-current-crate="rich_sdl2_rust" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.64.0-nightly (0f4bcadb4 2022-07-30)" ></div></body></html>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../../../" data-current-crate="rich_sdl2_rust" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.66.0-nightly (5e9772042 2022-10-29)" ></div></body></html>

@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/video/window/hit_test.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>hit_test.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../../storage.js"></script><script defer src="../../../../source-script.js"></script><script defer src="../../../../source-files.js"></script><script defer src="../../../../main.js"></script><noscript><link rel="stylesheet" href="../../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../../../rich_sdl2_rust/index.html"><div class="logo-container"><img class="rust-logo" src="../../../../rust-logo.svg" alt="logo"></div></a><h2 class="location"></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../../../rich_sdl2_rust/index.html"><div class="logo-container"><img class="rust-logo" src="../../../../rust-logo.svg" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../../../rich_sdl2_rust/index.html"><img class="rust-logo" src="../../../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/video/window/hit_test.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>hit_test.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" href="../../../../normalize.css"><link rel="stylesheet" href="../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" href="../../../../ayu.css" disabled><link rel="stylesheet" href="../../../../dark.css" disabled><link rel="stylesheet" href="../../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../../storage.js"></script><script defer src="../../../../source-script.js"></script><script defer src="../../../../source-files.js"></script><script defer src="../../../../main.js"></script><noscript><link rel="stylesheet" href="../../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><div class="width-limiter"><nav class="sub"><a class="sub-logo-container" href="../../../../rich_sdl2_rust/index.html"><img class="rust-logo" src="../../../../rust-logo.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../../wheel.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><pre class="src-line-numbers"><span id="1">1</span>
 <span id="2">2</span>
 <span id="3">3</span>
 <span id="4">4</span>
@@ -100,107 +100,107 @@
 <span id="100">100</span>
 <span id="101">101</span>
 <span id="102">102</span>
-</pre><pre class="rust"><code><span class="kw">use</span> <span class="ident">static_assertions::assert_not_impl_all</span>;
-<span class="kw">use</span> <span class="ident">std</span>::{
-    <span class="ident">cell</span>::{<span class="ident">Cell</span>, <span class="ident">RefCell</span>},
-    <span class="ident">collections::HashMap</span>,
-    <span class="ident">ffi::c_void</span>,
-    <span class="ident">ptr::addr_of_mut</span>,
+</pre><pre class="rust"><code><span class="kw">use </span>static_assertions::assert_not_impl_all;
+<span class="kw">use </span>std::{
+    cell::{Cell, RefCell},
+    collections::HashMap,
+    ffi::c_void,
+    ptr::addr_of_mut,
 };
 
-<span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">bind</span>, <span class="ident">geo::Point</span>, <span class="prelude-ty">Result</span>};
+<span class="kw">use crate</span>::{bind, geo::Point, <span class="prelude-ty">Result</span>};
 
-<span class="kw">use</span> <span class="ident"><span class="kw">super</span>::Window</span>;
+<span class="kw">use </span><span class="kw">super</span>::Window;
 
-<span class="doccomment">/// A hit test result that determined cursor from the mouse position.</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">Copy</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>)]</span>
-<span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">HitTestResult</span> {
-    <span class="doccomment">/// The cursor should be normal.</span>
-    <span class="ident">Normal</span>,
-    <span class="doccomment">/// The cursor should be draggable.</span>
-    <span class="ident">Draggable</span>,
-    <span class="doccomment">/// The cursor should be resizing on the top left.</span>
-    <span class="ident">ResizeTopLeft</span>,
-    <span class="doccomment">/// The cursor should be resizing on the top.</span>
-    <span class="ident">ResizeTop</span>,
-    <span class="doccomment">/// The cursor should be resizing on the top right.</span>
-    <span class="ident">ResizeTopRight</span>,
-    <span class="doccomment">/// The cursor should be resizing on the right.</span>
-    <span class="ident">ResizeRight</span>,
-    <span class="doccomment">/// The cursor should be resizing on the bottom right.</span>
-    <span class="ident">ResizeBottomRight</span>,
-    <span class="doccomment">/// The cursor should be resizing on the bottom.</span>
-    <span class="ident">ResizeBottom</span>,
-    <span class="doccomment">/// The cursor should be resizing on the bottom left.</span>
-    <span class="ident">ResizeBottomLeft</span>,
-    <span class="doccomment">/// The cursor should be resizing on the left.</span>
-    <span class="ident">ResizeLeft</span>,
+<span class="doccomment">/// A hit test result that determined cursor from the mouse position.
+</span><span class="attribute">#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+</span><span class="kw">pub enum </span>HitTestResult {
+    <span class="doccomment">/// The cursor should be normal.
+    </span>Normal,
+    <span class="doccomment">/// The cursor should be draggable.
+    </span>Draggable,
+    <span class="doccomment">/// The cursor should be resizing on the top left.
+    </span>ResizeTopLeft,
+    <span class="doccomment">/// The cursor should be resizing on the top.
+    </span>ResizeTop,
+    <span class="doccomment">/// The cursor should be resizing on the top right.
+    </span>ResizeTopRight,
+    <span class="doccomment">/// The cursor should be resizing on the right.
+    </span>ResizeRight,
+    <span class="doccomment">/// The cursor should be resizing on the bottom right.
+    </span>ResizeBottomRight,
+    <span class="doccomment">/// The cursor should be resizing on the bottom.
+    </span>ResizeBottom,
+    <span class="doccomment">/// The cursor should be resizing on the bottom left.
+    </span>ResizeBottomLeft,
+    <span class="doccomment">/// The cursor should be resizing on the left.
+    </span>ResizeLeft,
 }
 
-<span class="kw">impl</span> <span class="ident">HitTestResult</span> {
-    <span class="kw">fn</span> <span class="ident">into_arg</span>(<span class="self">self</span>) -&gt; <span class="ident">bind::SDL_HitTestResult</span> {
-        <span class="kw">match</span> <span class="self">self</span> {
-            <span class="ident">HitTestResult::Normal</span> =&gt; <span class="ident">bind::SDL_HITTEST_NORMAL</span>,
-            <span class="ident">HitTestResult::Draggable</span> =&gt; <span class="ident">bind::SDL_HITTEST_DRAGGABLE</span>,
-            <span class="ident">HitTestResult::ResizeTopLeft</span> =&gt; <span class="ident">bind::SDL_HITTEST_RESIZE_TOPLEFT</span>,
-            <span class="ident">HitTestResult::ResizeTop</span> =&gt; <span class="ident">bind::SDL_HITTEST_RESIZE_TOP</span>,
-            <span class="ident">HitTestResult::ResizeTopRight</span> =&gt; <span class="ident">bind::SDL_HITTEST_RESIZE_TOPRIGHT</span>,
-            <span class="ident">HitTestResult::ResizeRight</span> =&gt; <span class="ident">bind::SDL_HITTEST_RESIZE_RIGHT</span>,
-            <span class="ident">HitTestResult::ResizeBottomRight</span> =&gt; <span class="ident">bind::SDL_HITTEST_RESIZE_BOTTOMRIGHT</span>,
-            <span class="ident">HitTestResult::ResizeBottom</span> =&gt; <span class="ident">bind::SDL_HITTEST_RESIZE_BOTTOM</span>,
-            <span class="ident">HitTestResult::ResizeBottomLeft</span> =&gt; <span class="ident">bind::SDL_HITTEST_RESIZE_BOTTOMLEFT</span>,
-            <span class="ident">HitTestResult::ResizeLeft</span> =&gt; <span class="ident">bind::SDL_HITTEST_RESIZE_LEFT</span>,
+<span class="kw">impl </span>HitTestResult {
+    <span class="kw">fn </span>into_arg(<span class="self">self</span>) -&gt; bind::SDL_HitTestResult {
+        <span class="kw">match </span><span class="self">self </span>{
+            HitTestResult::Normal =&gt; bind::SDL_HITTEST_NORMAL,
+            HitTestResult::Draggable =&gt; bind::SDL_HITTEST_DRAGGABLE,
+            HitTestResult::ResizeTopLeft =&gt; bind::SDL_HITTEST_RESIZE_TOPLEFT,
+            HitTestResult::ResizeTop =&gt; bind::SDL_HITTEST_RESIZE_TOP,
+            HitTestResult::ResizeTopRight =&gt; bind::SDL_HITTEST_RESIZE_TOPRIGHT,
+            HitTestResult::ResizeRight =&gt; bind::SDL_HITTEST_RESIZE_RIGHT,
+            HitTestResult::ResizeBottomRight =&gt; bind::SDL_HITTEST_RESIZE_BOTTOMRIGHT,
+            HitTestResult::ResizeBottom =&gt; bind::SDL_HITTEST_RESIZE_BOTTOM,
+            HitTestResult::ResizeBottomLeft =&gt; bind::SDL_HITTEST_RESIZE_BOTTOMLEFT,
+            HitTestResult::ResizeLeft =&gt; bind::SDL_HITTEST_RESIZE_LEFT,
         }
     }
 }
 
-<span class="doccomment">/// A callback to hit test with the mouse position.</span>
-<span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">HitTester</span><span class="op">&lt;</span><span class="lifetime">&#39;window</span><span class="op">&gt;</span>: <span class="ident">FnMut</span>(<span class="ident">Point</span>) -&gt; <span class="ident">HitTestResult</span> <span class="op">+</span> <span class="lifetime">&#39;window</span> {}
+<span class="doccomment">/// A callback to hit test with the mouse position.
+</span><span class="kw">pub trait </span>HitTester&lt;<span class="lifetime">&#39;window</span>&gt;: FnMut(Point) -&gt; HitTestResult + <span class="lifetime">&#39;window </span>{}
 
-<span class="doccomment">/// A hit tester for a window.</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>)]</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">HitTest</span><span class="op">&lt;</span><span class="lifetime">&#39;window</span>, <span class="ident">T</span><span class="op">&gt;</span> {
-    <span class="ident">window</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;window</span> <span class="ident">Window</span><span class="op">&lt;</span><span class="lifetime">&#39;window</span><span class="op">&gt;</span>,
-    <span class="ident">tester</span>: <span class="ident">T</span>,
+<span class="doccomment">/// A hit tester for a window.
+</span><span class="attribute">#[derive(Debug)]
+</span><span class="kw">pub struct </span>HitTest&lt;<span class="lifetime">&#39;window</span>, T&gt; {
+    window: <span class="kw-2">&amp;</span><span class="lifetime">&#39;window </span>Window&lt;<span class="lifetime">&#39;window</span>&gt;,
+    tester: T,
 }
 
-<span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;window</span>, <span class="ident">T</span>: <span class="ident">HitTester</span><span class="op">&lt;</span><span class="lifetime">&#39;window</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="ident">HitTest</span><span class="op">&lt;</span><span class="lifetime">&#39;window</span>, <span class="ident">T</span><span class="op">&gt;</span> {
-    <span class="doccomment">/// Constructs a hit test from the window and a callback.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # Errors</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// Returns `Err` if a hit test in the window is unsupported.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">window</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;window</span> <span class="ident">Window</span><span class="op">&lt;</span><span class="lifetime">&#39;window</span><span class="op">&gt;</span>, <span class="kw-2">mut</span> <span class="ident">tester</span>: <span class="ident">T</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="ident">data</span> <span class="op">=</span> <span class="macro">addr_of_mut!</span>(<span class="ident">tester</span>);
-        <span class="kw">let</span> <span class="ident">ret</span> <span class="op">=</span> <span class="kw">unsafe</span> {
-            <span class="ident">bind::SDL_SetWindowHitTest</span>(
-                <span class="ident">window</span>.<span class="ident">as_ptr</span>(),
-                <span class="prelude-val">Some</span>(<span class="ident">hit_test_wrap_handler</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>),
-                <span class="ident">data</span>.<span class="ident">cast</span>(),
+<span class="kw">impl</span>&lt;<span class="lifetime">&#39;window</span>, T: HitTester&lt;<span class="lifetime">&#39;window</span>&gt;&gt; HitTest&lt;<span class="lifetime">&#39;window</span>, T&gt; {
+    <span class="doccomment">/// Constructs a hit test from the window and a callback.
+    ///
+    /// # Errors
+    ///
+    /// Returns `Err` if a hit test in the window is unsupported.
+    </span><span class="kw">pub fn </span>new(window: <span class="kw-2">&amp;</span><span class="lifetime">&#39;window </span>Window&lt;<span class="lifetime">&#39;window</span>&gt;, <span class="kw-2">mut </span>tester: T) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>&gt; {
+        <span class="kw">let </span>data = <span class="macro">addr_of_mut!</span>(tester);
+        <span class="kw">let </span>ret = <span class="kw">unsafe </span>{
+            bind::SDL_SetWindowHitTest(
+                window.as_ptr(),
+                <span class="prelude-val">Some</span>(hit_test_wrap_handler::&lt;T&gt;),
+                data.cast(),
             )
         };
-        <span class="kw">if</span> <span class="ident">ret</span> <span class="op">==</span> <span class="number">0</span> {
-            <span class="prelude-val">Ok</span>(<span class="self">Self</span> { <span class="ident">window</span>, <span class="ident">tester</span> })
-        } <span class="kw">else</span> {
-            <span class="prelude-val">Err</span>(<span class="ident"><span class="kw">crate</span>::SdlError::UnsupportedFeature</span>)
+        <span class="kw">if </span>ret == <span class="number">0 </span>{
+            <span class="prelude-val">Ok</span>(<span class="self">Self </span>{ window, tester })
+        } <span class="kw">else </span>{
+            <span class="prelude-val">Err</span>(<span class="kw">crate</span>::SdlError::UnsupportedFeature)
         }
     }
 }
 
-<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> <span class="ident">Drop</span> <span class="kw">for</span> <span class="ident">HitTest</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span>, <span class="ident">T</span><span class="op">&gt;</span> {
-    <span class="kw">fn</span> <span class="ident">drop</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) {
-        <span class="kw">let</span> <span class="kw">_</span> <span class="op">=</span>
-            <span class="kw">unsafe</span> { <span class="ident">bind::SDL_SetWindowHitTest</span>(<span class="self">self</span>.<span class="ident">window</span>.<span class="ident">as_ptr</span>(), <span class="prelude-val">None</span>, <span class="ident">std::ptr::null_mut</span>()) };
+<span class="kw">impl</span>&lt;T&gt; Drop <span class="kw">for </span>HitTest&lt;<span class="lifetime">&#39;_</span>, T&gt; {
+    <span class="kw">fn </span>drop(<span class="kw-2">&amp;mut </span><span class="self">self</span>) {
+        <span class="kw">let _ </span>=
+            <span class="kw">unsafe </span>{ bind::SDL_SetWindowHitTest(<span class="self">self</span>.window.as_ptr(), <span class="prelude-val">None</span>, std::ptr::null_mut()) };
     }
 }
 
-<span class="kw">unsafe</span> <span class="kw">extern</span> <span class="string">&quot;C&quot;</span> <span class="kw">fn</span> <span class="ident">hit_test_wrap_handler</span><span class="op">&lt;</span><span class="lifetime">&#39;window</span>, <span class="ident">T</span>: <span class="ident">HitTester</span><span class="op">&lt;</span><span class="lifetime">&#39;window</span><span class="op">&gt;</span><span class="op">&gt;</span>(
-    <span class="ident">win</span>: <span class="kw-2">*mut</span> <span class="ident">bind::SDL_Window</span>,
-    <span class="ident">area</span>: <span class="kw-2">*const</span> <span class="ident">bind::SDL_Point</span>,
-    <span class="ident">data</span>: <span class="kw-2">*mut</span> <span class="ident">c_void</span>,
-) -&gt; <span class="ident">bind::SDL_HitTestResult</span> {
-    <span class="kw">let</span> <span class="ident">callback</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="kw-2">&amp;mut</span> <span class="kw-2">*</span><span class="ident">data</span>.<span class="ident">cast</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>() };
-    <span class="ident">callback</span>((<span class="kw-2">*</span><span class="ident">area</span>).<span class="ident">into</span>()).<span class="ident">into_arg</span>()
+<span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn </span>hit_test_wrap_handler&lt;<span class="lifetime">&#39;window</span>, T: HitTester&lt;<span class="lifetime">&#39;window</span>&gt;&gt;(
+    win: <span class="kw-2">*mut </span>bind::SDL_Window,
+    area: <span class="kw-2">*const </span>bind::SDL_Point,
+    data: <span class="kw-2">*mut </span>c_void,
+) -&gt; bind::SDL_HitTestResult {
+    <span class="kw">let </span>callback = <span class="kw">unsafe </span>{ <span class="kw-2">&amp;mut *</span>data.cast::&lt;T&gt;() };
+    callback((<span class="kw-2">*</span>area).into()).into_arg()
 }
 </code></pre></div>
-</section></div></main><div id="rustdoc-vars" data-root-path="../../../../" data-current-crate="rich_sdl2_rust" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.64.0-nightly (0f4bcadb4 2022-07-30)" ></div></body></html>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../../../" data-current-crate="rich_sdl2_rust" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.66.0-nightly (5e9772042 2022-10-29)" ></div></body></html>

@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/ttf/font/render/pen.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>pen.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../../../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../../../storage.js"></script><script defer src="../../../../../source-script.js"></script><script defer src="../../../../../source-files.js"></script><script defer src="../../../../../main.js"></script><noscript><link rel="stylesheet" href="../../../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../../../../rich_sdl2_rust/index.html"><div class="logo-container"><img class="rust-logo" src="../../../../../rust-logo.svg" alt="logo"></div></a><h2 class="location"></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../../../../rich_sdl2_rust/index.html"><div class="logo-container"><img class="rust-logo" src="../../../../../rust-logo.svg" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../../../../rich_sdl2_rust/index.html"><img class="rust-logo" src="../../../../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/ttf/font/render/pen.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>pen.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" href="../../../../../normalize.css"><link rel="stylesheet" href="../../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" href="../../../../../ayu.css" disabled><link rel="stylesheet" href="../../../../../dark.css" disabled><link rel="stylesheet" href="../../../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../../../storage.js"></script><script defer src="../../../../../source-script.js"></script><script defer src="../../../../../source-files.js"></script><script defer src="../../../../../main.js"></script><noscript><link rel="stylesheet" href="../../../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><div class="width-limiter"><nav class="sub"><a class="sub-logo-container" href="../../../../../rich_sdl2_rust/index.html"><img class="rust-logo" src="../../../../../rust-logo.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../../../wheel.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><pre class="src-line-numbers"><span id="1">1</span>
 <span id="2">2</span>
 <span id="3">3</span>
 <span id="4">4</span>
@@ -138,145 +138,145 @@
 <span id="138">138</span>
 <span id="139">139</span>
 <span id="140">140</span>
-</pre><pre class="rust"><code><span class="doccomment">//! Extensions for [`crate::renderer::pen::Pen`].</span>
+</pre><pre class="rust"><code><span class="doccomment">//! Extensions for [`crate::renderer::pen::Pen`].
 
-<span class="kw">use</span> <span class="kw">super</span>::{<span class="ident">RenderExt</span>, <span class="ident">RenderMode</span>};
-<span class="kw">use</span> <span class="kw">crate</span>::{
-    <span class="ident">color::Rgba</span>,
-    <span class="ident">geo</span>::{<span class="ident">Point</span>, <span class="ident">Rect</span>, <span class="ident">Size</span>},
-    <span class="ident">renderer</span>::{<span class="ident">pen::Pen</span>, <span class="ident">PasteExt</span>},
-    <span class="ident">texture::Texture</span>,
-    <span class="ident">ttf::font::Font</span>,
+</span><span class="kw">use super</span>::{RenderExt, RenderMode};
+<span class="kw">use crate</span>::{
+    color::Rgba,
+    geo::{Point, Rect, Size},
+    renderer::{pen::Pen, PasteExt},
+    texture::Texture,
+    ttf::font::Font,
 };
 
-<span class="doccomment">/// X-axis alignment of the text.</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">Copy</span>, <span class="ident">Hash</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>)]</span>
-<span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">TextAlignX</span> {
-    <span class="doccomment">/// Aligns to the left. Moves the text to the right so that the pivot comes the left edge.</span>
-    <span class="ident">Left</span>,
-    <span class="doccomment">/// Aligns to the center.</span>
-    <span class="ident">Center</span>,
-    <span class="doccomment">/// Aligns to the right. Moves the text to the left so that the pivot comes the right edge.</span>
-    <span class="ident">Right</span>,
+<span class="doccomment">/// X-axis alignment of the text.
+</span><span class="attribute">#[derive(Debug, Clone, Copy, Hash, PartialEq, Eq)]
+</span><span class="kw">pub enum </span>TextAlignX {
+    <span class="doccomment">/// Aligns to the left. Moves the text to the right so that the pivot comes the left edge.
+    </span>Left,
+    <span class="doccomment">/// Aligns to the center.
+    </span>Center,
+    <span class="doccomment">/// Aligns to the right. Moves the text to the left so that the pivot comes the right edge.
+    </span>Right,
 }
 
-<span class="kw">impl</span> <span class="ident">Default</span> <span class="kw">for</span> <span class="ident">TextAlignX</span> {
-    <span class="kw">fn</span> <span class="ident">default</span>() -&gt; <span class="self">Self</span> {
-        <span class="ident"><span class="self">Self</span>::Left</span>
+<span class="kw">impl </span>Default <span class="kw">for </span>TextAlignX {
+    <span class="kw">fn </span>default() -&gt; <span class="self">Self </span>{
+        <span class="self">Self</span>::Left
     }
 }
 
-<span class="doccomment">/// Y-axis alignment of the text.</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">Copy</span>, <span class="ident">Hash</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>)]</span>
-<span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">TextAlignY</span> {
-    <span class="doccomment">/// Aligns to the top. Moves the text to the down so that the pivot comes the top edge.</span>
-    <span class="ident">Top</span>,
-    <span class="doccomment">/// Aligns to the center.</span>
-    <span class="ident">Center</span>,
-    <span class="doccomment">/// Aligns to the bottom. Moves the text to the up so that the pivot comes the bottom edge.</span>
-    <span class="ident">Bottom</span>,
+<span class="doccomment">/// Y-axis alignment of the text.
+</span><span class="attribute">#[derive(Debug, Clone, Copy, Hash, PartialEq, Eq)]
+</span><span class="kw">pub enum </span>TextAlignY {
+    <span class="doccomment">/// Aligns to the top. Moves the text to the down so that the pivot comes the top edge.
+    </span>Top,
+    <span class="doccomment">/// Aligns to the center.
+    </span>Center,
+    <span class="doccomment">/// Aligns to the bottom. Moves the text to the up so that the pivot comes the bottom edge.
+    </span>Bottom,
 }
 
-<span class="kw">impl</span> <span class="ident">Default</span> <span class="kw">for</span> <span class="ident">TextAlignY</span> {
-    <span class="kw">fn</span> <span class="ident">default</span>() -&gt; <span class="self">Self</span> {
-        <span class="ident"><span class="self">Self</span>::Top</span>
+<span class="kw">impl </span>Default <span class="kw">for </span>TextAlignY {
+    <span class="kw">fn </span>default() -&gt; <span class="self">Self </span>{
+        <span class="self">Self</span>::Top
     }
 }
 
-<span class="doccomment">/// Alignments of the text.</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Default</span>, <span class="ident">Clone</span>, <span class="ident">Copy</span>, <span class="ident">Hash</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>)]</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">TextAlign</span> {
-    <span class="doccomment">/// The X-axis alignment of the text.</span>
-    <span class="kw">pub</span> <span class="ident">x</span>: <span class="ident">TextAlignX</span>,
-    <span class="doccomment">/// The Y-axis alignment of the text.</span>
-    <span class="kw">pub</span> <span class="ident">y</span>: <span class="ident">TextAlignY</span>,
+<span class="doccomment">/// Alignments of the text.
+</span><span class="attribute">#[derive(Debug, Default, Clone, Copy, Hash, PartialEq, Eq)]
+</span><span class="kw">pub struct </span>TextAlign {
+    <span class="doccomment">/// The X-axis alignment of the text.
+    </span><span class="kw">pub </span>x: TextAlignX,
+    <span class="doccomment">/// The Y-axis alignment of the text.
+    </span><span class="kw">pub </span>y: TextAlignY,
 }
 
-<span class="doccomment">/// Options to render the text for [`FontRenderExt::text`].</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>)]</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">FontRenderOptions</span> {
-    <span class="ident">align</span>: <span class="ident">TextAlign</span>,
-    <span class="ident">pivot</span>: <span class="ident">Point</span>,
-    <span class="ident">mode</span>: <span class="ident">RenderMode</span>,
+<span class="doccomment">/// Options to render the text for [`FontRenderExt::text`].
+</span><span class="attribute">#[derive(Debug, Clone, PartialEq, Eq)]
+</span><span class="kw">pub struct </span>FontRenderOptions {
+    align: TextAlign,
+    pivot: Point,
+    mode: RenderMode,
 }
 
-<span class="kw">impl</span> <span class="ident">FontRenderOptions</span> {
-    <span class="doccomment">/// Constructs a default option.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>() -&gt; <span class="self">Self</span> {
-        <span class="ident">FontRenderOptions</span> {
-            <span class="ident">align</span>: <span class="ident">TextAlign::default</span>(),
-            <span class="ident">pivot</span>: <span class="ident">Point::default</span>(),
-            <span class="ident">mode</span>: <span class="ident">RenderMode::Blended</span> {
-                <span class="ident">foreground</span>: <span class="ident">Rgba</span> {
-                    <span class="ident">r</span>: <span class="number">0</span>,
-                    <span class="ident">g</span>: <span class="number">0</span>,
-                    <span class="ident">b</span>: <span class="number">0</span>,
-                    <span class="ident">a</span>: <span class="number">255</span>,
+<span class="kw">impl </span>FontRenderOptions {
+    <span class="doccomment">/// Constructs a default option.
+    </span><span class="kw">pub fn </span>new() -&gt; <span class="self">Self </span>{
+        FontRenderOptions {
+            align: TextAlign::default(),
+            pivot: Point::default(),
+            mode: RenderMode::Blended {
+                foreground: Rgba {
+                    r: <span class="number">0</span>,
+                    g: <span class="number">0</span>,
+                    b: <span class="number">0</span>,
+                    a: <span class="number">255</span>,
                 },
             },
         }
     }
 
-    <span class="doccomment">/// Sets the render mode with color.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">mode</span>(<span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">mode</span>: <span class="ident">RenderMode</span>) -&gt; <span class="self">Self</span> {
-        <span class="self">self</span>.<span class="ident">mode</span> <span class="op">=</span> <span class="ident">mode</span>;
-        <span class="self">self</span>
-    }
+    <span class="doccomment">/// Sets the render mode with color.
+    </span><span class="kw">pub fn </span>mode(<span class="kw-2">mut </span><span class="self">self</span>, mode: RenderMode) -&gt; <span class="self">Self </span>{
+        <span class="self">self</span>.mode = mode;
+        <span class="self">self
+    </span>}
 
-    <span class="doccomment">/// Sets the alignment.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">align</span>(<span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">align</span>: <span class="ident">TextAlign</span>) -&gt; <span class="self">Self</span> {
-        <span class="self">self</span>.<span class="ident">align</span> <span class="op">=</span> <span class="ident">align</span>;
-        <span class="self">self</span>
-    }
+    <span class="doccomment">/// Sets the alignment.
+    </span><span class="kw">pub fn </span>align(<span class="kw-2">mut </span><span class="self">self</span>, align: TextAlign) -&gt; <span class="self">Self </span>{
+        <span class="self">self</span>.align = align;
+        <span class="self">self
+    </span>}
 
-    <span class="doccomment">/// Sets the pivot point.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">pivot</span>(<span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">pivot</span>: <span class="ident">Point</span>) -&gt; <span class="self">Self</span> {
-        <span class="self">self</span>.<span class="ident">pivot</span> <span class="op">=</span> <span class="ident">pivot</span>;
-        <span class="self">self</span>
-    }
+    <span class="doccomment">/// Sets the pivot point.
+    </span><span class="kw">pub fn </span>pivot(<span class="kw-2">mut </span><span class="self">self</span>, pivot: Point) -&gt; <span class="self">Self </span>{
+        <span class="self">self</span>.pivot = pivot;
+        <span class="self">self
+    </span>}
 
-    <span class="kw">fn</span> <span class="ident">aligned_pos</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">Size</span> { <span class="ident">width</span>, <span class="ident">height</span> }: <span class="ident">Size</span>) -&gt; <span class="ident">Point</span> {
-        <span class="kw">let</span> <span class="ident">x</span> <span class="op">=</span> <span class="kw">match</span> <span class="self">self</span>.<span class="ident">align</span>.<span class="ident">x</span> {
-            <span class="ident">TextAlignX::Left</span> =&gt; <span class="self">self</span>.<span class="ident">pivot</span>.<span class="ident">x</span>,
-            <span class="ident">TextAlignX::Center</span> =&gt; <span class="self">self</span>.<span class="ident">pivot</span>.<span class="ident">x</span> <span class="op">-</span> <span class="ident">width</span> <span class="kw">as</span> <span class="ident">i32</span> <span class="op">/</span> <span class="number">2</span>,
-            <span class="ident">TextAlignX::Right</span> =&gt; <span class="self">self</span>.<span class="ident">pivot</span>.<span class="ident">x</span> <span class="op">-</span> <span class="ident">width</span> <span class="kw">as</span> <span class="ident">i32</span>,
+    <span class="kw">fn </span>aligned_pos(<span class="kw-2">&amp;</span><span class="self">self</span>, Size { width, height }: Size) -&gt; Point {
+        <span class="kw">let </span>x = <span class="kw">match </span><span class="self">self</span>.align.x {
+            TextAlignX::Left =&gt; <span class="self">self</span>.pivot.x,
+            TextAlignX::Center =&gt; <span class="self">self</span>.pivot.x - width <span class="kw">as </span>i32 / <span class="number">2</span>,
+            TextAlignX::Right =&gt; <span class="self">self</span>.pivot.x - width <span class="kw">as </span>i32,
         };
-        <span class="kw">let</span> <span class="ident">y</span> <span class="op">=</span> <span class="kw">match</span> <span class="self">self</span>.<span class="ident">align</span>.<span class="ident">y</span> {
-            <span class="ident">TextAlignY::Top</span> =&gt; <span class="self">self</span>.<span class="ident">pivot</span>.<span class="ident">y</span>,
-            <span class="ident">TextAlignY::Center</span> =&gt; <span class="self">self</span>.<span class="ident">pivot</span>.<span class="ident">y</span> <span class="op">-</span> <span class="ident">height</span> <span class="kw">as</span> <span class="ident">i32</span> <span class="op">/</span> <span class="number">2</span>,
-            <span class="ident">TextAlignY::Bottom</span> =&gt; <span class="self">self</span>.<span class="ident">pivot</span>.<span class="ident">y</span> <span class="op">-</span> <span class="ident">height</span> <span class="kw">as</span> <span class="ident">i32</span>,
+        <span class="kw">let </span>y = <span class="kw">match </span><span class="self">self</span>.align.y {
+            TextAlignY::Top =&gt; <span class="self">self</span>.pivot.y,
+            TextAlignY::Center =&gt; <span class="self">self</span>.pivot.y - height <span class="kw">as </span>i32 / <span class="number">2</span>,
+            TextAlignY::Bottom =&gt; <span class="self">self</span>.pivot.y - height <span class="kw">as </span>i32,
         };
-        <span class="ident">Point</span> { <span class="ident">x</span>, <span class="ident">y</span> }
+        Point { x, y }
     }
 }
 
-<span class="kw">impl</span> <span class="ident">Default</span> <span class="kw">for</span> <span class="ident">FontRenderOptions</span> {
-    <span class="kw">fn</span> <span class="ident">default</span>() -&gt; <span class="self">Self</span> {
-        <span class="ident"><span class="self">Self</span>::new</span>()
+<span class="kw">impl </span>Default <span class="kw">for </span>FontRenderOptions {
+    <span class="kw">fn </span>default() -&gt; <span class="self">Self </span>{
+        <span class="self">Self</span>::new()
     }
 }
 
-<span class="doccomment">/// An extension for [`Pen`] to render a text.</span>
-<span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">FontRenderExt</span> {
-    <span class="doccomment">/// Renders a text to the area with the font.</span>
-    <span class="kw">fn</span> <span class="ident">text</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">font</span>: <span class="kw-2">&amp;</span><span class="ident">Font</span>, <span class="ident">text</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>, <span class="ident">options</span>: <span class="ident">FontRenderOptions</span>);
+<span class="doccomment">/// An extension for [`Pen`] to render a text.
+</span><span class="kw">pub trait </span>FontRenderExt {
+    <span class="doccomment">/// Renders a text to the area with the font.
+    </span><span class="kw">fn </span>text(<span class="kw-2">&amp;</span><span class="self">self</span>, font: <span class="kw-2">&amp;</span>Font, text: <span class="kw-2">&amp;</span>str, options: FontRenderOptions);
 }
 
-<span class="kw">impl</span> <span class="ident">FontRenderExt</span> <span class="kw">for</span> <span class="ident">Pen</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span> {
-    <span class="kw">fn</span> <span class="ident">text</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">font</span>: <span class="kw-2">&amp;</span><span class="ident">Font</span>, <span class="ident">text</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>, <span class="ident">options</span>: <span class="ident">FontRenderOptions</span>) {
-        <span class="kw">if</span> <span class="ident">text</span>.<span class="ident">is_empty</span>() {
+<span class="kw">impl </span>FontRenderExt <span class="kw">for </span>Pen&lt;<span class="lifetime">&#39;_</span>&gt; {
+    <span class="kw">fn </span>text(<span class="kw-2">&amp;</span><span class="self">self</span>, font: <span class="kw-2">&amp;</span>Font, text: <span class="kw-2">&amp;</span>str, options: FontRenderOptions) {
+        <span class="kw">if </span>text.is_empty() {
             <span class="kw">return</span>;
         }
-        <span class="kw">let</span> <span class="ident">surface</span> <span class="op">=</span> <span class="ident">font</span>
-            .<span class="ident">render</span>(<span class="ident">text</span>, <span class="ident">options</span>.<span class="ident">mode</span>)
-            .<span class="ident">expect</span>(<span class="string">&quot;rendering text failed&quot;</span>);
-        <span class="kw">let</span> <span class="ident">texture</span> <span class="op">=</span> <span class="ident">Texture::from_surface</span>(<span class="self">self</span>.<span class="ident">renderer</span>(), <span class="kw-2">&amp;</span><span class="ident">surface</span>);
-        <span class="kw">let</span> <span class="ident">size</span> <span class="op">=</span> <span class="ident">font</span>
-            .<span class="ident">rendered_size</span>(<span class="ident">text</span>)
-            .<span class="ident">expect</span>(<span class="string">&quot;calculating text size failed&quot;</span>);
-        <span class="kw">let</span> <span class="ident">up_left</span> <span class="op">=</span> <span class="ident">options</span>.<span class="ident">aligned_pos</span>(<span class="ident">size</span>);
-        <span class="self">self</span>.<span class="ident">renderer</span>().<span class="ident">paste</span>(<span class="ident">texture</span>, <span class="prelude-val">Some</span>(<span class="ident">Rect</span> { <span class="ident">up_left</span>, <span class="ident">size</span> }));
+        <span class="kw">let </span>surface = font
+            .render(text, options.mode)
+            .expect(<span class="string">&quot;rendering text failed&quot;</span>);
+        <span class="kw">let </span>texture = Texture::from_surface(<span class="self">self</span>.renderer(), <span class="kw-2">&amp;</span>surface);
+        <span class="kw">let </span>size = font
+            .rendered_size(text)
+            .expect(<span class="string">&quot;calculating text size failed&quot;</span>);
+        <span class="kw">let </span>up_left = options.aligned_pos(size);
+        <span class="self">self</span>.renderer().paste(texture, <span class="prelude-val">Some</span>(Rect { up_left, size }));
     }
 }
 </code></pre></div>
-</section></div></main><div id="rustdoc-vars" data-root-path="../../../../../" data-current-crate="rich_sdl2_rust" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.64.0-nightly (0f4bcadb4 2022-07-30)" ></div></body></html>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../../../../" data-current-crate="rich_sdl2_rust" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.66.0-nightly (5e9772042 2022-10-29)" ></div></body></html>

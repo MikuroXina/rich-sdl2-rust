@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/audio.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>audio.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../storage.js"></script><script defer src="../../source-script.js"></script><script defer src="../../source-files.js"></script><script defer src="../../main.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../rich_sdl2_rust/index.html"><div class="logo-container"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></div></a><h2 class="location"></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../rich_sdl2_rust/index.html"><div class="logo-container"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../rich_sdl2_rust/index.html"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/audio.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>audio.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" href="../../normalize.css"><link rel="stylesheet" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" href="../../ayu.css" disabled><link rel="stylesheet" href="../../dark.css" disabled><link rel="stylesheet" href="../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../storage.js"></script><script defer src="../../source-script.js"></script><script defer src="../../source-files.js"></script><script defer src="../../main.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><div class="width-limiter"><nav class="sub"><a class="sub-logo-container" href="../../rich_sdl2_rust/index.html"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../wheel.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><pre class="src-line-numbers"><span id="1">1</span>
 <span id="2">2</span>
 <span id="3">3</span>
 <span id="4">4</span>
@@ -227,234 +227,234 @@
 <span id="227">227</span>
 <span id="228">228</span>
 <span id="229">229</span>
-</pre><pre class="rust"><code><span class="doccomment">//! Provides audio device control, configuration, wav format utilities and so on.</span>
+</pre><pre class="rust"><code><span class="doccomment">//! Provides audio device control, configuration, wav format utilities and so on.
 
-<span class="kw">use</span> <span class="ident">static_assertions::assert_not_impl_all</span>;
-<span class="kw">use</span> <span class="ident">std</span>::{
-    <span class="ident">cell::Cell</span>,
-    <span class="ident">ffi</span>::{<span class="ident">CStr</span>, <span class="ident">CString</span>},
-    <span class="ident">marker::PhantomData</span>,
-    <span class="ident">mem::MaybeUninit</span>,
-    <span class="ident">os::raw::c_int</span>,
+</span><span class="kw">use </span>static_assertions::assert_not_impl_all;
+<span class="kw">use </span>std::{
+    cell::Cell,
+    ffi::{CStr, CString},
+    marker::PhantomData,
+    mem::MaybeUninit,
+    os::raw::c_int,
 };
 
-<span class="kw">use</span> <span class="self">self</span>::{
-    <span class="ident">format::AudioFormat</span>,
-    <span class="ident">spec</span>::{<span class="ident">AudioCallback</span>, <span class="ident">AudioSpec</span>, <span class="ident">FallbackFlag</span>},
-    <span class="ident">status::AudioStatus</span>,
+<span class="kw">use </span><span class="self">self</span>::{
+    format::AudioFormat,
+    spec::{AudioCallback, AudioSpec, FallbackFlag},
+    status::AudioStatus,
 };
-<span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">bind</span>, <span class="prelude-ty">Result</span>, <span class="ident">Sdl</span>, <span class="ident">SdlError</span>};
+<span class="kw">use crate</span>::{bind, <span class="prelude-ty">Result</span>, Sdl, SdlError};
 
-<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">driver</span>::<span class="kw-2">*</span>;
+<span class="kw">pub use </span>driver::<span class="kw-2">*</span>;
 
-<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">buffer</span>;
-<span class="kw">mod</span> <span class="ident">driver</span>;
-<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">event</span>;
-<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">format</span>;
-<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">queue</span>;
-<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">spec</span>;
-<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">status</span>;
-<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">stream</span>;
-<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">wav</span>;
+<span class="kw">pub mod </span>buffer;
+<span class="kw">mod </span>driver;
+<span class="kw">pub mod </span>event;
+<span class="kw">pub mod </span>format;
+<span class="kw">pub mod </span>queue;
+<span class="kw">pub mod </span>spec;
+<span class="kw">pub mod </span>status;
+<span class="kw">pub mod </span>stream;
+<span class="kw">pub mod </span>wav;
 
-<span class="doccomment">/// A property of an audio device.</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">Copy</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>)]</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">AudioDeviceProperty</span> {
-    <span class="doccomment">/// The sample frequencies of an audio device..</span>
-    <span class="kw">pub</span> <span class="ident">sample_freq</span>: <span class="ident">u32</span>,
-    <span class="doccomment">/// The format of an audio device.</span>
-    <span class="kw">pub</span> <span class="ident">format</span>: <span class="ident">AudioFormat</span>,
-    <span class="doccomment">/// The numbers of channels of an audio device.</span>
-    <span class="kw">pub</span> <span class="ident">channels</span>: <span class="ident">u8</span>,
-    <span class="doccomment">/// The sample rates of an audio device.</span>
-    <span class="kw">pub</span> <span class="ident">samples</span>: <span class="ident">u16</span>,
+<span class="doccomment">/// A property of an audio device.
+</span><span class="attribute">#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+</span><span class="kw">pub struct </span>AudioDeviceProperty {
+    <span class="doccomment">/// The sample frequencies of an audio device..
+    </span><span class="kw">pub </span>sample_freq: u32,
+    <span class="doccomment">/// The format of an audio device.
+    </span><span class="kw">pub </span>format: AudioFormat,
+    <span class="doccomment">/// The numbers of channels of an audio device.
+    </span><span class="kw">pub </span>channels: u8,
+    <span class="doccomment">/// The sample rates of an audio device.
+    </span><span class="kw">pub </span>samples: u16,
 }
 
-<span class="doccomment">/// A lock to prevent an audio device from calling the callback [`spec::AudioCallback`].</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">AudioDeviceLock</span><span class="op">&lt;</span><span class="lifetime">&#39;device</span><span class="op">&gt;</span>(<span class="ident">u32</span>, <span class="ident">PhantomData</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;device</span> <span class="kw-2">mut</span> <span class="kw">dyn</span> <span class="ident">AudioDevice</span><span class="op">&gt;</span>);
+<span class="doccomment">/// A lock to prevent an audio device from calling the callback [`spec::AudioCallback`].
+</span><span class="kw">pub struct </span>AudioDeviceLock&lt;<span class="lifetime">&#39;device</span>&gt;(u32, PhantomData&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;device </span><span class="kw-2">mut </span><span class="kw">dyn </span>AudioDevice&gt;);
 
-<span class="kw">impl</span> <span class="ident">AudioDeviceLock</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span> {
-    <span class="doccomment">/// Unlocks the lock of an audio device.</span>
-    <span class="kw">fn</span> <span class="ident">unlock</span>(<span class="self">self</span>) {
-        <span class="kw">unsafe</span> { <span class="ident">bind::SDL_UnlockAudioDevice</span>(<span class="self">self</span>.<span class="number">0</span>) }
+<span class="kw">impl </span>AudioDeviceLock&lt;<span class="lifetime">&#39;_</span>&gt; {
+    <span class="doccomment">/// Unlocks the lock of an audio device.
+    </span><span class="kw">fn </span>unlock(<span class="self">self</span>) {
+        <span class="kw">unsafe </span>{ bind::SDL_UnlockAudioDevice(<span class="self">self</span>.<span class="number">0</span>) }
     }
 }
 
-<span class="doccomment">/// Common methods for an audio device, such as a speaker and a microphone.</span>
-<span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">AudioDevice</span> {
-    <span class="doccomment">/// Returns the id of an audio device.</span>
-    <span class="kw">fn</span> <span class="ident">id</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">u32</span>;
+<span class="doccomment">/// Common methods for an audio device, such as a speaker and a microphone.
+</span><span class="kw">pub trait </span>AudioDevice {
+    <span class="doccomment">/// Returns the id of an audio device.
+    </span><span class="kw">fn </span>id(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; u32;
 
-    <span class="doccomment">/// Returns the status of an audio device.</span>
-    <span class="kw">fn</span> <span class="ident">status</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">AudioStatus</span> {
-        <span class="kw">unsafe</span> { <span class="ident">bind::SDL_GetAudioDeviceStatus</span>(<span class="self">self</span>.<span class="ident">id</span>()) }.<span class="ident">into</span>()
+    <span class="doccomment">/// Returns the status of an audio device.
+    </span><span class="kw">fn </span>status(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; AudioStatus {
+        <span class="kw">unsafe </span>{ bind::SDL_GetAudioDeviceStatus(<span class="self">self</span>.id()) }.into()
     }
 
-    <span class="doccomment">/// Obtains the lock preventing from calling the callback [`spec::AudioCallback`].</span>
-    <span class="kw">fn</span> <span class="ident">lock</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) -&gt; <span class="ident">AudioDeviceLock</span> {
-        <span class="kw">unsafe</span> { <span class="ident">bind::SDL_LockAudioDevice</span>(<span class="self">self</span>.<span class="ident">id</span>()) }
-        <span class="ident">AudioDeviceLock</span>(<span class="self">self</span>.<span class="ident">id</span>(), <span class="ident">PhantomData</span>)
-    }
-}
-
-<span class="doccomment">/// An audio device to output sound.</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">SpeakerDevice</span> {
-    <span class="ident">id</span>: <span class="ident">u32</span>,
-    <span class="ident">_phantom</span>: <span class="ident">PhantomData</span><span class="op">&lt;</span><span class="ident">Cell</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-}
-
-<span class="kw">impl</span> <span class="ident">std::fmt::Debug</span> <span class="kw">for</span> <span class="ident">SpeakerDevice</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;mut</span> <span class="ident">std::fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">std::fmt::Result</span> {
-        <span class="ident">f</span>.<span class="ident">debug_struct</span>(<span class="string">&quot;SpeakerDevice&quot;</span>)
-            .<span class="ident">field</span>(<span class="string">&quot;id&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">id</span>)
-            .<span class="ident">finish</span>()
+    <span class="doccomment">/// Obtains the lock preventing from calling the callback [`spec::AudioCallback`].
+    </span><span class="kw">fn </span>lock(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; AudioDeviceLock {
+        <span class="kw">unsafe </span>{ bind::SDL_LockAudioDevice(<span class="self">self</span>.id()) }
+        AudioDeviceLock(<span class="self">self</span>.id(), PhantomData)
     }
 }
 
-<span class="macro">assert_not_impl_all!</span>(<span class="ident">SpeakerDevice</span>: <span class="ident">Send</span>, <span class="ident">Sync</span>);
+<span class="doccomment">/// An audio device to output sound.
+</span><span class="kw">pub struct </span>SpeakerDevice {
+    id: u32,
+    _phantom: PhantomData&lt;Cell&lt;u8&gt;&gt;,
+}
 
-<span class="kw">impl</span> <span class="ident">SpeakerDevice</span> {
-    <span class="doccomment">/// Returns all of speaker audio device names on now.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">all_devices</span>() -&gt; <span class="kw">impl</span> <span class="ident">Iterator</span><span class="op">&lt;</span><span class="ident">Item</span> <span class="op">=</span> <span class="ident">String</span><span class="op">&gt;</span> {
-        <span class="ident">devices</span>(<span class="bool-val">false</span>)
+<span class="kw">impl </span>std::fmt::Debug <span class="kw">for </span>SpeakerDevice {
+    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>std::fmt::Formatter&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; std::fmt::Result {
+        f.debug_struct(<span class="string">&quot;SpeakerDevice&quot;</span>)
+            .field(<span class="string">&quot;id&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.id)
+            .finish()
+    }
+}
+
+<span class="macro">assert_not_impl_all!</span>(SpeakerDevice: Send, Sync);
+
+<span class="kw">impl </span>SpeakerDevice {
+    <span class="doccomment">/// Returns all of speaker audio device names on now.
+    </span><span class="kw">pub fn </span>all_devices() -&gt; <span class="kw">impl </span>Iterator&lt;Item = String&gt; {
+        devices(<span class="bool-val">false</span>)
     }
 
-    <span class="doccomment">/// Opens the audio device named `device` with the specification and fallback flag.</span>
-    <span class="doccomment">/// If device is `None`, the default audio device is used.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # Errors</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// Returns `Err` if failed to open a specific speaker device.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">open</span><span class="op">&lt;</span><span class="lifetime">&#39;callback</span>, <span class="ident">T</span>: <span class="ident">AudioCallback</span><span class="op">&lt;</span><span class="lifetime">&#39;callback</span><span class="op">&gt;</span><span class="op">&gt;</span>(
-        <span class="ident">device</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>,
-        <span class="ident">spec</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;callback</span> <span class="ident">AudioSpec</span><span class="op">&lt;</span><span class="lifetime">&#39;callback</span>, <span class="ident">T</span><span class="op">&gt;</span>,
-        <span class="ident">fallback</span>: <span class="ident">FallbackFlag</span>,
-    ) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>(<span class="self">Self</span>, <span class="ident">AudioDeviceProperty</span>)<span class="op">&gt;</span> {
-        <span class="kw">let</span> (<span class="ident">id</span>, <span class="ident">prop</span>) <span class="op">=</span> <span class="ident">open</span>(<span class="bool-val">false</span>, <span class="ident">device</span>, <span class="ident">spec</span>, <span class="ident">fallback</span>)<span class="question-mark">?</span>;
+    <span class="doccomment">/// Opens the audio device named `device` with the specification and fallback flag.
+    /// If device is `None`, the default audio device is used.
+    ///
+    /// # Errors
+    ///
+    /// Returns `Err` if failed to open a specific speaker device.
+    </span><span class="kw">pub fn </span>open&lt;<span class="lifetime">&#39;callback</span>, T: AudioCallback&lt;<span class="lifetime">&#39;callback</span>&gt;&gt;(
+        device: <span class="prelude-ty">Option</span>&lt;String&gt;,
+        spec: <span class="kw-2">&amp;</span><span class="lifetime">&#39;callback </span>AudioSpec&lt;<span class="lifetime">&#39;callback</span>, T&gt;,
+        fallback: FallbackFlag,
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;(<span class="self">Self</span>, AudioDeviceProperty)&gt; {
+        <span class="kw">let </span>(id, prop) = open(<span class="bool-val">false</span>, device, spec, fallback)<span class="question-mark">?</span>;
         <span class="prelude-val">Ok</span>((
-            <span class="self">Self</span> {
-                <span class="ident">id</span>,
-                <span class="ident">_phantom</span>: <span class="ident">PhantomData</span>,
+            <span class="self">Self </span>{
+                id,
+                _phantom: PhantomData,
             },
-            <span class="ident">prop</span>,
+            prop,
         ))
     }
 }
 
-<span class="kw">impl</span> <span class="ident">AudioDevice</span> <span class="kw">for</span> <span class="ident">SpeakerDevice</span> {
-    <span class="kw">fn</span> <span class="ident">id</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">u32</span> {
-        <span class="self">self</span>.<span class="ident">id</span>
+<span class="kw">impl </span>AudioDevice <span class="kw">for </span>SpeakerDevice {
+    <span class="kw">fn </span>id(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; u32 {
+        <span class="self">self</span>.id
     }
 }
 
-<span class="kw">impl</span> <span class="ident">Drop</span> <span class="kw">for</span> <span class="ident">SpeakerDevice</span> {
-    <span class="kw">fn</span> <span class="ident">drop</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) {
-        <span class="kw">unsafe</span> { <span class="ident">bind::SDL_CloseAudioDevice</span>(<span class="self">self</span>.<span class="ident">id</span>) }
+<span class="kw">impl </span>Drop <span class="kw">for </span>SpeakerDevice {
+    <span class="kw">fn </span>drop(<span class="kw-2">&amp;mut </span><span class="self">self</span>) {
+        <span class="kw">unsafe </span>{ bind::SDL_CloseAudioDevice(<span class="self">self</span>.id) }
     }
 }
 
-<span class="doccomment">/// An audio device to input sound.</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">MicrophoneDevice</span> {
-    <span class="ident">id</span>: <span class="ident">u32</span>,
-    <span class="ident">_phantom</span>: <span class="ident">PhantomData</span><span class="op">&lt;</span><span class="ident">Cell</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span><span class="op">&gt;</span>,
+<span class="doccomment">/// An audio device to input sound.
+</span><span class="kw">pub struct </span>MicrophoneDevice {
+    id: u32,
+    _phantom: PhantomData&lt;Cell&lt;u8&gt;&gt;,
 }
 
-<span class="kw">impl</span> <span class="ident">std::fmt::Debug</span> <span class="kw">for</span> <span class="ident">MicrophoneDevice</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;mut</span> <span class="ident">std::fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">std::fmt::Result</span> {
-        <span class="ident">f</span>.<span class="ident">debug_struct</span>(<span class="string">&quot;MicrophoneDevice&quot;</span>)
-            .<span class="ident">field</span>(<span class="string">&quot;id&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">id</span>)
-            .<span class="ident">finish</span>()
+<span class="kw">impl </span>std::fmt::Debug <span class="kw">for </span>MicrophoneDevice {
+    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>std::fmt::Formatter&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; std::fmt::Result {
+        f.debug_struct(<span class="string">&quot;MicrophoneDevice&quot;</span>)
+            .field(<span class="string">&quot;id&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.id)
+            .finish()
     }
 }
 
-<span class="macro">assert_not_impl_all!</span>(<span class="ident">MicrophoneDevice</span>: <span class="ident">Send</span>, <span class="ident">Sync</span>);
+<span class="macro">assert_not_impl_all!</span>(MicrophoneDevice: Send, Sync);
 
-<span class="kw">impl</span> <span class="ident">MicrophoneDevice</span> {
-    <span class="doccomment">/// Returns all of microphone audio device names on now.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">all_devices</span>() -&gt; <span class="kw">impl</span> <span class="ident">Iterator</span><span class="op">&lt;</span><span class="ident">Item</span> <span class="op">=</span> <span class="ident">String</span><span class="op">&gt;</span> {
-        <span class="ident">devices</span>(<span class="bool-val">true</span>)
+<span class="kw">impl </span>MicrophoneDevice {
+    <span class="doccomment">/// Returns all of microphone audio device names on now.
+    </span><span class="kw">pub fn </span>all_devices() -&gt; <span class="kw">impl </span>Iterator&lt;Item = String&gt; {
+        devices(<span class="bool-val">true</span>)
     }
 
-    <span class="doccomment">/// Opens the audio device named `device` with the specification and fallback flag.</span>
-    <span class="doccomment">/// If device is `None`, the default audio device is used.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # Errors</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// Returns `Err` if failed to open a specific microphone device.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">open</span><span class="op">&lt;</span><span class="lifetime">&#39;callback</span>, <span class="ident">T</span>: <span class="ident">AudioCallback</span><span class="op">&lt;</span><span class="lifetime">&#39;callback</span><span class="op">&gt;</span><span class="op">&gt;</span>(
-        <span class="ident">device</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>,
-        <span class="ident">spec</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;callback</span> <span class="ident">AudioSpec</span><span class="op">&lt;</span><span class="lifetime">&#39;callback</span>, <span class="ident">T</span><span class="op">&gt;</span>,
-        <span class="ident">fallback</span>: <span class="ident">FallbackFlag</span>,
-    ) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>(<span class="self">Self</span>, <span class="ident">AudioDeviceProperty</span>)<span class="op">&gt;</span> {
-        <span class="kw">let</span> (<span class="ident">id</span>, <span class="ident">prop</span>) <span class="op">=</span> <span class="ident">open</span>(<span class="bool-val">true</span>, <span class="ident">device</span>, <span class="ident">spec</span>, <span class="ident">fallback</span>)<span class="question-mark">?</span>;
+    <span class="doccomment">/// Opens the audio device named `device` with the specification and fallback flag.
+    /// If device is `None`, the default audio device is used.
+    ///
+    /// # Errors
+    ///
+    /// Returns `Err` if failed to open a specific microphone device.
+    </span><span class="kw">pub fn </span>open&lt;<span class="lifetime">&#39;callback</span>, T: AudioCallback&lt;<span class="lifetime">&#39;callback</span>&gt;&gt;(
+        device: <span class="prelude-ty">Option</span>&lt;String&gt;,
+        spec: <span class="kw-2">&amp;</span><span class="lifetime">&#39;callback </span>AudioSpec&lt;<span class="lifetime">&#39;callback</span>, T&gt;,
+        fallback: FallbackFlag,
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;(<span class="self">Self</span>, AudioDeviceProperty)&gt; {
+        <span class="kw">let </span>(id, prop) = open(<span class="bool-val">true</span>, device, spec, fallback)<span class="question-mark">?</span>;
         <span class="prelude-val">Ok</span>((
-            <span class="self">Self</span> {
-                <span class="ident">id</span>,
-                <span class="ident">_phantom</span>: <span class="ident">PhantomData</span>,
+            <span class="self">Self </span>{
+                id,
+                _phantom: PhantomData,
             },
-            <span class="ident">prop</span>,
+            prop,
         ))
     }
 }
 
-<span class="kw">impl</span> <span class="ident">AudioDevice</span> <span class="kw">for</span> <span class="ident">MicrophoneDevice</span> {
-    <span class="kw">fn</span> <span class="ident">id</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">u32</span> {
-        <span class="self">self</span>.<span class="ident">id</span>
+<span class="kw">impl </span>AudioDevice <span class="kw">for </span>MicrophoneDevice {
+    <span class="kw">fn </span>id(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; u32 {
+        <span class="self">self</span>.id
     }
 }
 
-<span class="doccomment">/// Returns the device name of the id `device_id`. Please set `is_microphone` according to what type you want to.</span>
-<span class="attribute">#[<span class="ident">must_use</span>]</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">device_name</span>(<span class="ident">device_id</span>: <span class="ident">u32</span>, <span class="ident">is_microphone</span>: <span class="ident">bool</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span> {
-    <span class="kw">let</span> <span class="ident">ptr</span> <span class="op">=</span> <span class="kw">unsafe</span> {
-        <span class="ident">bind::SDL_GetAudioDeviceName</span>(<span class="ident">device_id</span> <span class="kw">as</span> <span class="ident">i32</span>, <span class="kw">if</span> <span class="ident">is_microphone</span> { <span class="number">1</span> } <span class="kw">else</span> { <span class="number">0</span> })
+<span class="doccomment">/// Returns the device name of the id `device_id`. Please set `is_microphone` according to what type you want to.
+</span><span class="attribute">#[must_use]
+</span><span class="kw">pub fn </span>device_name(device_id: u32, is_microphone: bool) -&gt; <span class="prelude-ty">Option</span>&lt;String&gt; {
+    <span class="kw">let </span>ptr = <span class="kw">unsafe </span>{
+        bind::SDL_GetAudioDeviceName(device_id <span class="kw">as </span>i32, <span class="kw">if </span>is_microphone { <span class="number">1 </span>} <span class="kw">else </span>{ <span class="number">0 </span>})
     };
-    (<span class="op">!</span><span class="ident">ptr</span>.<span class="ident">is_null</span>()).<span class="ident">then</span>(<span class="op">|</span><span class="op">|</span> <span class="kw">unsafe</span> { <span class="ident">CStr::from_ptr</span>(<span class="ident">ptr</span>) }.<span class="ident">to_string_lossy</span>().<span class="ident">to_string</span>())
+    (!ptr.is_null()).then(|| <span class="kw">unsafe </span>{ CStr::from_ptr(ptr) }.to_string_lossy().to_string())
 }
 
-<span class="kw">fn</span> <span class="ident">devices</span>(<span class="ident">is_capture</span>: <span class="ident">bool</span>) -&gt; <span class="kw">impl</span> <span class="ident">Iterator</span><span class="op">&lt;</span><span class="ident">Item</span> <span class="op">=</span> <span class="ident">String</span><span class="op">&gt;</span> {
-    <span class="kw">let</span> <span class="ident">is_capture_raw</span> <span class="op">=</span> <span class="kw">if</span> <span class="ident">is_capture</span> { <span class="number">1</span> } <span class="kw">else</span> { <span class="number">0</span> };
-    <span class="kw">let</span> <span class="ident">num_devices</span> <span class="op">=</span> <span class="kw">unsafe</span> {
-        <span class="ident">bind::SDL_InitSubSystem</span>(<span class="ident">bind::SDL_INIT_AUDIO</span>);
-        <span class="ident">bind::SDL_GetNumAudioDevices</span>(<span class="ident">is_capture_raw</span>)
+<span class="kw">fn </span>devices(is_capture: bool) -&gt; <span class="kw">impl </span>Iterator&lt;Item = String&gt; {
+    <span class="kw">let </span>is_capture_raw = <span class="kw">if </span>is_capture { <span class="number">1 </span>} <span class="kw">else </span>{ <span class="number">0 </span>};
+    <span class="kw">let </span>num_devices = <span class="kw">unsafe </span>{
+        bind::SDL_InitSubSystem(bind::SDL_INIT_AUDIO);
+        bind::SDL_GetNumAudioDevices(is_capture_raw)
     };
-    (<span class="number">0</span>..<span class="ident">num_devices</span>).<span class="ident">map</span>(<span class="kw">move</span> <span class="op">|</span><span class="ident">index</span><span class="op">|</span> {
-        <span class="kw">let</span> <span class="ident">cstr</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">CStr::from_ptr</span>(<span class="ident">bind::SDL_GetAudioDeviceName</span>(<span class="ident">index</span>, <span class="ident">is_capture_raw</span>)) };
-        <span class="ident">cstr</span>.<span class="ident">to_string_lossy</span>().<span class="ident">to_string</span>()
+    (<span class="number">0</span>..num_devices).map(<span class="kw">move </span>|index| {
+        <span class="kw">let </span>cstr = <span class="kw">unsafe </span>{ CStr::from_ptr(bind::SDL_GetAudioDeviceName(index, is_capture_raw)) };
+        cstr.to_string_lossy().to_string()
     })
 }
 
-<span class="kw">fn</span> <span class="ident">open</span><span class="op">&lt;</span><span class="lifetime">&#39;callback</span>, <span class="ident">T</span>: <span class="ident">AudioCallback</span><span class="op">&lt;</span><span class="lifetime">&#39;callback</span><span class="op">&gt;</span><span class="op">&gt;</span>(
-    <span class="ident">is_capture</span>: <span class="ident">bool</span>,
-    <span class="ident">device</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>,
-    <span class="ident">spec</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;callback</span> <span class="ident">AudioSpec</span><span class="op">&lt;</span><span class="lifetime">&#39;callback</span>, <span class="ident">T</span><span class="op">&gt;</span>,
-    <span class="ident">fallback</span>: <span class="ident">FallbackFlag</span>,
-) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>(<span class="ident">u32</span>, <span class="ident">AudioDeviceProperty</span>)<span class="op">&gt;</span> {
-    <span class="kw">let</span> <span class="ident">is_capture_raw</span> <span class="op">=</span> <span class="kw">if</span> <span class="ident">is_capture</span> { <span class="number">1</span> } <span class="kw">else</span> { <span class="number">0</span> };
-    <span class="kw">let</span> <span class="ident">device</span> <span class="op">=</span> <span class="ident">device</span>.<span class="ident">map</span>(<span class="op">|</span><span class="ident">s</span><span class="op">|</span> <span class="ident">CString::new</span>(<span class="ident">s</span>).<span class="ident">expect</span>(<span class="string">&quot;device name is invalid&quot;</span>));
-    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">actual</span> <span class="op">=</span> <span class="ident">MaybeUninit::uninit</span>();
-    <span class="kw">let</span> <span class="ident">id</span> <span class="op">=</span> <span class="kw">unsafe</span> {
-        <span class="ident">bind::SDL_OpenAudioDevice</span>(
-            <span class="ident">device</span>.<span class="ident">map_or</span>(<span class="ident">std::ptr::null_mut</span>(), <span class="op">|</span><span class="ident">s</span><span class="op">|</span> <span class="ident">s</span>.<span class="ident">into_raw</span>()),
-            <span class="ident">is_capture_raw</span>,
-            <span class="ident">spec</span>.<span class="ident">raw</span>() <span class="kw">as</span> <span class="kw-2">*const</span> <span class="kw">_</span>,
-            <span class="ident">actual</span>.<span class="ident">as_mut_ptr</span>(),
-            <span class="ident">fallback</span>.<span class="ident">bits</span>() <span class="kw">as</span> <span class="ident">c_int</span>,
+<span class="kw">fn </span>open&lt;<span class="lifetime">&#39;callback</span>, T: AudioCallback&lt;<span class="lifetime">&#39;callback</span>&gt;&gt;(
+    is_capture: bool,
+    device: <span class="prelude-ty">Option</span>&lt;String&gt;,
+    spec: <span class="kw-2">&amp;</span><span class="lifetime">&#39;callback </span>AudioSpec&lt;<span class="lifetime">&#39;callback</span>, T&gt;,
+    fallback: FallbackFlag,
+) -&gt; <span class="prelude-ty">Result</span>&lt;(u32, AudioDeviceProperty)&gt; {
+    <span class="kw">let </span>is_capture_raw = <span class="kw">if </span>is_capture { <span class="number">1 </span>} <span class="kw">else </span>{ <span class="number">0 </span>};
+    <span class="kw">let </span>device = device.map(|s| CString::new(s).expect(<span class="string">&quot;device name is invalid&quot;</span>));
+    <span class="kw">let </span><span class="kw-2">mut </span>actual = MaybeUninit::uninit();
+    <span class="kw">let </span>id = <span class="kw">unsafe </span>{
+        bind::SDL_OpenAudioDevice(
+            device.map_or(std::ptr::null_mut(), |s| s.into_raw()),
+            is_capture_raw,
+            spec.raw() <span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_</span>,
+            actual.as_mut_ptr(),
+            fallback.bits() <span class="kw">as </span>c_int,
         )
     };
-    <span class="kw">if</span> <span class="ident">id</span> <span class="op">==</span> <span class="number">0</span> {
-        <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">SdlError::Others</span> { <span class="ident">msg</span>: <span class="ident">Sdl::error</span>() });
+    <span class="kw">if </span>id == <span class="number">0 </span>{
+        <span class="kw">return </span><span class="prelude-val">Err</span>(SdlError::Others { msg: Sdl::error() });
     }
-    <span class="kw">let</span> <span class="ident">actual</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">actual</span>.<span class="ident">assume_init</span>() };
+    <span class="kw">let </span>actual = <span class="kw">unsafe </span>{ actual.assume_init() };
     <span class="prelude-val">Ok</span>((
-        <span class="ident">id</span>,
-        <span class="ident">AudioDeviceProperty</span> {
-            <span class="ident">sample_freq</span>: <span class="ident">actual</span>.<span class="ident">freq</span> <span class="kw">as</span> <span class="ident">u32</span>,
-            <span class="ident">format</span>: <span class="ident">actual</span>.<span class="ident">format</span>.<span class="ident">into</span>(),
-            <span class="ident">channels</span>: <span class="ident">actual</span>.<span class="ident">channels</span>,
-            <span class="ident">samples</span>: <span class="ident">actual</span>.<span class="ident">samples</span>,
+        id,
+        AudioDeviceProperty {
+            sample_freq: actual.freq <span class="kw">as </span>u32,
+            format: actual.format.into(),
+            channels: actual.channels,
+            samples: actual.samples,
         },
     ))
 }
 </code></pre></div>
-</section></div></main><div id="rustdoc-vars" data-root-path="../../" data-current-crate="rich_sdl2_rust" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.64.0-nightly (0f4bcadb4 2022-07-30)" ></div></body></html>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../" data-current-crate="rich_sdl2_rust" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.66.0-nightly (5e9772042 2022-10-29)" ></div></body></html>

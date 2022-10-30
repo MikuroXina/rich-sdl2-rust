@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/sdl.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>sdl.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../storage.js"></script><script defer src="../../source-script.js"></script><script defer src="../../source-files.js"></script><script defer src="../../main.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../rich_sdl2_rust/index.html"><div class="logo-container"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></div></a><h2 class="location"></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../rich_sdl2_rust/index.html"><div class="logo-container"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../rich_sdl2_rust/index.html"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/sdl.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>sdl.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" href="../../normalize.css"><link rel="stylesheet" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" href="../../ayu.css" disabled><link rel="stylesheet" href="../../dark.css" disabled><link rel="stylesheet" href="../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../storage.js"></script><script defer src="../../source-script.js"></script><script defer src="../../source-files.js"></script><script defer src="../../main.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><div class="width-limiter"><nav class="sub"><a class="sub-logo-container" href="../../rich_sdl2_rust/index.html"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../wheel.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><pre class="src-line-numbers"><span id="1">1</span>
 <span id="2">2</span>
 <span id="3">3</span>
 <span id="4">4</span>
@@ -123,130 +123,130 @@
 <span id="123">123</span>
 <span id="124">124</span>
 <span id="125">125</span>
-</pre><pre class="rust"><code><span class="kw">use</span> <span class="ident">static_assertions::assert_not_impl_all</span>;
-<span class="kw">use</span> <span class="ident">std</span>::{<span class="ident">cell::Cell</span>, <span class="ident">ffi::CStr</span>, <span class="ident">marker::PhantomData</span>};
+</pre><pre class="rust"><code><span class="kw">use </span>static_assertions::assert_not_impl_all;
+<span class="kw">use </span>std::{cell::Cell, ffi::CStr, marker::PhantomData};
 
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::bind</span>;
+<span class="kw">use </span><span class="kw">crate</span>::bind;
 
-<span class="doccomment">/// A version for SDL2.</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">Copy</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>)]</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">SdlVersion</span> {
-    <span class="doccomment">/// A major number in the version.</span>
-    <span class="kw">pub</span> <span class="ident">major</span>: <span class="ident">u8</span>,
-    <span class="doccomment">/// A minor number in the version.</span>
-    <span class="kw">pub</span> <span class="ident">minor</span>: <span class="ident">u8</span>,
-    <span class="doccomment">/// A patch number in the version.</span>
-    <span class="kw">pub</span> <span class="ident">patch</span>: <span class="ident">u8</span>,
+<span class="doccomment">/// A version for SDL2.
+</span><span class="attribute">#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+</span><span class="kw">pub struct </span>SdlVersion {
+    <span class="doccomment">/// A major number in the version.
+    </span><span class="kw">pub </span>major: u8,
+    <span class="doccomment">/// A minor number in the version.
+    </span><span class="kw">pub </span>minor: u8,
+    <span class="doccomment">/// A patch number in the version.
+    </span><span class="kw">pub </span>patch: u8,
 }
 
-<span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">bind::SDL_version</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">SdlVersion</span> {
-    <span class="kw">fn</span> <span class="ident">from</span>(
-        <span class="ident">bind::SDL_version</span> {
-            <span class="ident">major</span>,
-            <span class="ident">minor</span>,
-            <span class="ident">patch</span>,
-        }: <span class="ident">bind::SDL_version</span>,
-    ) -&gt; <span class="self">Self</span> {
-        <span class="self">Self</span> {
-            <span class="ident">major</span>,
-            <span class="ident">minor</span>,
-            <span class="ident">patch</span>,
+<span class="kw">impl </span>From&lt;bind::SDL_version&gt; <span class="kw">for </span>SdlVersion {
+    <span class="kw">fn </span>from(
+        bind::SDL_version {
+            major,
+            minor,
+            patch,
+        }: bind::SDL_version,
+    ) -&gt; <span class="self">Self </span>{
+        <span class="self">Self </span>{
+            major,
+            minor,
+            patch,
         }
     }
 }
 
-<span class="doccomment">/// A root controller for SDL2. But some sub-feature does not require `Sdl`.</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Sdl</span> {
-    <span class="ident">_phantom</span>: <span class="ident">PhantomData</span><span class="op">&lt;</span><span class="ident">Cell</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span><span class="op">&gt;</span>,
+<span class="doccomment">/// A root controller for SDL2. But some sub-feature does not require `Sdl`.
+</span><span class="kw">pub struct </span>Sdl {
+    _phantom: PhantomData&lt;Cell&lt;u8&gt;&gt;,
 }
 
-<span class="macro">assert_not_impl_all!</span>(<span class="ident">Sdl</span>: <span class="ident">Send</span>, <span class="ident">Sync</span>);
+<span class="macro">assert_not_impl_all!</span>(Sdl: Send, Sync);
 
-<span class="kw">impl</span> <span class="ident">Sdl</span> {
-    <span class="doccomment">/// Setup the SDL2 system.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # Panics</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// Panics if SDL2 system is already initialized such as there are existing `Sdl` instances</span>
-    <span class="attribute">#[<span class="ident">must_use</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>() -&gt; <span class="self">Self</span> {
-        <span class="kw">let</span> <span class="ident">ret</span> <span class="op">=</span> <span class="kw">unsafe</span> {
-            <span class="ident">bind::SDL_SetMainReady</span>();
-            <span class="ident">bind::SDL_Init</span>(<span class="number">0</span>)
+<span class="kw">impl </span>Sdl {
+    <span class="doccomment">/// Setup the SDL2 system.
+    ///
+    /// # Panics
+    ///
+    /// Panics if SDL2 system is already initialized such as there are existing `Sdl` instances
+    </span><span class="attribute">#[must_use]
+    </span><span class="kw">pub fn </span>new() -&gt; <span class="self">Self </span>{
+        <span class="kw">let </span>ret = <span class="kw">unsafe </span>{
+            bind::SDL_SetMainReady();
+            bind::SDL_Init(<span class="number">0</span>)
         };
-        <span class="kw">if</span> <span class="ident">ret</span> <span class="op">!</span><span class="op">=</span> <span class="number">0</span> {
-            <span class="ident"><span class="self">Self</span>::error_then_panic</span>(<span class="string">&quot;Sdl&quot;</span>)
+        <span class="kw">if </span>ret != <span class="number">0 </span>{
+            <span class="self">Self</span>::error_then_panic(<span class="string">&quot;Sdl&quot;</span>)
         }
-        <span class="self">Self</span> {
-            <span class="ident">_phantom</span>: <span class="ident">PhantomData</span>,
+        <span class="self">Self </span>{
+            _phantom: PhantomData,
         }
     }
 
-    <span class="doccomment">/// Returns the version of SDL2.</span>
-    <span class="attribute">#[<span class="ident">must_use</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">version</span>() -&gt; <span class="ident">SdlVersion</span> {
-        <span class="kw">use</span> <span class="ident">bind::SDL_version</span>;
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">ver</span> <span class="op">=</span> <span class="ident">SDL_version</span> {
-            <span class="ident">major</span>: <span class="number">0</span>,
-            <span class="ident">minor</span>: <span class="number">0</span>,
-            <span class="ident">patch</span>: <span class="number">0</span>,
+    <span class="doccomment">/// Returns the version of SDL2.
+    </span><span class="attribute">#[must_use]
+    </span><span class="kw">pub fn </span>version() -&gt; SdlVersion {
+        <span class="kw">use </span>bind::SDL_version;
+        <span class="kw">let </span><span class="kw-2">mut </span>ver = SDL_version {
+            major: <span class="number">0</span>,
+            minor: <span class="number">0</span>,
+            patch: <span class="number">0</span>,
         };
-        <span class="kw">unsafe</span> { <span class="ident">bind::SDL_GetVersion</span>(<span class="kw-2">&amp;mut</span> <span class="ident">ver</span>) }
-        <span class="ident">ver</span>.<span class="ident">into</span>()
+        <span class="kw">unsafe </span>{ bind::SDL_GetVersion(<span class="kw-2">&amp;mut </span>ver) }
+        ver.into()
     }
 
-    <span class="doccomment">/// Returns the revision string.</span>
-    <span class="attribute">#[<span class="ident">must_use</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">revision_str</span>() -&gt; <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span> {
-        <span class="kw">let</span> <span class="ident">raw_str</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">bind::SDL_GetRevision</span>() };
-        <span class="kw">unsafe</span> { <span class="ident">std::ffi::CStr::from_ptr</span>(<span class="ident">raw_str</span>) }
-            .<span class="ident">to_str</span>()
-            .<span class="ident">expect</span>(<span class="string">&quot;Getting revision failed&quot;</span>)
+    <span class="doccomment">/// Returns the revision string.
+    </span><span class="attribute">#[must_use]
+    </span><span class="kw">pub fn </span>revision_str() -&gt; <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str {
+        <span class="kw">let </span>raw_str = <span class="kw">unsafe </span>{ bind::SDL_GetRevision() };
+        <span class="kw">unsafe </span>{ std::ffi::CStr::from_ptr(raw_str) }
+            .to_str()
+            .expect(<span class="string">&quot;Getting revision failed&quot;</span>)
     }
 
-    <span class="doccomment">/// Returns the revision number.</span>
-    <span class="attribute">#[<span class="ident">must_use</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">revision_num</span>() -&gt; <span class="ident">u32</span> {
-        (<span class="kw">unsafe</span> { <span class="ident">bind::SDL_GetRevisionNumber</span>() }) <span class="kw">as</span> <span class="ident">u32</span>
+    <span class="doccomment">/// Returns the revision number.
+    </span><span class="attribute">#[must_use]
+    </span><span class="kw">pub fn </span>revision_num() -&gt; u32 {
+        (<span class="kw">unsafe </span>{ bind::SDL_GetRevisionNumber() }) <span class="kw">as </span>u32
     }
 
-    <span class="doccomment">/// Gets the platform string.</span>
-    <span class="attribute">#[<span class="ident">must_use</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">platform</span>() -&gt; <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span> {
-        <span class="kw">let</span> <span class="ident">cstr</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">CStr::from_ptr</span>(<span class="ident">bind::SDL_GetPlatform</span>()) };
-        <span class="ident">cstr</span>.<span class="ident">to_str</span>().<span class="ident">unwrap</span>()
+    <span class="doccomment">/// Gets the platform string.
+    </span><span class="attribute">#[must_use]
+    </span><span class="kw">pub fn </span>platform() -&gt; <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str {
+        <span class="kw">let </span>cstr = <span class="kw">unsafe </span>{ CStr::from_ptr(bind::SDL_GetPlatform()) };
+        cstr.to_str().unwrap()
     }
 
-    <span class="doccomment">/// On an unrecoverable error detected, panics with the provided `context`.</span>
-    <span class="attribute">#[<span class="ident">inline</span>(<span class="ident">always</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">error_then_panic</span>(<span class="ident">context</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span>) -&gt; <span class="op">!</span> {
-        <span class="macro">eprintln!</span>(<span class="string">&quot;{} error: {}&quot;</span>, <span class="ident">context</span>, <span class="ident"><span class="self">Self</span>::error</span>());
+    <span class="doccomment">/// On an unrecoverable error detected, panics with the provided `context`.
+    </span><span class="attribute">#[inline(always)]
+    </span><span class="kw">pub fn </span>error_then_panic(context: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str) -&gt; ! {
+        <span class="macro">eprintln!</span>(<span class="string">&quot;{} error: {}&quot;</span>, context, <span class="self">Self</span>::error());
         <span class="macro">panic!</span>(<span class="string">&quot;Unrecoverable Sdl error occurred&quot;</span>);
     }
 
-    <span class="doccomment">/// Reads the error string from SDL2.</span>
-    <span class="attribute">#[<span class="ident">must_use</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">error</span>() -&gt; <span class="ident">String</span> {
-        <span class="kw">let</span> <span class="ident">raw_str</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">bind::SDL_GetError</span>() };
-        <span class="kw">let</span> <span class="ident">error</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">std::ffi::CStr::from_ptr</span>(<span class="ident">raw_str</span>) }
-            .<span class="ident">to_str</span>()
-            .<span class="ident">expect</span>(<span class="string">&quot;Getting error failed&quot;</span>)
-            .<span class="ident">to_owned</span>();
-        <span class="kw">unsafe</span> { <span class="ident">bind::SDL_ClearError</span>() }
-        <span class="ident">error</span>
+    <span class="doccomment">/// Reads the error string from SDL2.
+    </span><span class="attribute">#[must_use]
+    </span><span class="kw">pub fn </span>error() -&gt; String {
+        <span class="kw">let </span>raw_str = <span class="kw">unsafe </span>{ bind::SDL_GetError() };
+        <span class="kw">let </span>error = <span class="kw">unsafe </span>{ std::ffi::CStr::from_ptr(raw_str) }
+            .to_str()
+            .expect(<span class="string">&quot;Getting error failed&quot;</span>)
+            .to_owned();
+        <span class="kw">unsafe </span>{ bind::SDL_ClearError() }
+        error
     }
 }
 
-<span class="kw">impl</span> <span class="ident">Default</span> <span class="kw">for</span> <span class="ident">Sdl</span> {
-    <span class="kw">fn</span> <span class="ident">default</span>() -&gt; <span class="self">Self</span> {
-        <span class="ident"><span class="self">Self</span>::new</span>()
+<span class="kw">impl </span>Default <span class="kw">for </span>Sdl {
+    <span class="kw">fn </span>default() -&gt; <span class="self">Self </span>{
+        <span class="self">Self</span>::new()
     }
 }
 
-<span class="kw">impl</span> <span class="ident">Drop</span> <span class="kw">for</span> <span class="ident">Sdl</span> {
-    <span class="kw">fn</span> <span class="ident">drop</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) {
-        <span class="kw">unsafe</span> { <span class="ident">bind::SDL_Quit</span>() }
+<span class="kw">impl </span>Drop <span class="kw">for </span>Sdl {
+    <span class="kw">fn </span>drop(<span class="kw-2">&amp;mut </span><span class="self">self</span>) {
+        <span class="kw">unsafe </span>{ bind::SDL_Quit() }
     }
 }
 </code></pre></div>
-</section></div></main><div id="rustdoc-vars" data-root-path="../../" data-current-crate="rich_sdl2_rust" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.64.0-nightly (0f4bcadb4 2022-07-30)" ></div></body></html>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../" data-current-crate="rich_sdl2_rust" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.66.0-nightly (5e9772042 2022-10-29)" ></div></body></html>

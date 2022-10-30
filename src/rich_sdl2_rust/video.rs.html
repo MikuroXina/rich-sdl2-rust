@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/video.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>video.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../storage.js"></script><script defer src="../../source-script.js"></script><script defer src="../../source-files.js"></script><script defer src="../../main.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../rich_sdl2_rust/index.html"><div class="logo-container"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></div></a><h2 class="location"></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../rich_sdl2_rust/index.html"><div class="logo-container"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../rich_sdl2_rust/index.html"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/video.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>video.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" href="../../normalize.css"><link rel="stylesheet" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" href="../../ayu.css" disabled><link rel="stylesheet" href="../../dark.css" disabled><link rel="stylesheet" href="../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../storage.js"></script><script defer src="../../source-script.js"></script><script defer src="../../source-files.js"></script><script defer src="../../main.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><div class="width-limiter"><nav class="sub"><a class="sub-logo-container" href="../../rich_sdl2_rust/index.html"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../wheel.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><pre class="src-line-numbers"><span id="1">1</span>
 <span id="2">2</span>
 <span id="3">3</span>
 <span id="4">4</span>
@@ -96,103 +96,103 @@
 <span id="96">96</span>
 <span id="97">97</span>
 <span id="98">98</span>
-</pre><pre class="rust"><code><span class="kw">use</span> <span class="ident">static_assertions::assert_not_impl_all</span>;
-<span class="kw">use</span> <span class="ident">std::ffi::CStr</span>;
-<span class="kw">use</span> <span class="ident">std::marker::PhantomData</span>;
+</pre><pre class="rust"><code><span class="kw">use </span>static_assertions::assert_not_impl_all;
+<span class="kw">use </span>std::ffi::CStr;
+<span class="kw">use </span>std::marker::PhantomData;
 
-<span class="kw">use</span> <span class="kw">crate</span>::{
-    <span class="ident">bind</span>::{<span class="self">self</span>, <span class="ident">SDL_GL_SetAttribute</span>},
-    <span class="prelude-ty">Result</span>, <span class="ident">Sdl</span>, <span class="ident">SdlError</span>,
+<span class="kw">use crate</span>::{
+    bind::{<span class="self">self</span>, SDL_GL_SetAttribute},
+    <span class="prelude-ty">Result</span>, Sdl, SdlError,
 };
 
-<span class="kw">use</span> <span class="ident"><span class="self">self</span>::display::Display</span>;
+<span class="kw">use </span><span class="self">self</span>::display::Display;
 
-<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">clipboard</span>;
-<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">color</span>;
-<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">display</span>;
-<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">gamma_ramp</span>;
-<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">geo</span>;
-<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">gl_context</span>;
-<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">metal</span>;
-<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">renderer</span>;
-<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">screen_saver</span>;
-<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">surface</span>;
-<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">texture</span>;
-<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">vulkan</span>;
-<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">window</span>;
+<span class="kw">pub mod </span>clipboard;
+<span class="kw">pub mod </span>color;
+<span class="kw">pub mod </span>display;
+<span class="kw">pub mod </span>gamma_ramp;
+<span class="kw">pub mod </span>geo;
+<span class="kw">pub mod </span>gl_context;
+<span class="kw">pub mod </span>metal;
+<span class="kw">pub mod </span>renderer;
+<span class="kw">pub mod </span>screen_saver;
+<span class="kw">pub mod </span>surface;
+<span class="kw">pub mod </span>texture;
+<span class="kw">pub mod </span>vulkan;
+<span class="kw">pub mod </span>window;
 
-<span class="doccomment">/// A video controller by SDL2.</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Video</span><span class="op">&lt;</span><span class="lifetime">&#39;sdl</span><span class="op">&gt;</span> {
-    <span class="ident">_phantom</span>: <span class="ident">PhantomData</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;sdl</span> <span class="ident">Sdl</span><span class="op">&gt;</span>,
+<span class="doccomment">/// A video controller by SDL2.
+</span><span class="kw">pub struct </span>Video&lt;<span class="lifetime">&#39;sdl</span>&gt; {
+    _phantom: PhantomData&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;sdl </span>Sdl&gt;,
 }
 
-<span class="macro">assert_not_impl_all!</span>(<span class="ident">Video</span>: <span class="ident">Send</span>, <span class="ident">Sync</span>);
+<span class="macro">assert_not_impl_all!</span>(Video: Send, Sync);
 
-<span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;sdl</span><span class="op">&gt;</span> <span class="ident">Video</span><span class="op">&lt;</span><span class="lifetime">&#39;sdl</span><span class="op">&gt;</span> {
-    <span class="doccomment">/// Constructs a video controller from a root controller.</span>
-    <span class="attribute">#[<span class="ident">must_use</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="kw">_</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;sdl</span> <span class="ident">Sdl</span>) -&gt; <span class="self">Self</span> {
-        <span class="kw">let</span> <span class="ident">ret</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">bind::SDL_InitSubSystem</span>(<span class="ident">bind::SDL_INIT_VIDEO</span>) };
-        <span class="kw">if</span> <span class="ident">ret</span> <span class="op">!</span><span class="op">=</span> <span class="number">0</span> {
-            <span class="ident">Sdl::error_then_panic</span>(<span class="string">&quot;Sdl video&quot;</span>)
+<span class="kw">impl</span>&lt;<span class="lifetime">&#39;sdl</span>&gt; Video&lt;<span class="lifetime">&#39;sdl</span>&gt; {
+    <span class="doccomment">/// Constructs a video controller from a root controller.
+    </span><span class="attribute">#[must_use]
+    </span><span class="kw">pub fn </span>new(<span class="kw">_</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;sdl </span>Sdl) -&gt; <span class="self">Self </span>{
+        <span class="kw">let </span>ret = <span class="kw">unsafe </span>{ bind::SDL_InitSubSystem(bind::SDL_INIT_VIDEO) };
+        <span class="kw">if </span>ret != <span class="number">0 </span>{
+            Sdl::error_then_panic(<span class="string">&quot;Sdl video&quot;</span>)
         }
-        <span class="self">Self</span> {
-            <span class="ident">_phantom</span>: <span class="ident">PhantomData</span>,
+        <span class="self">Self </span>{
+            _phantom: PhantomData,
         }
     }
 
-    <span class="doccomment">/// Returns a list of displays.</span>
-    <span class="attribute">#[<span class="ident">must_use</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">displays</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">Display</span><span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="ident">ret</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">bind::SDL_GetNumVideoDisplays</span>() };
-        <span class="kw">if</span> <span class="ident">ret</span> <span class="op">&lt;</span><span class="op">=</span> <span class="number">0</span> {
-            <span class="kw">return</span> <span class="macro">vec!</span>[];
+    <span class="doccomment">/// Returns a list of displays.
+    </span><span class="attribute">#[must_use]
+    </span><span class="kw">pub fn </span>displays(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; Vec&lt;Display&gt; {
+        <span class="kw">let </span>ret = <span class="kw">unsafe </span>{ bind::SDL_GetNumVideoDisplays() };
+        <span class="kw">if </span>ret &lt;= <span class="number">0 </span>{
+            <span class="kw">return </span><span class="macro">vec!</span>[];
         }
-        (<span class="number">0</span>..<span class="ident">ret</span>).<span class="ident">map</span>(<span class="op">|</span><span class="ident">idx</span><span class="op">|</span> <span class="ident">Display::new</span>(<span class="ident">idx</span>, <span class="self">self</span>)).<span class="ident">collect</span>()
+        (<span class="number">0</span>..ret).map(|idx| Display::new(idx, <span class="self">self</span>)).collect()
     }
 
-    <span class="doccomment">/// Returns the names of the video drivers.</span>
-    <span class="attribute">#[<span class="ident">must_use</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">video_drivers</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">Vec</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">str</span><span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="ident">num_drivers</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">bind::SDL_GetNumVideoDrivers</span>() };
-        <span class="kw">if</span> <span class="ident">num_drivers</span> <span class="op">&lt;</span><span class="op">=</span> <span class="number">0</span> {
-            <span class="ident">Sdl::error_then_panic</span>(<span class="string">&quot;Getting number of drivers&quot;</span>);
+    <span class="doccomment">/// Returns the names of the video drivers.
+    </span><span class="attribute">#[must_use]
+    </span><span class="kw">pub fn </span>video_drivers(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; Vec&lt;<span class="kw-2">&amp;</span>str&gt; {
+        <span class="kw">let </span>num_drivers = <span class="kw">unsafe </span>{ bind::SDL_GetNumVideoDrivers() };
+        <span class="kw">if </span>num_drivers &lt;= <span class="number">0 </span>{
+            Sdl::error_then_panic(<span class="string">&quot;Getting number of drivers&quot;</span>);
         }
-        (<span class="number">0</span>..<span class="ident">num_drivers</span>)
-            .<span class="ident">map</span>(<span class="op">|</span><span class="ident">idx</span><span class="op">|</span> {
-                <span class="kw">let</span> <span class="ident">raw_str</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">bind::SDL_GetVideoDriver</span>(<span class="ident">idx</span>) };
-                <span class="kw">unsafe</span> { <span class="ident">CStr::from_ptr</span>(<span class="ident">raw_str</span>) }
-                    .<span class="ident">to_str</span>()
-                    .<span class="ident">unwrap_or_default</span>()
+        (<span class="number">0</span>..num_drivers)
+            .map(|idx| {
+                <span class="kw">let </span>raw_str = <span class="kw">unsafe </span>{ bind::SDL_GetVideoDriver(idx) };
+                <span class="kw">unsafe </span>{ CStr::from_ptr(raw_str) }
+                    .to_str()
+                    .unwrap_or_default()
             })
-            .<span class="ident">collect</span>()
+            .collect()
     }
 
-    <span class="doccomment">/// Returns the name of the current video driver.</span>
-    <span class="attribute">#[<span class="ident">must_use</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">current_driver</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="ident">str</span> {
-        <span class="kw">let</span> <span class="ident">raw_str</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">bind::SDL_GetCurrentVideoDriver</span>() };
-        <span class="kw">unsafe</span> { <span class="ident">CStr::from_ptr</span>(<span class="ident">raw_str</span>) }
-            .<span class="ident">to_str</span>()
-            .<span class="ident">unwrap_or_default</span>()
+    <span class="doccomment">/// Returns the name of the current video driver.
+    </span><span class="attribute">#[must_use]
+    </span><span class="kw">pub fn </span>current_driver(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>str {
+        <span class="kw">let </span>raw_str = <span class="kw">unsafe </span>{ bind::SDL_GetCurrentVideoDriver() };
+        <span class="kw">unsafe </span>{ CStr::from_ptr(raw_str) }
+            .to_str()
+            .unwrap_or_default()
     }
 
-    <span class="doccomment">/// Returns whether the screen keyboard is supported.</span>
-    <span class="attribute">#[<span class="ident">must_use</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">has_screen_keyboard</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
-        <span class="kw">unsafe</span> { <span class="ident">bind::SDL_HasScreenKeyboardSupport</span>() <span class="op">!</span><span class="op">=</span> <span class="number">0</span> }
+    <span class="doccomment">/// Returns whether the screen keyboard is supported.
+    </span><span class="attribute">#[must_use]
+    </span><span class="kw">pub fn </span>has_screen_keyboard(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool {
+        <span class="kw">unsafe </span>{ bind::SDL_HasScreenKeyboardSupport() != <span class="number">0 </span>}
     }
 
-    <span class="doccomment">/// Resets all OpenGL attributes.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">reset_gl_attribute</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) {
-        <span class="kw">unsafe</span> { <span class="ident">bind::SDL_GL_ResetAttributes</span>() }
+    <span class="doccomment">/// Resets all OpenGL attributes.
+    </span><span class="kw">pub fn </span>reset_gl_attribute(<span class="kw-2">&amp;</span><span class="self">self</span>) {
+        <span class="kw">unsafe </span>{ bind::SDL_GL_ResetAttributes() }
     }
 }
 
-<span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;sdl</span><span class="op">&gt;</span> <span class="ident">Drop</span> <span class="kw">for</span> <span class="ident">Video</span><span class="op">&lt;</span><span class="lifetime">&#39;sdl</span><span class="op">&gt;</span> {
-    <span class="kw">fn</span> <span class="ident">drop</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) {
-        <span class="kw">unsafe</span> { <span class="ident">bind::SDL_QuitSubSystem</span>(<span class="ident">bind::SDL_INIT_VIDEO</span>) }
+<span class="kw">impl</span>&lt;<span class="lifetime">&#39;sdl</span>&gt; Drop <span class="kw">for </span>Video&lt;<span class="lifetime">&#39;sdl</span>&gt; {
+    <span class="kw">fn </span>drop(<span class="kw-2">&amp;mut </span><span class="self">self</span>) {
+        <span class="kw">unsafe </span>{ bind::SDL_QuitSubSystem(bind::SDL_INIT_VIDEO) }
     }
 }
 </code></pre></div>
-</section></div></main><div id="rustdoc-vars" data-root-path="../../" data-current-crate="rich_sdl2_rust" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.64.0-nightly (0f4bcadb4 2022-07-30)" ></div></body></html>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../" data-current-crate="rich_sdl2_rust" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.66.0-nightly (5e9772042 2022-10-29)" ></div></body></html>

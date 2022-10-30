@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/video/window/builder.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>builder.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../../storage.js"></script><script defer src="../../../../source-script.js"></script><script defer src="../../../../source-files.js"></script><script defer src="../../../../main.js"></script><noscript><link rel="stylesheet" href="../../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../../../rich_sdl2_rust/index.html"><div class="logo-container"><img class="rust-logo" src="../../../../rust-logo.svg" alt="logo"></div></a><h2 class="location"></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../../../rich_sdl2_rust/index.html"><div class="logo-container"><img class="rust-logo" src="../../../../rust-logo.svg" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../../../rich_sdl2_rust/index.html"><img class="rust-logo" src="../../../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/video/window/builder.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>builder.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" href="../../../../normalize.css"><link rel="stylesheet" href="../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" href="../../../../ayu.css" disabled><link rel="stylesheet" href="../../../../dark.css" disabled><link rel="stylesheet" href="../../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../../storage.js"></script><script defer src="../../../../source-script.js"></script><script defer src="../../../../source-files.js"></script><script defer src="../../../../main.js"></script><noscript><link rel="stylesheet" href="../../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><div class="width-limiter"><nav class="sub"><a class="sub-logo-container" href="../../../../rich_sdl2_rust/index.html"><img class="rust-logo" src="../../../../rust-logo.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../../wheel.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><pre class="src-line-numbers"><span id="1">1</span>
 <span id="2">2</span>
 <span id="3">3</span>
 <span id="4">4</span>
@@ -151,158 +151,158 @@
 <span id="151">151</span>
 <span id="152">152</span>
 <span id="153">153</span>
-</pre><pre class="rust"><code><span class="kw">use</span> <span class="ident">bitflags::bitflags</span>;
-<span class="kw">use</span> <span class="ident">std::ffi::CString</span>;
-<span class="kw">use</span> <span class="ident">std::ptr::NonNull</span>;
-<span class="kw">use</span> <span class="ident">typed_builder::TypedBuilder</span>;
+</pre><pre class="rust"><code><span class="kw">use </span>bitflags::bitflags;
+<span class="kw">use </span>std::ffi::CString;
+<span class="kw">use </span>std::ptr::NonNull;
+<span class="kw">use </span>typed_builder::TypedBuilder;
 
-<span class="kw">use</span> <span class="kw">super</span>::{<span class="ident">Window</span>, <span class="ident">WindowContextKind</span>, <span class="ident">WindowFormat</span>};
-<span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">bind</span>, <span class="ident">Sdl</span>, <span class="ident">Video</span>};
+<span class="kw">use super</span>::{Window, WindowContextKind, WindowFormat};
+<span class="kw">use crate</span>::{bind, Sdl, Video};
 
-<span class="doccomment">/// A coordinate value for the window position.</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">Copy</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>)]</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">WindowCoord</span> {
-    <span class="ident">coord</span>: <span class="ident">i32</span>,
+<span class="doccomment">/// A coordinate value for the window position.
+</span><span class="attribute">#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+</span><span class="kw">pub struct </span>WindowCoord {
+    coord: i32,
 }
 
-<span class="kw">impl</span> <span class="ident">WindowCoord</span> {
-    <span class="doccomment">/// Constructs from coord value. Must be in `-16384..=16384`.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # Panics</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// Panics if `coord` is not in `-16384..=16384`.</span>
-    <span class="attribute">#[<span class="ident">must_use</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">coord</span>(<span class="ident">coord</span>: <span class="ident">i32</span>) -&gt; <span class="self">Self</span> {
-        <span class="kw">const</span> <span class="ident">MAX</span>: <span class="ident">i32</span> <span class="op">=</span> <span class="number">16384</span>;
-        <span class="macro">assert!</span>((<span class="op">-</span><span class="ident">MAX</span>..<span class="op">=</span><span class="ident">MAX</span>).<span class="ident">contains</span>(<span class="kw-2">&amp;</span><span class="ident">coord</span>));
-        <span class="self">Self</span> { <span class="ident">coord</span> }
+<span class="kw">impl </span>WindowCoord {
+    <span class="doccomment">/// Constructs from coord value. Must be in `-16384..=16384`.
+    ///
+    /// # Panics
+    ///
+    /// Panics if `coord` is not in `-16384..=16384`.
+    </span><span class="attribute">#[must_use]
+    </span><span class="kw">pub fn </span>coord(coord: i32) -&gt; <span class="self">Self </span>{
+        <span class="kw">const </span>MAX: i32 = <span class="number">16384</span>;
+        <span class="macro">assert!</span>((-MAX..=MAX).contains(<span class="kw-2">&amp;</span>coord));
+        <span class="self">Self </span>{ coord }
     }
-    <span class="doccomment">/// Constructs the undefined coordinate.</span>
-    <span class="attribute">#[<span class="ident">must_use</span>]</span>
-    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">undefined</span>() -&gt; <span class="self">Self</span> {
-        <span class="self">Self</span> {
-            <span class="ident">coord</span>: <span class="number">0x1FFF0000</span>, <span class="comment">// SDL_WINDOWPOS_UNDEFINED</span>
-        }
+    <span class="doccomment">/// Constructs the undefined coordinate.
+    </span><span class="attribute">#[must_use]
+    </span><span class="kw">pub const fn </span>undefined() -&gt; <span class="self">Self </span>{
+        <span class="self">Self </span>{
+            coord: <span class="number">0x1FFF0000</span>, <span class="comment">// SDL_WINDOWPOS_UNDEFINED
+        </span>}
     }
-    <span class="doccomment">/// Constructs the centered coordinate.</span>
-    <span class="attribute">#[<span class="ident">must_use</span>]</span>
-    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">centered</span>() -&gt; <span class="self">Self</span> {
-        <span class="self">Self</span> {
-            <span class="ident">coord</span>: <span class="number">0x2FFF0000</span>, <span class="comment">// SDL_WINDOWPOS_CENTERED</span>
-        }
+    <span class="doccomment">/// Constructs the centered coordinate.
+    </span><span class="attribute">#[must_use]
+    </span><span class="kw">pub const fn </span>centered() -&gt; <span class="self">Self </span>{
+        <span class="self">Self </span>{
+            coord: <span class="number">0x2FFF0000</span>, <span class="comment">// SDL_WINDOWPOS_CENTERED
+        </span>}
     }
-    <span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn</span> <span class="ident">into_arg</span>(<span class="self">self</span>) -&gt; <span class="ident">std::os::raw::c_int</span> {
-        <span class="self">self</span>.<span class="ident">coord</span>
+    <span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn </span>into_arg(<span class="self">self</span>) -&gt; std::os::raw::c_int {
+        <span class="self">self</span>.coord
     }
 }
 
-<span class="doccomment">/// A builder for the [`Window`].</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">TypedBuilder</span>)]</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">WindowBuilder</span> {
-    <span class="attribute">#[<span class="ident">builder</span>(<span class="ident">default</span> <span class="op">=</span> <span class="string">&quot;Untitled&quot;</span>.<span class="ident">into</span>(), <span class="ident">setter</span>(<span class="ident">into</span>))]</span>
-    <span class="ident">title</span>: <span class="ident">String</span>,
-    <span class="attribute">#[<span class="ident">builder</span>(<span class="ident">default</span> <span class="op">=</span> <span class="ident">WindowCoord::centered</span>())]</span>
-    <span class="ident">x</span>: <span class="ident">WindowCoord</span>,
-    <span class="attribute">#[<span class="ident">builder</span>(<span class="ident">default</span> <span class="op">=</span> <span class="ident">WindowCoord::centered</span>())]</span>
-    <span class="ident">y</span>: <span class="ident">WindowCoord</span>,
-    <span class="attribute">#[<span class="ident">builder</span>(<span class="ident">default</span> <span class="op">=</span> <span class="number">640</span>)]</span>
-    <span class="ident">width</span>: <span class="ident">u32</span>,
-    <span class="attribute">#[<span class="ident">builder</span>(<span class="ident">default</span> <span class="op">=</span> <span class="number">480</span>)]</span>
-    <span class="ident">height</span>: <span class="ident">u32</span>,
-    <span class="attribute">#[<span class="ident">builder</span>(<span class="ident">default</span> <span class="op">=</span> <span class="ident">WindowFormat::Normal</span>)]</span>
-    <span class="ident">format</span>: <span class="ident">WindowFormat</span>,
-    <span class="attribute">#[<span class="ident">builder</span>(<span class="ident">default</span> <span class="op">=</span> <span class="ident">WindowContextKind::Software</span>)]</span>
-    <span class="ident">context_kind</span>: <span class="ident">WindowContextKind</span>,
-    <span class="attribute">#[<span class="ident">builder</span>(<span class="ident">default</span>)]</span>
-    <span class="ident">hidden</span>: <span class="ident">bool</span>,
-    <span class="attribute">#[<span class="ident">builder</span>(<span class="ident">default</span>)]</span>
-    <span class="ident">allow_high_dpi</span>: <span class="ident">bool</span>,
-    <span class="attribute">#[<span class="ident">builder</span>(<span class="ident">default</span>)]</span>
-    <span class="ident">borderless</span>: <span class="ident">bool</span>,
-    <span class="attribute">#[<span class="ident">builder</span>(<span class="ident">default</span>)]</span>
-    <span class="ident">resizable</span>: <span class="ident">bool</span>,
+<span class="doccomment">/// A builder for the [`Window`].
+</span><span class="attribute">#[derive(Debug, TypedBuilder)]
+</span><span class="kw">pub struct </span>WindowBuilder {
+    <span class="attribute">#[builder(default = <span class="string">&quot;Untitled&quot;</span>.into(), setter(into))]
+    </span>title: String,
+    <span class="attribute">#[builder(default = WindowCoord::centered())]
+    </span>x: WindowCoord,
+    <span class="attribute">#[builder(default = WindowCoord::centered())]
+    </span>y: WindowCoord,
+    <span class="attribute">#[builder(default = <span class="number">640</span>)]
+    </span>width: u32,
+    <span class="attribute">#[builder(default = <span class="number">480</span>)]
+    </span>height: u32,
+    <span class="attribute">#[builder(default = WindowFormat::Normal)]
+    </span>format: WindowFormat,
+    <span class="attribute">#[builder(default = WindowContextKind::Software)]
+    </span>context_kind: WindowContextKind,
+    <span class="attribute">#[builder(default)]
+    </span>hidden: bool,
+    <span class="attribute">#[builder(default)]
+    </span>allow_high_dpi: bool,
+    <span class="attribute">#[builder(default)]
+    </span>borderless: bool,
+    <span class="attribute">#[builder(default)]
+    </span>resizable: bool,
 }
 
-<span class="kw">impl</span> <span class="ident">WindowBuilder</span> {
-    <span class="doccomment">/// Builds the window.</span>
-    <span class="attribute">#[<span class="ident">must_use</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new_window</span><span class="op">&lt;</span><span class="lifetime">&#39;video</span><span class="op">&gt;</span>(<span class="self">self</span>, <span class="ident">video</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;video</span> <span class="ident">Video</span>) -&gt; <span class="ident">Window</span><span class="op">&lt;</span><span class="lifetime">&#39;video</span><span class="op">&gt;</span> {
-        <span class="kw">if</span> <span class="self">self</span>.<span class="ident">context_kind</span> <span class="op">==</span> <span class="ident">WindowContextKind::Vulkan</span> {
-            <span class="kw">let</span> <span class="ident">ret</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">bind::SDL_Vulkan_LoadLibrary</span>(<span class="ident">std::ptr::null</span>()) };
-            <span class="kw">if</span> <span class="ident">ret</span> <span class="op">==</span> <span class="op">-</span><span class="number">1</span> {
-                <span class="ident">Sdl::error_then_panic</span>(<span class="string">&quot;loading vulkan library from SDL_VULKAN_LIBRARY&quot;</span>);
+<span class="kw">impl </span>WindowBuilder {
+    <span class="doccomment">/// Builds the window.
+    </span><span class="attribute">#[must_use]
+    </span><span class="kw">pub fn </span>new_window&lt;<span class="lifetime">&#39;video</span>&gt;(<span class="self">self</span>, video: <span class="kw-2">&amp;</span><span class="lifetime">&#39;video </span>Video) -&gt; Window&lt;<span class="lifetime">&#39;video</span>&gt; {
+        <span class="kw">if </span><span class="self">self</span>.context_kind == WindowContextKind::Vulkan {
+            <span class="kw">let </span>ret = <span class="kw">unsafe </span>{ bind::SDL_Vulkan_LoadLibrary(std::ptr::null()) };
+            <span class="kw">if </span>ret == -<span class="number">1 </span>{
+                Sdl::error_then_panic(<span class="string">&quot;loading vulkan library from SDL_VULKAN_LIBRARY&quot;</span>);
             }
         }
 
-        <span class="kw">let</span> <span class="ident">flags</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">calc_flags</span>();
+        <span class="kw">let </span>flags = <span class="self">self</span>.calc_flags();
 
-        <span class="kw">use</span> <span class="ident">std::os::raw::c_int</span>;
-        <span class="kw">let</span> <span class="ident">cstr</span> <span class="op">=</span> <span class="ident">CString::new</span>(<span class="self">self</span>.<span class="ident">title</span>).<span class="ident">unwrap_or_default</span>();
-        <span class="kw">let</span> <span class="ident">raw</span> <span class="op">=</span> <span class="kw">unsafe</span> {
-            <span class="ident">bind::SDL_CreateWindow</span>(
-                <span class="ident">cstr</span>.<span class="ident">as_ptr</span>(),
-                <span class="self">self</span>.<span class="ident">x</span>.<span class="ident">into_arg</span>(),
-                <span class="self">self</span>.<span class="ident">y</span>.<span class="ident">into_arg</span>(),
-                <span class="self">self</span>.<span class="ident">width</span> <span class="kw">as</span> <span class="ident">c_int</span>,
-                <span class="self">self</span>.<span class="ident">height</span> <span class="kw">as</span> <span class="ident">c_int</span>,
-                <span class="ident">flags</span>,
+        <span class="kw">use </span>std::os::raw::c_int;
+        <span class="kw">let </span>cstr = CString::new(<span class="self">self</span>.title).unwrap_or_default();
+        <span class="kw">let </span>raw = <span class="kw">unsafe </span>{
+            bind::SDL_CreateWindow(
+                cstr.as_ptr(),
+                <span class="self">self</span>.x.into_arg(),
+                <span class="self">self</span>.y.into_arg(),
+                <span class="self">self</span>.width <span class="kw">as </span>c_int,
+                <span class="self">self</span>.height <span class="kw">as </span>c_int,
+                flags,
             )
         };
-        <span class="ident">NonNull::new</span>(<span class="ident">raw</span>).<span class="ident">map_or_else</span>(
-            <span class="op">|</span><span class="op">|</span> <span class="ident">Sdl::error_then_panic</span>(<span class="string">&quot;Sdl window&quot;</span>),
-            <span class="kw">move</span> <span class="op">|</span><span class="ident">window</span><span class="op">|</span> <span class="ident">Window</span> { <span class="ident">window</span>, <span class="ident">video</span> },
+        NonNull::new(raw).map_or_else(
+            || Sdl::error_then_panic(<span class="string">&quot;Sdl window&quot;</span>),
+            <span class="kw">move </span>|window| Window { window, video },
         )
     }
 
-    <span class="kw">fn</span> <span class="ident">calc_flags</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">u32</span> {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">flags</span> <span class="op">=</span> <span class="ident">WindowFlags::empty</span>();
-        <span class="ident">flags</span> <span class="op">|</span><span class="op">=</span> <span class="kw">match</span> <span class="self">self</span>.<span class="ident">format</span> {
-            <span class="ident">WindowFormat::Normal</span> =&gt; <span class="ident">WindowFlags::empty</span>(),
-            <span class="ident">WindowFormat::Maximized</span> =&gt; <span class="ident">WindowFlags::MAXIMIZED</span>,
-            <span class="ident">WindowFormat::Minimized</span> =&gt; <span class="ident">WindowFlags::MINIMIZED</span>,
-            <span class="ident">WindowFormat::FullScreen</span> =&gt; <span class="ident">WindowFlags::FULLSCREEN</span>,
-            <span class="ident">WindowFormat::FullScreenWithCurrentDesktop</span> =&gt; <span class="ident">WindowFlags::FULLSCREEN_DESKTOP</span>,
+    <span class="kw">fn </span>calc_flags(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; u32 {
+        <span class="kw">let </span><span class="kw-2">mut </span>flags = WindowFlags::empty();
+        flags |= <span class="kw">match </span><span class="self">self</span>.format {
+            WindowFormat::Normal =&gt; WindowFlags::empty(),
+            WindowFormat::Maximized =&gt; WindowFlags::MAXIMIZED,
+            WindowFormat::Minimized =&gt; WindowFlags::MINIMIZED,
+            WindowFormat::FullScreen =&gt; WindowFlags::FULLSCREEN,
+            WindowFormat::FullScreenWithCurrentDesktop =&gt; WindowFlags::FULLSCREEN_DESKTOP,
         };
-        <span class="ident">flags</span> <span class="op">|</span><span class="op">=</span> <span class="kw">match</span> <span class="self">self</span>.<span class="ident">context_kind</span> {
-            <span class="ident">WindowContextKind::Software</span> =&gt; <span class="ident">WindowFlags::empty</span>(),
-            <span class="ident">WindowContextKind::OpenGl</span> =&gt; <span class="ident">WindowFlags::OPENGL</span>,
-            <span class="ident">WindowContextKind::Vulkan</span> =&gt; <span class="ident">WindowFlags::VULKAN</span>,
-            <span class="ident">WindowContextKind::Metal</span> =&gt; <span class="ident">WindowFlags::METAL</span>,
+        flags |= <span class="kw">match </span><span class="self">self</span>.context_kind {
+            WindowContextKind::Software =&gt; WindowFlags::empty(),
+            WindowContextKind::OpenGl =&gt; WindowFlags::OPENGL,
+            WindowContextKind::Vulkan =&gt; WindowFlags::VULKAN,
+            WindowContextKind::Metal =&gt; WindowFlags::METAL,
         };
-        <span class="kw">if</span> <span class="self">self</span>.<span class="ident">hidden</span> {
-            <span class="ident">flags</span> <span class="op">|</span><span class="op">=</span> <span class="ident">WindowFlags::HIDDEN</span>;
+        <span class="kw">if </span><span class="self">self</span>.hidden {
+            flags |= WindowFlags::HIDDEN;
         }
-        <span class="kw">if</span> <span class="self">self</span>.<span class="ident">allow_high_dpi</span> {
-            <span class="ident">flags</span> <span class="op">|</span><span class="op">=</span> <span class="ident">WindowFlags::ALLOW_HIGHDPI</span>;
+        <span class="kw">if </span><span class="self">self</span>.allow_high_dpi {
+            flags |= WindowFlags::ALLOW_HIGHDPI;
         }
-        <span class="kw">if</span> <span class="self">self</span>.<span class="ident">borderless</span> {
-            <span class="ident">flags</span> <span class="op">|</span><span class="op">=</span> <span class="ident">WindowFlags::BORDERLESS</span>;
+        <span class="kw">if </span><span class="self">self</span>.borderless {
+            flags |= WindowFlags::BORDERLESS;
         }
-        <span class="ident">flags</span>.<span class="ident">bits</span>()
+        flags.bits()
     }
 }
 
-<span class="macro">bitflags!</span> {
-    <span class="doccomment">/// A flag for [`Window`].</span>
-    <span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">struct</span> <span class="ident">WindowFlags</span>: <span class="ident">u32</span> {
-        <span class="kw">const</span> <span class="ident">FULLSCREEN</span> <span class="op">=</span> <span class="ident">bind::SDL_WINDOW_FULLSCREEN</span> <span class="kw">as</span> <span class="ident">u32</span>;
-        <span class="kw">const</span> <span class="ident">FULLSCREEN_DESKTOP</span> <span class="op">=</span> <span class="ident">bind::SDL_WINDOW_FULLSCREEN_DESKTOP</span> <span class="kw">as</span> <span class="ident">u32</span>;
-        <span class="kw">const</span> <span class="ident">OPENGL</span> <span class="op">=</span> <span class="ident">bind::SDL_WINDOW_OPENGL</span> <span class="kw">as</span> <span class="ident">u32</span>;
-        <span class="kw">const</span> <span class="ident">VULKAN</span> <span class="op">=</span> <span class="ident">bind::SDL_WINDOW_VULKAN</span> <span class="kw">as</span> <span class="ident">u32</span>;
-        <span class="kw">const</span> <span class="ident">METAL</span> <span class="op">=</span> <span class="ident">bind::SDL_WINDOW_METAL</span> <span class="kw">as</span> <span class="ident">u32</span>;
-        <span class="kw">const</span> <span class="ident">SHOWN</span> <span class="op">=</span> <span class="ident">bind::SDL_WINDOW_SHOWN</span> <span class="kw">as</span> <span class="ident">u32</span>;
-        <span class="kw">const</span> <span class="ident">HIDDEN</span> <span class="op">=</span> <span class="ident">bind::SDL_WINDOW_HIDDEN</span> <span class="kw">as</span> <span class="ident">u32</span>;
-        <span class="kw">const</span> <span class="ident">BORDERLESS</span> <span class="op">=</span> <span class="ident">bind::SDL_WINDOW_BORDERLESS</span> <span class="kw">as</span> <span class="ident">u32</span>;
-        <span class="kw">const</span> <span class="ident">RESIZABLE</span> <span class="op">=</span> <span class="ident">bind::SDL_WINDOW_RESIZABLE</span> <span class="kw">as</span> <span class="ident">u32</span>;
-        <span class="kw">const</span> <span class="ident">MINIMIZED</span> <span class="op">=</span> <span class="ident">bind::SDL_WINDOW_MINIMIZED</span> <span class="kw">as</span> <span class="ident">u32</span>;
-        <span class="kw">const</span> <span class="ident">MAXIMIZED</span> <span class="op">=</span> <span class="ident">bind::SDL_WINDOW_MAXIMIZED</span> <span class="kw">as</span> <span class="ident">u32</span>;
-        <span class="kw">const</span> <span class="ident">INPUT_GRABBED</span> <span class="op">=</span> <span class="ident">bind::SDL_WINDOW_INPUT_GRABBED</span> <span class="kw">as</span> <span class="ident">u32</span>;
-        <span class="kw">const</span> <span class="ident">INPUT_FOCUS</span> <span class="op">=</span> <span class="ident">bind::SDL_WINDOW_INPUT_FOCUS</span> <span class="kw">as</span> <span class="ident">u32</span>;
-        <span class="kw">const</span> <span class="ident">MOUSE_FOCUS</span> <span class="op">=</span> <span class="ident">bind::SDL_WINDOW_MOUSE_FOCUS</span> <span class="kw">as</span> <span class="ident">u32</span>;
-        <span class="kw">const</span> <span class="ident">FOREIGN</span> <span class="op">=</span> <span class="ident">bind::SDL_WINDOW_FOREIGN</span> <span class="kw">as</span> <span class="ident">u32</span>;
-        <span class="kw">const</span> <span class="ident">ALLOW_HIGHDPI</span> <span class="op">=</span> <span class="ident">bind::SDL_WINDOW_ALLOW_HIGHDPI</span> <span class="kw">as</span> <span class="ident">u32</span>;
-        <span class="kw">const</span> <span class="ident">MOUSE_CAPTURE</span> <span class="op">=</span> <span class="ident">bind::SDL_WINDOW_MOUSE_CAPTURE</span> <span class="kw">as</span> <span class="ident">u32</span>;
+<span class="macro">bitflags! </span>{
+    <span class="doccomment">/// A flag for [`Window`].
+    </span><span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">struct </span>WindowFlags: u32 {
+        <span class="kw">const </span>FULLSCREEN = bind::SDL_WINDOW_FULLSCREEN <span class="kw">as </span>u32;
+        <span class="kw">const </span>FULLSCREEN_DESKTOP = bind::SDL_WINDOW_FULLSCREEN_DESKTOP <span class="kw">as </span>u32;
+        <span class="kw">const </span>OPENGL = bind::SDL_WINDOW_OPENGL <span class="kw">as </span>u32;
+        <span class="kw">const </span>VULKAN = bind::SDL_WINDOW_VULKAN <span class="kw">as </span>u32;
+        <span class="kw">const </span>METAL = bind::SDL_WINDOW_METAL <span class="kw">as </span>u32;
+        <span class="kw">const </span>SHOWN = bind::SDL_WINDOW_SHOWN <span class="kw">as </span>u32;
+        <span class="kw">const </span>HIDDEN = bind::SDL_WINDOW_HIDDEN <span class="kw">as </span>u32;
+        <span class="kw">const </span>BORDERLESS = bind::SDL_WINDOW_BORDERLESS <span class="kw">as </span>u32;
+        <span class="kw">const </span>RESIZABLE = bind::SDL_WINDOW_RESIZABLE <span class="kw">as </span>u32;
+        <span class="kw">const </span>MINIMIZED = bind::SDL_WINDOW_MINIMIZED <span class="kw">as </span>u32;
+        <span class="kw">const </span>MAXIMIZED = bind::SDL_WINDOW_MAXIMIZED <span class="kw">as </span>u32;
+        <span class="kw">const </span>INPUT_GRABBED = bind::SDL_WINDOW_INPUT_GRABBED <span class="kw">as </span>u32;
+        <span class="kw">const </span>INPUT_FOCUS = bind::SDL_WINDOW_INPUT_FOCUS <span class="kw">as </span>u32;
+        <span class="kw">const </span>MOUSE_FOCUS = bind::SDL_WINDOW_MOUSE_FOCUS <span class="kw">as </span>u32;
+        <span class="kw">const </span>FOREIGN = bind::SDL_WINDOW_FOREIGN <span class="kw">as </span>u32;
+        <span class="kw">const </span>ALLOW_HIGHDPI = bind::SDL_WINDOW_ALLOW_HIGHDPI <span class="kw">as </span>u32;
+        <span class="kw">const </span>MOUSE_CAPTURE = bind::SDL_WINDOW_MOUSE_CAPTURE <span class="kw">as </span>u32;
     }
 }
 </code></pre></div>
-</section></div></main><div id="rustdoc-vars" data-root-path="../../../../" data-current-crate="rich_sdl2_rust" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.64.0-nightly (0f4bcadb4 2022-07-30)" ></div></body></html>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../../../" data-current-crate="rich_sdl2_rust" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.66.0-nightly (5e9772042 2022-10-29)" ></div></body></html>

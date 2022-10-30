@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/video/window/cursor.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>cursor.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../../storage.js"></script><script defer src="../../../../source-script.js"></script><script defer src="../../../../source-files.js"></script><script defer src="../../../../main.js"></script><noscript><link rel="stylesheet" href="../../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../../../rich_sdl2_rust/index.html"><div class="logo-container"><img class="rust-logo" src="../../../../rust-logo.svg" alt="logo"></div></a><h2 class="location"></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../../../rich_sdl2_rust/index.html"><div class="logo-container"><img class="rust-logo" src="../../../../rust-logo.svg" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../../../rich_sdl2_rust/index.html"><img class="rust-logo" src="../../../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/video/window/cursor.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>cursor.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" href="../../../../normalize.css"><link rel="stylesheet" href="../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" href="../../../../ayu.css" disabled><link rel="stylesheet" href="../../../../dark.css" disabled><link rel="stylesheet" href="../../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../../storage.js"></script><script defer src="../../../../source-script.js"></script><script defer src="../../../../source-files.js"></script><script defer src="../../../../main.js"></script><noscript><link rel="stylesheet" href="../../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><div class="width-limiter"><nav class="sub"><a class="sub-logo-container" href="../../../../rich_sdl2_rust/index.html"><img class="rust-logo" src="../../../../rust-logo.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../../wheel.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><pre class="src-line-numbers"><span id="1">1</span>
 <span id="2">2</span>
 <span id="3">3</span>
 <span id="4">4</span>
@@ -156,163 +156,163 @@
 <span id="156">156</span>
 <span id="157">157</span>
 <span id="158">158</span>
-</pre><pre class="rust"><code><span class="doccomment">//! Cursor control on a window.</span>
+</pre><pre class="rust"><code><span class="doccomment">//! Cursor control on a window.
 
-<span class="kw">use</span> <span class="ident">static_assertions::assert_not_impl_all</span>;
-<span class="kw">use</span> <span class="ident">std::marker::PhantomData</span>;
-<span class="kw">use</span> <span class="ident">std::ptr::NonNull</span>;
+</span><span class="kw">use </span>static_assertions::assert_not_impl_all;
+<span class="kw">use </span>std::marker::PhantomData;
+<span class="kw">use </span>std::ptr::NonNull;
 
-<span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">bind</span>, <span class="ident">geo::Point</span>, <span class="ident">surface::Surface</span>, <span class="prelude-ty">Result</span>, <span class="ident">Sdl</span>, <span class="ident">SdlError</span>};
+<span class="kw">use crate</span>::{bind, geo::Point, surface::Surface, <span class="prelude-ty">Result</span>, Sdl, SdlError};
 
-<span class="kw">use</span> <span class="ident"><span class="kw">super</span>::Window</span>;
+<span class="kw">use </span><span class="kw">super</span>::Window;
 
-<span class="doccomment">/// A kind of the system cursor.</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">Copy</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>, <span class="ident">Hash</span>)]</span>
-<span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">SystemCursorKind</span> {
-    <span class="doccomment">/// The arrow cursor.</span>
-    <span class="ident">Arrow</span>,
-    <span class="doccomment">/// The I beam cursor.</span>
-    <span class="ident">IBeam</span>,
-    <span class="doccomment">/// The waiting cursor.</span>
-    <span class="ident">Wait</span>,
-    <span class="doccomment">/// The crosshair cursor.</span>
-    <span class="ident">Crosshair</span>,
-    <span class="doccomment">/// The waiting cursor with arrow.</span>
-    <span class="ident">WaitArrow</span>,
-    <span class="doccomment">/// The resizing cursor between north west and south east.</span>
-    <span class="ident">SizeNwse</span>,
-    <span class="doccomment">/// The resizing cursor between north east and south west.</span>
-    <span class="ident">SizeNesw</span>,
-    <span class="doccomment">/// The resizing cursor between east and west.</span>
-    <span class="ident">SizeWe</span>,
-    <span class="doccomment">/// The resizing cursor between north and south.</span>
-    <span class="ident">SizeNs</span>,
-    <span class="doccomment">/// The resizing cursor for all directions.</span>
-    <span class="ident">SizeAll</span>,
-    <span class="doccomment">/// The prohibiting cursor.</span>
-    <span class="ident">No</span>,
-    <span class="doccomment">/// The hand cursor.</span>
-    <span class="ident">Hand</span>,
+<span class="doccomment">/// A kind of the system cursor.
+</span><span class="attribute">#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+</span><span class="kw">pub enum </span>SystemCursorKind {
+    <span class="doccomment">/// The arrow cursor.
+    </span>Arrow,
+    <span class="doccomment">/// The I beam cursor.
+    </span>IBeam,
+    <span class="doccomment">/// The waiting cursor.
+    </span>Wait,
+    <span class="doccomment">/// The crosshair cursor.
+    </span>Crosshair,
+    <span class="doccomment">/// The waiting cursor with arrow.
+    </span>WaitArrow,
+    <span class="doccomment">/// The resizing cursor between north west and south east.
+    </span>SizeNwse,
+    <span class="doccomment">/// The resizing cursor between north east and south west.
+    </span>SizeNesw,
+    <span class="doccomment">/// The resizing cursor between east and west.
+    </span>SizeWe,
+    <span class="doccomment">/// The resizing cursor between north and south.
+    </span>SizeNs,
+    <span class="doccomment">/// The resizing cursor for all directions.
+    </span>SizeAll,
+    <span class="doccomment">/// The prohibiting cursor.
+    </span>No,
+    <span class="doccomment">/// The hand cursor.
+    </span>Hand,
 }
 
-<span class="kw">impl</span> <span class="ident">SystemCursorKind</span> {
-    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">as_raw</span>(<span class="self">self</span>) -&gt; <span class="ident">bind::SDL_SystemCursor</span> {
-        <span class="kw">match</span> <span class="self">self</span> {
-            <span class="ident">SystemCursorKind::Arrow</span> =&gt; <span class="ident">bind::SDL_SYSTEM_CURSOR_ARROW</span>,
-            <span class="ident">SystemCursorKind::IBeam</span> =&gt; <span class="ident">bind::SDL_SYSTEM_CURSOR_IBEAM</span>,
-            <span class="ident">SystemCursorKind::Wait</span> =&gt; <span class="ident">bind::SDL_SYSTEM_CURSOR_WAIT</span>,
-            <span class="ident">SystemCursorKind::Crosshair</span> =&gt; <span class="ident">bind::SDL_SYSTEM_CURSOR_CROSSHAIR</span>,
-            <span class="ident">SystemCursorKind::WaitArrow</span> =&gt; <span class="ident">bind::SDL_SYSTEM_CURSOR_WAITARROW</span>,
-            <span class="ident">SystemCursorKind::SizeNwse</span> =&gt; <span class="ident">bind::SDL_SYSTEM_CURSOR_SIZENWSE</span>,
-            <span class="ident">SystemCursorKind::SizeNesw</span> =&gt; <span class="ident">bind::SDL_SYSTEM_CURSOR_SIZENESW</span>,
-            <span class="ident">SystemCursorKind::SizeWe</span> =&gt; <span class="ident">bind::SDL_SYSTEM_CURSOR_SIZEWE</span>,
-            <span class="ident">SystemCursorKind::SizeNs</span> =&gt; <span class="ident">bind::SDL_SYSTEM_CURSOR_SIZENS</span>,
-            <span class="ident">SystemCursorKind::SizeAll</span> =&gt; <span class="ident">bind::SDL_SYSTEM_CURSOR_SIZEALL</span>,
-            <span class="ident">SystemCursorKind::No</span> =&gt; <span class="ident">bind::SDL_SYSTEM_CURSOR_NO</span>,
-            <span class="ident">SystemCursorKind::Hand</span> =&gt; <span class="ident">bind::SDL_SYSTEM_CURSOR_HAND</span>,
+<span class="kw">impl </span>SystemCursorKind {
+    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn </span>as_raw(<span class="self">self</span>) -&gt; bind::SDL_SystemCursor {
+        <span class="kw">match </span><span class="self">self </span>{
+            SystemCursorKind::Arrow =&gt; bind::SDL_SYSTEM_CURSOR_ARROW,
+            SystemCursorKind::IBeam =&gt; bind::SDL_SYSTEM_CURSOR_IBEAM,
+            SystemCursorKind::Wait =&gt; bind::SDL_SYSTEM_CURSOR_WAIT,
+            SystemCursorKind::Crosshair =&gt; bind::SDL_SYSTEM_CURSOR_CROSSHAIR,
+            SystemCursorKind::WaitArrow =&gt; bind::SDL_SYSTEM_CURSOR_WAITARROW,
+            SystemCursorKind::SizeNwse =&gt; bind::SDL_SYSTEM_CURSOR_SIZENWSE,
+            SystemCursorKind::SizeNesw =&gt; bind::SDL_SYSTEM_CURSOR_SIZENESW,
+            SystemCursorKind::SizeWe =&gt; bind::SDL_SYSTEM_CURSOR_SIZEWE,
+            SystemCursorKind::SizeNs =&gt; bind::SDL_SYSTEM_CURSOR_SIZENS,
+            SystemCursorKind::SizeAll =&gt; bind::SDL_SYSTEM_CURSOR_SIZEALL,
+            SystemCursorKind::No =&gt; bind::SDL_SYSTEM_CURSOR_NO,
+            SystemCursorKind::Hand =&gt; bind::SDL_SYSTEM_CURSOR_HAND,
         }
     }
 }
 
-<span class="doccomment">/// A system cursor controller.</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Cursor</span><span class="op">&lt;</span><span class="lifetime">&#39;window</span><span class="op">&gt;</span> {
-    <span class="ident">cursor</span>: <span class="ident">NonNull</span><span class="op">&lt;</span><span class="ident">bind::SDL_Cursor</span><span class="op">&gt;</span>,
-    <span class="ident">window</span>: <span class="ident">PhantomData</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;window</span> ()<span class="op">&gt;</span>,
+<span class="doccomment">/// A system cursor controller.
+</span><span class="kw">pub struct </span>Cursor&lt;<span class="lifetime">&#39;window</span>&gt; {
+    cursor: NonNull&lt;bind::SDL_Cursor&gt;,
+    window: PhantomData&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;window </span>()&gt;,
 }
 
-<span class="kw">impl</span> <span class="ident">std::fmt::Debug</span> <span class="kw">for</span> <span class="ident">Cursor</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;mut</span> <span class="ident">std::fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">std::fmt::Result</span> {
-        <span class="ident">f</span>.<span class="ident">debug_struct</span>(<span class="string">&quot;Cursor&quot;</span>).<span class="ident">finish_non_exhaustive</span>()
+<span class="kw">impl </span>std::fmt::Debug <span class="kw">for </span>Cursor&lt;<span class="lifetime">&#39;_</span>&gt; {
+    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>std::fmt::Formatter&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; std::fmt::Result {
+        f.debug_struct(<span class="string">&quot;Cursor&quot;</span>).finish_non_exhaustive()
     }
 }
 
-<span class="macro">assert_not_impl_all!</span>(<span class="ident">Cursor</span>: <span class="ident">Send</span>, <span class="ident">Sync</span>);
+<span class="macro">assert_not_impl_all!</span>(Cursor: Send, Sync);
 
-<span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;window</span><span class="op">&gt;</span> <span class="ident">Cursor</span><span class="op">&lt;</span><span class="lifetime">&#39;window</span><span class="op">&gt;</span> {
-    <span class="doccomment">/// Constructs a system cursor from `kind`.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # Errors</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// Returns `Err` if the feature of cursor is unsupported.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">system</span>(<span class="kw">_</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;window</span> <span class="ident">Window</span>, <span class="ident">kind</span>: <span class="ident">SystemCursorKind</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="ident">cursor</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">bind::SDL_CreateSystemCursor</span>(<span class="ident">kind</span>.<span class="ident">as_raw</span>()) };
-        <span class="kw">let</span> <span class="ident">cursor</span> <span class="op">=</span> <span class="ident">NonNull::new</span>(<span class="ident">cursor</span>).<span class="ident">ok_or</span>(<span class="ident">SdlError::UnsupportedFeature</span>)<span class="question-mark">?</span>;
-        <span class="prelude-val">Ok</span>(<span class="self">Self</span> {
-            <span class="ident">cursor</span>,
-            <span class="ident">window</span>: <span class="ident">PhantomData</span>,
+<span class="kw">impl</span>&lt;<span class="lifetime">&#39;window</span>&gt; Cursor&lt;<span class="lifetime">&#39;window</span>&gt; {
+    <span class="doccomment">/// Constructs a system cursor from `kind`.
+    ///
+    /// # Errors
+    ///
+    /// Returns `Err` if the feature of cursor is unsupported.
+    </span><span class="kw">pub fn </span>system(<span class="kw">_</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;window </span>Window, kind: SystemCursorKind) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>&gt; {
+        <span class="kw">let </span>cursor = <span class="kw">unsafe </span>{ bind::SDL_CreateSystemCursor(kind.as_raw()) };
+        <span class="kw">let </span>cursor = NonNull::new(cursor).ok_or(SdlError::UnsupportedFeature)<span class="question-mark">?</span>;
+        <span class="prelude-val">Ok</span>(<span class="self">Self </span>{
+            cursor,
+            window: PhantomData,
         })
     }
 
-    <span class="doccomment">/// Constructs a colored cursor from surface and hot spot point.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # Errors</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// Returns `Err` if coloring a cursor is unsupported.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">colored</span>(<span class="kw">_</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;window</span> <span class="ident">Window</span>, <span class="ident">surface</span>: <span class="kw-2">&amp;</span><span class="kw">impl</span> <span class="ident">Surface</span>, <span class="ident">hot_spot</span>: <span class="ident">Point</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="ident">cursor</span> <span class="op">=</span> <span class="kw">unsafe</span> {
-            <span class="ident">bind::SDL_CreateColorCursor</span>(<span class="ident">surface</span>.<span class="ident">as_ptr</span>().<span class="ident">as_ptr</span>(), <span class="ident">hot_spot</span>.<span class="ident">x</span>, <span class="ident">hot_spot</span>.<span class="ident">y</span>)
+    <span class="doccomment">/// Constructs a colored cursor from surface and hot spot point.
+    ///
+    /// # Errors
+    ///
+    /// Returns `Err` if coloring a cursor is unsupported.
+    </span><span class="kw">pub fn </span>colored(<span class="kw">_</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;window </span>Window, surface: <span class="kw-2">&amp;</span><span class="kw">impl </span>Surface, hot_spot: Point) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>&gt; {
+        <span class="kw">let </span>cursor = <span class="kw">unsafe </span>{
+            bind::SDL_CreateColorCursor(surface.as_ptr().as_ptr(), hot_spot.x, hot_spot.y)
         };
-        <span class="kw">let</span> <span class="ident">cursor</span> <span class="op">=</span> <span class="ident">NonNull::new</span>(<span class="ident">cursor</span>).<span class="ident">ok_or_else</span>(<span class="op">|</span><span class="op">|</span> <span class="ident">SdlError::Others</span> { <span class="ident">msg</span>: <span class="ident">Sdl::error</span>() })<span class="question-mark">?</span>;
-        <span class="prelude-val">Ok</span>(<span class="self">Self</span> {
-            <span class="ident">cursor</span>,
-            <span class="ident">window</span>: <span class="ident">PhantomData</span>,
+        <span class="kw">let </span>cursor = NonNull::new(cursor).ok_or_else(|| SdlError::Others { msg: Sdl::error() })<span class="question-mark">?</span>;
+        <span class="prelude-val">Ok</span>(<span class="self">Self </span>{
+            cursor,
+            window: PhantomData,
         })
     }
 
-    <span class="doccomment">/// Constructs a completely customized color from data, mask and hot spot point.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # Errors</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// Returns `Err` if failed to create a custom cursor.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">customized</span>(
-        <span class="kw">_</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;window</span> <span class="ident">Window</span>,
-        <span class="ident">data</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>],
-        <span class="ident">mask</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>],
-        <span class="ident">hot_spot</span>: <span class="ident">Point</span>,
-    ) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
-        <span class="macro">debug_assert_eq!</span>(<span class="ident">data</span>.<span class="ident">len</span>(), <span class="ident">mask</span>.<span class="ident">len</span>());
-        <span class="kw">let</span> <span class="ident">width_height</span> <span class="op">=</span> (<span class="ident">data</span>.<span class="ident">len</span>() <span class="op">/</span> <span class="number">4</span>) <span class="kw">as</span> <span class="ident">i32</span>;
-        <span class="kw">let</span> <span class="ident">cursor</span> <span class="op">=</span> <span class="kw">unsafe</span> {
-            <span class="ident">bind::SDL_CreateCursor</span>(
-                <span class="ident">data</span>.<span class="ident">as_ptr</span>(),
-                <span class="ident">mask</span>.<span class="ident">as_ptr</span>(),
-                <span class="ident">width_height</span>,
-                <span class="ident">width_height</span>,
-                <span class="ident">hot_spot</span>.<span class="ident">x</span>,
-                <span class="ident">hot_spot</span>.<span class="ident">y</span>,
+    <span class="doccomment">/// Constructs a completely customized color from data, mask and hot spot point.
+    ///
+    /// # Errors
+    ///
+    /// Returns `Err` if failed to create a custom cursor.
+    </span><span class="kw">pub fn </span>customized(
+        <span class="kw">_</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;window </span>Window,
+        data: <span class="kw-2">&amp;</span>[u8],
+        mask: <span class="kw-2">&amp;</span>[u8],
+        hot_spot: Point,
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>&gt; {
+        <span class="macro">debug_assert_eq!</span>(data.len(), mask.len());
+        <span class="kw">let </span>width_height = (data.len() / <span class="number">4</span>) <span class="kw">as </span>i32;
+        <span class="kw">let </span>cursor = <span class="kw">unsafe </span>{
+            bind::SDL_CreateCursor(
+                data.as_ptr(),
+                mask.as_ptr(),
+                width_height,
+                width_height,
+                hot_spot.x,
+                hot_spot.y,
             )
         };
-        <span class="kw">let</span> <span class="ident">cursor</span> <span class="op">=</span> <span class="ident">NonNull::new</span>(<span class="ident">cursor</span>).<span class="ident">ok_or_else</span>(<span class="op">|</span><span class="op">|</span> <span class="ident">SdlError::Others</span> { <span class="ident">msg</span>: <span class="ident">Sdl::error</span>() })<span class="question-mark">?</span>;
-        <span class="prelude-val">Ok</span>(<span class="self">Self</span> {
-            <span class="ident">cursor</span>,
-            <span class="ident">window</span>: <span class="ident">PhantomData</span>,
+        <span class="kw">let </span>cursor = NonNull::new(cursor).ok_or_else(|| SdlError::Others { msg: Sdl::error() })<span class="question-mark">?</span>;
+        <span class="prelude-val">Ok</span>(<span class="self">Self </span>{
+            cursor,
+            window: PhantomData,
         })
     }
 
-    <span class="doccomment">/// Constructs a default cursor, or `None` if unavailable.</span>
-    <span class="attribute">#[<span class="ident">must_use</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">default</span>(<span class="kw">_</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;window</span> <span class="ident">Window</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
-        <span class="ident">NonNull::new</span>(<span class="kw">unsafe</span> { <span class="ident">bind::SDL_GetDefaultCursor</span>() }).<span class="ident">map</span>(<span class="op">|</span><span class="ident">cursor</span><span class="op">|</span> <span class="self">Self</span> {
-            <span class="ident">cursor</span>,
-            <span class="ident">window</span>: <span class="ident">PhantomData</span>,
+    <span class="doccomment">/// Constructs a default cursor, or `None` if unavailable.
+    </span><span class="attribute">#[must_use]
+    </span><span class="kw">pub fn </span>default(<span class="kw">_</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;window </span>Window) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="self">Self</span>&gt; {
+        NonNull::new(<span class="kw">unsafe </span>{ bind::SDL_GetDefaultCursor() }).map(|cursor| <span class="self">Self </span>{
+            cursor,
+            window: PhantomData,
         })
     }
 
-    <span class="doccomment">/// Sets the cursor to the current.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) {
-        <span class="kw">unsafe</span> { <span class="ident">bind::SDL_SetCursor</span>(<span class="self">self</span>.<span class="ident">cursor</span>.<span class="ident">as_ptr</span>()) }
+    <span class="doccomment">/// Sets the cursor to the current.
+    </span><span class="kw">pub fn </span>set(<span class="kw-2">&amp;</span><span class="self">self</span>) {
+        <span class="kw">unsafe </span>{ bind::SDL_SetCursor(<span class="self">self</span>.cursor.as_ptr()) }
     }
 
-    <span class="doccomment">/// Redraws a cursor.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">redraw</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) {
-        <span class="kw">unsafe</span> { <span class="ident">bind::SDL_SetCursor</span>(<span class="ident">std::ptr::null_mut</span>()) }
+    <span class="doccomment">/// Redraws a cursor.
+    </span><span class="kw">pub fn </span>redraw(<span class="kw-2">&amp;</span><span class="self">self</span>) {
+        <span class="kw">unsafe </span>{ bind::SDL_SetCursor(std::ptr::null_mut()) }
     }
 }
 
-<span class="kw">impl</span> <span class="ident">Drop</span> <span class="kw">for</span> <span class="ident">Cursor</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span> {
-    <span class="kw">fn</span> <span class="ident">drop</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) {
-        <span class="kw">unsafe</span> { <span class="ident">bind::SDL_FreeCursor</span>(<span class="self">self</span>.<span class="ident">cursor</span>.<span class="ident">as_ptr</span>()) }
+<span class="kw">impl </span>Drop <span class="kw">for </span>Cursor&lt;<span class="lifetime">&#39;_</span>&gt; {
+    <span class="kw">fn </span>drop(<span class="kw-2">&amp;mut </span><span class="self">self</span>) {
+        <span class="kw">unsafe </span>{ bind::SDL_FreeCursor(<span class="self">self</span>.cursor.as_ptr()) }
     }
 }
 </code></pre></div>
-</section></div></main><div id="rustdoc-vars" data-root-path="../../../../" data-current-crate="rich_sdl2_rust" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.64.0-nightly (0f4bcadb4 2022-07-30)" ></div></body></html>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../../../" data-current-crate="rich_sdl2_rust" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.66.0-nightly (5e9772042 2022-10-29)" ></div></body></html>

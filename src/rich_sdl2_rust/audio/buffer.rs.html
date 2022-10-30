@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/audio/buffer.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>buffer.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../storage.js"></script><script defer src="../../../source-script.js"></script><script defer src="../../../source-files.js"></script><script defer src="../../../main.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../../rich_sdl2_rust/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div></a><h2 class="location"></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../../rich_sdl2_rust/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../../rich_sdl2_rust/index.html"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/audio/buffer.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>buffer.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" href="../../../normalize.css"><link rel="stylesheet" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" href="../../../ayu.css" disabled><link rel="stylesheet" href="../../../dark.css" disabled><link rel="stylesheet" href="../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../storage.js"></script><script defer src="../../../source-script.js"></script><script defer src="../../../source-files.js"></script><script defer src="../../../main.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><div class="width-limiter"><nav class="sub"><a class="sub-logo-container" href="../../../rich_sdl2_rust/index.html"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../wheel.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><pre class="src-line-numbers"><span id="1">1</span>
 <span id="2">2</span>
 <span id="3">3</span>
 <span id="4">4</span>
@@ -167,174 +167,174 @@
 <span id="167">167</span>
 <span id="168">168</span>
 <span id="169">169</span>
-</pre><pre class="rust"><code><span class="doccomment">//! An audio buffer `AudioBuffer&lt;T&gt;` with a format, sample rates, numbers of channels and a buffer.</span>
-<span class="doccomment">//! It can be convert into another format and mix by the specified volume.</span>
+</pre><pre class="rust"><code><span class="doccomment">//! An audio buffer `AudioBuffer&lt;T&gt;` with a format, sample rates, numbers of channels and a buffer.
+//! It can be convert into another format and mix by the specified volume.
 
-<span class="kw">use</span> <span class="ident">std</span>::{<span class="ident">mem::MaybeUninit</span>, <span class="ident">os::raw::c_int</span>};
+</span><span class="kw">use </span>std::{mem::MaybeUninit, os::raw::c_int};
 
-<span class="kw">use</span> <span class="ident"><span class="kw">super</span>::format::AudioFormat</span>;
-<span class="kw">use</span> <span class="kw">crate</span>::{
-    <span class="ident">bind</span>::{<span class="self">self</span>, <span class="ident">SDL_MixAudioFormat</span>},
-    <span class="prelude-ty">Result</span>, <span class="ident">Sdl</span>, <span class="ident">SdlError</span>,
+<span class="kw">use </span><span class="kw">super</span>::format::AudioFormat;
+<span class="kw">use crate</span>::{
+    bind::{<span class="self">self</span>, SDL_MixAudioFormat},
+    <span class="prelude-ty">Result</span>, Sdl, SdlError,
 };
 
-<span class="doccomment">/// An audio buffer with a format, sample rates, numbers of channels and a buffer.</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>)]</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">AudioBuffer</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
-    <span class="ident">format</span>: <span class="ident">AudioFormat</span>,
-    <span class="ident">samples</span>: <span class="ident">u32</span>,
-    <span class="ident">channels</span>: <span class="ident">u8</span>,
-    <span class="ident">buffer</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>,
+<span class="doccomment">/// An audio buffer with a format, sample rates, numbers of channels and a buffer.
+</span><span class="attribute">#[derive(Debug, Clone)]
+</span><span class="kw">pub struct </span>AudioBuffer&lt;T&gt; {
+    format: AudioFormat,
+    samples: u32,
+    channels: u8,
+    buffer: Vec&lt;T&gt;,
 }
 
-<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> <span class="ident">AudioBuffer</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
-    <span class="doccomment">/// Constructs an audio buffer from arguments.</span>
-    <span class="doccomment">/// The size of type which stored by buffer must equal to the format bit size.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # Panics</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// Panics if the size of type `T` does not equal to the format bit size.</span>
-    <span class="attribute">#[<span class="ident">must_use</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">format</span>: <span class="ident">AudioFormat</span>, <span class="ident">samples</span>: <span class="ident">u32</span>, <span class="ident">channels</span>: <span class="ident">u8</span>, <span class="ident">buffer</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>) -&gt; <span class="self">Self</span> {
-        <span class="macro">assert_eq!</span>(<span class="ident">format</span>.<span class="ident">bit_size</span> <span class="kw">as</span> <span class="ident">usize</span>, <span class="ident">std::mem::size_of</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>() <span class="op">*</span> <span class="number">8</span>);
-        <span class="self">Self</span> {
-            <span class="ident">format</span>,
-            <span class="ident">samples</span>,
-            <span class="ident">channels</span>,
-            <span class="ident">buffer</span>,
+<span class="kw">impl</span>&lt;T&gt; AudioBuffer&lt;T&gt; {
+    <span class="doccomment">/// Constructs an audio buffer from arguments.
+    /// The size of type which stored by buffer must equal to the format bit size.
+    ///
+    /// # Panics
+    ///
+    /// Panics if the size of type `T` does not equal to the format bit size.
+    </span><span class="attribute">#[must_use]
+    </span><span class="kw">pub fn </span>new(format: AudioFormat, samples: u32, channels: u8, buffer: Vec&lt;T&gt;) -&gt; <span class="self">Self </span>{
+        <span class="macro">assert_eq!</span>(format.bit_size <span class="kw">as </span>usize, std::mem::size_of::&lt;T&gt;() * <span class="number">8</span>);
+        <span class="self">Self </span>{
+            format,
+            samples,
+            channels,
+            buffer,
         }
     }
 
-    <span class="doccomment">/// Returns the format of the audio buffer.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">format</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="ident">AudioFormat</span> {
-        <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">format</span>
+    <span class="doccomment">/// Returns the format of the audio buffer.
+    </span><span class="kw">pub fn </span>format(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>AudioFormat {
+        <span class="kw-2">&amp;</span><span class="self">self</span>.format
     }
 
-    <span class="doccomment">/// Returns the sample rates of the audio buffer.</span>
-    <span class="attribute">#[<span class="ident">must_use</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">samples</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">u32</span> {
-        <span class="self">self</span>.<span class="ident">samples</span>
+    <span class="doccomment">/// Returns the sample rates of the audio buffer.
+    </span><span class="attribute">#[must_use]
+    </span><span class="kw">pub fn </span>samples(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; u32 {
+        <span class="self">self</span>.samples
     }
 
-    <span class="doccomment">/// Returns the numbers of channels of the audio buffer.</span>
-    <span class="attribute">#[<span class="ident">must_use</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">channels</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">u8</span> {
-        <span class="self">self</span>.<span class="ident">channels</span>
+    <span class="doccomment">/// Returns the numbers of channels of the audio buffer.
+    </span><span class="attribute">#[must_use]
+    </span><span class="kw">pub fn </span>channels(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; u8 {
+        <span class="self">self</span>.channels
     }
 
-    <span class="doccomment">/// Convert into another `AudioBuffer` with different format, sample rate or channels.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # Errors</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// Returns `Err` if failed to convert into a specific format.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">convert</span><span class="op">&lt;</span><span class="ident">U</span>: <span class="ident">Default</span> <span class="op">+</span> <span class="ident">Clone</span><span class="op">&gt;</span>(
+    <span class="doccomment">/// Convert into another `AudioBuffer` with different format, sample rate or channels.
+    ///
+    /// # Errors
+    ///
+    /// Returns `Err` if failed to convert into a specific format.
+    </span><span class="kw">pub fn </span>convert&lt;U: Default + Clone&gt;(
         <span class="self">self</span>,
-        <span class="ident">format</span>: <span class="ident">AudioFormat</span>,
-        <span class="ident">samples</span>: <span class="ident">u32</span>,
-        <span class="ident">channels</span>: <span class="ident">u8</span>,
-    ) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">AudioBuffer</span><span class="op">&lt;</span><span class="ident">U</span><span class="op">&gt;</span><span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">dst</span> <span class="op">=</span> <span class="ident">AudioBuffer</span>::<span class="op">&lt;</span><span class="ident">U</span><span class="op">&gt;</span> {
-            <span class="ident">format</span>,
-            <span class="ident">samples</span>,
-            <span class="ident">channels</span>,
-            <span class="ident">buffer</span>: <span class="macro">vec!</span>[],
+        format: AudioFormat,
+        samples: u32,
+        channels: u8,
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;AudioBuffer&lt;U&gt;&gt; {
+        <span class="kw">let </span><span class="kw-2">mut </span>dst = AudioBuffer::&lt;U&gt; {
+            format,
+            samples,
+            channels,
+            buffer: <span class="macro">vec!</span>[],
         };
-        <span class="self">self</span>.<span class="ident">convert_in</span>(<span class="kw-2">&amp;mut</span> <span class="ident">dst</span>)<span class="question-mark">?</span>;
-        <span class="prelude-val">Ok</span>(<span class="ident">dst</span>)
+        <span class="self">self</span>.convert_in(<span class="kw-2">&amp;mut </span>dst)<span class="question-mark">?</span>;
+        <span class="prelude-val">Ok</span>(dst)
     }
 
-    <span class="doccomment">/// Convert and write into another existing `AudioBuffer`.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # Errors</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// Returns `Err` if failed to convert between `self` and `other`.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">convert_in</span><span class="op">&lt;</span><span class="ident">U</span>: <span class="ident">Default</span> <span class="op">+</span> <span class="ident">Clone</span><span class="op">&gt;</span>(<span class="self">self</span>, <span class="ident">other</span>: <span class="kw-2">&amp;mut</span> <span class="ident">AudioBuffer</span><span class="op">&lt;</span><span class="ident">U</span><span class="op">&gt;</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">cvt</span> <span class="op">=</span> <span class="ident">MaybeUninit::uninit</span>();
-        <span class="kw">let</span> <span class="ident">ret</span> <span class="op">=</span> <span class="kw">unsafe</span> {
-            <span class="ident">bind::SDL_BuildAudioCVT</span>(
-                <span class="ident">cvt</span>.<span class="ident">as_mut_ptr</span>(),
-                <span class="self">self</span>.<span class="ident">format</span>.<span class="ident">as_raw</span>(),
-                <span class="self">self</span>.<span class="ident">channels</span>,
-                <span class="self">self</span>.<span class="ident">samples</span> <span class="kw">as</span> <span class="ident">c_int</span>,
-                <span class="ident">other</span>.<span class="ident">format</span>.<span class="ident">as_raw</span>(),
-                <span class="ident">other</span>.<span class="ident">channels</span>,
-                <span class="ident">other</span>.<span class="ident">samples</span> <span class="kw">as</span> <span class="ident">c_int</span>,
+    <span class="doccomment">/// Convert and write into another existing `AudioBuffer`.
+    ///
+    /// # Errors
+    ///
+    /// Returns `Err` if failed to convert between `self` and `other`.
+    </span><span class="kw">pub fn </span>convert_in&lt;U: Default + Clone&gt;(<span class="self">self</span>, other: <span class="kw-2">&amp;mut </span>AudioBuffer&lt;U&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;()&gt; {
+        <span class="kw">let </span><span class="kw-2">mut </span>cvt = MaybeUninit::uninit();
+        <span class="kw">let </span>ret = <span class="kw">unsafe </span>{
+            bind::SDL_BuildAudioCVT(
+                cvt.as_mut_ptr(),
+                <span class="self">self</span>.format.as_raw(),
+                <span class="self">self</span>.channels,
+                <span class="self">self</span>.samples <span class="kw">as </span>c_int,
+                other.format.as_raw(),
+                other.channels,
+                other.samples <span class="kw">as </span>c_int,
             )
         };
-        <span class="kw">if</span> <span class="ident">ret</span> <span class="op">==</span> <span class="number">0</span> {
-            <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">SdlError::UnsupportedFeature</span>);
+        <span class="kw">if </span>ret == <span class="number">0 </span>{
+            <span class="kw">return </span><span class="prelude-val">Err</span>(SdlError::UnsupportedFeature);
         }
-        <span class="kw">if</span> <span class="ident">ret</span> <span class="op">&lt;</span> <span class="number">0</span> {
-            <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">SdlError::Others</span> { <span class="ident">msg</span>: <span class="ident">Sdl::error</span>() });
+        <span class="kw">if </span>ret &lt; <span class="number">0 </span>{
+            <span class="kw">return </span><span class="prelude-val">Err</span>(SdlError::Others { msg: Sdl::error() });
         }
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">cvt</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">cvt</span>.<span class="ident">assume_init</span>() };
-        <span class="kw">if</span> <span class="ident">cvt</span>.<span class="ident">needed</span> <span class="op">==</span> <span class="number">0</span> {
-            <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">SdlError::UnsupportedFeature</span>);
+        <span class="kw">let </span><span class="kw-2">mut </span>cvt = <span class="kw">unsafe </span>{ cvt.assume_init() };
+        <span class="kw">if </span>cvt.needed == <span class="number">0 </span>{
+            <span class="kw">return </span><span class="prelude-val">Err</span>(SdlError::UnsupportedFeature);
         }
-        <span class="kw">let</span> <span class="ident">len</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">samples</span> <span class="kw">as</span> <span class="ident">usize</span> <span class="op">*</span> <span class="self">self</span>.<span class="ident">channels</span> <span class="kw">as</span> <span class="ident">usize</span> <span class="op">*</span> <span class="ident">std::mem::size_of</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>();
-        <span class="ident">cvt</span>.<span class="ident">len</span> <span class="op">=</span> <span class="ident">len</span> <span class="kw">as</span> <span class="ident">c_int</span>;
-        <span class="ident">other</span>.<span class="ident">buffer</span>.<span class="ident">clear</span>();
-        <span class="ident">other</span>
-            .<span class="ident">buffer</span>
-            .<span class="ident">resize</span>(<span class="ident">len</span> <span class="op">*</span> <span class="ident">cvt</span>.<span class="ident">len_mult</span> <span class="kw">as</span> <span class="ident">usize</span>, <span class="ident">U::default</span>());
-        <span class="ident">cvt</span>.<span class="ident">buf</span> <span class="op">=</span> <span class="ident">as_u8_slice_mut</span>(<span class="kw-2">&amp;mut</span> <span class="ident">other</span>.<span class="ident">buffer</span>).<span class="ident">as_mut_ptr</span>();
-        <span class="kw">let</span> <span class="ident">ret</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">bind::SDL_ConvertAudio</span>(<span class="kw-2">&amp;mut</span> <span class="ident">cvt</span>) };
-        <span class="kw">if</span> <span class="ident">ret</span> <span class="op">&lt;</span> <span class="number">0</span> {
-            <span class="prelude-val">Err</span>(<span class="ident">SdlError::Others</span> { <span class="ident">msg</span>: <span class="ident">Sdl::error</span>() })
-        } <span class="kw">else</span> {
+        <span class="kw">let </span>len = <span class="self">self</span>.samples <span class="kw">as </span>usize * <span class="self">self</span>.channels <span class="kw">as </span>usize * std::mem::size_of::&lt;T&gt;();
+        cvt.len = len <span class="kw">as </span>c_int;
+        other.buffer.clear();
+        other
+            .buffer
+            .resize(len * cvt.len_mult <span class="kw">as </span>usize, U::default());
+        cvt.buf = as_u8_slice_mut(<span class="kw-2">&amp;mut </span>other.buffer).as_mut_ptr();
+        <span class="kw">let </span>ret = <span class="kw">unsafe </span>{ bind::SDL_ConvertAudio(<span class="kw-2">&amp;mut </span>cvt) };
+        <span class="kw">if </span>ret &lt; <span class="number">0 </span>{
+            <span class="prelude-val">Err</span>(SdlError::Others { msg: Sdl::error() })
+        } <span class="kw">else </span>{
             <span class="prelude-val">Ok</span>(())
         }
     }
 }
 
-<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Default</span> <span class="op">+</span> <span class="ident">Clone</span><span class="op">&gt;</span> <span class="ident">AudioBuffer</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
-    <span class="doccomment">/// Mix into another `AudioBuffer` with the specified `volume`.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// The max value of `volume` is `128`, saturating if it is over the max.</span>
-    <span class="attribute">#[<span class="ident">must_use</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">mix</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">volume</span>: <span class="ident">u8</span>) -&gt; <span class="self">Self</span> {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">dst</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">clone</span>();
-        <span class="self">self</span>.<span class="ident">mix_in</span>(<span class="kw-2">&amp;mut</span> <span class="ident">dst</span>, <span class="ident">volume</span>).<span class="ident">unwrap</span>();
-        <span class="ident">dst</span>
+<span class="kw">impl</span>&lt;T: Default + Clone&gt; AudioBuffer&lt;T&gt; {
+    <span class="doccomment">/// Mix into another `AudioBuffer` with the specified `volume`.
+    ///
+    /// The max value of `volume` is `128`, saturating if it is over the max.
+    </span><span class="attribute">#[must_use]
+    </span><span class="kw">pub fn </span>mix(<span class="kw-2">&amp;</span><span class="self">self</span>, volume: u8) -&gt; <span class="self">Self </span>{
+        <span class="kw">let </span><span class="kw-2">mut </span>dst = <span class="self">self</span>.clone();
+        <span class="self">self</span>.mix_in(<span class="kw-2">&amp;mut </span>dst, volume).unwrap();
+        dst
     }
 
-    <span class="doccomment">/// Mix into another existing `AudioBuffer` with the specified `volume`.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// The max value of `volume` is `128`, saturating if it is over the max.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # Errors</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// Return `Err` if the formats of `self` and `dst` are different.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">mix_in</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">dst</span>: <span class="kw-2">&amp;mut</span> <span class="self">Self</span>, <span class="ident">volume</span>: <span class="ident">u8</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
-        <span class="kw">if</span> <span class="self">self</span>.<span class="ident">format</span>.<span class="ident">as_raw</span>() <span class="op">!</span><span class="op">=</span> <span class="ident">dst</span>.<span class="ident">format</span>.<span class="ident">as_raw</span>() {
-            <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">SdlError::Others</span> {
-                <span class="ident">msg</span>: <span class="string">&quot;Cannot mix in buffers which have different format&quot;</span>.<span class="ident">into</span>(),
+    <span class="doccomment">/// Mix into another existing `AudioBuffer` with the specified `volume`.
+    ///
+    /// The max value of `volume` is `128`, saturating if it is over the max.
+    ///
+    /// # Errors
+    ///
+    /// Return `Err` if the formats of `self` and `dst` are different.
+    </span><span class="kw">pub fn </span>mix_in(<span class="kw-2">&amp;</span><span class="self">self</span>, dst: <span class="kw-2">&amp;mut </span><span class="self">Self</span>, volume: u8) -&gt; <span class="prelude-ty">Result</span>&lt;()&gt; {
+        <span class="kw">if </span><span class="self">self</span>.format.as_raw() != dst.format.as_raw() {
+            <span class="kw">return </span><span class="prelude-val">Err</span>(SdlError::Others {
+                msg: <span class="string">&quot;Cannot mix in buffers which have different format&quot;</span>.into(),
             });
         }
-        <span class="ident">dst</span>.<span class="ident">buffer</span>.<span class="ident">clear</span>();
-        <span class="ident">dst</span>.<span class="ident">buffer</span>.<span class="ident">resize</span>(<span class="self">self</span>.<span class="ident">buffer</span>.<span class="ident">len</span>(), <span class="ident">T::default</span>());
-        <span class="kw">let</span> <span class="ident">len</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">buffer</span>.<span class="ident">len</span>() <span class="op">*</span> <span class="ident">std::mem::size_of</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>();
-        <span class="kw">unsafe</span> {
-            <span class="ident">bind::SDL_MixAudioFormat</span>(
-                <span class="ident">as_u8_slice_mut</span>(<span class="kw-2">&amp;mut</span> <span class="ident">dst</span>.<span class="ident">buffer</span>).<span class="ident">as_mut_ptr</span>().<span class="ident">cast</span>(),
-                <span class="ident">as_u8_slice</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">buffer</span>).<span class="ident">as_ptr</span>().<span class="ident">cast</span>(),
-                <span class="self">self</span>.<span class="ident">format</span>.<span class="ident">as_raw</span>(),
-                <span class="ident">len</span> <span class="kw">as</span> <span class="ident">u32</span>,
-                <span class="ident">volume</span>.<span class="ident">min</span>(<span class="ident">bind::SDL_MIX_MAXVOLUME</span> <span class="kw">as</span> <span class="ident">u8</span>) <span class="kw">as</span> <span class="ident">c_int</span>,
+        dst.buffer.clear();
+        dst.buffer.resize(<span class="self">self</span>.buffer.len(), T::default());
+        <span class="kw">let </span>len = <span class="self">self</span>.buffer.len() * std::mem::size_of::&lt;T&gt;();
+        <span class="kw">unsafe </span>{
+            bind::SDL_MixAudioFormat(
+                as_u8_slice_mut(<span class="kw-2">&amp;mut </span>dst.buffer).as_mut_ptr().cast(),
+                as_u8_slice(<span class="kw-2">&amp;</span><span class="self">self</span>.buffer).as_ptr().cast(),
+                <span class="self">self</span>.format.as_raw(),
+                len <span class="kw">as </span>u32,
+                volume.min(bind::SDL_MIX_MAXVOLUME <span class="kw">as </span>u8) <span class="kw">as </span>c_int,
             );
         }
         <span class="prelude-val">Ok</span>(())
     }
 }
 
-<span class="kw">fn</span> <span class="ident">as_u8_slice</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>(<span class="ident">slice</span>: <span class="kw-2">&amp;</span>[<span class="ident">T</span>]) -&gt; <span class="kw-2">&amp;</span>[<span class="ident">u8</span>] {
-    <span class="kw">let</span> <span class="ident">size</span> <span class="op">=</span> <span class="ident">std::mem::size_of</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>();
-    <span class="kw">unsafe</span> { <span class="ident">std::slice::from_raw_parts</span>(<span class="ident">slice</span>.<span class="ident">as_ptr</span>().<span class="ident">cast</span>(), <span class="ident">slice</span>.<span class="ident">len</span>() <span class="op">*</span> <span class="ident">size</span>) }
+<span class="kw">fn </span>as_u8_slice&lt;T&gt;(slice: <span class="kw-2">&amp;</span>[T]) -&gt; <span class="kw-2">&amp;</span>[u8] {
+    <span class="kw">let </span>size = std::mem::size_of::&lt;T&gt;();
+    <span class="kw">unsafe </span>{ std::slice::from_raw_parts(slice.as_ptr().cast(), slice.len() * size) }
 }
 
-<span class="kw">fn</span> <span class="ident">as_u8_slice_mut</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>(<span class="ident">slice</span>: <span class="kw-2">&amp;mut</span> [<span class="ident">T</span>]) -&gt; <span class="kw-2">&amp;mut</span> [<span class="ident">u8</span>] {
-    <span class="kw">let</span> <span class="ident">size</span> <span class="op">=</span> <span class="ident">std::mem::size_of</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>();
-    <span class="kw">unsafe</span> { <span class="ident">std::slice::from_raw_parts_mut</span>(<span class="ident">slice</span>.<span class="ident">as_mut_ptr</span>().<span class="ident">cast</span>(), <span class="ident">slice</span>.<span class="ident">len</span>() <span class="op">*</span> <span class="ident">size</span>) }
+<span class="kw">fn </span>as_u8_slice_mut&lt;T&gt;(slice: <span class="kw-2">&amp;mut </span>[T]) -&gt; <span class="kw-2">&amp;mut </span>[u8] {
+    <span class="kw">let </span>size = std::mem::size_of::&lt;T&gt;();
+    <span class="kw">unsafe </span>{ std::slice::from_raw_parts_mut(slice.as_mut_ptr().cast(), slice.len() * size) }
 }
 </code></pre></div>
-</section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="rich_sdl2_rust" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.64.0-nightly (0f4bcadb4 2022-07-30)" ></div></body></html>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="rich_sdl2_rust" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.66.0-nightly (5e9772042 2022-10-29)" ></div></body></html>

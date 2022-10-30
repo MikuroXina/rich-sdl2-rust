@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/event/game_controller/button.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>button.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../../storage.js"></script><script defer src="../../../../source-script.js"></script><script defer src="../../../../source-files.js"></script><script defer src="../../../../main.js"></script><noscript><link rel="stylesheet" href="../../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../../../rich_sdl2_rust/index.html"><div class="logo-container"><img class="rust-logo" src="../../../../rust-logo.svg" alt="logo"></div></a><h2 class="location"></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../../../rich_sdl2_rust/index.html"><div class="logo-container"><img class="rust-logo" src="../../../../rust-logo.svg" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../../../rich_sdl2_rust/index.html"><img class="rust-logo" src="../../../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/event/game_controller/button.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>button.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" href="../../../../normalize.css"><link rel="stylesheet" href="../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" href="../../../../ayu.css" disabled><link rel="stylesheet" href="../../../../dark.css" disabled><link rel="stylesheet" href="../../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../../storage.js"></script><script defer src="../../../../source-script.js"></script><script defer src="../../../../source-files.js"></script><script defer src="../../../../main.js"></script><noscript><link rel="stylesheet" href="../../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><div class="width-limiter"><nav class="sub"><a class="sub-logo-container" href="../../../../rich_sdl2_rust/index.html"><img class="rust-logo" src="../../../../rust-logo.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../../wheel.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><pre class="src-line-numbers"><span id="1">1</span>
 <span id="2">2</span>
 <span id="3">3</span>
 <span id="4">4</span>
@@ -119,126 +119,126 @@
 <span id="119">119</span>
 <span id="120">120</span>
 <span id="121">121</span>
-</pre><pre class="rust"><code><span class="doccomment">//! Buttons for a game controller.</span>
+</pre><pre class="rust"><code><span class="doccomment">//! Buttons for a game controller.
 
-<span class="kw">use</span> <span class="ident">std</span>::{
-    <span class="ident">ffi</span>::{<span class="ident">CStr</span>, <span class="ident">CString</span>},
-    <span class="ident">str::FromStr</span>,
+</span><span class="kw">use </span>std::{
+    ffi::{CStr, CString},
+    str::FromStr,
 };
 
-<span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">bind</span>, <span class="ident">SdlError</span>};
+<span class="kw">use crate</span>::{bind, SdlError};
 
-<span class="doccomment">/// An one of four buttons which be placed like the diamond.</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">Copy</span>, <span class="ident">PartialEq</span>, <span class="ident">PartialOrd</span>, <span class="ident">Eq</span>, <span class="ident">Hash</span>)]</span>
-<span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">FourButton</span> {
-    <span class="doccomment">/// A button on the up.</span>
-    <span class="ident">Up</span>,
-    <span class="doccomment">/// A button on the right.</span>
-    <span class="ident">Right</span>,
-    <span class="doccomment">/// A button on the down.</span>
-    <span class="ident">Down</span>,
-    <span class="doccomment">/// A button on the left.</span>
-    <span class="ident">Left</span>,
+<span class="doccomment">/// An one of four buttons which be placed like the diamond.
+</span><span class="attribute">#[derive(Debug, Clone, Copy, PartialEq, PartialOrd, Eq, Hash)]
+</span><span class="kw">pub enum </span>FourButton {
+    <span class="doccomment">/// A button on the up.
+    </span>Up,
+    <span class="doccomment">/// A button on the right.
+    </span>Right,
+    <span class="doccomment">/// A button on the down.
+    </span>Down,
+    <span class="doccomment">/// A button on the left.
+    </span>Left,
 }
 
-<span class="doccomment">/// A button on a game controller except the trigger buttons.</span>
-<span class="doccomment">/// Trigger buttons are covered by [`super::axis::Axis`].</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">Copy</span>, <span class="ident">PartialEq</span>, <span class="ident">PartialOrd</span>, <span class="ident">Eq</span>, <span class="ident">Hash</span>)]</span>
-<span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">Button</span> {
-    <span class="doccomment">/// Four buttons on the left.</span>
-    <span class="ident">LeftFour</span>(<span class="ident">FourButton</span>),
-    <span class="doccomment">/// Four buttons on the right.</span>
-    <span class="ident">RightFour</span>(<span class="ident">FourButton</span>),
-    <span class="doccomment">/// A back button on the center.</span>
-    <span class="ident">Back</span>,
-    <span class="doccomment">/// A meta button on the center.</span>
-    <span class="ident">Guide</span>,
-    <span class="doccomment">/// A start button on the center.</span>
-    <span class="ident">Start</span>,
-    <span class="doccomment">/// A stick push button on the left.</span>
-    <span class="ident">LeftStick</span>,
-    <span class="doccomment">/// A stick push button on the right.</span>
-    <span class="ident">RightStick</span>,
-    <span class="doccomment">/// A sub trigger button on the left.</span>
-    <span class="ident">LeftShoulder</span>,
-    <span class="doccomment">/// A sub trigger button on the right.</span>
-    <span class="ident">RightShoulder</span>,
+<span class="doccomment">/// A button on a game controller except the trigger buttons.
+/// Trigger buttons are covered by [`super::axis::Axis`].
+</span><span class="attribute">#[derive(Debug, Clone, Copy, PartialEq, PartialOrd, Eq, Hash)]
+</span><span class="kw">pub enum </span>Button {
+    <span class="doccomment">/// Four buttons on the left.
+    </span>LeftFour(FourButton),
+    <span class="doccomment">/// Four buttons on the right.
+    </span>RightFour(FourButton),
+    <span class="doccomment">/// A back button on the center.
+    </span>Back,
+    <span class="doccomment">/// A meta button on the center.
+    </span>Guide,
+    <span class="doccomment">/// A start button on the center.
+    </span>Start,
+    <span class="doccomment">/// A stick push button on the left.
+    </span>LeftStick,
+    <span class="doccomment">/// A stick push button on the right.
+    </span>RightStick,
+    <span class="doccomment">/// A sub trigger button on the left.
+    </span>LeftShoulder,
+    <span class="doccomment">/// A sub trigger button on the right.
+    </span>RightShoulder,
 }
 
-<span class="kw">impl</span> <span class="ident">Button</span> {
-    <span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn</span> <span class="ident">from_raw</span>(<span class="ident">raw</span>: <span class="ident">bind::SDL_GameControllerButton</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="ident">val</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">raw</span> {
-            <span class="ident">bind::SDL_CONTROLLER_BUTTON_A</span> =&gt; <span class="ident">Button::RightFour</span>(<span class="ident">FourButton::Down</span>),
-            <span class="ident">bind::SDL_CONTROLLER_BUTTON_B</span> =&gt; <span class="ident">Button::RightFour</span>(<span class="ident">FourButton::Right</span>),
-            <span class="ident">bind::SDL_CONTROLLER_BUTTON_X</span> =&gt; <span class="ident">Button::RightFour</span>(<span class="ident">FourButton::Left</span>),
-            <span class="ident">bind::SDL_CONTROLLER_BUTTON_Y</span> =&gt; <span class="ident">Button::RightFour</span>(<span class="ident">FourButton::Up</span>),
-            <span class="ident">bind::SDL_CONTROLLER_BUTTON_BACK</span> =&gt; <span class="ident">Button::Back</span>,
-            <span class="ident">bind::SDL_CONTROLLER_BUTTON_GUIDE</span> =&gt; <span class="ident">Button::Guide</span>,
-            <span class="ident">bind::SDL_CONTROLLER_BUTTON_START</span> =&gt; <span class="ident">Button::Start</span>,
-            <span class="ident">bind::SDL_CONTROLLER_BUTTON_LEFTSTICK</span> =&gt; <span class="ident">Button::LeftStick</span>,
-            <span class="ident">bind::SDL_CONTROLLER_BUTTON_RIGHTSTICK</span> =&gt; <span class="ident">Button::RightStick</span>,
-            <span class="ident">bind::SDL_CONTROLLER_BUTTON_LEFTSHOULDER</span> =&gt; <span class="ident">Button::LeftShoulder</span>,
-            <span class="ident">bind::SDL_CONTROLLER_BUTTON_DPAD_DOWN</span> =&gt; <span class="ident">Button::LeftFour</span>(<span class="ident">FourButton::Down</span>),
-            <span class="ident">bind::SDL_CONTROLLER_BUTTON_DPAD_RIGHT</span> =&gt; <span class="ident">Button::LeftFour</span>(<span class="ident">FourButton::Right</span>),
-            <span class="ident">bind::SDL_CONTROLLER_BUTTON_DPAD_LEFT</span> =&gt; <span class="ident">Button::LeftFour</span>(<span class="ident">FourButton::Left</span>),
-            <span class="ident">bind::SDL_CONTROLLER_BUTTON_DPAD_UP</span> =&gt; <span class="ident">Button::LeftFour</span>(<span class="ident">FourButton::Up</span>),
-            <span class="kw">_</span> =&gt; <span class="kw">return</span> <span class="prelude-val">None</span>,
+<span class="kw">impl </span>Button {
+    <span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn </span>from_raw(raw: bind::SDL_GameControllerButton) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="self">Self</span>&gt; {
+        <span class="kw">let </span>val = <span class="kw">match </span>raw {
+            bind::SDL_CONTROLLER_BUTTON_A =&gt; Button::RightFour(FourButton::Down),
+            bind::SDL_CONTROLLER_BUTTON_B =&gt; Button::RightFour(FourButton::Right),
+            bind::SDL_CONTROLLER_BUTTON_X =&gt; Button::RightFour(FourButton::Left),
+            bind::SDL_CONTROLLER_BUTTON_Y =&gt; Button::RightFour(FourButton::Up),
+            bind::SDL_CONTROLLER_BUTTON_BACK =&gt; Button::Back,
+            bind::SDL_CONTROLLER_BUTTON_GUIDE =&gt; Button::Guide,
+            bind::SDL_CONTROLLER_BUTTON_START =&gt; Button::Start,
+            bind::SDL_CONTROLLER_BUTTON_LEFTSTICK =&gt; Button::LeftStick,
+            bind::SDL_CONTROLLER_BUTTON_RIGHTSTICK =&gt; Button::RightStick,
+            bind::SDL_CONTROLLER_BUTTON_LEFTSHOULDER =&gt; Button::LeftShoulder,
+            bind::SDL_CONTROLLER_BUTTON_DPAD_DOWN =&gt; Button::LeftFour(FourButton::Down),
+            bind::SDL_CONTROLLER_BUTTON_DPAD_RIGHT =&gt; Button::LeftFour(FourButton::Right),
+            bind::SDL_CONTROLLER_BUTTON_DPAD_LEFT =&gt; Button::LeftFour(FourButton::Left),
+            bind::SDL_CONTROLLER_BUTTON_DPAD_UP =&gt; Button::LeftFour(FourButton::Up),
+            <span class="kw">_ </span>=&gt; <span class="kw">return </span><span class="prelude-val">None</span>,
         };
-        <span class="prelude-val">Some</span>(<span class="ident">val</span>)
+        <span class="prelude-val">Some</span>(val)
     }
 
-    <span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn</span> <span class="ident">as_raw</span>(<span class="self">self</span>) -&gt; <span class="ident">bind::SDL_GameControllerButton</span> {
-        <span class="kw">match</span> <span class="self">self</span> {
-            <span class="ident">Button::LeftFour</span>(<span class="ident">FourButton::Up</span>) =&gt; <span class="ident">bind::SDL_CONTROLLER_BUTTON_Y</span>,
-            <span class="ident">Button::LeftFour</span>(<span class="ident">FourButton::Right</span>) =&gt; <span class="ident">bind::SDL_CONTROLLER_BUTTON_B</span>,
-            <span class="ident">Button::LeftFour</span>(<span class="ident">FourButton::Down</span>) =&gt; <span class="ident">bind::SDL_CONTROLLER_BUTTON_A</span>,
-            <span class="ident">Button::LeftFour</span>(<span class="ident">FourButton::Left</span>) =&gt; <span class="ident">bind::SDL_CONTROLLER_BUTTON_X</span>,
-            <span class="ident">Button::RightFour</span>(<span class="ident">FourButton::Up</span>) =&gt; <span class="ident">bind::SDL_CONTROLLER_BUTTON_DPAD_UP</span>,
-            <span class="ident">Button::RightFour</span>(<span class="ident">FourButton::Right</span>) =&gt; <span class="ident">bind::SDL_CONTROLLER_BUTTON_DPAD_RIGHT</span>,
-            <span class="ident">Button::RightFour</span>(<span class="ident">FourButton::Down</span>) =&gt; <span class="ident">bind::SDL_CONTROLLER_BUTTON_DPAD_DOWN</span>,
-            <span class="ident">Button::RightFour</span>(<span class="ident">FourButton::Left</span>) =&gt; <span class="ident">bind::SDL_CONTROLLER_BUTTON_DPAD_LEFT</span>,
-            <span class="ident">Button::Back</span> =&gt; <span class="ident">bind::SDL_CONTROLLER_BUTTON_BACK</span>,
-            <span class="ident">Button::Guide</span> =&gt; <span class="ident">bind::SDL_CONTROLLER_BUTTON_GUIDE</span>,
-            <span class="ident">Button::Start</span> =&gt; <span class="ident">bind::SDL_CONTROLLER_BUTTON_START</span>,
-            <span class="ident">Button::LeftStick</span> =&gt; <span class="ident">bind::SDL_CONTROLLER_BUTTON_LEFTSTICK</span>,
-            <span class="ident">Button::RightStick</span> =&gt; <span class="ident">bind::SDL_CONTROLLER_BUTTON_RIGHTSTICK</span>,
-            <span class="ident">Button::LeftShoulder</span> =&gt; <span class="ident">bind::SDL_CONTROLLER_BUTTON_LEFTSHOULDER</span>,
-            <span class="ident">Button::RightShoulder</span> =&gt; <span class="ident">bind::SDL_CONTROLLER_BUTTON_RIGHTSHOULDER</span>,
+    <span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn </span>as_raw(<span class="self">self</span>) -&gt; bind::SDL_GameControllerButton {
+        <span class="kw">match </span><span class="self">self </span>{
+            Button::LeftFour(FourButton::Up) =&gt; bind::SDL_CONTROLLER_BUTTON_Y,
+            Button::LeftFour(FourButton::Right) =&gt; bind::SDL_CONTROLLER_BUTTON_B,
+            Button::LeftFour(FourButton::Down) =&gt; bind::SDL_CONTROLLER_BUTTON_A,
+            Button::LeftFour(FourButton::Left) =&gt; bind::SDL_CONTROLLER_BUTTON_X,
+            Button::RightFour(FourButton::Up) =&gt; bind::SDL_CONTROLLER_BUTTON_DPAD_UP,
+            Button::RightFour(FourButton::Right) =&gt; bind::SDL_CONTROLLER_BUTTON_DPAD_RIGHT,
+            Button::RightFour(FourButton::Down) =&gt; bind::SDL_CONTROLLER_BUTTON_DPAD_DOWN,
+            Button::RightFour(FourButton::Left) =&gt; bind::SDL_CONTROLLER_BUTTON_DPAD_LEFT,
+            Button::Back =&gt; bind::SDL_CONTROLLER_BUTTON_BACK,
+            Button::Guide =&gt; bind::SDL_CONTROLLER_BUTTON_GUIDE,
+            Button::Start =&gt; bind::SDL_CONTROLLER_BUTTON_START,
+            Button::LeftStick =&gt; bind::SDL_CONTROLLER_BUTTON_LEFTSTICK,
+            Button::RightStick =&gt; bind::SDL_CONTROLLER_BUTTON_RIGHTSTICK,
+            Button::LeftShoulder =&gt; bind::SDL_CONTROLLER_BUTTON_LEFTSHOULDER,
+            Button::RightShoulder =&gt; bind::SDL_CONTROLLER_BUTTON_RIGHTSHOULDER,
         }
     }
 
-    <span class="doccomment">/// Returns the mapping string if exists.</span>
-    <span class="attribute">#[<span class="ident">must_use</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">to_mapping_string</span>(<span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="ident">ptr</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">bind::SDL_GameControllerGetStringForButton</span>(<span class="self">self</span>.<span class="ident">as_raw</span>()) };
-        <span class="kw">if</span> <span class="ident">ptr</span>.<span class="ident">is_null</span>() {
-            <span class="kw">return</span> <span class="prelude-val">None</span>;
+    <span class="doccomment">/// Returns the mapping string if exists.
+    </span><span class="attribute">#[must_use]
+    </span><span class="kw">pub fn </span>to_mapping_string(<span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;String&gt; {
+        <span class="kw">let </span>ptr = <span class="kw">unsafe </span>{ bind::SDL_GameControllerGetStringForButton(<span class="self">self</span>.as_raw()) };
+        <span class="kw">if </span>ptr.is_null() {
+            <span class="kw">return </span><span class="prelude-val">None</span>;
         }
-        <span class="kw">let</span> <span class="ident">cstr</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">CStr::from_ptr</span>(<span class="ident">ptr</span>) };
-        <span class="prelude-val">Some</span>(<span class="ident">cstr</span>.<span class="ident">to_string_lossy</span>().<span class="ident">to_string</span>())
+        <span class="kw">let </span>cstr = <span class="kw">unsafe </span>{ CStr::from_ptr(ptr) };
+        <span class="prelude-val">Some</span>(cstr.to_string_lossy().to_string())
     }
 }
 
-<span class="kw">impl</span> <span class="ident">std::fmt::Display</span> <span class="kw">for</span> <span class="ident">Button</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;mut</span> <span class="ident">std::fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">std::fmt::Result</span> {
-        <span class="kw">let</span> <span class="ident">c_str</span> <span class="op">=</span>
-            <span class="kw">unsafe</span> { <span class="ident">CStr::from_ptr</span>(<span class="ident">bind::SDL_GameControllerGetStringForButton</span>(<span class="self">self</span>.<span class="ident">as_raw</span>())) };
-        <span class="macro">write!</span>(<span class="ident">f</span>, <span class="string">&quot;{}&quot;</span>, <span class="ident">c_str</span>.<span class="ident">to_str</span>().<span class="ident">unwrap</span>())
+<span class="kw">impl </span>std::fmt::Display <span class="kw">for </span>Button {
+    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>std::fmt::Formatter&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; std::fmt::Result {
+        <span class="kw">let </span>c_str =
+            <span class="kw">unsafe </span>{ CStr::from_ptr(bind::SDL_GameControllerGetStringForButton(<span class="self">self</span>.as_raw())) };
+        <span class="macro">write!</span>(f, <span class="string">&quot;{}&quot;</span>, c_str.to_str().unwrap())
     }
 }
 
-<span class="kw">impl</span> <span class="ident">FromStr</span> <span class="kw">for</span> <span class="ident">Button</span> {
-    <span class="kw">type</span> <span class="prelude-val">Err</span> <span class="op">=</span> <span class="ident">SdlError</span>;
+<span class="kw">impl </span>FromStr <span class="kw">for </span>Button {
+    <span class="kw">type </span><span class="prelude-val">Err </span>= SdlError;
 
-    <span class="kw">fn</span> <span class="ident">from_str</span>(<span class="ident">s</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="ident"><span class="self">Self</span>::Err</span><span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="ident">cstr</span> <span class="op">=</span> <span class="ident">CString::new</span>(<span class="ident">s</span>).<span class="ident">map_err</span>(<span class="op">|</span><span class="kw">_</span><span class="op">|</span> <span class="ident">SdlError::Others</span> {
-            <span class="ident">msg</span>: <span class="string">&quot;string must not be empty&quot;</span>.<span class="ident">into</span>(),
+    <span class="kw">fn </span>from_str(s: <span class="kw-2">&amp;</span>str) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>, <span class="self">Self</span>::Err&gt; {
+        <span class="kw">let </span>cstr = CString::new(s).map_err(|<span class="kw">_</span>| SdlError::Others {
+            msg: <span class="string">&quot;string must not be empty&quot;</span>.into(),
         })<span class="question-mark">?</span>;
-        <span class="kw">let</span> <span class="ident">axis</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">bind::SDL_GameControllerGetButtonFromString</span>(<span class="ident">cstr</span>.<span class="ident">as_ptr</span>()) };
-        <span class="ident">Button::from_raw</span>(<span class="ident">axis</span>).<span class="ident">ok_or_else</span>(<span class="op">|</span><span class="op">|</span> <span class="ident">SdlError::Others</span> {
-            <span class="ident">msg</span>: <span class="string">&quot;the axis was not found&quot;</span>.<span class="ident">into</span>(),
+        <span class="kw">let </span>axis = <span class="kw">unsafe </span>{ bind::SDL_GameControllerGetButtonFromString(cstr.as_ptr()) };
+        Button::from_raw(axis).ok_or_else(|| SdlError::Others {
+            msg: <span class="string">&quot;the axis was not found&quot;</span>.into(),
         })
     }
 }
 </code></pre></div>
-</section></div></main><div id="rustdoc-vars" data-root-path="../../../../" data-current-crate="rich_sdl2_rust" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.64.0-nightly (0f4bcadb4 2022-07-30)" ></div></body></html>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../../../" data-current-crate="rich_sdl2_rust" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.66.0-nightly (5e9772042 2022-10-29)" ></div></body></html>

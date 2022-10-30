@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/timer.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>timer.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../storage.js"></script><script defer src="../../source-script.js"></script><script defer src="../../source-files.js"></script><script defer src="../../main.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../rich_sdl2_rust/index.html"><div class="logo-container"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></div></a><h2 class="location"></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../rich_sdl2_rust/index.html"><div class="logo-container"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../rich_sdl2_rust/index.html"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/timer.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>timer.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" href="../../normalize.css"><link rel="stylesheet" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" href="../../ayu.css" disabled><link rel="stylesheet" href="../../dark.css" disabled><link rel="stylesheet" href="../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../storage.js"></script><script defer src="../../source-script.js"></script><script defer src="../../source-files.js"></script><script defer src="../../main.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><div class="width-limiter"><nav class="sub"><a class="sub-logo-container" href="../../rich_sdl2_rust/index.html"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../wheel.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><pre class="src-line-numbers"><span id="1">1</span>
 <span id="2">2</span>
 <span id="3">3</span>
 <span id="4">4</span>
@@ -91,98 +91,98 @@
 <span id="91">91</span>
 <span id="92">92</span>
 <span id="93">93</span>
-</pre><pre class="rust"><code><span class="kw">use</span> <span class="ident">std</span>::{<span class="ident">ffi::c_void</span>, <span class="ident">marker::PhantomData</span>, <span class="ident">num::NonZeroU32</span>, <span class="ident">ops</span>, <span class="ident">ptr::addr_of_mut</span>};
+</pre><pre class="rust"><code><span class="kw">use </span>std::{ffi::c_void, marker::PhantomData, num::NonZeroU32, ops, ptr::addr_of_mut};
 
-<span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">bind</span>, <span class="prelude-ty">Result</span>, <span class="ident">Sdl</span>, <span class="ident">SdlError</span>};
+<span class="kw">use crate</span>::{bind, <span class="prelude-ty">Result</span>, Sdl, SdlError};
 
-<span class="kw">mod</span> <span class="ident">ticks</span>;
+<span class="kw">mod </span>ticks;
 
-<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">ticks</span>::<span class="kw-2">*</span>;
+<span class="kw">pub use </span>ticks::<span class="kw-2">*</span>;
 
-<span class="doccomment">/// A callback for [`Timer`], that returns an interval for next calling.</span>
-<span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">TimerCallback</span><span class="op">&lt;</span><span class="lifetime">&#39;callback</span><span class="op">&gt;</span>: <span class="ident">FnMut</span>() -&gt; <span class="ident">u32</span> <span class="op">+</span> <span class="lifetime">&#39;callback</span> {}
+<span class="doccomment">/// A callback for [`Timer`], that returns an interval for next calling.
+</span><span class="kw">pub trait </span>TimerCallback&lt;<span class="lifetime">&#39;callback</span>&gt;: FnMut() -&gt; u32 + <span class="lifetime">&#39;callback </span>{}
 
-<span class="doccomment">/// A timer invokes a [`TimerCallback`] with the interval.</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Timer</span><span class="op">&lt;</span><span class="lifetime">&#39;sdl</span>, <span class="ident">T</span><span class="op">&gt;</span> {
-    <span class="ident">id</span>: <span class="ident">NonZeroU32</span>,
-    <span class="ident">callback</span>: <span class="ident">T</span>,
-    <span class="ident">_phantom</span>: <span class="ident">PhantomData</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;sdl</span> <span class="ident">Sdl</span><span class="op">&gt;</span>,
+<span class="doccomment">/// A timer invokes a [`TimerCallback`] with the interval.
+</span><span class="kw">pub struct </span>Timer&lt;<span class="lifetime">&#39;sdl</span>, T&gt; {
+    id: NonZeroU32,
+    callback: T,
+    _phantom: PhantomData&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;sdl </span>Sdl&gt;,
 }
 
-<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> <span class="ident">std::fmt::Debug</span> <span class="kw">for</span> <span class="ident">Timer</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span>, <span class="ident">T</span><span class="op">&gt;</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;mut</span> <span class="ident">std::fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">std::fmt::Result</span> {
-        <span class="ident">f</span>.<span class="ident">debug_struct</span>(<span class="string">&quot;Timer&quot;</span>)
-            .<span class="ident">field</span>(<span class="string">&quot;id&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">id</span>)
-            .<span class="ident">finish_non_exhaustive</span>()
+<span class="kw">impl</span>&lt;T&gt; std::fmt::Debug <span class="kw">for </span>Timer&lt;<span class="lifetime">&#39;_</span>, T&gt; {
+    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>std::fmt::Formatter&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; std::fmt::Result {
+        f.debug_struct(<span class="string">&quot;Timer&quot;</span>)
+            .field(<span class="string">&quot;id&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.id)
+            .finish_non_exhaustive()
     }
 }
 
-<span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;sdl</span>, <span class="lifetime">&#39;callback</span>, <span class="ident">T</span>: <span class="ident">TimerCallback</span><span class="op">&lt;</span><span class="lifetime">&#39;callback</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="ident">Timer</span><span class="op">&lt;</span><span class="lifetime">&#39;sdl</span>, <span class="ident">T</span><span class="op">&gt;</span> {
-    <span class="doccomment">/// Constructs a timer with initial interval and callback.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// The timing may be inaccurate because of OS scheduling. Make sure to check the current time in your callback.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # Errors</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// Returns `Err` if failed to create a new timer.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">sdl</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;sdl</span> <span class="ident">Sdl</span>, <span class="ident">interval</span>: <span class="ident">u32</span>, <span class="kw-2">mut</span> <span class="ident">callback</span>: <span class="ident">T</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="ident">ret</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">bind::SDL_InitSubSystem</span>(<span class="ident">bind::SDL_INIT_TIMER</span>) };
-        <span class="kw">if</span> <span class="ident">ret</span> <span class="op">!</span><span class="op">=</span> <span class="number">0</span> {
-            <span class="ident">Sdl::error_then_panic</span>(<span class="string">&quot;Sdl timer&quot;</span>);
+<span class="kw">impl</span>&lt;<span class="lifetime">&#39;sdl</span>, <span class="lifetime">&#39;callback</span>, T: TimerCallback&lt;<span class="lifetime">&#39;callback</span>&gt;&gt; Timer&lt;<span class="lifetime">&#39;sdl</span>, T&gt; {
+    <span class="doccomment">/// Constructs a timer with initial interval and callback.
+    ///
+    /// The timing may be inaccurate because of OS scheduling. Make sure to check the current time in your callback.
+    ///
+    /// # Errors
+    ///
+    /// Returns `Err` if failed to create a new timer.
+    </span><span class="kw">pub fn </span>new(sdl: <span class="kw-2">&amp;</span><span class="lifetime">&#39;sdl </span>Sdl, interval: u32, <span class="kw-2">mut </span>callback: T) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>&gt; {
+        <span class="kw">let </span>ret = <span class="kw">unsafe </span>{ bind::SDL_InitSubSystem(bind::SDL_INIT_TIMER) };
+        <span class="kw">if </span>ret != <span class="number">0 </span>{
+            Sdl::error_then_panic(<span class="string">&quot;Sdl timer&quot;</span>);
         }
 
-        <span class="kw">let</span> <span class="ident">data</span> <span class="op">=</span> <span class="macro">addr_of_mut!</span>(<span class="ident">callback</span>);
-        <span class="kw">let</span> <span class="ident">id</span> <span class="op">=</span>
-            <span class="kw">unsafe</span> { <span class="ident">bind::SDL_AddTimer</span>(<span class="ident">interval</span>, <span class="prelude-val">Some</span>(<span class="ident">timer_wrap_handler</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>), <span class="ident">data</span>.<span class="ident">cast</span>()) };
-        <span class="kw">if</span> <span class="ident">id</span> <span class="op">==</span> <span class="number">0</span> {
-            <span class="prelude-val">Err</span>(<span class="ident">SdlError::Others</span> { <span class="ident">msg</span>: <span class="ident">Sdl::error</span>() })
-        } <span class="kw">else</span> {
-            <span class="prelude-val">Ok</span>(<span class="self">Self</span> {
-                <span class="ident">id</span>: <span class="kw">unsafe</span> { <span class="ident">NonZeroU32::new_unchecked</span>(<span class="ident">id</span> <span class="kw">as</span> <span class="ident">u32</span>) },
-                <span class="ident">callback</span>,
-                <span class="ident">_phantom</span>: <span class="ident">PhantomData</span>,
+        <span class="kw">let </span>data = <span class="macro">addr_of_mut!</span>(callback);
+        <span class="kw">let </span>id =
+            <span class="kw">unsafe </span>{ bind::SDL_AddTimer(interval, <span class="prelude-val">Some</span>(timer_wrap_handler::&lt;T&gt;), data.cast()) };
+        <span class="kw">if </span>id == <span class="number">0 </span>{
+            <span class="prelude-val">Err</span>(SdlError::Others { msg: Sdl::error() })
+        } <span class="kw">else </span>{
+            <span class="prelude-val">Ok</span>(<span class="self">Self </span>{
+                id: <span class="kw">unsafe </span>{ NonZeroU32::new_unchecked(id <span class="kw">as </span>u32) },
+                callback,
+                _phantom: PhantomData,
             })
         }
     }
 }
 
-<span class="kw">extern</span> <span class="string">&quot;C&quot;</span> <span class="kw">fn</span> <span class="ident">timer_wrap_handler</span><span class="op">&lt;</span><span class="lifetime">&#39;callback</span>, <span class="ident">T</span>: <span class="ident">TimerCallback</span><span class="op">&lt;</span><span class="lifetime">&#39;callback</span><span class="op">&gt;</span><span class="op">&gt;</span>(
-    <span class="kw">_</span>: <span class="ident">u32</span>,
-    <span class="ident">param</span>: <span class="kw-2">*mut</span> <span class="ident">c_void</span>,
-) -&gt; <span class="ident">u32</span> {
-    <span class="kw">let</span> <span class="ident">callback</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="kw-2">&amp;mut</span> <span class="kw-2">*</span><span class="ident">param</span>.<span class="ident">cast</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>() };
-    <span class="ident">callback</span>()
+<span class="kw">extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn </span>timer_wrap_handler&lt;<span class="lifetime">&#39;callback</span>, T: TimerCallback&lt;<span class="lifetime">&#39;callback</span>&gt;&gt;(
+    <span class="kw">_</span>: u32,
+    param: <span class="kw-2">*mut </span>c_void,
+) -&gt; u32 {
+    <span class="kw">let </span>callback = <span class="kw">unsafe </span>{ <span class="kw-2">&amp;mut *</span>param.cast::&lt;T&gt;() };
+    callback()
 }
 
-<span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;sdl</span>, <span class="ident">T</span><span class="op">&gt;</span> <span class="ident">Drop</span> <span class="kw">for</span> <span class="ident">Timer</span><span class="op">&lt;</span><span class="lifetime">&#39;sdl</span>, <span class="ident">T</span><span class="op">&gt;</span> {
-    <span class="kw">fn</span> <span class="ident">drop</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) {
-        <span class="kw">unsafe</span> {
-            <span class="kw">let</span> <span class="kw">_</span> <span class="op">=</span> <span class="ident">bind::SDL_RemoveTimer</span>(<span class="self">self</span>.<span class="ident">id</span>.<span class="ident">get</span>() <span class="kw">as</span> <span class="ident">bind::SDL_TimerID</span>);
-            <span class="ident">bind::SDL_QuitSubSystem</span>(<span class="ident">bind::SDL_INIT_TIMER</span>);
+<span class="kw">impl</span>&lt;<span class="lifetime">&#39;sdl</span>, T&gt; Drop <span class="kw">for </span>Timer&lt;<span class="lifetime">&#39;sdl</span>, T&gt; {
+    <span class="kw">fn </span>drop(<span class="kw-2">&amp;mut </span><span class="self">self</span>) {
+        <span class="kw">unsafe </span>{
+            <span class="kw">let _ </span>= bind::SDL_RemoveTimer(<span class="self">self</span>.id.get() <span class="kw">as </span>bind::SDL_TimerID);
+            bind::SDL_QuitSubSystem(bind::SDL_INIT_TIMER);
         }
     }
 }
 
-<span class="doccomment">/// Stops the current thread for `ms` milliseconds, then returns.</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">delay</span>(<span class="ident">ms</span>: <span class="ident">u32</span>) {
-    <span class="kw">unsafe</span> { <span class="ident">bind::SDL_Delay</span>(<span class="ident">ms</span>) }
+<span class="doccomment">/// Stops the current thread for `ms` milliseconds, then returns.
+</span><span class="kw">pub fn </span>delay(ms: u32) {
+    <span class="kw">unsafe </span>{ bind::SDL_Delay(ms) }
 }
 
-<span class="doccomment">/// A counter for performance analysis.</span>
-<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">performance</span> {
-    <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::bind</span>;
+<span class="doccomment">/// A counter for performance analysis.
+</span><span class="kw">pub mod </span>performance {
+    <span class="kw">use </span><span class="kw">crate</span>::bind;
 
-    <span class="doccomment">/// Returns current counts of the high resolution counter.</span>
-    <span class="attribute">#[<span class="ident">must_use</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">counter</span>() -&gt; <span class="ident">u64</span> {
-        <span class="kw">unsafe</span> { <span class="ident">bind::SDL_GetPerformanceCounter</span>() }
+    <span class="doccomment">/// Returns current counts of the high resolution counter.
+    </span><span class="attribute">#[must_use]
+    </span><span class="kw">pub fn </span>counter() -&gt; u64 {
+        <span class="kw">unsafe </span>{ bind::SDL_GetPerformanceCounter() }
     }
 
-    <span class="doccomment">/// Returns the numbers of counts per one seconds of the high resolution counter.</span>
-    <span class="attribute">#[<span class="ident">must_use</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">frequency</span>() -&gt; <span class="ident">u64</span> {
-        <span class="kw">unsafe</span> { <span class="ident">bind::SDL_GetPerformanceFrequency</span>() }
+    <span class="doccomment">/// Returns the numbers of counts per one seconds of the high resolution counter.
+    </span><span class="attribute">#[must_use]
+    </span><span class="kw">pub fn </span>frequency() -&gt; u64 {
+        <span class="kw">unsafe </span>{ bind::SDL_GetPerformanceFrequency() }
     }
 }
 </code></pre></div>
-</section></div></main><div id="rustdoc-vars" data-root-path="../../" data-current-crate="rich_sdl2_rust" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.64.0-nightly (0f4bcadb4 2022-07-30)" ></div></body></html>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../" data-current-crate="rich_sdl2_rust" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.66.0-nightly (5e9772042 2022-10-29)" ></div></body></html>

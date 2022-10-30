@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/event/joystick/trackball.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>trackball.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../../storage.js"></script><script defer src="../../../../source-script.js"></script><script defer src="../../../../source-files.js"></script><script defer src="../../../../main.js"></script><noscript><link rel="stylesheet" href="../../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../../../rich_sdl2_rust/index.html"><div class="logo-container"><img class="rust-logo" src="../../../../rust-logo.svg" alt="logo"></div></a><h2 class="location"></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../../../rich_sdl2_rust/index.html"><div class="logo-container"><img class="rust-logo" src="../../../../rust-logo.svg" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../../../rich_sdl2_rust/index.html"><img class="rust-logo" src="../../../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/event/joystick/trackball.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>trackball.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" href="../../../../normalize.css"><link rel="stylesheet" href="../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" href="../../../../ayu.css" disabled><link rel="stylesheet" href="../../../../dark.css" disabled><link rel="stylesheet" href="../../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../../storage.js"></script><script defer src="../../../../source-script.js"></script><script defer src="../../../../source-files.js"></script><script defer src="../../../../main.js"></script><noscript><link rel="stylesheet" href="../../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><div class="width-limiter"><nav class="sub"><a class="sub-logo-container" href="../../../../rich_sdl2_rust/index.html"><img class="rust-logo" src="../../../../rust-logo.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../../wheel.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><pre class="src-line-numbers"><span id="1">1</span>
 <span id="2">2</span>
 <span id="3">3</span>
 <span id="4">4</span>
@@ -46,53 +46,53 @@
 <span id="46">46</span>
 <span id="47">47</span>
 <span id="48">48</span>
-</pre><pre class="rust"><code><span class="doccomment">//! Trackballs for a physical joystick.</span>
+</pre><pre class="rust"><code><span class="doccomment">//! Trackballs for a physical joystick.
 
-<span class="kw">use</span> <span class="ident">std::os::raw::c_int</span>;
+</span><span class="kw">use </span>std::os::raw::c_int;
 
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::bind</span>;
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::geo::Point</span>;
+<span class="kw">use </span><span class="kw">crate</span>::bind;
+<span class="kw">use </span><span class="kw">crate</span>::geo::Point;
 
-<span class="kw">use</span> <span class="kw">super</span>::{<span class="ident">InputIndex</span>, <span class="ident">Joystick</span>};
+<span class="kw">use super</span>::{InputIndex, Joystick};
 
-<span class="doccomment">/// A trackball on a physical joystick.</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>)]</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Trackball</span><span class="op">&lt;</span><span class="lifetime">&#39;joystick</span><span class="op">&gt;</span> {
-    <span class="ident">index</span>: <span class="ident">c_int</span>,
-    <span class="ident">joystick</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;joystick</span> <span class="ident">Joystick</span>,
+<span class="doccomment">/// A trackball on a physical joystick.
+</span><span class="attribute">#[derive(Debug)]
+</span><span class="kw">pub struct </span>Trackball&lt;<span class="lifetime">&#39;joystick</span>&gt; {
+    index: c_int,
+    joystick: <span class="kw-2">&amp;</span><span class="lifetime">&#39;joystick </span>Joystick,
 }
 
-<span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;joystick</span><span class="op">&gt;</span> <span class="ident">Trackball</span><span class="op">&lt;</span><span class="lifetime">&#39;joystick</span><span class="op">&gt;</span> {
-    <span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">index</span>: <span class="ident">InputIndex</span>, <span class="ident">joystick</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;joystick</span> <span class="ident">Joystick</span>) -&gt; <span class="self">Self</span> {
-        <span class="self">Self</span> {
-            <span class="ident">index</span>: <span class="ident">index</span>.<span class="number">0</span>,
-            <span class="ident">joystick</span>,
+<span class="kw">impl</span>&lt;<span class="lifetime">&#39;joystick</span>&gt; Trackball&lt;<span class="lifetime">&#39;joystick</span>&gt; {
+    <span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn </span>new(index: InputIndex, joystick: <span class="kw-2">&amp;</span><span class="lifetime">&#39;joystick </span>Joystick) -&gt; <span class="self">Self </span>{
+        <span class="self">Self </span>{
+            index: index.<span class="number">0</span>,
+            joystick,
         }
     }
 
-    <span class="doccomment">/// Returns the delta between the current ball position and previously invoking this method.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">delta</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">Point</span> {
-        <span class="kw">let</span> (<span class="kw-2">mut</span> <span class="ident">dx</span>, <span class="kw-2">mut</span> <span class="ident">dy</span>): (<span class="ident">c_int</span>, <span class="ident">c_int</span>) <span class="op">=</span> (<span class="number">0</span>, <span class="number">0</span>);
-        <span class="kw">let</span> <span class="ident">ret</span> <span class="op">=</span> <span class="kw">unsafe</span> {
-            <span class="ident">bind::SDL_JoystickGetBall</span>(<span class="self">self</span>.<span class="ident">joystick</span>.<span class="ident">ptr</span>.<span class="ident">as_ptr</span>(), <span class="self">self</span>.<span class="ident">index</span>, <span class="kw-2">&amp;mut</span> <span class="ident">dx</span>, <span class="kw-2">&amp;mut</span> <span class="ident">dy</span>)
+    <span class="doccomment">/// Returns the delta between the current ball position and previously invoking this method.
+    </span><span class="kw">pub fn </span>delta(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; Point {
+        <span class="kw">let </span>(<span class="kw-2">mut </span>dx, <span class="kw-2">mut </span>dy): (c_int, c_int) = (<span class="number">0</span>, <span class="number">0</span>);
+        <span class="kw">let </span>ret = <span class="kw">unsafe </span>{
+            bind::SDL_JoystickGetBall(<span class="self">self</span>.joystick.ptr.as_ptr(), <span class="self">self</span>.index, <span class="kw-2">&amp;mut </span>dx, <span class="kw-2">&amp;mut </span>dy)
         };
-        <span class="macro">debug_assert_eq!</span>(<span class="ident">ret</span>, <span class="number">0</span>);
-        <span class="ident">Point</span> { <span class="ident">x</span>: <span class="ident">dx</span>, <span class="ident">y</span>: <span class="ident">dy</span> }
+        <span class="macro">debug_assert_eq!</span>(ret, <span class="number">0</span>);
+        Point { x: dx, y: dy }
     }
 }
 
-<span class="doccomment">/// A set of `Trackball` for a physical joystick.</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>)]</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Trackballs</span><span class="op">&lt;</span><span class="lifetime">&#39;joystick</span><span class="op">&gt;</span>(<span class="kw">pub</span> <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">Trackball</span><span class="op">&lt;</span><span class="lifetime">&#39;joystick</span><span class="op">&gt;</span><span class="op">&gt;</span>);
+<span class="doccomment">/// A set of `Trackball` for a physical joystick.
+</span><span class="attribute">#[derive(Debug)]
+</span><span class="kw">pub struct </span>Trackballs&lt;<span class="lifetime">&#39;joystick</span>&gt;(<span class="kw">pub </span>Vec&lt;Trackball&lt;<span class="lifetime">&#39;joystick</span>&gt;&gt;);
 
-<span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;joystick</span><span class="op">&gt;</span> <span class="ident">Trackballs</span><span class="op">&lt;</span><span class="lifetime">&#39;joystick</span><span class="op">&gt;</span> {
-    <span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">joystick</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;joystick</span> <span class="ident">Joystick</span>) -&gt; <span class="self">Self</span> {
-        <span class="kw">let</span> <span class="ident">num_balls</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">bind::SDL_JoystickNumBalls</span>(<span class="ident">joystick</span>.<span class="ident">ptr</span>.<span class="ident">as_ptr</span>()) };
-        <span class="kw">let</span> <span class="ident">balls</span> <span class="op">=</span> (<span class="number">0</span>..<span class="ident">num_balls</span>)
-            .<span class="ident">map</span>(<span class="op">|</span><span class="ident">index</span><span class="op">|</span> <span class="ident">Trackball</span> { <span class="ident">index</span>, <span class="ident">joystick</span> })
-            .<span class="ident">collect</span>();
-        <span class="self">Self</span>(<span class="ident">balls</span>)
+<span class="kw">impl</span>&lt;<span class="lifetime">&#39;joystick</span>&gt; Trackballs&lt;<span class="lifetime">&#39;joystick</span>&gt; {
+    <span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn </span>new(joystick: <span class="kw-2">&amp;</span><span class="lifetime">&#39;joystick </span>Joystick) -&gt; <span class="self">Self </span>{
+        <span class="kw">let </span>num_balls = <span class="kw">unsafe </span>{ bind::SDL_JoystickNumBalls(joystick.ptr.as_ptr()) };
+        <span class="kw">let </span>balls = (<span class="number">0</span>..num_balls)
+            .map(|index| Trackball { index, joystick })
+            .collect();
+        <span class="self">Self</span>(balls)
     }
 }
 </code></pre></div>
-</section></div></main><div id="rustdoc-vars" data-root-path="../../../../" data-current-crate="rich_sdl2_rust" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.64.0-nightly (0f4bcadb4 2022-07-30)" ></div></body></html>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../../../" data-current-crate="rich_sdl2_rust" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.66.0-nightly (5e9772042 2022-10-29)" ></div></body></html>

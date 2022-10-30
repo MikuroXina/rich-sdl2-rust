@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/mixer/chunk/channel/effect/lib/gain.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>gain.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../../../../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../../../../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../../../../../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../../../../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../../../../../storage.js"></script><script defer src="../../../../../../../source-script.js"></script><script defer src="../../../../../../../source-files.js"></script><script defer src="../../../../../../../main.js"></script><noscript><link rel="stylesheet" href="../../../../../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../../../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../../../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../../../../../../rich_sdl2_rust/index.html"><div class="logo-container"><img class="rust-logo" src="../../../../../../../rust-logo.svg" alt="logo"></div></a><h2 class="location"></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../../../../../../rich_sdl2_rust/index.html"><div class="logo-container"><img class="rust-logo" src="../../../../../../../rust-logo.svg" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../../../../../../rich_sdl2_rust/index.html"><img class="rust-logo" src="../../../../../../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../../../../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../../../../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/mixer/chunk/channel/effect/lib/gain.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>gain.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" href="../../../../../../../normalize.css"><link rel="stylesheet" href="../../../../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" href="../../../../../../../ayu.css" disabled><link rel="stylesheet" href="../../../../../../../dark.css" disabled><link rel="stylesheet" href="../../../../../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../../../../../storage.js"></script><script defer src="../../../../../../../source-script.js"></script><script defer src="../../../../../../../source-files.js"></script><script defer src="../../../../../../../main.js"></script><noscript><link rel="stylesheet" href="../../../../../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../../../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../../../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><div class="width-limiter"><nav class="sub"><a class="sub-logo-container" href="../../../../../../../rich_sdl2_rust/index.html"><img class="rust-logo" src="../../../../../../../rust-logo.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../../../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../../../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../../../../../wheel.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><pre class="src-line-numbers"><span id="1">1</span>
 <span id="2">2</span>
 <span id="3">3</span>
 <span id="4">4</span>
@@ -129,136 +129,136 @@
 <span id="129">129</span>
 <span id="130">130</span>
 <span id="131">131</span>
-</pre><pre class="rust"><code><span class="kw">use</span> <span class="ident">std::ops</span>;
+</pre><pre class="rust"><code><span class="kw">use </span>std::ops;
 
-<span class="kw">use</span> <span class="ident"><span class="kw">super</span>::room_angle::RoomAngle</span>;
+<span class="kw">use </span><span class="kw">super</span>::room_angle::RoomAngle;
 
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">Copy</span>, <span class="ident">PartialEq</span>, <span class="ident">PartialOrd</span>)]</span>
-<span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">struct</span> <span class="ident">Gain</span>(<span class="ident">f64</span>, <span class="ident">u8</span>);
+<span class="attribute">#[derive(Debug, Clone, Copy, PartialEq, PartialOrd)]
+</span><span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">struct </span>Gain(f64, u8);
 
-<span class="kw">impl</span> <span class="ident">Default</span> <span class="kw">for</span> <span class="ident">Gain</span> {
-    <span class="kw">fn</span> <span class="ident">default</span>() -&gt; <span class="self">Self</span> {
+<span class="kw">impl </span>Default <span class="kw">for </span>Gain {
+    <span class="kw">fn </span>default() -&gt; <span class="self">Self </span>{
         <span class="self">Self</span>(<span class="number">1.0</span>, <span class="number">255</span>)
     }
 }
 
-<span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Gain</span> {
-    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">gain</span>: <span class="ident">u8</span>) -&gt; <span class="self">Self</span> {
-        <span class="self">Self</span>(<span class="ident">gain</span> <span class="kw">as</span> <span class="ident">f64</span> <span class="op">/</span> <span class="number">255.0</span>, <span class="ident">gain</span>)
+<span class="kw">impl </span>From&lt;u8&gt; <span class="kw">for </span>Gain {
+    <span class="kw">fn </span>from(gain: u8) -&gt; <span class="self">Self </span>{
+        <span class="self">Self</span>(gain <span class="kw">as </span>f64 / <span class="number">255.0</span>, gain)
     }
 }
 
-<span class="kw">impl</span> <span class="ident">ops::Mul</span><span class="op">&lt;</span><span class="ident">Gain</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">f64</span> {
-    <span class="kw">type</span> <span class="ident">Output</span> <span class="op">=</span> <span class="ident">f64</span>;
+<span class="kw">impl </span>ops::Mul&lt;Gain&gt; <span class="kw">for </span>f64 {
+    <span class="kw">type </span>Output = f64;
 
-    <span class="kw">fn</span> <span class="ident">mul</span>(<span class="self">self</span>, <span class="ident">rhs</span>: <span class="ident">Gain</span>) -&gt; <span class="ident"><span class="self">Self</span>::Output</span> {
-        <span class="self">self</span> <span class="op">*</span> <span class="ident">rhs</span>.<span class="number">0</span>
+    <span class="kw">fn </span>mul(<span class="self">self</span>, rhs: Gain) -&gt; <span class="self">Self</span>::Output {
+        <span class="self">self </span>* rhs.<span class="number">0
+    </span>}
+}
+
+<span class="kw">impl </span>ops::MulAssign&lt;Gain&gt; <span class="kw">for </span>f64 {
+    <span class="kw">fn </span>mul_assign(<span class="kw-2">&amp;mut </span><span class="self">self</span>, rhs: Gain) {
+        <span class="kw-2">*</span><span class="self">self </span>= <span class="kw-2">*</span><span class="self">self </span>* rhs;
     }
 }
 
-<span class="kw">impl</span> <span class="ident">ops::MulAssign</span><span class="op">&lt;</span><span class="ident">Gain</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">f64</span> {
-    <span class="kw">fn</span> <span class="ident">mul_assign</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">rhs</span>: <span class="ident">Gain</span>) {
-        <span class="kw-2">*</span><span class="self">self</span> <span class="op">=</span> <span class="kw-2">*</span><span class="self">self</span> <span class="op">*</span> <span class="ident">rhs</span>;
+<span class="kw">impl </span>ops::Mul&lt;Gain&gt; <span class="kw">for </span>u8 {
+    <span class="kw">type </span>Output = u8;
+
+    <span class="kw">fn </span>mul(<span class="self">self</span>, rhs: Gain) -&gt; <span class="self">Self</span>::Output {
+        <span class="self">self </span>* rhs.<span class="number">1
+    </span>}
+}
+
+<span class="kw">impl </span>ops::MulAssign&lt;Gain&gt; <span class="kw">for </span>u8 {
+    <span class="kw">fn </span>mul_assign(<span class="kw-2">&amp;mut </span><span class="self">self</span>, rhs: Gain) {
+        <span class="kw-2">*</span><span class="self">self </span>= <span class="kw-2">*</span><span class="self">self </span>* rhs;
     }
 }
 
-<span class="kw">impl</span> <span class="ident">ops::Mul</span><span class="op">&lt;</span><span class="ident">Gain</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">u8</span> {
-    <span class="kw">type</span> <span class="ident">Output</span> <span class="op">=</span> <span class="ident">u8</span>;
-
-    <span class="kw">fn</span> <span class="ident">mul</span>(<span class="self">self</span>, <span class="ident">rhs</span>: <span class="ident">Gain</span>) -&gt; <span class="ident"><span class="self">Self</span>::Output</span> {
-        <span class="self">self</span> <span class="op">*</span> <span class="ident">rhs</span>.<span class="number">1</span>
-    }
-}
-
-<span class="kw">impl</span> <span class="ident">ops::MulAssign</span><span class="op">&lt;</span><span class="ident">Gain</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">u8</span> {
-    <span class="kw">fn</span> <span class="ident">mul_assign</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">rhs</span>: <span class="ident">Gain</span>) {
-        <span class="kw-2">*</span><span class="self">self</span> <span class="op">=</span> <span class="kw-2">*</span><span class="self">self</span> <span class="op">*</span> <span class="ident">rhs</span>;
-    }
-}
-
-<span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn</span> <span class="ident">gains</span>(<span class="ident">channels</span>: <span class="ident">u32</span>, <span class="ident">angle</span>: <span class="ident">i16</span>, <span class="ident">RoomAngle</span>(<span class="ident">room_angle</span>): <span class="ident">RoomAngle</span>) -&gt; [<span class="ident">Gain</span>; <span class="number">6</span>] {
-    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">left</span> <span class="op">=</span> <span class="number">255</span>;
-    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">right</span> <span class="op">=</span> <span class="number">255</span>;
-    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">left_rear</span> <span class="op">=</span> <span class="number">255</span>;
-    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">right_rear</span> <span class="op">=</span> <span class="number">255</span>;
-    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">center</span> <span class="op">=</span> <span class="number">255</span>;
-    <span class="kw">let</span> <span class="ident">back_amp</span> <span class="op">=</span> <span class="op">|</span><span class="ident">angle</span>: <span class="ident">i16</span><span class="op">|</span> (<span class="number">255.0</span> <span class="op">*</span> <span class="ident">angle</span> <span class="kw">as</span> <span class="ident">f64</span> <span class="op">/</span> <span class="number">89.0</span>) <span class="kw">as</span> <span class="ident">u8</span>;
-    <span class="kw">let</span> <span class="ident">side_amp</span> <span class="op">=</span> <span class="op">|</span><span class="ident">angle</span>: <span class="ident">i16</span><span class="op">|</span> (<span class="number">255.0</span> <span class="op">*</span> <span class="ident">angle</span> <span class="kw">as</span> <span class="ident">f64</span> <span class="op">/</span> <span class="number">179.0</span>) <span class="kw">as</span> <span class="ident">u8</span>;
-    <span class="kw">match</span> <span class="ident">channels</span> {
-        <span class="number">2</span> =&gt; {
-            <span class="kw">if</span> <span class="ident">angle</span> <span class="op">&lt;</span> <span class="number">90</span> {
-                <span class="ident">left</span> <span class="op">=</span> <span class="number">255</span> <span class="op">-</span> <span class="ident">back_amp</span>(<span class="ident">angle</span>);
-            } <span class="kw">else</span> <span class="kw">if</span> <span class="ident">angle</span> <span class="op">&lt;</span> <span class="number">180</span> {
-                <span class="ident">left</span> <span class="op">=</span> <span class="ident">back_amp</span>(<span class="ident">angle</span> <span class="op">-</span> <span class="number">90</span>);
-            } <span class="kw">else</span> <span class="kw">if</span> <span class="ident">angle</span> <span class="op">&lt;</span> <span class="number">270</span> {
-                <span class="ident">right</span> <span class="op">=</span> <span class="number">255</span> <span class="op">-</span> <span class="ident">back_amp</span>(<span class="ident">angle</span> <span class="op">-</span> <span class="number">180</span>);
-            } <span class="kw">else</span> {
-                <span class="ident">right</span> <span class="op">=</span> <span class="ident">back_amp</span>(<span class="ident">angle</span> <span class="op">-</span> <span class="number">270</span>);
+<span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn </span>gains(channels: u32, angle: i16, RoomAngle(room_angle): RoomAngle) -&gt; [Gain; <span class="number">6</span>] {
+    <span class="kw">let </span><span class="kw-2">mut </span>left = <span class="number">255</span>;
+    <span class="kw">let </span><span class="kw-2">mut </span>right = <span class="number">255</span>;
+    <span class="kw">let </span><span class="kw-2">mut </span>left_rear = <span class="number">255</span>;
+    <span class="kw">let </span><span class="kw-2">mut </span>right_rear = <span class="number">255</span>;
+    <span class="kw">let </span><span class="kw-2">mut </span>center = <span class="number">255</span>;
+    <span class="kw">let </span>back_amp = |angle: i16| (<span class="number">255.0 </span>* angle <span class="kw">as </span>f64 / <span class="number">89.0</span>) <span class="kw">as </span>u8;
+    <span class="kw">let </span>side_amp = |angle: i16| (<span class="number">255.0 </span>* angle <span class="kw">as </span>f64 / <span class="number">179.0</span>) <span class="kw">as </span>u8;
+    <span class="kw">match </span>channels {
+        <span class="number">2 </span>=&gt; {
+            <span class="kw">if </span>angle &lt; <span class="number">90 </span>{
+                left = <span class="number">255 </span>- back_amp(angle);
+            } <span class="kw">else if </span>angle &lt; <span class="number">180 </span>{
+                left = back_amp(angle - <span class="number">90</span>);
+            } <span class="kw">else if </span>angle &lt; <span class="number">270 </span>{
+                right = <span class="number">255 </span>- back_amp(angle - <span class="number">180</span>);
+            } <span class="kw">else </span>{
+                right = back_amp(angle - <span class="number">270</span>);
             }
         }
-        <span class="number">4</span> <span class="op">|</span> <span class="number">6</span> =&gt; {
-            <span class="kw">if</span> <span class="ident">angle</span> <span class="op">&lt;</span> <span class="number">45</span> {
-                <span class="ident">left</span> <span class="op">=</span> <span class="ident">side_amp</span>(<span class="number">180</span> <span class="op">-</span> <span class="ident">angle</span>);
-                <span class="ident">left_rear</span> <span class="op">=</span> <span class="number">255</span> <span class="op">-</span> <span class="ident">back_amp</span>(<span class="ident">angle</span> <span class="op">+</span> <span class="number">45</span>);
-                <span class="ident">right_rear</span> <span class="op">=</span> <span class="number">255</span> <span class="op">-</span> <span class="ident">side_amp</span>(<span class="number">90</span> <span class="op">-</span> <span class="ident">angle</span>);
-            } <span class="kw">else</span> <span class="kw">if</span> <span class="ident">angle</span> <span class="op">&lt;</span> <span class="number">90</span> {
-                <span class="ident">center</span> <span class="op">=</span> <span class="ident">side_amp</span>(<span class="number">225</span> <span class="op">-</span> <span class="ident">angle</span>);
-                <span class="ident">left</span> <span class="op">=</span> <span class="ident">side_amp</span>(<span class="number">180</span> <span class="op">-</span> <span class="ident">angle</span>);
-                <span class="ident">left_rear</span> <span class="op">=</span> <span class="number">255</span> <span class="op">-</span> <span class="ident">back_amp</span>(<span class="number">135</span> <span class="op">-</span> <span class="ident">angle</span>);
-                <span class="ident">right_rear</span> <span class="op">=</span> <span class="ident">side_amp</span>(<span class="number">90</span> <span class="op">+</span> <span class="ident">angle</span>);
-            } <span class="kw">else</span> <span class="kw">if</span> <span class="ident">angle</span> <span class="op">&lt;</span> <span class="number">135</span> {
-                <span class="ident">center</span> <span class="op">=</span> <span class="ident">side_amp</span>(<span class="number">225</span> <span class="op">-</span> <span class="ident">angle</span>);
-                <span class="ident">left</span> <span class="op">=</span> <span class="number">255</span> <span class="op">-</span> <span class="ident">back_amp</span>(<span class="ident">angle</span> <span class="op">-</span> <span class="number">45</span>);
-                <span class="ident">right</span> <span class="op">=</span> <span class="ident">side_amp</span>(<span class="number">270</span> <span class="op">-</span> <span class="ident">angle</span>);
-                <span class="ident">left_rear</span> <span class="op">=</span> <span class="ident">side_amp</span>(<span class="ident">angle</span>);
-            } <span class="kw">else</span> <span class="kw">if</span> <span class="ident">angle</span> <span class="op">&lt;</span> <span class="number">180</span> {
-                <span class="ident">center</span> <span class="op">=</span> <span class="number">255</span> <span class="op">-</span> <span class="ident">back_amp</span>(<span class="ident">angle</span> <span class="op">-</span> <span class="number">90</span>);
-                <span class="ident">left</span> <span class="op">=</span> <span class="number">255</span> <span class="op">-</span> <span class="ident">back_amp</span>(<span class="number">225</span> <span class="op">-</span> <span class="ident">angle</span>);
-                <span class="ident">right</span> <span class="op">=</span> <span class="ident">side_amp</span>(<span class="number">270</span> <span class="op">-</span> <span class="ident">angle</span>);
-                <span class="ident">left_rear</span> <span class="op">=</span> <span class="ident">side_amp</span>(<span class="ident">angle</span>);
-            } <span class="kw">else</span> <span class="kw">if</span> <span class="ident">angle</span> <span class="op">&lt;</span> <span class="number">225</span> {
-                <span class="ident">center</span> <span class="op">=</span> <span class="number">255</span> <span class="op">-</span> <span class="ident">back_amp</span>(<span class="number">270</span> <span class="op">-</span> <span class="ident">angle</span>);
-                <span class="ident">left</span> <span class="op">=</span> <span class="ident">side_amp</span>(<span class="ident">angle</span> <span class="op">-</span> <span class="number">90</span>);
-                <span class="ident">right</span> <span class="op">=</span> <span class="number">255</span> <span class="op">-</span> <span class="ident">back_amp</span>(<span class="ident">angle</span> <span class="op">-</span> <span class="number">135</span>);
-                <span class="ident">right_rear</span> <span class="op">=</span> <span class="ident">side_amp</span>(<span class="number">360</span> <span class="op">-</span> <span class="ident">angle</span>);
-            } <span class="kw">else</span> <span class="kw">if</span> <span class="ident">angle</span> <span class="op">&lt;</span> <span class="number">270</span> {
-                <span class="ident">center</span> <span class="op">=</span> <span class="ident">side_amp</span>(<span class="ident">angle</span> <span class="op">-</span> <span class="number">135</span>);
-                <span class="ident">left</span> <span class="op">=</span> <span class="ident">side_amp</span>(<span class="ident">angle</span> <span class="op">-</span> <span class="number">90</span>);
-                <span class="ident">right</span> <span class="op">=</span> <span class="number">255</span> <span class="op">-</span> <span class="ident">back_amp</span>(<span class="number">315</span> <span class="op">-</span> <span class="ident">angle</span>);
-                <span class="ident">right_rear</span> <span class="op">=</span> <span class="ident">side_amp</span>(<span class="number">360</span> <span class="op">-</span> <span class="ident">angle</span>);
-            } <span class="kw">else</span> <span class="kw">if</span> <span class="ident">angle</span> <span class="op">&lt;</span> <span class="number">315</span> {
-                <span class="ident">center</span> <span class="op">=</span> <span class="ident">side_amp</span>(<span class="ident">angle</span> <span class="op">-</span> <span class="number">135</span>);
-                <span class="ident">right</span> <span class="op">=</span> <span class="ident">side_amp</span>(<span class="ident">angle</span> <span class="op">-</span> <span class="number">180</span>);
-                <span class="ident">left_rear</span> <span class="op">=</span> <span class="ident">side_amp</span>(<span class="number">450</span> <span class="op">-</span> <span class="ident">angle</span>);
-                <span class="ident">right_rear</span> <span class="op">=</span> <span class="number">255</span> <span class="op">-</span> <span class="ident">back_amp</span>(<span class="ident">angle</span> <span class="op">-</span> <span class="number">225</span>);
-            } <span class="kw">else</span> {
-                <span class="ident">right</span> <span class="op">=</span> <span class="ident">side_amp</span>(<span class="ident">angle</span> <span class="op">-</span> <span class="number">180</span>);
-                <span class="ident">left_rear</span> <span class="op">=</span> <span class="ident">side_amp</span>(<span class="number">450</span> <span class="op">-</span> <span class="ident">angle</span>);
-                <span class="ident">right_rear</span> <span class="op">=</span> <span class="number">255</span> <span class="op">-</span> <span class="ident">back_amp</span>(<span class="number">45</span> <span class="op">-</span> <span class="ident">angle</span>);
+        <span class="number">4 </span>| <span class="number">6 </span>=&gt; {
+            <span class="kw">if </span>angle &lt; <span class="number">45 </span>{
+                left = side_amp(<span class="number">180 </span>- angle);
+                left_rear = <span class="number">255 </span>- back_amp(angle + <span class="number">45</span>);
+                right_rear = <span class="number">255 </span>- side_amp(<span class="number">90 </span>- angle);
+            } <span class="kw">else if </span>angle &lt; <span class="number">90 </span>{
+                center = side_amp(<span class="number">225 </span>- angle);
+                left = side_amp(<span class="number">180 </span>- angle);
+                left_rear = <span class="number">255 </span>- back_amp(<span class="number">135 </span>- angle);
+                right_rear = side_amp(<span class="number">90 </span>+ angle);
+            } <span class="kw">else if </span>angle &lt; <span class="number">135 </span>{
+                center = side_amp(<span class="number">225 </span>- angle);
+                left = <span class="number">255 </span>- back_amp(angle - <span class="number">45</span>);
+                right = side_amp(<span class="number">270 </span>- angle);
+                left_rear = side_amp(angle);
+            } <span class="kw">else if </span>angle &lt; <span class="number">180 </span>{
+                center = <span class="number">255 </span>- back_amp(angle - <span class="number">90</span>);
+                left = <span class="number">255 </span>- back_amp(<span class="number">225 </span>- angle);
+                right = side_amp(<span class="number">270 </span>- angle);
+                left_rear = side_amp(angle);
+            } <span class="kw">else if </span>angle &lt; <span class="number">225 </span>{
+                center = <span class="number">255 </span>- back_amp(<span class="number">270 </span>- angle);
+                left = side_amp(angle - <span class="number">90</span>);
+                right = <span class="number">255 </span>- back_amp(angle - <span class="number">135</span>);
+                right_rear = side_amp(<span class="number">360 </span>- angle);
+            } <span class="kw">else if </span>angle &lt; <span class="number">270 </span>{
+                center = side_amp(angle - <span class="number">135</span>);
+                left = side_amp(angle - <span class="number">90</span>);
+                right = <span class="number">255 </span>- back_amp(<span class="number">315 </span>- angle);
+                right_rear = side_amp(<span class="number">360 </span>- angle);
+            } <span class="kw">else if </span>angle &lt; <span class="number">315 </span>{
+                center = side_amp(angle - <span class="number">135</span>);
+                right = side_amp(angle - <span class="number">180</span>);
+                left_rear = side_amp(<span class="number">450 </span>- angle);
+                right_rear = <span class="number">255 </span>- back_amp(angle - <span class="number">225</span>);
+            } <span class="kw">else </span>{
+                right = side_amp(angle - <span class="number">180</span>);
+                left_rear = side_amp(<span class="number">450 </span>- angle);
+                right_rear = <span class="number">255 </span>- back_amp(<span class="number">45 </span>- angle);
             }
         }
-        <span class="kw">_</span> =&gt; {}
+        <span class="kw">_ </span>=&gt; {}
     }
-    <span class="kw">let</span> <span class="ident">amps</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">room_angle</span> {
-        <span class="number">90</span> =&gt; [<span class="ident">left_rear</span>, <span class="ident">left</span>, <span class="ident">right_rear</span>, <span class="ident">right</span>],
-        <span class="number">180</span> =&gt; {
-            <span class="kw">if</span> <span class="ident">channels</span> <span class="op">==</span> <span class="number">2</span> {
-                [<span class="ident">right</span>, <span class="ident">left</span>, <span class="number">0</span>, <span class="number">0</span>]
-            } <span class="kw">else</span> {
-                [<span class="ident">right_rear</span>, <span class="ident">left_rear</span>, <span class="ident">right</span>, <span class="ident">left</span>]
+    <span class="kw">let </span>amps = <span class="kw">match </span>room_angle {
+        <span class="number">90 </span>=&gt; [left_rear, left, right_rear, right],
+        <span class="number">180 </span>=&gt; {
+            <span class="kw">if </span>channels == <span class="number">2 </span>{
+                [right, left, <span class="number">0</span>, <span class="number">0</span>]
+            } <span class="kw">else </span>{
+                [right_rear, left_rear, right, left]
             }
         }
-        <span class="number">270</span> =&gt; [<span class="ident">right</span>, <span class="ident">right_rear</span>, <span class="ident">left</span>, <span class="ident">left_rear</span>],
-        <span class="kw">_</span> =&gt; [<span class="ident">left</span>, <span class="ident">right</span>, <span class="ident">left_rear</span>, <span class="ident">right_rear</span>],
+        <span class="number">270 </span>=&gt; [right, right_rear, left, left_rear],
+        <span class="kw">_ </span>=&gt; [left, right, left_rear, right_rear],
     };
     [
-        <span class="ident">amps</span>[<span class="number">0</span>].<span class="ident">into</span>(),
-        <span class="ident">amps</span>[<span class="number">1</span>].<span class="ident">into</span>(),
-        <span class="ident">amps</span>[<span class="number">2</span>].<span class="ident">into</span>(),
-        <span class="ident">amps</span>[<span class="number">3</span>].<span class="ident">into</span>(),
-        <span class="ident">center</span>.<span class="ident">into</span>(),
-        <span class="number">255</span>.<span class="ident">into</span>(),
+        amps[<span class="number">0</span>].into(),
+        amps[<span class="number">1</span>].into(),
+        amps[<span class="number">2</span>].into(),
+        amps[<span class="number">3</span>].into(),
+        center.into(),
+        <span class="number">255</span>.into(),
     ]
 }
 </code></pre></div>
-</section></div></main><div id="rustdoc-vars" data-root-path="../../../../../../../" data-current-crate="rich_sdl2_rust" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.64.0-nightly (0f4bcadb4 2022-07-30)" ></div></body></html>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../../../../../../" data-current-crate="rich_sdl2_rust" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.66.0-nightly (5e9772042 2022-10-29)" ></div></body></html>
