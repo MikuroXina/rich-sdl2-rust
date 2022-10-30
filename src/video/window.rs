@@ -250,9 +250,9 @@ unsafe impl<'video> HasRawWindowHandle for Window<'video> {
         match subsystem {
             #[cfg(target_os = "windows")]
             SubsystemKind::Windows => {
-                use raw_window_handle::windows::Windows;
+                use raw_window_handle::windows::WindowsHandle;
 
-                let mut handle = Windows::empty();
+                let mut handle = WindowsHandle::empty();
                 handle.hwnd = unsafe { wm.info.win }.window as *mut c_void;
                 RawWindowHandle::Windows(handle)
             }
