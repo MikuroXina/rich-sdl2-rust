@@ -180,7 +180,7 @@ impl<'video> Window<'video> {
     /// Gets a kind of the underlying subsystem.
     pub fn subsystem_kind(&self) -> SubsystemKind {
         let wm = self.sys_info();
-        SubsystemKind::from_raw(wm.subsystem)
+        SubsystemKind::from_raw(wm.subsystem as u32)
     }
 }
 
@@ -246,23 +246,15 @@ unsafe impl<'video> HasRawWindowHandle for Window<'video> {
     /// Downcasts into a raw window handle.
     fn raw_window_handle(&self) -> RawWindowHandle {
         let wm = self.sys_info();
-        let subsystem = SubsystemKind::from_raw(wm.subsystem);
+        let subsystem = SubsystemKind::from_raw(wm.subsystem as u32);
         match subsystem {
             #[cfg(target_os = "windows")]
             SubsystemKind::Windows => {
-                use raw_window_handle::Win32Handle;
+                use raw_window_handle::windows::Windows;
 
-                let mut handle = Win32Handle::empty();
+                let mut handle = Windows::empty();
                 handle.hwnd = unsafe { wm.info.win }.window as *mut c_void;
-                RawWindowHandle::Win32(handle)
-            }
-            #[cfg(target_os = "windows")]
-            SubsystemKind::WinRT => {
-                use raw_window_handle::WinRtHandle;
-
-                let mut handle = WinRtHandle::empty();
-                handle.core_window = unsafe { wm.info.winrt }.core_window;
-                RawWindowHandle::WinRt(handle)
+                RawWindowHandle::Windows(handle)
             }
             #[cfg(all(
                 any(
