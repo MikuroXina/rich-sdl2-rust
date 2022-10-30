@@ -264,15 +264,18 @@ unsafe impl<'video> HasRawWindowHandle for Window<'video> {
                 handle.core_window = unsafe { wm.info.winrt }.core_window;
                 RawWindowHandle::WinRt(handle)
             }
-            #[cfg(any(
-                target_os = "linux",
-                target_os = "dragonfly",
-                target_os = "freebsd",
-                target_os = "netbsd",
-                target_os = "openbsd",
+            #[cfg(all(
+                any(
+                    target_os = "linux",
+                    target_os = "dragonfly",
+                    target_os = "freebsd",
+                    target_os = "netbsd",
+                    target_os = "openbsd",
+                ),
+                feature = "wayland"
             ))]
             SubsystemKind::Wayland => {
-                use raw_window_handle::WaylandHandle;
+                use raw_window_handle::unix::WaylandHandle;
 
                 let mut handle = WaylandHandle::empty();
                 handle.surface = unsafe { wm.info.wl }.surface as *mut c_void;
@@ -287,7 +290,7 @@ unsafe impl<'video> HasRawWindowHandle for Window<'video> {
                 target_os = "openbsd",
             ))]
             SubsystemKind::X11 => {
-                use raw_window_handle::XlibHandle;
+                use raw_window_handle::unix::XlibHandle;
 
                 let mut handle = XlibHandle::empty();
                 handle.window = unsafe { wm.info.x11 }.window;
@@ -299,7 +302,7 @@ unsafe impl<'video> HasRawWindowHandle for Window<'video> {
                 use raw_window_handle::macos::MacOSHandle;
 
                 let mut handle = MacOSHandle::empty();
-                handle.ns_window = unsafe { wm.info.cocoa.window }.cast();
+                handle.ns_window = unsafe { wm.info.cocoa }.window.cast();
                 RawWindowHandle::MacOS(handle)
             }
             #[cfg(target_os = "ios")]
@@ -307,7 +310,7 @@ unsafe impl<'video> HasRawWindowHandle for Window<'video> {
                 use raw_window_handle::ios::IOSHandle;
 
                 let mut handle = IOSHandle::empty();
-                handle.ui_window = unsafe { wm.info.uikit.window }.cast();
+                handle.ui_window = unsafe { wm.info.uikit }.window.cast();
                 RawWindowHandle::IOS(handle)
             }
             #[cfg(target_os = "android")]
@@ -315,7 +318,7 @@ unsafe impl<'video> HasRawWindowHandle for Window<'video> {
                 use raw_window_handle::android::AndroidHandle;
 
                 let mut handle = AndroidHandle::empty();
-                handle.a_native_window = unsafe { wm.info.android.window }.cast();
+                handle.a_native_window = unsafe { wm.info.android }.window.cast();
                 RawWindowHandle::Android(handle)
             }
             _ => {
