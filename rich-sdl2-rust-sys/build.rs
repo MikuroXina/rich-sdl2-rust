@@ -482,6 +482,9 @@ fn set_link(target_os: &str) {
 }
 
 fn set_lib_dir() {
+    if cfg!(feature = "vendor") {
+        return;
+    }
     if let Ok(lib_dir) = std::env::var("SDL2_LIB_DIR") {
         println!("cargo:rustc-link-search={}", lib_dir);
     }
