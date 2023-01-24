@@ -12,9 +12,9 @@ compile_error!(r#"Either feature "static" or "dynamic" must be enabled."#);
 #[cfg(all(feature = "static", feature = "dynamic"))]
 compile_error!(r#"Feature "static" and "dynamic" cannot coexist."#);
 
-const SDL_VERSION: &str = "2.0.22";
-const SDL_TTF_VERSION: &str = "2.20.0";
-const SDL_MIXER_VERSION: &str = "2.6.1";
+const SDL_VERSION: &str = "2.26.2";
+const SDL_TTF_VERSION: &str = "2.20.1";
+const SDL_MIXER_VERSION: &str = "2.6.2";
 
 fn main() {
     let target = env::var("TARGET").expect("Cargo build scripts always have TARGET");
