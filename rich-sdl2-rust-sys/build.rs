@@ -390,6 +390,9 @@ fn build_vendor_sdl2_mixer(target_os: &str, root_dir: &Path) {
         )
         .expect("failed to copy header");
     } else {
+        for entry in root_dir.join("lib").read_dir().unwrap().flatten() {
+            eprintln!("{}", entry.path().display());
+        }
         assert!(
             Command::new(repo_path.join("configure"))
                 .current_dir(&repo_path)
