@@ -198,6 +198,14 @@ fn build_vendor_sdl2(target_os: &str, include_dir: &Path, lib_dir: &Path, root_d
             }
         }
     } else {
+        assert!(
+            Command::new(repo_path.join("autogen.sh"))
+                .current_dir(&repo_path)
+                .status()
+                .expect("failed to autogen SDL")
+                .success(),
+            "autogen failed"
+        );
         let build_path = repo_path.join("build");
         std::fs::create_dir(&build_path).expect("failed to mkdir build");
         assert!(
