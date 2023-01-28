@@ -7,10 +7,7 @@ use std::{
 };
 
 use super::mode::OpenMode;
-use crate::{
-    bind::{self, size_t},
-    Result, Sdl, SdlError,
-};
+use crate::{bind, Result, Sdl, SdlError};
 
 /// A file handler, how to read and write from file on SDL2.
 pub struct RwOps<'a> {
@@ -188,7 +185,7 @@ impl io::Read for RwOps<'_> {
                 self.ptr.as_ptr(),
                 buf.as_mut_ptr().cast(),
                 1,
-                buf.len() as size_t,
+                buf.len() as _,
             )
         };
         if ret == 0 {
@@ -225,12 +222,7 @@ impl io::Seek for RwOps<'_> {
 impl io::Write for RwOps<'_> {
     fn write(&mut self, buf: &[u8]) -> io::Result<usize> {
         let written = unsafe {
-            bind::SDL_RWwrite(
-                self.ptr.as_ptr(),
-                buf.as_ptr().cast(),
-                1,
-                buf.len() as size_t,
-            ) as usize
+            bind::SDL_RWwrite(self.ptr.as_ptr(), buf.as_ptr().cast(), 1, buf.len() as _) as usize
         };
         if written < buf.len() {
             Err(io::Error::new(
