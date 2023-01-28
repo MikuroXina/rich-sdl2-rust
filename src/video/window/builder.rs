@@ -125,6 +125,9 @@ impl WindowBuilder {
         if self.borderless {
             flags |= WindowFlags::BORDERLESS;
         }
+        if self.resizable {
+            flags |= WindowFlags::RESIZABLE;
+        }
         flags.bits()
     }
 }
