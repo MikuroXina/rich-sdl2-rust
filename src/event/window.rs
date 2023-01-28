@@ -37,6 +37,8 @@ pub enum WindowEventDetails {
     FocusLost,
     /// The window was closed.
     Close,
+    /// The window given focus.
+    TakeFocus
 }
 
 /// An event on interacting to the window.
@@ -87,7 +89,8 @@ impl From<bind::SDL_WindowEvent> for WindowEvent {
                 bind::SDL_WINDOWEVENT_FOCUS_GAINED => WindowEventDetails::FocusGained,
                 bind::SDL_WINDOWEVENT_FOCUS_LOST => WindowEventDetails::FocusLost,
                 bind::SDL_WINDOWEVENT_CLOSE => WindowEventDetails::Close,
-                _ => todo!(),
+                bind::SDL_WINDOWEVENT_TAKE_FOCUS => WindowEventDetails::TakeFocus,
+                other => todo!("{other} is not implemented"),
             },
         }
     }
