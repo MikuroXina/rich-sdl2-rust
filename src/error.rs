@@ -2,6 +2,7 @@ use static_assertions::assert_impl_all;
 
 /// An error occurred from SDL2.
 #[derive(Debug, Clone)]
+#[non_exhaustive]
 pub enum SdlError {
     /// The feature is unsupported on the platform.
     UnsupportedFeature,

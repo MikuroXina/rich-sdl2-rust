@@ -8,6 +8,7 @@ use super::{hat::PovHat, InputIndex, Joystick, JoystickId};
 
 /// An event occurs on inputted from a joystick or changed a joystick.
 #[derive(Debug)]
+#[non_exhaustive]
 pub enum JoystickEvent<'joystick> {
     /// An Axis was changed,
     Axis {

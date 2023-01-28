@@ -4,6 +4,7 @@ use crate::bind;
 
 /// A power level of a joystick.
 #[derive(Debug, Clone, Copy)]
+#[non_exhaustive]
 pub enum PowerLevel {
     /// A power level is unavailable.
     Unknown,

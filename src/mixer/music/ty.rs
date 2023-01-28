@@ -4,6 +4,7 @@ use crate::bind;
 
 /// A type of audio format supported by [`MixMusic`].
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[non_exhaustive]
 pub enum MusicType {
     /// A player from the command specified by [`MixMusic::with_cmd`].
     Command,

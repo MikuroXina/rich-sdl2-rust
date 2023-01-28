@@ -18,6 +18,7 @@ pub use query::*;
 
 /// An access type for the texture.
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+#[non_exhaustive]
 pub enum TextureAccess {
     /// Cannot mutate and lock.
     Static,

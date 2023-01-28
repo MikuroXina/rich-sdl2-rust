@@ -42,6 +42,7 @@ impl Gesture {
 
 /// An event on recognized a gesture
 #[derive(Debug, Clone)]
+#[non_exhaustive]
 pub enum GestureEvent {
     /// The gesture was multi touches.
     Multi {
