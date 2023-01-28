@@ -37,7 +37,8 @@ pub enum WindowEventDetails {
     FocusLost,
     /// The window was closed.
     Close,
-    /// The window given focus.
+    /// The window given focus. The application should call
+    /// SDL_SetWindowInputFocus() on the window or its subwindow, or ignore
     TakeFocus
 }
 
