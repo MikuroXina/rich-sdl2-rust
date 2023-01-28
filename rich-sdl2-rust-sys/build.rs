@@ -400,16 +400,16 @@ fn build_vendor_sdl2_mixer(target_os: &str, root_dir: &Path) {
         )
         .expect("failed to copy header");
     } else {
-        for entry in root_dir.join("lib").read_dir().unwrap().flatten() {
-            eprintln!("{}", entry.path().display());
-        }
+        let build_path = repo_path.join("build");
+        std::fs::create_dir(&build_path).expect("failed to mkdir build");
         assert!(
-            Command::new(repo_path.join("configure"))
-                .current_dir(&repo_path)
+            Command::new("cmake")
+                .current_dir(&build_path)
                 .args([
                     format!("--prefix={}", root_dir.display()),
                     format!("LD_LIBRARY_PATH={}", root_dir.join("lib").display()),
-                    format!("CPPFLAGS=-I{}", root_dir.join("include").display())
+                    format!("CPPFLAGS=-I{}", root_dir.join("include").display()),
+                    "..".into(),
                 ])
                 .status()
                 .expect("failed to configure SDL_mixer")
@@ -418,7 +418,7 @@ fn build_vendor_sdl2_mixer(target_os: &str, root_dir: &Path) {
         );
         assert!(
             Command::new("cmake")
-                .current_dir(&repo_path)
+                .current_dir(&build_path)
                 .args(["--build", "."])
                 .status()
                 .expect("failed to build SDL_mixer")
@@ -427,7 +427,7 @@ fn build_vendor_sdl2_mixer(target_os: &str, root_dir: &Path) {
         );
         assert!(
             Command::new("cmake")
-                .current_dir(&repo_path)
+                .current_dir(&build_path)
                 .args(["--install", "."])
                 .status()
                 .expect("failed to setup SDL_mixer")
