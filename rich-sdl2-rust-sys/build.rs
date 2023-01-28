@@ -400,33 +400,27 @@ fn build_vendor_sdl2_mixer(target_os: &str, root_dir: &Path) {
         )
         .expect("failed to copy header");
     } else {
-        let build_path = repo_path.join("build");
-        std::fs::create_dir(&build_path).expect("failed to mkdir build");
         assert!(
-            Command::new("cmake")
-                .current_dir(&build_path)
-                .args([
-                    format!("-DCMAKE_INSTALL_PREFIX={}", root_dir.display()),
-                    "..".into(),
-                ])
+            Command::new(repo_path.join("configure"))
+                .current_dir(&repo_path)
+                .arg(format!("--prefix={}", root_dir.display()))
                 .status()
                 .expect("failed to configure SDL_mixer")
                 .success(),
             "cmake failed"
         );
         assert!(
-            Command::new("cmake")
-                .current_dir(&build_path)
-                .args(["--build", "."])
+            Command::new("make")
+                .current_dir(&repo_path)
                 .status()
                 .expect("failed to build SDL_mixer")
                 .success(),
             "build failed"
         );
         assert!(
-            Command::new("cmake")
-                .current_dir(&build_path)
-                .args(["--install", "."])
+            Command::new("make")
+                .current_dir(&repo_path)
+                .arg("install")
                 .status()
                 .expect("failed to setup SDL_mixer")
                 .success(),
