@@ -82,6 +82,7 @@
 <a href="#82" id="82">82</a>
 <a href="#83" id="83">83</a>
 <a href="#84" id="84">84</a>
+<a href="#85" id="85">85</a>
 </pre><pre class="rust"><code><span class="doccomment">//! Defining information structures of a renderer.
 
 </span><span class="kw">use </span>std::ffi::CStr;
@@ -95,6 +96,7 @@
 
 <span class="doccomment">/// A kind of renderer.
 </span><span class="attr">#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[non_exhaustive]
 </span><span class="kw">pub enum </span>RendererKind {
     <span class="doccomment">/// Software renderer, normally slow.
     </span>Software,

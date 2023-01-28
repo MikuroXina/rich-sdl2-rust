@@ -117,6 +117,7 @@
 <a href="#117" id="117">117</a>
 <a href="#118" id="118">118</a>
 <a href="#119" id="119">119</a>
+<a href="#120" id="120">120</a>
 </pre><pre class="rust"><code><span class="doccomment">//! Gesture controller and events.
 
 </span><span class="kw">use </span>std::marker::PhantomData;
@@ -161,6 +162,7 @@
 
 <span class="doccomment">/// An event on recognized a gesture
 </span><span class="attr">#[derive(Debug, Clone)]
+#[non_exhaustive]
 </span><span class="kw">pub enum </span>GestureEvent {
     <span class="doccomment">/// The gesture was multi touches.
     </span>Multi {

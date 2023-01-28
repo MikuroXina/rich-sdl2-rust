@@ -108,6 +108,7 @@
 <a href="#108" id="108">108</a>
 <a href="#109" id="109">109</a>
 <a href="#110" id="110">110</a>
+<a href="#111" id="111">111</a>
 </pre><pre class="rust"><code><span class="doccomment">//! An event related on a game controller.
 
 </span><span class="kw">use </span>std::marker::PhantomData;
@@ -121,6 +122,7 @@
 
 <span class="doccomment">/// An event occurs on inputted from a game controller or changed a game controller.
 </span><span class="attr">#[derive(Debug, Clone)]
+#[non_exhaustive]
 </span><span class="kw">pub enum </span>ControllerEvent&lt;<span class="lifetime">&#39;joystick</span>&gt; {
     <span class="doccomment">/// An axis was changed.
     </span>Axis {

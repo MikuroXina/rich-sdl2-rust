@@ -767,6 +767,7 @@
 <a href="#767" id="767">767</a>
 <a href="#768" id="768">768</a>
 <a href="#769" id="769">769</a>
+<a href="#770" id="770">770</a>
 </pre><pre class="rust"><code><span class="doccomment">//! Virtual key codes corresponded to physical scan codes.
 
 </span><span class="attr">#![allow(missing_docs)]
@@ -778,6 +779,7 @@
 <span class="kw">use </span><span class="kw">super</span>::scan_code::ScanCode;
 
 <span class="attr">#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[non_exhaustive]
 </span><span class="kw">pub enum </span>KeyCode {
     Unknown,
     Return,

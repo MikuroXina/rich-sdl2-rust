@@ -95,6 +95,7 @@
 <a href="#95" id="95">95</a>
 <a href="#96" id="96">96</a>
 <a href="#97" id="97">97</a>
+<a href="#98" id="98">98</a>
 </pre><pre class="rust"><code><span class="doccomment">//! Events for the window.
 
 </span><span class="kw">use crate</span>::{
@@ -105,6 +106,7 @@
 
 <span class="doccomment">/// The details what occurred in [`WindowEvent`].
 </span><span class="attr">#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[non_exhaustive]
 </span><span class="kw">pub enum </span>WindowEventDetails {
     <span class="doccomment">/// The window became to be shown.
     </span>Shown,

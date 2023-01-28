@@ -94,6 +94,7 @@
 <a href="#94" id="94">94</a>
 <a href="#95" id="95">95</a>
 <a href="#96" id="96">96</a>
+<a href="#97" id="97">97</a>
 </pre><pre class="rust"><code><span class="doccomment">//! Types for a pixel format.
 
 </span><span class="kw">use crate</span>::{bind, EnumInt};
@@ -166,6 +167,7 @@
 
 <span class="doccomment">/// A type in a pixel array format.
 </span><span class="attr">#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+#[non_exhaustive]
 </span><span class="kw">pub enum </span>ArrayPixelType {
     <span class="doccomment">/// A type of array is `u8`.
     </span>U8,

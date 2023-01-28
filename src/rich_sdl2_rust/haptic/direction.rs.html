@@ -69,12 +69,14 @@
 <a href="#69" id="69">69</a>
 <a href="#70" id="70">70</a>
 <a href="#71" id="71">71</a>
+<a href="#72" id="72">72</a>
 </pre><pre class="rust"><code><span class="doccomment">//! Defining directions and coordinate systems of the haptic movements.
 
 </span><span class="kw">use </span><span class="kw">crate</span>::bind;
 
 <span class="doccomment">/// A direction and coordinate system of the haptic movements.
 </span><span class="attr">#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[non_exhaustive]
 </span><span class="kw">pub enum </span>Direction {
     <span class="doccomment">/// A polar coordinate system.
     </span>Polar {

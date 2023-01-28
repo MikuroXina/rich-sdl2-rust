@@ -156,6 +156,7 @@
 <a href="#156" id="156">156</a>
 <a href="#157" id="157">157</a>
 <a href="#158" id="158">158</a>
+<a href="#159" id="159">159</a>
 </pre><pre class="rust"><code><span class="doccomment">//! Cursor control on a window.
 
 </span><span class="kw">use </span>static_assertions::assert_not_impl_all;
@@ -168,6 +169,7 @@
 
 <span class="doccomment">/// A kind of the system cursor.
 </span><span class="attr">#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+#[non_exhaustive]
 </span><span class="kw">pub enum </span>SystemCursorKind {
     <span class="doccomment">/// The arrow cursor.
     </span>Arrow,

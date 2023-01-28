@@ -497,6 +497,8 @@
 <a href="#497" id="497">497</a>
 <a href="#498" id="498">498</a>
 <a href="#499" id="499">499</a>
+<a href="#500" id="500">500</a>
+<a href="#501" id="501">501</a>
 </pre><pre class="rust"><code><span class="doccomment">//! Controls the effect on the haptic device.
 
 </span><span class="kw">use </span><span class="kw">crate</span>::bind;
@@ -505,6 +507,7 @@
 
 <span class="doccomment">/// An effect on the haptic device.
 </span><span class="attr">#[derive(Debug, Clone, PartialEq, Eq)]
+#[non_exhaustive]
 </span><span class="kw">pub enum </span>HapticEffect {
     <span class="doccomment">/// Applies the constant force in the direction.
     </span>Constant(Direction, Play, Trigger, Level, Envelope),
@@ -896,6 +899,7 @@
 
 <span class="doccomment">/// A kind of the waveform.
 </span><span class="attr">#[derive(Debug, Clone, PartialEq, Eq)]
+#[non_exhaustive]
 </span><span class="kw">pub enum </span>WaveKind {
     <span class="doccomment">/// A sine wave like:
     ///

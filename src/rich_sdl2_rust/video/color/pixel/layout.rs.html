@@ -85,12 +85,14 @@
 <a href="#85" id="85">85</a>
 <a href="#86" id="86">86</a>
 <a href="#87" id="87">87</a>
+<a href="#88" id="88">88</a>
 </pre><pre class="rust"><code><span class="doccomment">//! Layouts for a pixel format.
 
 </span><span class="kw">use </span><span class="kw">crate</span>::bind;
 
 <span class="doccomment">/// A layout for a packed pixel format.
 </span><span class="attr">#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+#[non_exhaustive]
 </span><span class="kw">pub enum </span>PackedPixelLayout {
     <span class="doccomment">/// A layout is in 8 bits with 4 components, as below:
     ///

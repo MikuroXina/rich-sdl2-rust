@@ -55,12 +55,14 @@
 <a href="#55" id="55">55</a>
 <a href="#56" id="56">56</a>
 <a href="#57" id="57">57</a>
+<a href="#58" id="58">58</a>
 </pre><pre class="rust"><code><span class="doccomment">//! Audio formats for [`super::MixMusic`].
 
 </span><span class="kw">use </span><span class="kw">crate</span>::bind;
 
 <span class="doccomment">/// A type of audio format supported by [`MixMusic`].
 </span><span class="attr">#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[non_exhaustive]
 </span><span class="kw">pub enum </span>MusicType {
     <span class="doccomment">/// A player from the command specified by [`MixMusic::with_cmd`].
     </span>Command,

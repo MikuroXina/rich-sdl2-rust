@@ -42,12 +42,14 @@
 <a href="#42" id="42">42</a>
 <a href="#43" id="43">43</a>
 <a href="#44" id="44">44</a>
+<a href="#45" id="45">45</a>
 </pre><pre class="rust"><code><span class="doccomment">//! An event related on an audio device.
 
 </span><span class="kw">use crate</span>::{bind, EnumInt};
 
 <span class="doccomment">/// An event occurs on an audio device was added/removed.
 </span><span class="attr">#[derive(Debug, Clone)]
+#[non_exhaustive]
 </span><span class="kw">pub enum </span>AudioDeviceEvent {
     <span class="doccomment">/// An event when an audio device was added.
     </span>Added {

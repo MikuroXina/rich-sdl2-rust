@@ -66,6 +66,7 @@
 <a href="#66" id="66">66</a>
 <a href="#67" id="67">67</a>
 <a href="#68" id="68">68</a>
+<a href="#69" id="69">69</a>
 </pre><pre class="rust"><code><span class="doccomment">//! Events on to drag and drop something to a window.
 
 </span><span class="kw">use </span>std::ffi::CStr;
@@ -74,6 +75,7 @@
 
 <span class="doccomment">/// An event occurred when the item was dropped on a window.
 </span><span class="attr">#[derive(Debug, Clone)]
+#[non_exhaustive]
 </span><span class="kw">pub enum </span>DropEvent {
     <span class="doccomment">/// A file was dropped.
     </span>File {

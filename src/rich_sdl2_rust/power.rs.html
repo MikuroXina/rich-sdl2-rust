@@ -55,12 +55,14 @@
 <a href="#55" id="55">55</a>
 <a href="#56" id="56">56</a>
 <a href="#57" id="57">57</a>
+<a href="#58" id="58">58</a>
 </pre><pre class="rust"><code><span class="doccomment">//! System power monitoring.
 
 </span><span class="kw">use </span><span class="kw">crate</span>::bind;
 
 <span class="doccomment">/// A state of power in the system.
 </span><span class="attr">#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[non_exhaustive]
 </span><span class="kw">pub enum </span>PowerState {
     <span class="doccomment">/// A state cannot be known.
     </span>Unknown,

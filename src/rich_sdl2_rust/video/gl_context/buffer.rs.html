@@ -45,12 +45,14 @@
 <a href="#45" id="45">45</a>
 <a href="#46" id="46">46</a>
 <a href="#47" id="47">47</a>
+<a href="#48" id="48">48</a>
 </pre><pre class="rust"><code><span class="kw">use crate</span>::{bind, <span class="prelude-ty">Result</span>, SdlError};
 
 <span class="kw">use </span><span class="kw">super</span>::GlContext;
 
 <span class="doccomment">/// A kind of the interval of swapping buffers in an OpenGL context.
 </span><span class="attr">#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[non_exhaustive]
 </span><span class="kw">pub enum </span>IntervalKind {
     <span class="doccomment">/// Vertical syncing but swap immediately on failed.
     </span>AdaptiveVerticalSync,

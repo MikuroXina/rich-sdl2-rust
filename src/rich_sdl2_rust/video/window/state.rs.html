@@ -102,10 +102,13 @@
 <a href="#102" id="102">102</a>
 <a href="#103" id="103">103</a>
 <a href="#104" id="104">104</a>
+<a href="#105" id="105">105</a>
+<a href="#106" id="106">106</a>
 </pre><pre class="rust"><code><span class="kw">use </span><span class="kw">super</span>::builder::WindowFlags;
 
 <span class="doccomment">/// A format of a [`super::Window`].
 </span><span class="attr">#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[non_exhaustive]
 </span><span class="kw">pub enum </span>WindowFormat {
     <span class="doccomment">/// A normal window.
     </span>Normal,
@@ -137,6 +140,7 @@
 
 <span class="doccomment">/// A kind of a window&#39;s context.
 </span><span class="attr">#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[non_exhaustive]
 </span><span class="kw">pub enum </span>WindowContextKind {
     <span class="doccomment">/// Using software render context.
     </span>Software,

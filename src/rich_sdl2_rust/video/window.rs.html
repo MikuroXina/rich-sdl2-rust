@@ -333,6 +333,7 @@
 <a href="#333" id="333">333</a>
 <a href="#334" id="334">334</a>
 <a href="#335" id="335">335</a>
+<a href="#336" id="336">336</a>
 </pre><pre class="rust"><code><span class="doccomment">//! Window managements, graphics and mouse controls.
 
 </span><span class="kw">use </span>raw_window_handle::{HasRawWindowHandle, RawWindowHandle};
@@ -539,6 +540,7 @@
 <span class="doccomment">/// Supported windowing subsystems.
 </span><span class="attr">#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
 #[must_use]
+#[non_exhaustive]
 </span><span class="kw">pub enum </span>SubsystemKind {
     <span class="doccomment">/// HWND handle for Windows.
     </span>Windows,

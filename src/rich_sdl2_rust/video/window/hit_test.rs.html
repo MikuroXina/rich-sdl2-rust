@@ -100,6 +100,7 @@
 <a href="#100" id="100">100</a>
 <a href="#101" id="101">101</a>
 <a href="#102" id="102">102</a>
+<a href="#103" id="103">103</a>
 </pre><pre class="rust"><code><span class="kw">use </span>static_assertions::assert_not_impl_all;
 <span class="kw">use </span>std::{
     cell::{Cell, RefCell},
@@ -114,6 +115,7 @@
 
 <span class="doccomment">/// A hit test result that determined cursor from the mouse position.
 </span><span class="attr">#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[non_exhaustive]
 </span><span class="kw">pub enum </span>HitTestResult {
     <span class="doccomment">/// The cursor should be normal.
     </span>Normal,

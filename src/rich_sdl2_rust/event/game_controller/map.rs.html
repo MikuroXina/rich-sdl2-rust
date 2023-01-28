@@ -41,12 +41,14 @@
 <a href="#41" id="41">41</a>
 <a href="#42" id="42">42</a>
 <a href="#43" id="43">43</a>
+<a href="#44" id="44">44</a>
 </pre><pre class="rust"><code><span class="doccomment">//! A definition of a mapping structure.
 
 </span><span class="kw">use </span><span class="kw">crate</span>::bind;
 
 <span class="doccomment">/// A mapping that the logical button is attached to the physical index.
 </span><span class="attr">#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[non_exhaustive]
 </span><span class="kw">pub enum </span>MapInput {
     <span class="doccomment">/// It is attached to the button.
     </span>Button {

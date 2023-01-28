@@ -82,6 +82,7 @@
 <a href="#82" id="82">82</a>
 <a href="#83" id="83">83</a>
 <a href="#84" id="84">84</a>
+<a href="#85" id="85">85</a>
 </pre><pre class="rust"><code><span class="doccomment">//! Axes for a game controller.
 
 </span><span class="kw">use </span>std::{
@@ -93,6 +94,7 @@
 
 <span class="doccomment">/// An axis like sticks and trigger buttons on a game controller.
 </span><span class="attr">#[derive(Debug, Clone, Copy, PartialEq, PartialOrd, Eq, Hash)]
+#[non_exhaustive]
 </span><span class="kw">pub enum </span>Axis {
     <span class="doccomment">/// An horizontal input of the left stick.
     </span>LeftX,

@@ -119,6 +119,7 @@
 <a href="#119" id="119">119</a>
 <a href="#120" id="120">120</a>
 <a href="#121" id="121">121</a>
+<a href="#122" id="122">122</a>
 </pre><pre class="rust"><code><span class="doccomment">//! Buttons for a game controller.
 
 </span><span class="kw">use </span>std::{
@@ -144,6 +145,7 @@
 <span class="doccomment">/// A button on a game controller except the trigger buttons.
 /// Trigger buttons are covered by [`super::axis::Axis`].
 </span><span class="attr">#[derive(Debug, Clone, Copy, PartialEq, PartialOrd, Eq, Hash)]
+#[non_exhaustive]
 </span><span class="kw">pub enum </span>Button {
     <span class="doccomment">/// Four buttons on the left.
     </span>LeftFour(FourButton),

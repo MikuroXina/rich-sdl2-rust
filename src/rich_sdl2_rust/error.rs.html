@@ -30,10 +30,12 @@
 <a href="#30" id="30">30</a>
 <a href="#31" id="31">31</a>
 <a href="#32" id="32">32</a>
+<a href="#33" id="33">33</a>
 </pre><pre class="rust"><code><span class="kw">use </span>static_assertions::assert_impl_all;
 
 <span class="doccomment">/// An error occurred from SDL2.
 </span><span class="attr">#[derive(Debug, Clone)]
+#[non_exhaustive]
 </span><span class="kw">pub enum </span>SdlError {
     <span class="doccomment">/// The feature is unsupported on the platform.
     </span>UnsupportedFeature,

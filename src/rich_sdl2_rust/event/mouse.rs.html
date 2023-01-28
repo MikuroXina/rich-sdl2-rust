@@ -144,6 +144,8 @@
 <a href="#144" id="144">144</a>
 <a href="#145" id="145">145</a>
 <a href="#146" id="146">146</a>
+<a href="#147" id="147">147</a>
+<a href="#148" id="148">148</a>
 </pre><pre class="rust"><code><span class="doccomment">//! Events and utilities for the mouse.
 
 </span><span class="kw">use </span><span class="kw">crate</span>::geo::Point;
@@ -154,6 +156,7 @@
 
 <span class="doccomment">/// A kind of the mouse button.
 </span><span class="attr">#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[non_exhaustive]
 </span><span class="kw">pub enum </span>MouseButton {
     <span class="doccomment">/// The left button of the mouse.
     </span>Left,
@@ -182,6 +185,7 @@
 
 <span class="doccomment">/// An event related on the mouse.
 </span><span class="attr">#[derive(Debug, Clone, PartialEq, Eq)]
+#[non_exhaustive]
 </span><span class="kw">pub enum </span>MouseEvent {
     <span class="doccomment">/// A motion event [`MouseMotionEvent`].
     </span>Motion(MouseMotionEvent),

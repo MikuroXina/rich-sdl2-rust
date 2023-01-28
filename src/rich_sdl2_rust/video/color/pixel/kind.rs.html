@@ -242,6 +242,7 @@
 <a href="#242" id="242">242</a>
 <a href="#243" id="243">243</a>
 <a href="#244" id="244">244</a>
+<a href="#245" id="245">245</a>
 </pre><pre class="rust"><code><span class="doccomment">//! Kinds for a pixel format, aggregates type, layout and order.
 
 </span><span class="kw">use </span>std::ffi::CStr;
@@ -256,6 +257,7 @@
 
 <span class="doccomment">/// A kind of pixel format.
 </span><span class="attr">#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+#[non_exhaustive]
 </span><span class="kw">pub enum </span>PixelFormatKind {
     <span class="doccomment">/// A format not supported by SDL2.
     </span>Unknown,
