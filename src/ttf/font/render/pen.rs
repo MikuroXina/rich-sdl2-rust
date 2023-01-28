@@ -135,6 +135,7 @@ impl FontRenderExt for Pen<'_> {
             .rendered_size(text)
             .expect("calculating text size failed");
         let up_left = options.aligned_pos(size);
-        self.renderer().paste(texture, Some(Rect { up_left, size }));
+        self.renderer()
+            .paste(&texture, Some(Rect { up_left, size }));
     }
 }
