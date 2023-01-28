@@ -12,9 +12,9 @@ compile_error!(r#"Either feature "static" or "dynamic" must be enabled."#);
 #[cfg(all(feature = "static", feature = "dynamic"))]
 compile_error!(r#"Feature "static" and "dynamic" cannot coexist."#);
 
-const SDL_VERSION: &str = "2.0.22";
-const SDL_TTF_VERSION: &str = "2.20.0";
-const SDL_MIXER_VERSION: &str = "2.6.1";
+const SDL_VERSION: &str = "2.26.2";
+const SDL_TTF_VERSION: &str = "2.20.1";
+const SDL_MIXER_VERSION: &str = "2.6.2";
 
 fn main() {
     let target = env::var("TARGET").expect("Cargo build scripts always have TARGET");
@@ -198,6 +198,14 @@ fn build_vendor_sdl2(target_os: &str, include_dir: &Path, lib_dir: &Path, root_d
             }
         }
     } else {
+        assert!(
+            Command::new(repo_path.join("autogen.sh"))
+                .current_dir(&repo_path)
+                .status()
+                .expect("failed to autogen SDL")
+                .success(),
+            "autogen failed"
+        );
         let build_path = repo_path.join("build");
         std::fs::create_dir(&build_path).expect("failed to mkdir build");
         assert!(
@@ -213,16 +221,17 @@ fn build_vendor_sdl2(target_os: &str, include_dir: &Path, lib_dir: &Path, root_d
             "cmake failed"
         );
         assert!(
-            Command::new("make")
+            Command::new("cmake")
                 .current_dir(&build_path)
+                .args(["--build", "."])
                 .status()
                 .expect("failed to build SDL")
                 .success(),
             "build failed"
         );
         assert!(
-            Command::new("make")
-                .arg("install")
+            Command::new("cmake")
+                .args(["--install", "."])
                 .current_dir(&build_path)
                 .status()
                 .expect("failed to setup SDL")
@@ -307,17 +316,18 @@ fn build_vendor_sdl2_ttf(target_os: &str, include_dir: &Path, lib_dir: &Path, ro
             "cmake failed"
         );
         assert!(
-            Command::new("make")
+            Command::new("cmake")
                 .current_dir(&build_path)
+                .args(["--build", "."])
                 .status()
                 .expect("failed to build SDL_ttf")
                 .success(),
             "build failed"
         );
         assert!(
-            Command::new("make")
-                .arg("install")
+            Command::new("cmake")
                 .current_dir(&build_path)
+                .args(["--install", "."])
                 .status()
                 .expect("failed to setup SDL_ttf")
                 .success(),
@@ -390,13 +400,16 @@ fn build_vendor_sdl2_mixer(target_os: &str, root_dir: &Path) {
         )
         .expect("failed to copy header");
     } else {
+        let build_path = repo_path.join("build");
+        std::fs::create_dir(&build_path).expect("failed to mkdir build");
         assert!(
-            Command::new(repo_path.join("configure"))
-                .current_dir(&repo_path)
+            Command::new("cmake")
+                .current_dir(&build_path)
                 .args([
-                    format!("--prefix={}", root_dir.display()),
-                    format!("LD_LIBRARY_PATH={}", root_dir.join("lib").display()),
-                    format!("CPPFLAGS=-I{}", root_dir.join("include").display())
+                    format!("-DCMAKE_INSTALL_PREFIX={}", root_dir.display()),
+                    "-DSDL2MIXER_VENDORED=ON".into(),
+                    "-DSDL2MIXER_BUILD_SHARED_LIBS=ON".into(),
+                    "..".into(),
                 ])
                 .status()
                 .expect("failed to configure SDL_mixer")
@@ -404,17 +417,18 @@ fn build_vendor_sdl2_mixer(target_os: &str, root_dir: &Path) {
             "cmake failed"
         );
         assert!(
-            Command::new("make")
-                .current_dir(&repo_path)
+            Command::new("cmake")
+                .current_dir(&build_path)
+                .args(["--build", "."])
                 .status()
                 .expect("failed to build SDL_mixer")
                 .success(),
             "build failed"
         );
         assert!(
-            Command::new("make")
-                .arg("install")
-                .current_dir(&repo_path)
+            Command::new("cmake")
+                .current_dir(&build_path)
+                .args(["--install", "."])
                 .status()
                 .expect("failed to setup SDL_mixer")
                 .success(),
@@ -482,6 +496,9 @@ fn set_link(target_os: &str) {
 }
 
 fn set_lib_dir() {
+    if cfg!(feature = "vendor") {
+        return;
+    }
     if let Ok(lib_dir) = std::env::var("SDL2_LIB_DIR") {
         println!("cargo:rustc-link-search={}", lib_dir);
     }
