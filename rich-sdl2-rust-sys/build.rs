@@ -406,9 +406,7 @@ fn build_vendor_sdl2_mixer(target_os: &str, root_dir: &Path) {
             Command::new("cmake")
                 .current_dir(&build_path)
                 .args([
-                    format!("--prefix={}", root_dir.display()),
-                    format!("LD_LIBRARY_PATH={}", root_dir.join("lib").display()),
-                    format!("CPPFLAGS=-I{}", root_dir.join("include").display()),
+                    format!("-DCMAKE_INSTALL_PREFIX={}", root_dir.display()),
                     "..".into(),
                 ])
                 .status()
