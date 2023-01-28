@@ -221,16 +221,17 @@ fn build_vendor_sdl2(target_os: &str, include_dir: &Path, lib_dir: &Path, root_d
             "cmake failed"
         );
         assert!(
-            Command::new("make")
+            Command::new("cmake")
                 .current_dir(&build_path)
+                .args(["--build", "."])
                 .status()
                 .expect("failed to build SDL")
                 .success(),
             "build failed"
         );
         assert!(
-            Command::new("make")
-                .arg("install")
+            Command::new("cmake")
+                .args(["--install", "."])
                 .current_dir(&build_path)
                 .status()
                 .expect("failed to setup SDL")
@@ -315,17 +316,18 @@ fn build_vendor_sdl2_ttf(target_os: &str, include_dir: &Path, lib_dir: &Path, ro
             "cmake failed"
         );
         assert!(
-            Command::new("make")
+            Command::new("cmake")
                 .current_dir(&build_path)
+                .args(["--build", "."])
                 .status()
                 .expect("failed to build SDL_ttf")
                 .success(),
             "build failed"
         );
         assert!(
-            Command::new("make")
-                .arg("install")
+            Command::new("cmake")
                 .current_dir(&build_path)
+                .args(["--install", "."])
                 .status()
                 .expect("failed to setup SDL_ttf")
                 .success(),
@@ -415,17 +417,18 @@ fn build_vendor_sdl2_mixer(target_os: &str, root_dir: &Path) {
             "cmake failed"
         );
         assert!(
-            Command::new("make")
+            Command::new("cmake")
                 .current_dir(&repo_path)
+                .args(["--build", "."])
                 .status()
                 .expect("failed to build SDL_mixer")
                 .success(),
             "build failed"
         );
         assert!(
-            Command::new("make")
-                .arg("install")
+            Command::new("cmake")
                 .current_dir(&repo_path)
+                .args(["--install", "."])
                 .status()
                 .expect("failed to setup SDL_mixer")
                 .success(),
