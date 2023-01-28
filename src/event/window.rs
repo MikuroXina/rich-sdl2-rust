@@ -37,9 +37,8 @@ pub enum WindowEventDetails {
     FocusLost,
     /// The window was closed.
     Close,
-    /// The window given focus. The application should call
-    /// SDL_SetWindowInputFocus() on the window or its subwindow, or ignore
-    TakeFocus
+    /// The window given focus. When this event was occurred, you should call [`crate::video::window::Window::set_input_focus`] on the window.
+    TakeFocus,
 }
 
 /// An event on interacting to the window.
