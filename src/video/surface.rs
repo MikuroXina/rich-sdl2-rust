@@ -104,7 +104,7 @@ pub trait Surface {
     }
 
     /// Copies `src_area` area in the surface into `dst_pos` on another surface.
-    fn copy_to(&self, src_area: Rect, dst: &Self, dst_pos: Point) {
+    fn copy_to<S: Surface>(&self, src_area: Rect, dst: &S, dst_pos: Point) {
         let src_rect = src_area.into();
         let mut dst_rect = bind::SDL_Rect {
             x: dst_pos.x,
