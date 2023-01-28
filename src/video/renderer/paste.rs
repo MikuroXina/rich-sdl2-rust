@@ -43,13 +43,13 @@ pub struct PasteExOption {
 /// An extension for [`Renderer`] to paste from another texture.
 pub trait PasteExt {
     /// Pastes the texture into `target_area`, or whole if `None`.
-    fn paste(&self, texture: Texture, target_area: Option<Rect>);
+    fn paste(&self, texture: &Texture, target_area: Option<Rect>);
     /// Pastes the texture with options [`PasteExOption`].
-    fn paste_ex(&self, texture: Texture, options: PasteExOption);
+    fn paste_ex(&self, texture: &Texture, options: PasteExOption);
 }
 
 impl PasteExt for Renderer<'_> {
-    fn paste(&self, texture: Texture, target_area: Option<Rect>) {
+    fn paste(&self, texture: &Texture, target_area: Option<Rect>) {
         let src = texture.clip().map(Into::into);
         let dst = target_area.map(Into::into);
         let ret = unsafe {
@@ -62,7 +62,7 @@ impl PasteExt for Renderer<'_> {
 
     fn paste_ex(
         &self,
-        texture: Texture,
+        texture: &Texture,
         PasteExOption {
             target_area,
             rotation_degrees,
