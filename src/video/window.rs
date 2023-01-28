@@ -204,6 +204,7 @@ impl<'video> Drop for Window<'video> {
 /// Supported windowing subsystems.
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
 #[must_use]
+#[non_exhaustive]
 pub enum SubsystemKind {
     /// HWND handle for Windows.
     Windows,

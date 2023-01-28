@@ -35,6 +35,7 @@ pub struct PixelMask(pub u32);
 
 /// A property of a pixel format.
 #[derive(Debug)]
+#[non_exhaustive]
 pub enum PixelFormatProperty {
     /// A pixel format with a palette, so a pixel has an index of the palette.
     Palette(Palette),

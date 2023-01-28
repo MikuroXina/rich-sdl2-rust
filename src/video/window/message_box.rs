@@ -15,6 +15,7 @@ mod color_scheme;
 
 /// A kind of [`MessageBox`].
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[non_exhaustive]
 pub enum MessageBoxKind {
     /// An error message.
     Error,

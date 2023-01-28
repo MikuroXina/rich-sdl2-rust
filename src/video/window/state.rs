@@ -2,6 +2,7 @@ use super::builder::WindowFlags;
 
 /// A format of a [`super::Window`].
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[non_exhaustive]
 pub enum WindowFormat {
     /// A normal window.
     Normal,
@@ -33,6 +34,7 @@ impl From<WindowFlags> for WindowFormat {
 
 /// A kind of a window's context.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[non_exhaustive]
 pub enum WindowContextKind {
     /// Using software render context.
     Software,

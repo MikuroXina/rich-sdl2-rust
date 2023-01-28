@@ -12,6 +12,7 @@ use super::Window;
 
 /// A hit test result that determined cursor from the mouse position.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[non_exhaustive]
 pub enum HitTestResult {
     /// The cursor should be normal.
     Normal,

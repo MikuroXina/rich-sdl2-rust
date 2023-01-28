@@ -8,6 +8,7 @@ pub mod relative;
 
 /// A kind of the mouse button.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[non_exhaustive]
 pub enum MouseButton {
     /// The left button of the mouse.
     Left,
@@ -36,6 +37,7 @@ impl MouseButton {
 
 /// An event related on the mouse.
 #[derive(Debug, Clone, PartialEq, Eq)]
+#[non_exhaustive]
 pub enum MouseEvent {
     /// A motion event [`MouseMotionEvent`].
     Motion(MouseMotionEvent),

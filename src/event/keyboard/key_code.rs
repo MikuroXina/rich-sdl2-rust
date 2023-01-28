@@ -9,6 +9,7 @@ use crate::{bind, EnumInt};
 use super::scan_code::ScanCode;
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[non_exhaustive]
 pub enum KeyCode {
     Unknown,
     Return,

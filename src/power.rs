@@ -4,6 +4,7 @@ use crate::bind;
 
 /// A state of power in the system.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[non_exhaustive]
 pub enum PowerState {
     /// A state cannot be known.
     Unknown,

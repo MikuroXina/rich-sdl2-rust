@@ -11,6 +11,7 @@ use super::Renderer;
 
 /// A kind of renderer.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[non_exhaustive]
 pub enum RendererKind {
     /// Software renderer, normally slow.
     Software,

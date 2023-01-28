@@ -6,6 +6,7 @@ use super::direction::Direction;
 
 /// An effect on the haptic device.
 #[derive(Debug, Clone, PartialEq, Eq)]
+#[non_exhaustive]
 pub enum HapticEffect {
     /// Applies the constant force in the direction.
     Constant(Direction, Play, Trigger, Level, Envelope),
@@ -397,6 +398,7 @@ pub struct Wave {
 
 /// A kind of the waveform.
 #[derive(Debug, Clone, PartialEq, Eq)]
+#[non_exhaustive]
 pub enum WaveKind {
     /// A sine wave like:
     ///

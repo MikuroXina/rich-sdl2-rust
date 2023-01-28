@@ -70,6 +70,7 @@ impl PackedPixelType {
 
 /// A type in a pixel array format.
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+#[non_exhaustive]
 pub enum ArrayPixelType {
     /// A type of array is `u8`.
     U8,

@@ -5,6 +5,7 @@ use crate::{bind, Result, SdlError};
 
 /// A hinting for a font.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[non_exhaustive]
 pub enum FontHinting {
     /// Any hinting is not set.
     Normal,

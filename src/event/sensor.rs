@@ -6,6 +6,7 @@ use crate::bind;
 
 /// A kind of the other sensors.
 #[derive(Debug, Clone)]
+#[non_exhaustive]
 pub enum SensorKind {
     /// The others unrecognized by SDL2.
     Others(i32),

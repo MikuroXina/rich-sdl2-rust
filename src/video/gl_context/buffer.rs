@@ -4,6 +4,7 @@ use super::GlContext;
 
 /// A kind of the interval of swapping buffers in an OpenGL context.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[non_exhaustive]
 pub enum IntervalKind {
     /// Vertical syncing but swap immediately on failed.
     AdaptiveVerticalSync,
