@@ -16,8 +16,6 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
-
-      - uses: lukka/get-cmake@latest
       - uses: actions-rs/toolchain@v1
         with:
           profile: minimal
