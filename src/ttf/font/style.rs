@@ -5,6 +5,7 @@ use crate::{bind, Result, Sdl, SdlError};
 
 /// A text style of a font.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[non_exhaustive]
 pub enum FontStyle {
     /// A normal, plain style.
     Normal,

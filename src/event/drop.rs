@@ -6,6 +6,7 @@ use crate::{bind, EnumInt};
 
 /// An event occurred when the item was dropped on a window.
 #[derive(Debug, Clone)]
+#[non_exhaustive]
 pub enum DropEvent {
     /// A file was dropped.
     File {

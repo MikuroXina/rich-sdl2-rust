@@ -13,6 +13,7 @@ pub mod pen;
 
 /// A render mode for the font glyphs.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[non_exhaustive]
 pub enum RenderMode {
     /// A quick and dirty mode.
     Solid {

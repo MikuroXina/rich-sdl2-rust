@@ -9,6 +9,7 @@ use crate::{bind, SdlError};
 
 /// An axis like sticks and trigger buttons on a game controller.
 #[derive(Debug, Clone, Copy, PartialEq, PartialOrd, Eq, Hash)]
+#[non_exhaustive]
 pub enum Axis {
     /// An horizontal input of the left stick.
     LeftX,

@@ -60,6 +60,7 @@ impl From<Rgba> for bind::SDL_Color {
 /// A mode for blending colors.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 #[must_use]
+#[non_exhaustive]
 pub enum BlendMode {
     /// Not blend, overwrites a color by the another one.
     None,

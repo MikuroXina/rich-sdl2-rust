@@ -8,6 +8,7 @@ use crate::{
 
 /// The details what occurred in [`WindowEvent`].
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[non_exhaustive]
 pub enum WindowEventDetails {
     /// The window became to be shown.
     Shown,
@@ -37,6 +38,8 @@ pub enum WindowEventDetails {
     FocusLost,
     /// The window was closed.
     Close,
+    /// The window given focus. When this event was occurred, you should call [`crate::video::window::Window::set_input_focus`] on the window.
+    TakeFocus,
 }
 
 /// An event on interacting to the window.
@@ -87,7 +90,8 @@ impl From<bind::SDL_WindowEvent> for WindowEvent {
                 bind::SDL_WINDOWEVENT_FOCUS_GAINED => WindowEventDetails::FocusGained,
                 bind::SDL_WINDOWEVENT_FOCUS_LOST => WindowEventDetails::FocusLost,
                 bind::SDL_WINDOWEVENT_CLOSE => WindowEventDetails::Close,
-                _ => todo!(),
+                bind::SDL_WINDOWEVENT_TAKE_FOCUS => WindowEventDetails::TakeFocus,
+                other => todo!("{other} is not implemented"),
             },
         }
     }

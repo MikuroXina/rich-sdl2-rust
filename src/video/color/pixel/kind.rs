@@ -12,6 +12,7 @@ use super::{
 
 /// A kind of pixel format.
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+#[non_exhaustive]
 pub enum PixelFormatKind {
     /// A format not supported by SDL2.
     Unknown,

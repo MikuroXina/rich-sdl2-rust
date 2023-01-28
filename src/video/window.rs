@@ -117,6 +117,17 @@ impl<'video> Window<'video> {
         unsafe { bind::SDL_RaiseWindow(self.as_ptr()) }
     }
 
+    /// Explicitly sets the input focus to the window.
+    ///
+    /// You almost want to use [`Window::raise`] instead of this. This might give focus to a window that is completely obscured by other windows.
+    pub fn set_input_focus(&self) -> Result<()> {
+        let ret = unsafe { bind::SDL_SetWindowInputFocus(self.as_ptr()) };
+        if ret != 0 {
+            return Err(crate::SdlError::Others { msg: Sdl::error() });
+        }
+        Ok(())
+    }
+
     /// Make the window full screen.
     ///
     /// # Errors
@@ -193,6 +204,7 @@ impl<'video> Drop for Window<'video> {
 /// Supported windowing subsystems.
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
 #[must_use]
+#[non_exhaustive]
 pub enum SubsystemKind {
     /// HWND handle for Windows.
     Windows,

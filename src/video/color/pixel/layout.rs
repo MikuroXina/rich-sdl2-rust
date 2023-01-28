@@ -4,6 +4,7 @@ use crate::bind;
 
 /// A layout for a packed pixel format.
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+#[non_exhaustive]
 pub enum PackedPixelLayout {
     /// A layout is in 8 bits with 4 components, as below:
     ///

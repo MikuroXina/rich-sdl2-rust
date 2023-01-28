@@ -17,6 +17,7 @@ mod pause;
 
 /// Loops on playing in [`PlayOptions`].
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[non_exhaustive]
 pub enum PlayLoops {
     /// Playing infinitely.
     Infinite,

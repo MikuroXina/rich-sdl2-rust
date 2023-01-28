@@ -6,6 +6,7 @@ use crate::{bind, Result, SdlError};
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 #[allow(missing_docs)]
+#[non_exhaustive]
 pub enum Script {
     Common,
     Inherited,

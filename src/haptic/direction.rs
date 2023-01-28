@@ -4,6 +4,7 @@ use crate::bind;
 
 /// A direction and coordinate system of the haptic movements.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[non_exhaustive]
 pub enum Direction {
     /// A polar coordinate system.
     Polar {

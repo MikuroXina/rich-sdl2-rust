@@ -4,6 +4,7 @@ use crate::{bind, EnumInt};
 
 /// An event occurs on an audio device was added/removed.
 #[derive(Debug, Clone)]
+#[non_exhaustive]
 pub enum AudioDeviceEvent {
     /// An event when an audio device was added.
     Added {

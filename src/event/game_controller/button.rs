@@ -23,6 +23,7 @@ pub enum FourButton {
 /// A button on a game controller except the trigger buttons.
 /// Trigger buttons are covered by [`super::axis::Axis`].
 #[derive(Debug, Clone, Copy, PartialEq, PartialOrd, Eq, Hash)]
+#[non_exhaustive]
 pub enum Button {
     /// Four buttons on the left.
     LeftFour(FourButton),

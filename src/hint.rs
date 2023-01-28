@@ -53,6 +53,7 @@ pub fn set_hint(key: &str, value: &str) -> Result<()> {
 
 /// A priority of the hint specifying.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[non_exhaustive]
 pub enum HintPriority {
     /// A default priority, low.
     Default,

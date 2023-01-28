@@ -10,6 +10,7 @@ use super::Window;
 
 /// A kind of the system cursor.
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+#[non_exhaustive]
 pub enum SystemCursorKind {
     /// The arrow cursor.
     Arrow,
