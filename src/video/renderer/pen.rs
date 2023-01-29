@@ -8,6 +8,8 @@ use crate::{bind, Sdl};
 use super::Renderer;
 
 /// A pen controls its color and renders geometries to the renderer.
+///
+/// This will render when be dropped. So you should re-create on every render.
 #[derive(Debug)]
 pub struct Pen<'renderer> {
     renderer: &'renderer Renderer<'renderer>,
