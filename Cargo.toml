@@ -20,6 +20,7 @@ simd_allocator = []
 ttf = ["rich-sdl2-rust-sys/ttf"]
 mixer = ["rich-sdl2-rust-sys/mixer", "once_cell"]
 image = ["rich-sdl2-rust-sys/image"]
+net = ["rich-sdl2-rust-sys/net"]
 static = ["rich-sdl2-rust-sys/static"]
 dynamic = ["rich-sdl2-rust-sys/dynamic"]
 vendor = ["rich-sdl2-rust-sys/vendor"]
@@ -39,3 +40,7 @@ members = ["rich-sdl2-rust-sys"]
 [[example]]
 name = "simple-window"
 required-features = ["ttf"]
+
+[[example]]
+name = "show-interfaces"
+required-features = ["net"]

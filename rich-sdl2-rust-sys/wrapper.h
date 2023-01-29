@@ -14,3 +14,7 @@
 #ifdef RICH_SDL2_RUST_IMAGE
 #include <SDL2/SDL_image.h>
 #endif
+
+#ifdef RICH_SDL2_RUST_NET
+#include <SDL2/SDL_net.h>
+#endif
