@@ -1,3 +1,5 @@
+#![allow(clippy::unnecessary_cast)]
+
 use bitflags::bitflags;
 use std::ffi::CString;
 use std::ptr::NonNull;

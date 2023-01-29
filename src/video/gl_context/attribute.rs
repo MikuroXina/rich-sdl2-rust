@@ -1,5 +1,7 @@
 //! Configuration of an OpenGL context.
 
+#![allow(clippy::unnecessary_cast)]
+
 use bitflags::bitflags;
 use static_assertions::assert_not_impl_all;
 use std::marker::PhantomData;
@@ -9,6 +11,7 @@ use crate::{bind, EnumInt, Result, Sdl, SdlError};
 use super::GlContext;
 
 bitflags! {
+    #[allow(clippy::unnecessary_cast)]
     /// An attribute for OpenGL.
     pub struct GlAttributeKind: u32 {
         /// The minimum bits of the red channel in a color buffer.

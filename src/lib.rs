@@ -70,7 +70,7 @@ type EnumInt = std::os::raw::c_int;
 ///
 /// The object of `opt` must live over usage of a returned pointer. Otherwise it will occur UB.
 pub(crate) unsafe fn as_raw<T>(opt: &Option<T>) -> *const T {
-    opt.as_ref().map_or(std::ptr::null(), |x| &*x)
+    opt.as_ref().map_or(std::ptr::null(), |x| x)
 }
 
 /// Converts an option reference into a mutable raw pointer.

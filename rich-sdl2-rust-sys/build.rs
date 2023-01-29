@@ -25,7 +25,7 @@ fn main() {
     let includes: Vec<_> = include_paths(target_os)
         .map(|path| format!("-I{}", path.display()))
         .collect();
-    eprintln!("{:?}", includes);
+    eprintln!("{includes:?}");
 
     set_link(target_os);
 
@@ -216,7 +216,7 @@ fn build_vendor_sdl2(target_os: &str, include_dir: &Path, lib_dir: &Path, root_d
         };
         assert!(
             Command::new("msbuild")
-                .arg(format!("/p:Configuration=Debug,{}", target_platform))
+                .arg(format!("/p:Configuration=Debug,{target_platform}"))
                 .arg(repo_path.join("VisualC").join("SDL.sln"))
                 .status()
                 .expect("failed to build project")
@@ -323,7 +323,7 @@ fn build_vendor_sdl2_ttf(target_os: &str, include_dir: &Path, lib_dir: &Path, ro
         };
         assert!(
             Command::new("msbuild")
-                .arg(format!("/p:Configuration=Debug,{}", target_platform))
+                .arg(format!("/p:Configuration=Debug,{target_platform}"))
                 .arg(repo_path.join("VisualC").join("SDL_ttf.sln"))
                 .status()
                 .expect("failed to build project")
@@ -696,7 +696,7 @@ fn build_vendor_sdl2_net(target_os: &str, root_dir: &Path) {
 
 fn checkout_to_tag(repo: &Repository, tag: &str) {
     let (obj, reference) = repo
-        .revparse_ext(&format!("release-{}", tag))
+        .revparse_ext(&format!("release-{tag}"))
         .expect("the version tag not found");
     repo.checkout_tree(&obj, None).expect("failed to checkout");
     match reference {
@@ -764,6 +764,6 @@ fn set_lib_dir() {
         return;
     }
     if let Ok(lib_dir) = std::env::var("SDL2_LIB_DIR") {
-        println!("cargo:rustc-link-search={}", lib_dir);
+        println!("cargo:rustc-link-search={lib_dir}");
     }
 }

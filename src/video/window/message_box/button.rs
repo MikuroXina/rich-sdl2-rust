@@ -10,6 +10,7 @@ enum ButtonKind {
 }
 
 impl ButtonKind {
+    #[allow(clippy::unnecessary_cast)]
     fn as_flags(self) -> u32 {
         (match self {
             ButtonKind::Normal => 0,
