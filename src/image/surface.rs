@@ -50,6 +50,9 @@ impl<'img> ImgSurface<'img> {
         let file_name_cstr = CString::new(file_name).expect("file_name mus not be empty");
         let mode = CStr::from_bytes_with_nul(b"rb\0").unwrap();
         let fp = unsafe { bind::SDL_RWFromFile(file_name_cstr.as_ptr(), mode.as_ptr()) };
+        if fp.is_null() {
+            return Err(SdlError::Others { msg: Sdl::error() });
+        }
         let file_type_cstr = file_type
             .map(|file_type| CString::new(file_type).expect("file_name must not be empty"));
         let ptr = unsafe {
