@@ -15,6 +15,7 @@ compile_error!(r#"Feature "static" and "dynamic" cannot coexist."#);
 const SDL_VERSION: &str = "2.26.2";
 const SDL_TTF_VERSION: &str = "2.20.1";
 const SDL_MIXER_VERSION: &str = "2.6.2";
+const SDL_IMAGE_VERSION: &str = "2.6.2";
 
 fn main() {
     let target = env::var("TARGET").expect("Cargo build scripts always have TARGET");
@@ -43,16 +44,14 @@ fn main() {
             .prepend_enum_name(false)
             .parse_callbacks(Box::new(bindgen::CargoCallbacks));
     }
-    #[cfg(feature = "ttf")]
-    {
+    if cfg!(feature = "ttf") {
         builder = builder
             .clang_arg("-DRICH_SDL2_RUST_TTF")
             .allowlist_function("TTF_.*")
             .allowlist_type("TTF_.*")
             .allowlist_var("TTF_.*");
     }
-    #[cfg(feature = "mixer")]
-    {
+    if cfg!(feature = "mixer") {
         builder = builder
             .clang_arg("-DRICH_SDL2_RUST_MIXER")
             .allowlist_function("Mix_.*")
@@ -60,6 +59,16 @@ fn main() {
             .allowlist_type("Mix_.*")
             .allowlist_var("MIX_.*")
             .allowlist_var("Mix_.*");
+    }
+    if cfg!(feature = "image") {
+        builder = builder
+            .clang_arg("-DRICH_SDL2_RUST_IMAGE")
+            .allowlist_function("IMG_.*")
+            .allowlist_function("Img_.*")
+            .allowlist_type("IMG_.*")
+            .allowlist_type("Img_.*")
+            .allowlist_var("IMG_.*")
+            .allowlist_var("Img_.*");
     }
     let bindings = builder.generate().expect("bindgen builder was invalid");
 
@@ -126,6 +135,25 @@ fn include_paths(target_os: &str) -> impl Iterator<Item = PathBuf> {
                 pkg_config::Config::new()
                     .atleast_version(SDL_MIXER_VERSION)
                     .probe("sdl2_mixer")
+                    .into_iter()
+                    .flat_map(|sdl2| sdl2.include_paths),
+            );
+        }
+    }
+    if cfg!(feature = "image") {
+        if cfg!(feature = "vendor") {
+            let root_dir = PathBuf::from(env::var("OUT_DIR").expect("OUT_DIR not found"));
+            let lib_dir = root_dir.join("lib");
+
+            // setup vendored
+            build_vendor_sdl2_image(target_os, &root_dir);
+            println!("cargo:rustc-link-search={}", lib_dir.display());
+            eprintln!("vendored SDL_image: {}", root_dir.display());
+        } else {
+            include_paths.extend(
+                pkg_config::Config::new()
+                    .atleast_version(SDL_IMAGE_VERSION)
+                    .probe("sdl2_image")
                     .into_iter()
                     .flat_map(|sdl2| sdl2.include_paths),
             );
@@ -437,6 +465,107 @@ fn build_vendor_sdl2_mixer(target_os: &str, root_dir: &Path) {
     }
 }
 
+fn build_vendor_sdl2_image(target_os: &str, root_dir: &Path) {
+    let repo_path = root_dir.join("SDL_image");
+    if repo_path.is_dir() {
+        return;
+    }
+
+    use std::process::Command;
+
+    eprintln!("SDL_image cloning into: {}", repo_path.display());
+    let url = "https://github.com/libsdl-org/SDL_image";
+    let repo = retry(Fixed::from_millis(2000).take(3), || {
+        if std::fs::remove_dir_all(&repo_path).is_ok() {
+            eprintln!("cleaned SDL_image repository dir")
+        }
+        Repository::clone_recurse(url, &repo_path)
+    })
+    .expect("failed to clone SDL_image repository");
+    checkout_to_tag(&repo, SDL_IMAGE_VERSION);
+    for mut submodule in repo.submodules().unwrap() {
+        submodule
+            .update(true, None)
+            .expect("failed to update submodule");
+    }
+
+    if target_os.contains("windows") {
+        let build_path = repo_path.join("build");
+        std::fs::create_dir(&build_path).expect("failed to mkdir build");
+        assert!(
+            Command::new("cmake")
+                .current_dir(&build_path)
+                .args([
+                    format!("-DCMAKE_INSTALL_PREFIX={}", root_dir.display()),
+                    "..".into(),
+                ])
+                .status()
+                .expect("failed to configure SDL_image")
+                .success(),
+            "cmake failed"
+        );
+        assert!(
+            Command::new("cmake")
+                .current_dir(&build_path)
+                .args(["--build", "."])
+                .status()
+                .expect("failed to build SDL_image")
+                .success(),
+            "build failed"
+        );
+        std::fs::rename(
+            build_path.join("Debug").join("SDL_imaged.dll"),
+            root_dir.join("lib").join("SDL2_mixer.dll"),
+        )
+        .expect("failed to move dll");
+        std::fs::rename(
+            build_path.join("Debug").join("SDL_imaged.lib"),
+            root_dir.join("lib").join("SDL2_mixer.lib"),
+        )
+        .expect("failed to move lib");
+        std::fs::copy(
+            repo_path.join("include").join("SDL_image.h"),
+            root_dir.join("include").join("SDL2").join("SDL_image.h"),
+        )
+        .expect("failed to copy header");
+    } else {
+        let build_path = repo_path.join("build");
+        std::fs::create_dir(&build_path).expect("failed to mkdir build");
+        assert!(
+            Command::new("cmake")
+                .current_dir(&build_path)
+                .args([
+                    format!("-DCMAKE_INSTALL_PREFIX={}", root_dir.display()),
+                    "-DSDL2IMAGE_VENDORED=ON".into(),
+                    "-DSDL2IMAGE_BUILD_SHARED_LIBS=ON".into(),
+                    "..".into(),
+                ])
+                .status()
+                .expect("failed to configure SDL_image")
+                .success(),
+            "cmake failed"
+        );
+        assert!(
+            Command::new("cmake")
+                .current_dir(&build_path)
+                .args(["--build", "."])
+                .status()
+                .expect("failed to build SDL_image")
+                .success(),
+            "build failed"
+        );
+        assert!(
+            Command::new("cmake")
+                .current_dir(&build_path)
+                .args(["--install", "."])
+                .status()
+                .expect("failed to setup SDL_image")
+                .success(),
+            "setup failed"
+        );
+    }
+}
+
 fn checkout_to_tag(repo: &Repository, tag: &str) {
     let (obj, reference) = repo
         .revparse_ext(&format!("release-{}", tag))
@@ -467,6 +596,13 @@ fn set_link(target_os: &str) {
         println!("cargo:rustc-link-lib=static=SDL2_mixer");
         #[cfg(feature = "dynamic")]
         println!("cargo:rustc-link-lib=dylib=SDL2_mixer");
+    }
+    #[cfg(feature = "image")]
+    {
+        #[cfg(feature = "static")]
+        println!("cargo:rustc-link-lib=static=SDL2_image");
+        #[cfg(feature = "dynamic")]
+        println!("cargo:rustc-link-lib=dylib=SDL2_image");
     }
 
     if target_os.contains("windows") {
