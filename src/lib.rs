@@ -8,6 +8,16 @@
 //!
 //! The rich-sdl2-rust provides wrapper for SDL2 and abstractions of that APIs, [`audio`], [`window`], [`EventBox`] and so on.
 //!
+//! ## Supported SDL versions
+//!
+//! This crate works with libraries:
+//!
+//! - SDL 2.26.2 or later,
+//! - SDL_ttf 2.20.1 or later (on `ttf` feature),
+//! - SDL_mixer 2.6.2 or later (on `mixer` feature),
+//! - SDL_image 2.6.2 or later (on `image` feature),
+//! - SDL_net 2.2.0 or later (on `net` feature).
+//!
 //! ## Module Navigation
 //!
 //! - [Window and Graphics](window)
