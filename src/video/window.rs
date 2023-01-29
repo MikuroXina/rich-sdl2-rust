@@ -133,9 +133,11 @@ impl<'video> Window<'video> {
     /// # Errors
     ///
     /// Returns `Err` if failed to make it full screen.
+    #[allow(clippy::unnecessary_cast)]
     pub fn full_screen(&self) -> Result<()> {
-        let ret =
-            unsafe { bind::SDL_SetWindowFullscreen(self.as_ptr(), bind::SDL_WINDOW_FULLSCREEN) };
+        let ret = unsafe {
+            bind::SDL_SetWindowFullscreen(self.as_ptr(), bind::SDL_WINDOW_FULLSCREEN as u32)
+        };
         if ret != 0 {
             return Err(crate::SdlError::Others { msg: Sdl::error() });
         }
