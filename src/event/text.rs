@@ -77,9 +77,9 @@ impl<'video> TextInput<'video> {
     /// Starts to input the text on area `input_rect`.
     #[must_use]
     pub fn new(_: &'video Video, input_rect: Rect) -> Self {
-        let mut raw_rect = input_rect.into();
+        let raw_rect = input_rect.into();
         unsafe {
-            bind::SDL_SetTextInputRect(&mut raw_rect);
+            bind::SDL_SetTextInputRect(&raw_rect);
             bind::SDL_StartTextInput();
         }
         Self { video: PhantomData }

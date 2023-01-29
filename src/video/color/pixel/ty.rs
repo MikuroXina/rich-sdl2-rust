@@ -14,6 +14,7 @@ pub enum BitmapPixelType {
 }
 
 impl BitmapPixelType {
+    #[allow(clippy::unnecessary_cast)]
     pub(super) fn as_raw(self) -> u32 {
         (match self {
             BitmapPixelType::Index1 => bind::SDL_PIXELTYPE_INDEX1,
@@ -51,6 +52,7 @@ pub enum PackedPixelType {
 }
 
 impl PackedPixelType {
+    #[allow(clippy::unnecessary_cast)]
     pub(super) fn as_raw(self) -> u32 {
         (match self {
             PackedPixelType::_8 => bind::SDL_PIXELTYPE_PACKED8,
@@ -85,6 +87,7 @@ pub enum ArrayPixelType {
 }
 
 impl ArrayPixelType {
+    #[allow(clippy::unnecessary_cast)]
     pub(super) fn as_raw(self) -> u32 {
         (match self {
             ArrayPixelType::U8 => bind::SDL_PIXELTYPE_ARRAYU8,

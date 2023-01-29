@@ -38,6 +38,7 @@ impl TextureAccess {
         }
     }
 
+    #[allow(clippy::unnecessary_cast)]
     fn as_raw(&self) -> u32 {
         (match self {
             TextureAccess::Static => bind::SDL_TEXTUREACCESS_STATIC,
@@ -77,7 +78,7 @@ impl<'renderer> Texture<'renderer> {
         NonNull::new(unsafe {
             bind::SDL_CreateTexture(
                 renderer.as_ptr(),
-                pixel_format.as_raw() as u32,
+                pixel_format.as_raw(),
                 access.as_raw() as i32,
                 width as i32,
                 height as i32,

@@ -38,7 +38,7 @@ pub struct RendererInfo {
 
 impl From<bind::SDL_RendererInfo> for RendererInfo {
     fn from(info: bind::SDL_RendererInfo) -> Self {
-        let kind = if info.flags & bind::SDL_RENDERER_SOFTWARE as u32 == 0 {
+        let kind = if info.flags & bind::SDL_RENDERER_SOFTWARE == 0 {
             RendererKind::Accelerated
         } else {
             RendererKind::Software
@@ -56,8 +56,8 @@ impl From<bind::SDL_RendererInfo> for RendererInfo {
                 .unwrap_or_default()
                 .into(),
             kind,
-            is_v_sync: info.flags & bind::SDL_RENDERER_PRESENTVSYNC as u32 != 0,
-            supported_texture: info.flags & bind::SDL_RENDERER_TARGETTEXTURE as u32 != 0,
+            is_v_sync: info.flags & bind::SDL_RENDERER_PRESENTVSYNC != 0,
+            supported_texture: info.flags & bind::SDL_RENDERER_TARGETTEXTURE != 0,
             supported_formats,
             max_texture_size: Size {
                 width: info.max_texture_width as u32,
