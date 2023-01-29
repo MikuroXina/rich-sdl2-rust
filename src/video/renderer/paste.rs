@@ -56,6 +56,20 @@ impl<'renderer> Drop for Paster<'renderer> {
     }
 }
 
+impl<'renderer> Paster<'renderer> {
+    /// Constructs a pen from the renderer [`Renderer`].
+    #[must_use]
+    pub fn new(renderer: &'renderer Renderer) -> Self {
+        Self { renderer }
+    }
+
+    /// Returns the renderer that the pen is drawing.
+    #[must_use]
+    pub fn renderer(&self) -> &Renderer {
+        self.renderer
+    }
+}
+
 impl Paster<'_> {
     /// Pastes the texture into `target_area`, or whole if `None`.
     pub fn paste(&self, texture: &Texture, target_area: Option<Rect>) {
