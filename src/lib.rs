@@ -27,6 +27,8 @@ pub mod event;
 pub mod file;
 pub mod haptic;
 pub mod hint;
+#[cfg(feature = "image")]
+pub mod image;
 #[cfg(feature = "mixer")]
 pub mod mixer;
 pub mod power;
