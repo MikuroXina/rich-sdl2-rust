@@ -31,6 +31,8 @@ pub mod hint;
 pub mod image;
 #[cfg(feature = "mixer")]
 pub mod mixer;
+#[cfg(feature = "net")]
+pub mod net;
 pub mod power;
 mod sdl;
 pub mod system;

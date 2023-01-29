@@ -17,6 +17,7 @@ vendor = []
 ttf = []
 mixer = []
 image = []
+net = []
 
 [build-dependencies]
 bindgen = "0.63.0"
