@@ -16,8 +16,11 @@ impl<'device> ChannelGroup<'device> {
     /// Constructs the new channel group.
     pub fn new(_device: &'device MixDevice<'device>, len: usize) -> Self {
         assert!(1 <= len);
-        let prev_len = unsafe { bind::Mix_AllocateChannels(-1) as i32 };
-        let allocated = unsafe { bind::Mix_AllocateChannels(prev_len + len as i32) as i32 };
+        let prev_len = unsafe { bind::Mix_AllocateChannels(-1) };
+        let new_len = prev_len
+            + <usize as TryInto<std::os::raw::c_int>>::try_into(len)
+                .expect("channel length overflow");
+        let allocated = unsafe { bind::Mix_AllocateChannels(new_len) };
         let _ = unsafe { bind::Mix_GroupChannels(prev_len, allocated - 1, prev_len) };
         Self {
             group_id: prev_len,
@@ -49,6 +52,7 @@ impl<'device> ChannelGroup<'device> {
     }
 
     /// Returns the first free mixing channel if exists.
+    #[allow(clippy::unnecessary_cast)]
     pub fn first_free(&self) -> Option<Channel> {
         let channel = unsafe { bind::Mix_GroupAvailable(self.group_id) as i32 };
         (0 <= channel).then(|| Channel(channel, PhantomData))

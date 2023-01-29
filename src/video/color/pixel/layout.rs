@@ -57,6 +57,7 @@ pub enum PackedPixelLayout {
 }
 
 impl PackedPixelLayout {
+    #[allow(clippy::unnecessary_cast)]
     pub(super) fn as_raw(self) -> u32 {
         (match self {
             PackedPixelLayout::_332 => bind::SDL_PACKEDLAYOUT_332,

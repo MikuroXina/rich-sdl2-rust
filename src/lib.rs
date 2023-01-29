@@ -8,6 +8,16 @@
 //!
 //! The rich-sdl2-rust provides wrapper for SDL2 and abstractions of that APIs, [`audio`], [`window`], [`EventBox`] and so on.
 //!
+//! ## Supported SDL versions
+//!
+//! This crate works with libraries:
+//!
+//! - SDL 2.26.2 or later,
+//! - SDL_ttf 2.20.1 or later (on `ttf` feature),
+//! - SDL_mixer 2.6.2 or later (on `mixer` feature),
+//! - SDL_image 2.6.2 or later (on `image` feature),
+//! - SDL_net 2.2.0 or later (on `net` feature).
+//!
 //! ## Module Navigation
 //!
 //! - [Window and Graphics](window)
@@ -27,8 +37,12 @@ pub mod event;
 pub mod file;
 pub mod haptic;
 pub mod hint;
+#[cfg(feature = "image")]
+pub mod image;
 #[cfg(feature = "mixer")]
 pub mod mixer;
+#[cfg(feature = "net")]
+pub mod net;
 pub mod power;
 mod sdl;
 pub mod system;
@@ -56,7 +70,7 @@ type EnumInt = std::os::raw::c_int;
 ///
 /// The object of `opt` must live over usage of a returned pointer. Otherwise it will occur UB.
 pub(crate) unsafe fn as_raw<T>(opt: &Option<T>) -> *const T {
-    opt.as_ref().map_or(std::ptr::null(), |x| &*x)
+    opt.as_ref().map_or(std::ptr::null(), |x| x)
 }
 
 /// Converts an option reference into a mutable raw pointer.

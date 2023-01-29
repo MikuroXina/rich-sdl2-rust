@@ -17,6 +17,7 @@ pub struct Point {
 }
 
 impl From<bind::SDL_Point> for Point {
+    #[allow(clippy::unnecessary_cast)]
     fn from(bind::SDL_Point { x, y }: bind::SDL_Point) -> Self {
         Self {
             x: x as i32,

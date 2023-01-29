@@ -12,6 +12,7 @@ pub enum BitmapPixelOrder {
 }
 
 impl BitmapPixelOrder {
+    #[allow(clippy::unnecessary_cast)]
     pub(super) fn as_raw(self) -> u32 {
         (match self {
             BitmapPixelOrder::_4321 => bind::SDL_BITMAPORDER_4321,
@@ -52,6 +53,7 @@ pub enum PackedPixelOrder {
 }
 
 impl PackedPixelOrder {
+    #[allow(clippy::unnecessary_cast)]
     pub(super) fn as_raw(self) -> u32 {
         (match self {
             PackedPixelOrder::Xrgb => bind::SDL_PACKEDORDER_XRGB,
@@ -100,6 +102,7 @@ pub enum ArrayPixelOrder {
 }
 
 impl ArrayPixelOrder {
+    #[allow(clippy::unnecessary_cast)]
     pub(super) fn as_raw(self) -> u32 {
         (match self {
             ArrayPixelOrder::Rgb => bind::SDL_ARRAYORDER_RGB,

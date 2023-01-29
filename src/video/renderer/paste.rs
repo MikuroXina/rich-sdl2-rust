@@ -1,3 +1,5 @@
+#![allow(clippy::unnecessary_cast)]
+
 use bitflags::bitflags;
 
 use crate::texture::Texture;

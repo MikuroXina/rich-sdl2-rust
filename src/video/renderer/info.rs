@@ -37,6 +37,7 @@ pub struct RendererInfo {
 }
 
 impl From<bind::SDL_RendererInfo> for RendererInfo {
+    #[allow(clippy::unnecessary_cast)]
     fn from(info: bind::SDL_RendererInfo) -> Self {
         let kind = if info.flags & bind::SDL_RENDERER_SOFTWARE as u32 == 0 {
             RendererKind::Accelerated

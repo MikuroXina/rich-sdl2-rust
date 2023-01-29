@@ -1,6 +1,6 @@
 [package]
 name = "rich-sdl2-rust-sys"
-version = "0.2.6"
+version = "0.2.7"
 edition = "2021"
 description = "The sdl2 binding for Rust."
 repository = "https://github.com/MikuroXina/rich-sdl2-rust"
@@ -16,6 +16,8 @@ dynamic = []
 vendor = []
 ttf = []
 mixer = []
+image = []
+net = []
 
 [build-dependencies]
 bindgen = "0.63.0"

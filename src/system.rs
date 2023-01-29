@@ -28,6 +28,7 @@ pub mod cpu {
 
     /// Returns the SIMD alignment of the system CPU.
     #[must_use]
+    #[allow(clippy::unnecessary_cast)]
     pub fn simd_alignment() -> usize {
         unsafe { bind::SDL_SIMDGetAlignment() as usize }
     }
