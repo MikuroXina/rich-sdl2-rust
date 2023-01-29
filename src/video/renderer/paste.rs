@@ -42,27 +42,54 @@ pub struct PasteExOption {
     pub flip: PasteExFlip,
 }
 
-/// An extension for [`Renderer`] to paste from another texture.
-pub trait PasteExt {
-    /// Pastes the texture into `target_area`, or whole if `None`.
-    fn paste(&self, texture: &Texture, target_area: Option<Rect>);
-    /// Pastes the texture with options [`PasteExOption`].
-    fn paste_ex(&self, texture: &Texture, options: PasteExOption);
+/// A paster controls pasting from a texture.
+///
+/// This will render when be dropped. So you should re-create on every render.
+#[derive(Debug)]
+pub struct Paster<'renderer> {
+    renderer: &'renderer Renderer<'renderer>,
 }
 
-impl PasteExt for Renderer<'_> {
-    fn paste(&self, texture: &Texture, target_area: Option<Rect>) {
+impl<'renderer> Drop for Paster<'renderer> {
+    fn drop(&mut self) {
+        unsafe { bind::SDL_RenderPresent(self.renderer.as_ptr()) }
+    }
+}
+
+impl<'renderer> Paster<'renderer> {
+    /// Constructs a pen from the renderer [`Renderer`].
+    #[must_use]
+    pub fn new(renderer: &'renderer Renderer) -> Self {
+        Self { renderer }
+    }
+
+    /// Returns the renderer that the pen is drawing.
+    #[must_use]
+    pub fn renderer(&self) -> &Renderer {
+        self.renderer
+    }
+}
+
+impl Paster<'_> {
+    /// Pastes the texture into `target_area`, or whole if `None`.
+    pub fn paste(&self, texture: &Texture, target_area: Option<Rect>) {
         let src = texture.clip().map(Into::into);
         let dst = target_area.map(Into::into);
         let ret = unsafe {
-            bind::SDL_RenderCopy(self.as_ptr(), texture.as_ptr(), as_raw(&src), as_raw(&dst))
+            bind::SDL_RenderCopy(
+                self.renderer.as_ptr(),
+                texture.as_ptr(),
+                as_raw(&src),
+                as_raw(&dst),
+            )
         };
         if ret != 0 {
             Sdl::error_then_panic("Pasting texture to renderer");
         }
     }
 
-    fn paste_ex(
+    /// Pastes the texture with options [`PasteExOption`].
+    pub fn paste_ex(
         &self,
         texture: &Texture,
         PasteExOption {
@@ -77,7 +104,7 @@ impl PasteExt for Renderer<'_> {
         let center = center.map(Into::into);
         let ret = unsafe {
             bind::SDL_RenderCopyEx(
-                self.as_ptr(),
+                self.renderer.as_ptr(),
                 texture.as_ptr(),
                 as_raw(&src),
                 as_raw(&dst),

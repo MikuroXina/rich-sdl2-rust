@@ -4,7 +4,7 @@ use super::{RenderExt, RenderMode};
 use crate::{
     color::Rgba,
     geo::{Point, Rect, Size},
-    renderer::{pen::Pen, PasteExt},
+    renderer::{pen::Pen, Paster},
     texture::Texture,
     ttf::font::Font,
 };
@@ -135,7 +135,6 @@ impl FontRenderExt for Pen<'_> {
             .rendered_size(text)
             .expect("calculating text size failed");
         let up_left = options.aligned_pos(size);
-        self.renderer()
-            .paste(&texture, Some(Rect { up_left, size }));
+        Paster::new(self.renderer()).paste(&texture, Some(Rect { up_left, size }));
     }
 }
