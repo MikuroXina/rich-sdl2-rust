@@ -11,6 +11,7 @@ use std::{cell::Cell, marker::PhantomData};
 
 bitflags! {
     /// A format flag to use on initializing of [`Mix`].
+    #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
     pub struct FormatFlag: u32 {
         /// Using flac audio format.
         const FLAC = 1 << 0;
@@ -37,7 +38,7 @@ assert_not_impl_all!(Mix: Send, Sync);
 impl Mix {
     /// Constructs a root controller, or `Err` if the format is not supported.
     pub fn new(flag: FormatFlag) -> Result<Self> {
-        let ret = unsafe { bind::Mix_Init(flag.bits as _) };
+        let ret = unsafe { bind::Mix_Init(flag.bits() as _) };
         if !flag.contains(FormatFlag::from_bits_truncate(ret as _)) {
             Err(SdlError::UnsupportedFeature)
         } else {

@@ -109,7 +109,7 @@ impl AudioFormat {
     }
 
     pub(super) fn as_raw(self) -> u16 {
-        (self.flag.bits as u16) << 8 | self.bit_size as u16
+        (self.flag.bits() as u16) << 8 | self.bit_size as u16
     }
 }
 

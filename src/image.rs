@@ -10,6 +10,7 @@ pub mod surface;
 
 bitflags! {
     /// A flag to init an [`Img`] controller.
+    #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
     pub struct ImgInitFlag: u8 {
         /// To load JPEG format loader.
         const JPEG = 1 << 0;
