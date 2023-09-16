@@ -93,6 +93,7 @@ unsafe extern "C" fn audio_spec_wrap_handler<'callback, T: AudioCallback<'callba
 
 bitflags! {
     /// A flag what component may fallback into an actual audio device.
+    #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
     pub struct FallbackFlag : u32 {
         /// Allows to fallback frequencies.
         const FREQUENCY = 1 << 0;

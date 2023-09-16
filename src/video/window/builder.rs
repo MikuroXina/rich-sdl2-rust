@@ -136,6 +136,7 @@ impl WindowBuilder {
 
 bitflags! {
     /// A flag for [`Window`].
+    #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
     pub(super) struct WindowFlags: u32 {
         const FULLSCREEN = bind::SDL_WINDOW_FULLSCREEN as u32;
         const FULLSCREEN_DESKTOP = bind::SDL_WINDOW_FULLSCREEN_DESKTOP as u32;

@@ -9,6 +9,7 @@ use super::{InputIndex, Joystick};
 
 bitflags! {
     /// A direction of pov hat, representing with a bit flag.
+    #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
     pub struct PovHat : u8 {
         /// It is not tilted.
         const CENTERED = 0;
@@ -21,13 +22,13 @@ bitflags! {
         /// It is on the left.
         const LEFT = 1 << 3;
         /// It is on the up and right.
-        const RIGHT_UP = Self::RIGHT.bits | Self::UP.bits;
+        const RIGHT_UP = Self::RIGHT.bits() | Self::UP.bits();
         /// It is on the down and right.
-        const RIGHT_DOWN = Self::RIGHT.bits | Self::DOWN.bits;
+        const RIGHT_DOWN = Self::RIGHT.bits() | Self::DOWN.bits();
         /// It is on the up and left.
-        const LEFT_UP = Self::LEFT.bits | Self::UP.bits;
+        const LEFT_UP = Self::LEFT.bits() | Self::UP.bits();
         /// It is on the down and left.
-        const LEFT_DOWN = Self::LEFT.bits | Self::DOWN.bits;
+        const LEFT_DOWN = Self::LEFT.bits() | Self::DOWN.bits();
     }
 }
 

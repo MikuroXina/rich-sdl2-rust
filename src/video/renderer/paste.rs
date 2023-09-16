@@ -13,13 +13,14 @@ use super::Renderer;
 
 bitflags! {
     /// Flip mode on pasting from another texture.
+    #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
     pub struct PasteExFlip: u32 {
         /// Flips horizontal.
         const HORIZONTAL = bind::SDL_FLIP_HORIZONTAL as u32;
         /// Flips vertical.
         const VERTICAL = bind::SDL_FLIP_VERTICAL as u32;
         /// Flips both horizontal and vertical.
-        const BOTH = Self::HORIZONTAL.bits | Self::VERTICAL.bits;
+        const BOTH = Self::HORIZONTAL.bits() | Self::VERTICAL.bits();
     }
 }
 
@@ -110,7 +111,7 @@ impl Paster<'_> {
                 as_raw(&dst),
                 rotation_degrees,
                 as_raw(&center),
-                flip.bits as EnumInt,
+                flip.bits() as EnumInt,
             )
         };
         if ret != 0 {
