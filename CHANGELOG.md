@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.13.1](https://github.com/MikuroXina/rich-sdl2-rust/compare/v0.13.0...v0.13.1) (2023-09-21)
+
+
+### Bug Fixes
+
+* Fix derive and calling bits for bitflags ([#57](https://github.com/MikuroXina/rich-sdl2-rust/issues/57)) ([a8af56c](https://github.com/MikuroXina/rich-sdl2-rust/commit/a8af56c55b25a09d56c4f880822bc3da9c2f270f))
+* Fix to be able to build with vendor feature ([#65](https://github.com/MikuroXina/rich-sdl2-rust/issues/65)) ([4e9ed41](https://github.com/MikuroXina/rich-sdl2-rust/commit/4e9ed41e19a477492a501a19fbb8bc4ae41291f4))
+
 ## [0.13.0](https://github.com/MikuroXina/rich-sdl2-rust/compare/v0.12.1...v0.13.0) (2023-01-29)
 
 
