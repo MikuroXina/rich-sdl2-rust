@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"struct":[["Guid","A GUID associated with joystick devices."],["InvalidLengthError","An error to tell the failure on parsing `Guid` from string, showing that it is invalid length to convert into."]]};
+window.SIDEBAR_ITEMS = {"struct":["Guid","InvalidLengthError"]};

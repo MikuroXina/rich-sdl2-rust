@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"enum":[["Direction","A direction and coordinate system of the haptic movements."]]};
+window.SIDEBAR_ITEMS = {"enum":["Direction"]};

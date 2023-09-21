@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"struct":[["Blended","A blended [`Surface`]."]]};
+window.SIDEBAR_ITEMS = {"struct":["Blended"]};

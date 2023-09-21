@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"struct":[["HapticRumble","A controller to rumble the haptic device."]]};
+window.SIDEBAR_ITEMS = {"struct":["HapticRumble"]};

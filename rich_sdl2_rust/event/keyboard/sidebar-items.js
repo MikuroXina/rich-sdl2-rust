@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"mod":[["key_code","Virtual key codes corresponded to physical scan codes."],["key_mod","Definitions of key modification codes."],["scan_code","Actual scan codes corresponded to virtual key codes."]],"struct":[["KeySymbol","A symbol on the keyboard with the modification and the relationship of actual and virtual key code."],["KeyboardEvent","An event on interacting to the keyboard."]]};
+window.SIDEBAR_ITEMS = {"mod":["key_code","key_mod","scan_code"],"struct":["KeySymbol","KeyboardEvent"]};

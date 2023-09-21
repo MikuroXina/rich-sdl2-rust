@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"enum":[["MessageBoxKind","A kind of [`MessageBox`]."]],"struct":[["Button","A button in a [`super::MessageBox`]."],["ColorScheme","A color scheme for a message box."],["MessageBox","A message box builder."]],"type":[["ButtonId","An id type for a button."]]};
+window.SIDEBAR_ITEMS = {"enum":["MessageBoxKind"],"struct":["Button","ColorScheme","MessageBox"],"type":["ButtonId"]};

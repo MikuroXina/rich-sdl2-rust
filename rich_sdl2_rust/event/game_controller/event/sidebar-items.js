@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"enum":[["ControllerEvent","An event occurs on inputted from a game controller or changed a game controller."]]};
+window.SIDEBAR_ITEMS = {"enum":["ControllerEvent"]};

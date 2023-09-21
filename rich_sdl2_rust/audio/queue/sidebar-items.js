@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"struct":[["DequeueAudio","A queue to read data to record the sound with [`MicrophoneDevice`]. To dequeue from this, `use` the implementation of [`std::io::Read`] for this."],["QueuedAudio","A queue to push data to play the sound with [`SpeakerDevice`]."]]};
+window.SIDEBAR_ITEMS = {"struct":["DequeueAudio","QueuedAudio"]};

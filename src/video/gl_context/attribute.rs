@@ -13,6 +13,7 @@ use super::GlContext;
 bitflags! {
     #[allow(clippy::unnecessary_cast)]
     /// An attribute for OpenGL.
+    #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
     pub struct GlAttributeKind: u32 {
         /// The minimum bits of the red channel in a color buffer.
         const RED_SIZE = bind::SDL_GL_RED_SIZE as u32;
@@ -99,7 +100,7 @@ impl<'gl> GlAttribute<'gl> {
     ///
     /// Returns `Err` if failed to set a value for the attribute.
     pub fn set(&self, value: i32) -> Result<()> {
-        let ret = unsafe { bind::SDL_GL_SetAttribute(self.attr.bits as EnumInt, value) };
+        let ret = unsafe { bind::SDL_GL_SetAttribute(self.attr.bits() as EnumInt, value) };
         if ret != 0 {
             return Err(SdlError::Others { msg: Sdl::error() });
         }
@@ -113,7 +114,7 @@ impl<'gl> GlAttribute<'gl> {
     /// Returns `Err` if failed to get a value of the attribute.
     pub fn get(&self) -> Result<i32> {
         let mut value = 0;
-        let ret = unsafe { bind::SDL_GL_GetAttribute(self.attr.bits as EnumInt, &mut value) };
+        let ret = unsafe { bind::SDL_GL_GetAttribute(self.attr.bits() as EnumInt, &mut value) };
         if ret != 0 {
             return Err(SdlError::Others { msg: Sdl::error() });
         }

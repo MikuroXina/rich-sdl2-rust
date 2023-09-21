@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"enum":[["Button","A button on a game controller except the trigger buttons. Trigger buttons are covered by [`super::axis::Axis`]."],["FourButton","An one of four buttons which be placed like the diamond."]]};
+window.SIDEBAR_ITEMS = {"enum":["Button","FourButton"]};

@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"struct":[["ClipboardText","A text from the clipboard."]]};
+window.SIDEBAR_ITEMS = {"struct":["ClipboardText"]};

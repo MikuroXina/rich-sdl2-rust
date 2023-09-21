@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"struct":[["Cloned","A cloned [`Surface`]."]]};
+window.SIDEBAR_ITEMS = {"struct":["Cloned"]};

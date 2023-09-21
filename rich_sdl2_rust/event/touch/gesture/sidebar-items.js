@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"enum":[["GestureEvent","An event on recognized a gesture"]],"struct":[["Gesture","A gesture controller by $1 gesture recognition system."]]};
+window.SIDEBAR_ITEMS = {"enum":["GestureEvent"],"struct":["Gesture"]};

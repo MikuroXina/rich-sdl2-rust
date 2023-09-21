@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"fn":[["base_path","Returns the base path of your application."],["pref_path","Returns the preferences path for your application."]],"mod":[["mode","A file open mode for opening a file conveniently."]],"struct":[["RwOps","A file handler, how to read and write from file on SDL2."]]};
+window.SIDEBAR_ITEMS = {"fn":["base_path","pref_path"],"mod":["mode"],"struct":["RwOps"]};

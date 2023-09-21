@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"struct":[["MetalView","A view in Metal API, made from a window."]]};
+window.SIDEBAR_ITEMS = {"struct":["MetalView"]};

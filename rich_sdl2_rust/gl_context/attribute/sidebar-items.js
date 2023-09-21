@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"struct":[["GlAttribute","An attrubte of the OpenGL context."],["GlAttributeKind","An attribute for OpenGL."]]};
+window.SIDEBAR_ITEMS = {"struct":["GlAttribute","GlAttributeKind"]};

@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"fn":[["drivers","Returns the list of render driver information."]]};
+window.SIDEBAR_ITEMS = {"fn":["drivers"]};

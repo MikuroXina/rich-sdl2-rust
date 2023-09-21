@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/video/renderer/paste.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>paste.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceSerif4-Regular-1f7d512b176f0f72.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceSerif4-Bold-124a1ca42af929b6.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../../static.files/rustdoc-f2fc7b5fd698d27d.css" id="mainThemeStyle"><link rel="stylesheet" id="themeStyle" href="../../../../static.files/light-5f7299aa2b503fb1.css"><link rel="stylesheet" disabled href="../../../../static.files/dark-dfb18ef8114bb428.css"><link rel="stylesheet" disabled href="../../../../static.files/ayu-4047a6aaddd3789d.css"><script id="default-settings" ></script><script src="../../../../static.files/storage-d43fa987303ecbbb.js"></script><script defer src="../../../../static.files/source-script-ea63cb6500f71309.js"></script><script defer src="../../../../source-files.js"></script><script defer src="../../../../static.files/main-02cbe07fc548e88c.js"></script><noscript><link rel="stylesheet" href="../../../../static.files/noscript-13285aec31fa243e.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../../../rich_sdl2_rust/index.html"><img class="rust-logo" src="../../../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../../static.files/wheel-5ec35bf9ca753509.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/video/renderer/paste.rs`."><title>paste.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../../static.files/rustdoc-fa3bb1812debf86c.css"><meta name="rustdoc-vars" data-root-path="../../../../" data-static-root-path="../../../../static.files/" data-current-crate="rich_sdl2_rust" data-themes="" data-resource-suffix="" data-rustdoc-version="1.74.0-nightly (3223b0b5e 2023-09-20)" data-channel="nightly" data-search-js="search-8be46b629f5f14a8.js" data-settings-js="settings-74424d7eec62a23e.js" ><script src="../../../../static.files/storage-fec3eaa3851e447d.js"></script><script defer src="../../../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../../../src-files.js"></script><script defer src="../../../../static.files/main-c5bd66d33317d69f.js"></script><noscript><link rel="stylesheet" href="../../../../static.files/noscript-5d8b3c7633ad77ba.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../../../rich_sdl2_rust/index.html"><img class="rust-logo" src="../../../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -91,7 +91,35 @@
 <a href="#91" id="91">91</a>
 <a href="#92" id="92">92</a>
 <a href="#93" id="93">93</a>
-</pre><pre class="rust"><code><span class="attr">#![allow(clippy::unnecessary_cast)]
+<a href="#94" id="94">94</a>
+<a href="#95" id="95">95</a>
+<a href="#96" id="96">96</a>
+<a href="#97" id="97">97</a>
+<a href="#98" id="98">98</a>
+<a href="#99" id="99">99</a>
+<a href="#100" id="100">100</a>
+<a href="#101" id="101">101</a>
+<a href="#102" id="102">102</a>
+<a href="#103" id="103">103</a>
+<a href="#104" id="104">104</a>
+<a href="#105" id="105">105</a>
+<a href="#106" id="106">106</a>
+<a href="#107" id="107">107</a>
+<a href="#108" id="108">108</a>
+<a href="#109" id="109">109</a>
+<a href="#110" id="110">110</a>
+<a href="#111" id="111">111</a>
+<a href="#112" id="112">112</a>
+<a href="#113" id="113">113</a>
+<a href="#114" id="114">114</a>
+<a href="#115" id="115">115</a>
+<a href="#116" id="116">116</a>
+<a href="#117" id="117">117</a>
+<a href="#118" id="118">118</a>
+<a href="#119" id="119">119</a>
+<a href="#120" id="120">120</a>
+<a href="#121" id="121">121</a>
+</pre></div><pre class="rust"><code><span class="attr">#![allow(clippy::unnecessary_cast)]
 
 </span><span class="kw">use </span>bitflags::bitflags;
 
@@ -106,13 +134,14 @@
 
 <span class="macro">bitflags! </span>{
     <span class="doccomment">/// Flip mode on pasting from another texture.
+    </span><span class="attr">#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
     </span><span class="kw">pub struct </span>PasteExFlip: u32 {
         <span class="doccomment">/// Flips horizontal.
         </span><span class="kw">const </span>HORIZONTAL = bind::SDL_FLIP_HORIZONTAL <span class="kw">as </span>u32;
         <span class="doccomment">/// Flips vertical.
         </span><span class="kw">const </span>VERTICAL = bind::SDL_FLIP_VERTICAL <span class="kw">as </span>u32;
         <span class="doccomment">/// Flips both horizontal and vertical.
-        </span><span class="kw">const </span>BOTH = <span class="self">Self</span>::HORIZONTAL.bits | <span class="self">Self</span>::VERTICAL.bits;
+        </span><span class="kw">const </span>BOTH = <span class="self">Self</span>::HORIZONTAL.bits() | <span class="self">Self</span>::VERTICAL.bits();
     }
 }
 
@@ -135,27 +164,54 @@
     </span><span class="kw">pub </span>flip: PasteExFlip,
 }
 
-<span class="doccomment">/// An extension for [`Renderer`] to paste from another texture.
-</span><span class="kw">pub trait </span>PasteExt {
-    <span class="doccomment">/// Pastes the texture into `target_area`, or whole if `None`.
-    </span><span class="kw">fn </span>paste(<span class="kw-2">&amp;</span><span class="self">self</span>, texture: <span class="kw-2">&amp;</span>Texture, target_area: <span class="prelude-ty">Option</span>&lt;Rect&gt;);
-    <span class="doccomment">/// Pastes the texture with options [`PasteExOption`].
-    </span><span class="kw">fn </span>paste_ex(<span class="kw-2">&amp;</span><span class="self">self</span>, texture: <span class="kw-2">&amp;</span>Texture, options: PasteExOption);
+<span class="doccomment">/// A paster controls pasting from a texture.
+///
+/// This will render when be dropped. So you should re-create on every render.
+</span><span class="attr">#[derive(Debug)]
+</span><span class="kw">pub struct </span>Paster&lt;<span class="lifetime">&#39;renderer</span>&gt; {
+    renderer: <span class="kw-2">&amp;</span><span class="lifetime">&#39;renderer </span>Renderer&lt;<span class="lifetime">&#39;renderer</span>&gt;,
 }
 
-<span class="kw">impl </span>PasteExt <span class="kw">for </span>Renderer&lt;<span class="lifetime">&#39;_</span>&gt; {
-    <span class="kw">fn </span>paste(<span class="kw-2">&amp;</span><span class="self">self</span>, texture: <span class="kw-2">&amp;</span>Texture, target_area: <span class="prelude-ty">Option</span>&lt;Rect&gt;) {
+<span class="kw">impl</span>&lt;<span class="lifetime">&#39;renderer</span>&gt; Drop <span class="kw">for </span>Paster&lt;<span class="lifetime">&#39;renderer</span>&gt; {
+    <span class="kw">fn </span>drop(<span class="kw-2">&amp;mut </span><span class="self">self</span>) {
+        <span class="kw">unsafe </span>{ bind::SDL_RenderPresent(<span class="self">self</span>.renderer.as_ptr()) }
+    }
+}
+
+<span class="kw">impl</span>&lt;<span class="lifetime">&#39;renderer</span>&gt; Paster&lt;<span class="lifetime">&#39;renderer</span>&gt; {
+    <span class="doccomment">/// Constructs a pen from the renderer [`Renderer`].
+    </span><span class="attr">#[must_use]
+    </span><span class="kw">pub fn </span>new(renderer: <span class="kw-2">&amp;</span><span class="lifetime">&#39;renderer </span>Renderer) -&gt; <span class="self">Self </span>{
+        <span class="self">Self </span>{ renderer }
+    }
+
+    <span class="doccomment">/// Returns the renderer that the pen is drawing.
+    </span><span class="attr">#[must_use]
+    </span><span class="kw">pub fn </span>renderer(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>Renderer {
+        <span class="self">self</span>.renderer
+    }
+}
+
+<span class="kw">impl </span>Paster&lt;<span class="lifetime">&#39;_</span>&gt; {
+    <span class="doccomment">/// Pastes the texture into `target_area`, or whole if `None`.
+    </span><span class="kw">pub fn </span>paste(<span class="kw-2">&amp;</span><span class="self">self</span>, texture: <span class="kw-2">&amp;</span>Texture, target_area: <span class="prelude-ty">Option</span>&lt;Rect&gt;) {
         <span class="kw">let </span>src = texture.clip().map(Into::into);
         <span class="kw">let </span>dst = target_area.map(Into::into);
         <span class="kw">let </span>ret = <span class="kw">unsafe </span>{
-            bind::SDL_RenderCopy(<span class="self">self</span>.as_ptr(), texture.as_ptr(), as_raw(<span class="kw-2">&amp;</span>src), as_raw(<span class="kw-2">&amp;</span>dst))
+            bind::SDL_RenderCopy(
+                <span class="self">self</span>.renderer.as_ptr(),
+                texture.as_ptr(),
+                as_raw(<span class="kw-2">&amp;</span>src),
+                as_raw(<span class="kw-2">&amp;</span>dst),
+            )
         };
         <span class="kw">if </span>ret != <span class="number">0 </span>{
             Sdl::error_then_panic(<span class="string">&quot;Pasting texture to renderer&quot;</span>);
         }
     }
 
-    <span class="kw">fn </span>paste_ex(
+    <span class="doccomment">/// Pastes the texture with options [`PasteExOption`].
+    </span><span class="kw">pub fn </span>paste_ex(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         texture: <span class="kw-2">&amp;</span>Texture,
         PasteExOption {
@@ -170,13 +226,13 @@
         <span class="kw">let </span>center = center.map(Into::into);
         <span class="kw">let </span>ret = <span class="kw">unsafe </span>{
             bind::SDL_RenderCopyEx(
-                <span class="self">self</span>.as_ptr(),
+                <span class="self">self</span>.renderer.as_ptr(),
                 texture.as_ptr(),
                 as_raw(<span class="kw-2">&amp;</span>src),
                 as_raw(<span class="kw-2">&amp;</span>dst),
                 rotation_degrees,
                 as_raw(<span class="kw-2">&amp;</span>center),
-                flip.bits <span class="kw">as </span>EnumInt,
+                flip.bits() <span class="kw">as </span>EnumInt,
             )
         };
         <span class="kw">if </span>ret != <span class="number">0 </span>{
@@ -184,5 +240,4 @@
         }
     }
 }
-</code></pre></div>
-</section></main><div id="rustdoc-vars" data-root-path="../../../../" data-static-root-path="../../../../static.files/" data-current-crate="rich_sdl2_rust" data-themes="" data-resource-suffix="" data-rustdoc-version="1.69.0-nightly (1e225413a 2023-01-28)" data-search-js="search-98d53477a794af0b.js" data-settings-js="settings-a43118d2dfb2799d.js" data-settings-css="settings-7c23ac01f615ce90.css" ></div></body></html>
+</code></pre></div></section></main></body></html>

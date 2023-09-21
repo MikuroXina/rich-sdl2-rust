@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"enum":[["Script",""]]};
+window.SIDEBAR_ITEMS = {"enum":["Script"]};

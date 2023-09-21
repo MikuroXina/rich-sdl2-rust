@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"struct":[["Pen","A pen controls its color and renders geometries to the renderer."]]};
+window.SIDEBAR_ITEMS = {"struct":["Pen"]};

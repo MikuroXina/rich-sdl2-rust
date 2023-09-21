@@ -2,6 +2,7 @@ use bitflags::bitflags;
 
 bitflags! {
     /// A flag to control OpenGL context.
+    #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
     pub struct GlContextFlag: u32 {
         /// This flag is currently ignored on other targets that don't support equivalent functionality. This flag is intended to put OpenGL into a "debug" mode which might offer better developer insights, possibly at a loss of performance (although a given OpenGL implementation may or may not do anything differently in the presence of this flag).
         const DEBUG = 1 << 0;

@@ -6,6 +6,7 @@ use crate::bind;
 
 bitflags! {
     /// A key modification flag.
+    #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
     pub struct KeyMod : u16 {
         /// No mod key pressed.
         const NONE = bind::KMOD_NONE as u16;

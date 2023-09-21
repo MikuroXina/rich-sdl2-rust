@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"struct":[["ScreenSaver","A screen saver that be enabled until dropped it."]]};
+window.SIDEBAR_ITEMS = {"struct":["ScreenSaver"]};

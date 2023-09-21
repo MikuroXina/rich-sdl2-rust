@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"struct":[["Pauser","A pauser to pause playing audio on the [`Channel`]. Unpause to drop this."]]};
+window.SIDEBAR_ITEMS = {"struct":["Pauser"]};

@@ -6,6 +6,7 @@ use crate::bind;
 
 bitflags! {
     /// A flag to represent what type is used in audio data.
+    #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
     pub struct AudioFormatFlag: u8 {
         /// Whether a type is floating-point number.
         const FLOAT = 1 << 0;
@@ -108,7 +109,7 @@ impl AudioFormat {
     }
 
     pub(super) fn as_raw(self) -> u16 {
-        (self.flag.bits as u16) << 8 | self.bit_size as u16
+        (self.flag.bits() as u16) << 8 | self.bit_size as u16
     }
 }
 

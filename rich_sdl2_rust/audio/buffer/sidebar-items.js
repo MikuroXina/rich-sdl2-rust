@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"struct":[["AudioBuffer","An audio buffer with a format, sample rates, numbers of channels and a buffer."]]};
+window.SIDEBAR_ITEMS = {"struct":["AudioBuffer"]};

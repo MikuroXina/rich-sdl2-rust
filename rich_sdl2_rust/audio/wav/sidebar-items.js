@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"struct":[["Wav","A wav format buffer."]]};
+window.SIDEBAR_ITEMS = {"struct":["Wav"]};

@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"struct":[["Clipped","A clipped [`Surface`] with an area."]]};
+window.SIDEBAR_ITEMS = {"struct":["Clipped"]};

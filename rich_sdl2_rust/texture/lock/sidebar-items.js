@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"struct":[["Lock","A lock of the texture, ready to read/write as the raw pixels."]]};
+window.SIDEBAR_ITEMS = {"struct":["Lock"]};

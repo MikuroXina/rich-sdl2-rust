@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"struct":[["AlphaMod","An alpha modified [`Surface`]."]]};
+window.SIDEBAR_ITEMS = {"struct":["AlphaMod"]};

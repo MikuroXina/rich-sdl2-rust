@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"struct":[["AudioSpec","A specification to require what an audio device is."],["AudioSpecBuilder","A builder to build an information representing what specification is required for an audio device."],["FallbackFlag","A flag what component may fallback into an actual audio device."]],"trait":[["AudioCallback","A type of the callback to interact with the raw audio buffer."]]};
+window.SIDEBAR_ITEMS = {"struct":["AudioSpec","AudioSpecBuilder","FallbackFlag"],"trait":["AudioCallback"]};

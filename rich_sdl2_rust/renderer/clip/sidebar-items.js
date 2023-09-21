@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"struct":[["ClippedRenderer","A renderer that clipped from another renderer."]]};
+window.SIDEBAR_ITEMS = {"struct":["ClippedRenderer"]};

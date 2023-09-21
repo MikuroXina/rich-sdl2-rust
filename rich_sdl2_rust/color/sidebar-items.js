@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"enum":[["BlendMode","A mode for blending colors."]],"mod":[["pixel","Pixel definitions for operating colors."]],"struct":[["Rgb","A RGB color structure."],["Rgba","A RGBA color structure."]]};
+window.SIDEBAR_ITEMS = {"enum":["BlendMode"],"mod":["pixel"],"struct":["Rgb","Rgba"]};

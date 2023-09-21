@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"enum":[["TextureAccess","An access type for the texture."]],"mod":[["lock","Locking the texture for read/write."]],"struct":[["Texture","A texture used to draw the image to [`Renderer`]."]],"trait":[["QueryExt","An extension for [`Texture`] to query the texture information."]]};
+window.SIDEBAR_ITEMS = {"enum":["TextureAccess"],"mod":["lock"],"struct":["Texture"],"trait":["QueryExt"]};

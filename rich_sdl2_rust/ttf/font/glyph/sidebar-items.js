@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"struct":[["Glyph","A glyph in a font."]]};
+window.SIDEBAR_ITEMS = {"struct":["Glyph"]};

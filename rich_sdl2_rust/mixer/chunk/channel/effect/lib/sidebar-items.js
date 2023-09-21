@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"fn":[["distance","An effect that controls the volume decaying by the distance."],["panning","An effect that controls the volume balance of left and right."],["position","An effect that controls the playing position. `angle` is clamped in `0..360`."],["stereo_reverse","An effect that reverses channels of left and right."]]};
+window.SIDEBAR_ITEMS = {"fn":["distance","panning","position","stereo_reverse"]};

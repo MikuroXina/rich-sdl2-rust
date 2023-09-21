@@ -20,6 +20,7 @@ use self::effect::HapticEffect;
 
 bitflags! {
     /// A property of the haptic device.
+    #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
     pub struct HapticProperty: u32 {
         /// Supported a constant effect.
         const CONSTANT = 1 << 0;

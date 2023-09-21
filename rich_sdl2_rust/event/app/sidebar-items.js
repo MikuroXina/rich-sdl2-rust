@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"struct":[["QuitEvent","An event on quitting the application."]]};
+window.SIDEBAR_ITEMS = {"struct":["QuitEvent"]};
