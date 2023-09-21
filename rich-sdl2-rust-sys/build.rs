@@ -350,7 +350,7 @@ fn build_vendor_sdl2_ttf(target_os: &str, root_dir: &Path) {
         )
         .expect("failed to move lib");
         std::fs::copy(
-            repo_path.join("include").join("SDL_ttf.h"),
+            repo_path.join("SDL_ttf.h"),
             root_dir.join("include").join("SDL2").join("SDL_ttf.h"),
         )
         .expect("failed to copy header");
