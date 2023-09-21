@@ -77,6 +77,7 @@ jobs:
         run: cargo +nightly doc --features vendor,nightly,vulkan,simd_allocator,ttf,mixer --no-deps
       - name: Publish test
         if: matrix.os == 'ubuntu-latest'
+        working-directory: ./rich-sdl2-rust-sys
         run: cargo publish --dry-run --features vendor
 
       - uses: actions/upload-artifact@v3
