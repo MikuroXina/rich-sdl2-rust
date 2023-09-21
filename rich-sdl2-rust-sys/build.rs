@@ -107,7 +107,7 @@ fn include_paths(target_os: &str) -> impl Iterator<Item = PathBuf> {
                 .probe("sdl2")
                 .into_iter()
                 .flat_map(|sdl2| sdl2.include_paths)
-                .chain(std::env::var("SDL2_PATH").map(PathBuf::from).into_iter()),
+                .chain(std::env::var("SDL2_PATH").map(PathBuf::from)),
         );
     }
     if cfg!(feature = "ttf") {

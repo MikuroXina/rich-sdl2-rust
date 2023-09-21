@@ -160,10 +160,12 @@ impl<T: Default + Clone> AudioBuffer<T> {
 
 fn as_u8_slice<T>(slice: &[T]) -> &[u8] {
     let size = std::mem::size_of::<T>();
-    unsafe { std::slice::from_raw_parts(slice.as_ptr().cast(), slice.len() * size) }
+    unsafe { std::slice::from_raw_parts(slice.as_ptr().cast(), std::mem::size_of_val(slice)) }
 }
 
 fn as_u8_slice_mut<T>(slice: &mut [T]) -> &mut [u8] {
     let size = std::mem::size_of::<T>();
-    unsafe { std::slice::from_raw_parts_mut(slice.as_mut_ptr().cast(), slice.len() * size) }
+    unsafe {
+        std::slice::from_raw_parts_mut(slice.as_mut_ptr().cast(), std::mem::size_of_val(slice))
+    }
 }
