@@ -38,6 +38,7 @@ fn main() {
         builder = builder
             .header("wrapper.h")
             .clang_args(&includes)
+            .clang_args(["-D__AVX512VLFP16INTRIN_H", "-D__AVX512FP16INTRIN_H"])
             .allowlist_function("SDL_.*")
             .allowlist_type("SDL_.*")
             .allowlist_var("SDL_.*")
