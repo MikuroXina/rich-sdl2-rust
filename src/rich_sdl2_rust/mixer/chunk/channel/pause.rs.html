@@ -38,7 +38,7 @@
 
 <span class="kw">impl</span>&lt;<span class="lifetime">&#39;channel</span>&gt; Pauser&lt;<span class="lifetime">&#39;channel</span>&gt; {
     <span class="doccomment">/// Pauses playing on the [`Channel`], or `None` if it is free.
-    </span><span class="kw">pub fn </span>pause(channel: <span class="kw-2">&amp;</span><span class="lifetime">&#39;channel </span><span class="kw-2">mut </span>Channel&lt;<span class="lifetime">&#39;channel</span>&gt;) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="self">Self</span>&gt; {
+    </span><span class="kw">pub fn </span>pause(channel: <span class="kw-2">&amp;</span><span class="lifetime">&#39;channel </span>Channel&lt;<span class="lifetime">&#39;channel</span>&gt;) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="self">Self</span>&gt; {
         <span class="kw">if </span>channel.<span class="number">0 </span>== -<span class="number">1 </span>{
             <span class="kw">return </span><span class="prelude-val">None</span>;
         }

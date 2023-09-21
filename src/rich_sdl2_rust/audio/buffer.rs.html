@@ -167,6 +167,8 @@
 <a href="#167" id="167">167</a>
 <a href="#168" id="168">168</a>
 <a href="#169" id="169">169</a>
+<a href="#170" id="170">170</a>
+<a href="#171" id="171">171</a>
 </pre></div><pre class="rust"><code><span class="doccomment">//! An audio buffer `AudioBuffer&lt;T&gt;` with a format, sample rates, numbers of channels and a buffer.
 //! It can be convert into another format and mix by the specified volume.
 
@@ -329,11 +331,13 @@
 
 <span class="kw">fn </span>as_u8_slice&lt;T&gt;(slice: <span class="kw-2">&amp;</span>[T]) -&gt; <span class="kw-2">&amp;</span>[u8] {
     <span class="kw">let </span>size = std::mem::size_of::&lt;T&gt;();
-    <span class="kw">unsafe </span>{ std::slice::from_raw_parts(slice.as_ptr().cast(), slice.len() * size) }
+    <span class="kw">unsafe </span>{ std::slice::from_raw_parts(slice.as_ptr().cast(), std::mem::size_of_val(slice)) }
 }
 
 <span class="kw">fn </span>as_u8_slice_mut&lt;T&gt;(slice: <span class="kw-2">&amp;mut </span>[T]) -&gt; <span class="kw-2">&amp;mut </span>[u8] {
     <span class="kw">let </span>size = std::mem::size_of::&lt;T&gt;();
-    <span class="kw">unsafe </span>{ std::slice::from_raw_parts_mut(slice.as_mut_ptr().cast(), slice.len() * size) }
+    <span class="kw">unsafe </span>{
+        std::slice::from_raw_parts_mut(slice.as_mut_ptr().cast(), std::mem::size_of_val(slice))
+    }
 }
 </code></pre></div></section></main></body></html>

@@ -23,7 +23,7 @@ impl<'device> QueuedAudio<'device> {
     ///
     /// Returns `Err` if failed to queue `data`.
     pub fn queue<T>(&self, data: &[T]) -> Result<()> {
-        let size = data.len() * std::mem::size_of::<T>();
+        let size = std::mem::size_of_val(data);
         let ret =
             unsafe { bind::SDL_QueueAudio(self.device.id, data.as_ptr().cast(), size as u32) };
         if ret < 0 {

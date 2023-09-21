@@ -108,7 +108,7 @@
     ///
     /// Returns `Err` if failed to queue `data`.
     </span><span class="kw">pub fn </span>queue&lt;T&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, data: <span class="kw-2">&amp;</span>[T]) -&gt; <span class="prelude-ty">Result</span>&lt;()&gt; {
-        <span class="kw">let </span>size = data.len() * std::mem::size_of::&lt;T&gt;();
+        <span class="kw">let </span>size = std::mem::size_of_val(data);
         <span class="kw">let </span>ret =
             <span class="kw">unsafe </span>{ bind::SDL_QueueAudio(<span class="self">self</span>.device.id, data.as_ptr().cast(), size <span class="kw">as </span>u32) };
         <span class="kw">if </span>ret &lt; <span class="number">0 </span>{
