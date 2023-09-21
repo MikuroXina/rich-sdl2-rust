@@ -38,6 +38,7 @@ fn main() {
         builder = builder
             .header("wrapper.h")
             .clang_args(&includes)
+            .clang_args(["-D__AVX512VLFP16INTRIN_H", "-D__AVX512FP16INTRIN_H"])
             .allowlist_function("SDL_.*")
             .allowlist_type("SDL_.*")
             .allowlist_var("SDL_.*")
@@ -113,10 +114,9 @@ fn include_paths(target_os: &str) -> impl Iterator<Item = PathBuf> {
         if cfg!(feature = "vendor") {
             let root_dir = PathBuf::from(env::var("OUT_DIR").expect("OUT_DIR not found"));
             let lib_dir = root_dir.join("lib");
-            let include_dir = root_dir.join("include");
 
             // setup vendored
-            build_vendor_sdl2_ttf(target_os, &include_dir, &lib_dir, &root_dir);
+            build_vendor_sdl2_ttf(target_os, &root_dir);
             println!("cargo:rustc-link-search={}", lib_dir.display());
             eprintln!("vendored SDL_ttf: {}", root_dir.display());
         } else {
@@ -296,7 +296,7 @@ fn build_vendor_sdl2(target_os: &str, include_dir: &Path, lib_dir: &Path, root_d
     }
 }
 
-fn build_vendor_sdl2_ttf(target_os: &str, include_dir: &Path, lib_dir: &Path, root_dir: &Path) {
+fn build_vendor_sdl2_ttf(target_os: &str, root_dir: &Path) {
     let repo_path = root_dir.join("SDL_ttf");
     if repo_path.is_dir() {
         return;
@@ -316,45 +316,44 @@ fn build_vendor_sdl2_ttf(target_os: &str, include_dir: &Path, lib_dir: &Path, ro
     checkout_to_tag(&repo, SDL_TTF_VERSION);
 
     if target_os.contains("windows") {
-        let target_platform = if cfg!(target_pointer_width = "64") {
-            "Platform=x64"
-        } else {
-            r#"Platform="Any CPU""#
-        };
+        let build_path = repo_path.join("build");
+        std::fs::create_dir(&build_path).expect("failed to mkdir build");
         assert!(
-            Command::new("msbuild")
-                .arg(format!("/p:Configuration=Debug,{target_platform}"))
-                .arg(repo_path.join("VisualC").join("SDL_ttf.sln"))
+            Command::new("cmake")
+                .current_dir(&build_path)
+                .args([
+                    format!("-DCMAKE_INSTALL_PREFIX={}", root_dir.display()),
+                    "..".to_string(),
+                ])
                 .status()
-                .expect("failed to build project")
+                .expect("failed to configure SDL_ttf")
+                .success(),
+            "cmake failed"
+        );
+        assert!(
+            Command::new("cmake")
+                .current_dir(&build_path)
+                .args(["--build", "."])
+                .status()
+                .expect("failed to build SDL_ttf")
                 .success(),
             "build failed"
         );
-        let include_install_dir = include_dir.join("SDL2");
-        std::fs::create_dir_all(&include_install_dir).expect("failed to create lib dir");
+        std::fs::rename(
+            build_path.join("Debug").join("SDL2_ttf.dll"),
+            root_dir.join("lib").join("SDL2_ttf.dll"),
+        )
+        .expect("failed to move dll");
+        std::fs::rename(
+            build_path.join("Debug").join("SDL2_ttf.lib"),
+            root_dir.join("lib").join("SDL2_ttf.lib"),
+        )
+        .expect("failed to move lib");
         std::fs::copy(
             repo_path.join("SDL_ttf.h"),
-            include_install_dir.join("SDL_ttf.h"),
+            root_dir.join("include").join("SDL2").join("SDL_ttf.h"),
         )
-        .expect("failed to copy header file");
-
-        let project_to_use = if cfg!(target_pointer_width = "64") {
-            "x64"
-        } else {
-            "Win32"
-        };
-        std::fs::create_dir_all(lib_dir).expect("failed to create lib dir");
-        for file in std::fs::read_dir(repo_path.join("VisualC").join(project_to_use).join("Debug"))
-            .expect("build dir not found")
-            .flatten()
-        {
-            let path = file.path();
-            if path.is_file() {
-                eprintln!("built library: {}", path.display());
-                std::fs::copy(&path, lib_dir.join(path.file_name().unwrap()))
-                    .expect("failed to copy built library");
-            }
-        }
+        .expect("failed to copy header");
     } else {
         let build_path = repo_path.join("build");
         std::fs::create_dir(&build_path).expect("failed to mkdir build");
