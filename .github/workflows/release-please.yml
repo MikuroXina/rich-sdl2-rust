@@ -19,4 +19,3 @@ jobs:
         with:
           token: ${{ steps.token.outputs.token }}
           release-type: rust
-          package-name: rich-sdl2-rust
