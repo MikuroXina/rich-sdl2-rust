@@ -20,7 +20,7 @@ image = []
 net = []
 
 [build-dependencies]
-bindgen = "0.69.1"
+bindgen = "0.69.2"
 pkg-config = "0.3.28"
 git2 = "0.18.1"
 retry = "2.0.0"
