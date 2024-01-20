@@ -19,7 +19,7 @@ jobs:
         os: [macos-latest, ubuntu-latest, windows-latest]
 
     steps:
-      - uses: actions/cache@v3
+      - uses: actions/cache@v4
         with:
           path: |
             ~/.cargo/bin/
@@ -52,7 +52,7 @@ jobs:
       - name: Cache LLVM and Clang (Linux)
         if: matrix.os == 'ubuntu-latest'
         id: cache-llvm
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: ${{ runner.temp }}/llvm
           key: llvm-16.0
