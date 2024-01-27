@@ -16,4 +16,4 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
       - name: cargo-deny
-        uses: EmbarkStudios/cargo-deny-action@v1.5.7
+        uses: EmbarkStudios/cargo-deny-action@v1.5.12
