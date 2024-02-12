@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.13.2](https://github.com/MikuroXina/rich-sdl2-rust/compare/v0.13.1...v0.13.2) (2024-02-12)
+
+
+### Bug Fixes
+
+* Fallback to software rendering ([#93](https://github.com/MikuroXina/rich-sdl2-rust/issues/93)) ([82fd7e5](https://github.com/MikuroXina/rich-sdl2-rust/commit/82fd7e53fd6c56623c592069639c84da933e88fb))
+
 ## [0.13.1](https://github.com/MikuroXina/rich-sdl2-rust/compare/v0.13.0...v0.13.1) (2023-09-21)
 
 
