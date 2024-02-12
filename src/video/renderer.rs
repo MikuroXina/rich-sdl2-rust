@@ -42,7 +42,8 @@ impl<'window> Renderer<'window> {
     /// Constructs a renderer from the window.
     #[must_use]
     pub fn new(window: &'window Window) -> Self {
-        let raw = unsafe { bind::SDL_CreateRenderer(window.as_ptr(), -1, 0) };
+        let raw =
+            unsafe { bind::SDL_CreateRenderer(window.as_ptr(), -1, bind::SDL_RENDERER_SOFTWARE) };
         NonNull::new(raw).map_or_else(
             || Sdl::error_then_panic("Sdl renderer"),
             |renderer| Self { renderer, window },
