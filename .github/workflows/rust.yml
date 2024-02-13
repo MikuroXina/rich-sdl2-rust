@@ -33,12 +33,10 @@ jobs:
       - uses: lukka/get-cmake@latest
 
       - name: Nightly with rustfmt and clippy
-        uses: actions-rs/toolchain@v1
+        uses: dtolnay/rust-toolchain@v1
         with:
-          profile: minimal
           toolchain: nightly
           components: rustfmt, clippy
-          override: true
 
       - name: Add msbuild to PATH
         if: matrix.os == 'windows-latest'

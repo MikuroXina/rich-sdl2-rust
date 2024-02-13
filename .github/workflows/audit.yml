@@ -12,8 +12,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: actions-rs/audit-check@v1
+      - uses: dtolnay/rust-toolchain@v1
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-      - name: cargo-deny
-        uses: EmbarkStudios/cargo-deny-action@v1.5.13
+          toolchain: stable
+      - name: cargo-audit
+        run: |
+          cargo install cargo-audit cargo-deny
+          cargo audit
+          cargo deny check
