@@ -1,4 +1,6 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/video/renderer.rs`."><title>renderer.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-fa3bb1812debf86c.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="rich_sdl2_rust" data-themes="" data-resource-suffix="" data-rustdoc-version="1.74.0-nightly (3223b0b5e 2023-09-20)" data-channel="nightly" data-search-js="search-8be46b629f5f14a8.js" data-settings-js="settings-74424d7eec62a23e.js" ><script src="../../../static.files/storage-fec3eaa3851e447d.js"></script><script defer src="../../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-c5bd66d33317d69f.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-5d8b3c7633ad77ba.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../../rich_sdl2_rust/index.html"><img class="rust-logo" src="../../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/video/renderer.rs`."><title>renderer.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-5bc39a1768837dd0.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="rich_sdl2_rust" data-themes="" data-resource-suffix="" data-rustdoc-version="1.78.0-nightly (1a648b397 2024-02-11)" data-channel="nightly" data-search-js="search-dd67cee4cfa65049.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../static.files/storage-4c98445ec4002617.js"></script><script defer src="../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-48f368f3872407c8.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-04d5337699b92874.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title">
+            <h2>Files</h2></div></nav><div class="sidebar-resizer"></div>
+    <main><nav class="sub"><form class="search-form"><span></span><div id="sidebar-button" tabindex="-1"><a href="../../../rich_sdl2_rust/all.html" title="show sidebar"></a></div><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -184,6 +186,8 @@
 <a href="#184" id="184">184</a>
 <a href="#185" id="185">185</a>
 <a href="#186" id="186">186</a>
+<a href="#187" id="187">187</a>
+<a href="#188" id="188">188</a>
 </pre></div><pre class="rust"><code><span class="doccomment">//! Renderer for a window, to render some geometries or query driver information.
 
 </span><span class="kw">use </span>static_assertions::assert_not_impl_all;
@@ -209,28 +213,30 @@
 <span class="kw">pub use </span>paste::<span class="kw-2">*</span>;
 
 <span class="doccomment">/// A SDL2 renderer. This is often used for rendering with [`pen::Pen`].
-</span><span class="kw">pub struct </span>Renderer&lt;<span class="lifetime">&#39;window</span>&gt; {
+</span><span class="kw">pub struct </span>Renderer&lt;<span class="lifetime">'window</span>&gt; {
     renderer: NonNull&lt;bind::SDL_Renderer&gt;,
-    window: <span class="kw-2">&amp;</span><span class="lifetime">&#39;window </span>Window&lt;<span class="lifetime">&#39;window</span>&gt;,
+    window: <span class="kw-2">&amp;</span><span class="lifetime">'window </span>Window&lt;<span class="lifetime">'window</span>&gt;,
 }
 
-<span class="kw">impl </span>std::fmt::Debug <span class="kw">for </span>Renderer&lt;<span class="lifetime">&#39;_</span>&gt; {
-    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>std::fmt::Formatter&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; std::fmt::Result {
-        f.debug_struct(<span class="string">&quot;Renderer&quot;</span>)
-            .field(<span class="string">&quot;window&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.window)
+<span class="kw">impl </span>std::fmt::Debug <span class="kw">for </span>Renderer&lt;<span class="lifetime">'_</span>&gt; {
+    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>std::fmt::Formatter&lt;<span class="lifetime">'_</span>&gt;) -&gt; std::fmt::Result {
+        f.debug_struct(<span class="string">"Renderer"</span>)
+            .field(<span class="string">"window"</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.window)
             .finish_non_exhaustive()
     }
 }
 
 <span class="macro">assert_not_impl_all!</span>(Renderer: Send, Sync);
 
-<span class="kw">impl</span>&lt;<span class="lifetime">&#39;window</span>&gt; Renderer&lt;<span class="lifetime">&#39;window</span>&gt; {
+<span class="kw">impl</span>&lt;<span class="lifetime">'window</span>&gt; Renderer&lt;<span class="lifetime">'window</span>&gt; {
     <span class="doccomment">/// Constructs a renderer from the window.
     </span><span class="attr">#[must_use]
-    </span><span class="kw">pub fn </span>new(window: <span class="kw-2">&amp;</span><span class="lifetime">&#39;window </span>Window) -&gt; <span class="self">Self </span>{
-        <span class="kw">let </span>raw = <span class="kw">unsafe </span>{ bind::SDL_CreateRenderer(window.as_ptr(), -<span class="number">1</span>, <span class="number">0</span>) };
+    </span><span class="kw">pub fn </span>new(window: <span class="kw-2">&amp;</span><span class="lifetime">'window </span>Window) -&gt; <span class="self">Self </span>{
+        <span class="kw">let </span>raw = <span class="kw">unsafe </span>{
+            bind::SDL_CreateRenderer(window.as_ptr(), -<span class="number">1</span>, bind::SDL_RENDERER_SOFTWARE <span class="kw">as </span>u32)
+        };
         NonNull::new(raw).map_or_else(
-            || Sdl::error_then_panic(<span class="string">&quot;Sdl renderer&quot;</span>),
+            || Sdl::error_then_panic(<span class="string">"Sdl renderer"</span>),
             |renderer| <span class="self">Self </span>{ renderer, window },
         )
     }
@@ -256,13 +262,13 @@
             })
         } <span class="kw">else </span>{
             <span class="prelude-val">Err</span>(SdlError::Others {
-                msg: <span class="string">&quot;Getting output size failed&quot;</span>.into(),
+                msg: <span class="string">"Getting output size failed"</span>.into(),
             })
         }
     }
 
     <span class="doccomment">/// Clips the renderer by `area`.
-    </span><span class="kw">pub fn </span>clip(<span class="kw-2">&amp;</span><span class="lifetime">&#39;window </span><span class="kw-2">mut </span><span class="self">self</span>, area: Rect) -&gt; ClippedRenderer&lt;<span class="lifetime">&#39;window</span>&gt; {
+    </span><span class="kw">pub fn </span>clip(<span class="kw-2">&amp;</span><span class="lifetime">'window </span><span class="kw-2">mut </span><span class="self">self</span>, area: Rect) -&gt; ClippedRenderer&lt;<span class="lifetime">'window</span>&gt; {
         ClippedRenderer::new(<span class="self">self</span>, area)
     }
 
@@ -287,7 +293,7 @@
             bind::SDL_RenderSetLogicalSize(<span class="self">self</span>.as_ptr(), width <span class="kw">as </span>c_int, height <span class="kw">as </span>c_int)
         };
         <span class="kw">if </span>ret != <span class="number">0 </span>{
-            Sdl::error_then_panic(<span class="string">&quot;Setting renderer logical size&quot;</span>);
+            Sdl::error_then_panic(<span class="string">"Setting renderer logical size"</span>);
         }
     }
 
@@ -302,7 +308,7 @@
         <span class="kw">let </span>ret =
             <span class="kw">unsafe </span>{ bind::SDL_RenderSetIntegerScale(<span class="self">self</span>.as_ptr(), <span class="kw">if </span>enabled { <span class="number">1 </span>} <span class="kw">else </span>{ <span class="number">0 </span>}) };
         <span class="kw">if </span>ret != <span class="number">0 </span>{
-            Sdl::error_then_panic(<span class="string">&quot;Setting renderer integer scale&quot;</span>);
+            Sdl::error_then_panic(<span class="string">"Setting renderer integer scale"</span>);
         }
     }
 
@@ -328,7 +334,7 @@
     ) {
         <span class="kw">let </span>ret = <span class="kw">unsafe </span>{ bind::SDL_RenderSetScale(<span class="self">self</span>.as_ptr(), horizontal, vertical) };
         <span class="kw">if </span>ret != <span class="number">0 </span>{
-            Sdl::error_then_panic(<span class="string">&quot;Setting renderer scale&quot;</span>);
+            Sdl::error_then_panic(<span class="string">"Setting renderer scale"</span>);
         }
     }
 
@@ -344,15 +350,15 @@
         <span class="kw">let </span>area = area.map(Into::into);
         <span class="kw">let </span>ret = <span class="kw">unsafe </span>{ bind::SDL_RenderSetViewport(<span class="self">self</span>.as_ptr(), as_raw(<span class="kw-2">&amp;</span>area)) };
         <span class="kw">if </span>ret != <span class="number">0 </span>{
-            Sdl::error_then_panic(<span class="string">&quot;Setting renderer viewport&quot;</span>);
+            Sdl::error_then_panic(<span class="string">"Setting renderer viewport"</span>);
         }
     }
 
     <span class="doccomment">/// Sets the render target to the texture.
-    </span><span class="kw">pub fn </span>set_target&lt;<span class="lifetime">&#39;texture</span>: <span class="lifetime">&#39;window</span>&gt;(<span class="kw-2">&amp;</span><span class="lifetime">&#39;window </span><span class="self">self</span>, texture: <span class="kw-2">&amp;</span><span class="lifetime">&#39;texture </span>Texture) {
+    </span><span class="kw">pub fn </span>set_target&lt;<span class="lifetime">'texture</span>: <span class="lifetime">'window</span>&gt;(<span class="kw-2">&amp;</span><span class="lifetime">'window </span><span class="self">self</span>, texture: <span class="kw-2">&amp;</span><span class="lifetime">'texture </span>Texture) {
         <span class="kw">let </span>ret = <span class="kw">unsafe </span>{ bind::SDL_SetRenderTarget(<span class="self">self</span>.as_ptr(), texture.as_ptr()) };
         <span class="kw">if </span>ret != <span class="number">0 </span>{
-            Sdl::error_then_panic(<span class="string">&quot;Setting renderer target texture&quot;</span>);
+            Sdl::error_then_panic(<span class="string">"Setting renderer target texture"</span>);
         }
     }
 
@@ -360,12 +366,12 @@
     </span><span class="kw">pub fn </span>set_target_default(<span class="kw-2">&amp;</span><span class="self">self</span>) {
         <span class="kw">let </span>ret = <span class="kw">unsafe </span>{ bind::SDL_SetRenderTarget(<span class="self">self</span>.as_ptr(), std::ptr::null_mut()) };
         <span class="kw">if </span>ret != <span class="number">0 </span>{
-            Sdl::error_then_panic(<span class="string">&quot;Setting renderer target default&quot;</span>);
+            Sdl::error_then_panic(<span class="string">"Setting renderer target default"</span>);
         }
     }
 }
 
-<span class="kw">impl</span>&lt;<span class="lifetime">&#39;window</span>&gt; Drop <span class="kw">for </span>Renderer&lt;<span class="lifetime">&#39;window</span>&gt; {
+<span class="kw">impl</span>&lt;<span class="lifetime">'window</span>&gt; Drop <span class="kw">for </span>Renderer&lt;<span class="lifetime">'window</span>&gt; {
     <span class="kw">fn </span>drop(<span class="kw-2">&amp;mut </span><span class="self">self</span>) {
         <span class="kw">unsafe </span>{ bind::SDL_DestroyRenderer(<span class="self">self</span>.renderer.as_ptr()) }
     }

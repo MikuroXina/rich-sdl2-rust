@@ -44,7 +44,7 @@ fn main() {
             .allowlist_var("SDL_.*")
             .generate_comments(false)
             .prepend_enum_name(false)
-            .parse_callbacks(Box::new(bindgen::CargoCallbacks));
+            .parse_callbacks(Box::new(bindgen::CargoCallbacks::new()));
     }
     if cfg!(feature = "ttf") {
         builder = builder
