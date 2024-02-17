@@ -21,6 +21,6 @@ net = []
 
 [build-dependencies]
 bindgen = "0.69.4"
-pkg-config = "0.3.29"
+pkg-config = "0.3.30"
 git2 = "0.18.2"
 retry = "2.0.0"
