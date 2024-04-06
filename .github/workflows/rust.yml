@@ -56,7 +56,7 @@ jobs:
           key: llvm-16.0
       - name: Install LLVM and Clang (Linux)
         if: matrix.os == 'ubuntu-latest'
-        uses: KyleMayes/install-llvm-action@v1
+        uses: KyleMayes/install-llvm-action@v2
         with:
           version: "16.0"
           cached: ${{ steps.cache-llvm.outputs.cache-hit }}
