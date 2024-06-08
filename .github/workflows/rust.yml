@@ -38,12 +38,12 @@ jobs:
           toolchain: nightly
           components: rustfmt, clippy
 
-      - name: Add msbuild to PATH
+      - name: Add msbuild to PATH (Windows)
         if: matrix.os == 'windows-latest'
         uses: microsoft/setup-msbuild@v1.3
         with:
           msbuild-architecture: x64
-      - name: Add LLVM to PATH
+      - name: Add LLVM to PATH (Windows)
         if: matrix.os == 'windows-latest'
         run: echo "LIBCLANG_PATH=$((gcm clang).source -replace "clang.exe")" >> $env:GITHUB_ENV
 
@@ -65,6 +65,12 @@ jobs:
         if: contains(matrix.os, 'ubuntu')
         run: sudo ln -s libclang-16.so.1 /lib/x86_64-linux-gnu/libclang.so
         working-directory: ${{ runner.temp }}/llvm
+
+      - name: Install autoconf (macOS)
+        if: contains(matrix.os, 'macos')
+        run: |
+          brew update
+          brew install autoconf
 
       - name: Test crate
         run: cargo test --verbose --features vendor,ttf,mixer
