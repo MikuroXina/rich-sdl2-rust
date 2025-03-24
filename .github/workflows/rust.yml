@@ -75,8 +75,8 @@ jobs:
         if: contains(matrix.os, 'macos')
         run: |
           brew update
+          brew install pkg-config
           brew install autoconf
-          brew install libxcb
 
       - name: Test crate
         run: cargo test --verbose --features vendor,ttf,mixer
