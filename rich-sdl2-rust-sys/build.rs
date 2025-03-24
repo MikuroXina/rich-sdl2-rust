@@ -267,7 +267,7 @@ fn build_vendor_sdl2(target_os: &str, include_dir: &Path, lib_dir: &Path, root_d
             Command::new("cmake")
                 .current_dir(&build_path)
                 .args([
-                    "-DSDL_VIDEO_DRIVER_X11".into(),
+                    "-DSDL_VIDEO_DRIVER_X11=1".into(),
                     format!("-DCMAKE_INSTALL_PREFIX={}", root_dir.display()),
                     "..".to_string(),
                 ])
