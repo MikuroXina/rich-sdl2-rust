@@ -12,10 +12,10 @@ compile_error!(r#"Either feature "static" or "dynamic" must be enabled."#);
 #[cfg(all(feature = "static", feature = "dynamic"))]
 compile_error!(r#"Feature "static" and "dynamic" cannot coexist."#);
 
-const SDL_VERSION: &str = "2.26.2";
-const SDL_TTF_VERSION: &str = "2.20.1";
-const SDL_MIXER_VERSION: &str = "2.6.2";
-const SDL_IMAGE_VERSION: &str = "2.6.2";
+const SDL_VERSION: &str = "2.30.11";
+const SDL_TTF_VERSION: &str = "2.24.0";
+const SDL_MIXER_VERSION: &str = "2.8.0";
+const SDL_IMAGE_VERSION: &str = "2.8.4";
 const SDL_NET_VERSION: &str = "2.2.0";
 
 fn main() {
