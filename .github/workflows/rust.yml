@@ -84,7 +84,7 @@ jobs:
         working-directory: ./rich-sdl2-rust-sys
         run: cargo publish --dry-run --features vendor
 
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v5
         if: matrix.os == 'ubuntu-latest'
         with:
           name: doc-artifact
