@@ -15,7 +15,7 @@ jobs:
           app_id: ${{ secrets.HELPER_BOT_APP_ID }}
           private_key: ${{ secrets.HELPER_BOT_PRIVATE_KEY }}
 
-      - uses: google-github-actions/release-please-action@v4
+      - uses: googleapis/release-please@v4
         with:
           token: ${{ steps.token.outputs.token }}
           release-type: rust
