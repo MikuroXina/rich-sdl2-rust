@@ -263,13 +263,18 @@ fn build_vendor_sdl2(target_os: &str, include_dir: &Path, lib_dir: &Path, root_d
         );
         let build_path = repo_path.join("build");
         std::fs::create_dir(&build_path).expect("failed to mkdir build");
+        let mut cmake_args = vec![];
+        if target_os.contains("linux") {
+            cmake_args.push("-DSDL_VIDEO_DRIVER_X11=1".into())
+        }
+        cmake_args.extend([
+            format!("-DCMAKE_INSTALL_PREFIX={}", root_dir.display()),
+            "..".to_string(),
+        ]);
         assert!(
             Command::new("cmake")
                 .current_dir(&build_path)
-                .args([
-                    format!("-DCMAKE_INSTALL_PREFIX={}", root_dir.display()),
-                    "..".to_string(),
-                ])
+                .args(cmake_args)
                 .status()
                 .expect("failed to configure SDL")
                 .success(),
