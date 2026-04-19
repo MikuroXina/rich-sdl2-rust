@@ -340,12 +340,12 @@ fn build_vendor_sdl2_ttf(target_os: &str, root_dir: &Path) {
             "build failed"
         );
         std::fs::rename(
-            build_path.join("Debug").join("SDL2_ttf.dll"),
+            build_path.join("Debug").join("SDL2_ttfd.dll"),
             root_dir.join("lib").join("SDL2_ttf.dll"),
         )
         .expect("failed to move dll");
         std::fs::rename(
-            build_path.join("Debug").join("SDL2_ttf.lib"),
+            build_path.join("Debug").join("SDL2_ttfd.lib"),
             root_dir.join("lib").join("SDL2_ttf.lib"),
         )
         .expect("failed to move lib");
