@@ -15,14 +15,14 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - uses: dtolnay/rust-toolchain@v1
         with:
           toolchain: nightly
 
       - name: Cache LLVM and Clang
         id: cache-llvm
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: ${{ runner.temp }}/llvm
           key: llvm-16.0
@@ -49,8 +49,8 @@ jobs:
   doc:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: dawidd6/action-download-artifact@v7
+      - uses: actions/checkout@v6
+      - uses: dawidd6/action-download-artifact@v15
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           workflow: rust.yml
